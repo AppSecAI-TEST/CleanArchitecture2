@@ -1,0 +1,14 @@
+
+Ksquid:S1444"1Make this "public static PERMISSIONS" field final(„íâçûÿÿÿÿ
+7squid:S2386"Make this member "protected".(„íâçûÿÿÿÿ
+T
+squid:S899";Do something with the "boolean" value returned by "delete".(”ä›Æıÿÿÿÿ
+Ksquid:S2696"6Make the enclosing method "static" or remove this set.(óÚúÿ
+psquid:S3008"VRename this field "PERMISSIONS" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(„íâçûÿÿÿÿ
+Osquid:S1141"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ
+V
+squid:S899"=Do something with the "boolean" value returned by "renameTo".(–œÌûÿÿÿÿ
+:squid:S1166"%Either log or rethrow this exception.(”ı¾
+:squid:S1166"%Either log or rethrow this exception.(”ı¾
+Isquid:S1066"/Merge this if statement with the enclosing one.(ÿàÿéıÿÿÿÿ
+:squid:S1166"%Either log or rethrow this exception.(”ı¾
