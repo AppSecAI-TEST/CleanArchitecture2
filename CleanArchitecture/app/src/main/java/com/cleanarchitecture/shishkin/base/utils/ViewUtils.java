@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.cleanarchitecture.base.utils;
+package com.cleanarchitecture.shishkin.base.utils;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -27,8 +27,8 @@ import android.widget.TextView;
 import java.lang.reflect.Field;
 import java.util.Locale;
 
-import static com.cleanarchitecture.shishkin.cleanarchitecture.base.utils.ApplicationUtils.hasJellyBean;
-import static com.cleanarchitecture.shishkin.cleanarchitecture.base.utils.ApplicationUtils.hasJellyBeanMR1;
+import static com.cleanarchitecture.shishkin.base.utils.ApplicationUtils.hasJellyBean;
+import static com.cleanarchitecture.shishkin.base.utils.ApplicationUtils.hasJellyBeanMR1;
 
 /**
  * {@code ViewUtils} contains static methods which operate on {@code View}.

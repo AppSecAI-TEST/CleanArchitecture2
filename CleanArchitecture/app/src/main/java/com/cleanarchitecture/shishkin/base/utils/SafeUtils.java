@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.cleanarchitecture.base.utils;
+package com.cleanarchitecture.shishkin.base.utils;
 
 import com.github.snowdream.android.util.Log;
 

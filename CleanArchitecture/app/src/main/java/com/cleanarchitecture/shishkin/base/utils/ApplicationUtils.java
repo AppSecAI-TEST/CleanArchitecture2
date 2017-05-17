@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.cleanarchitecture.base.utils;
+package com.cleanarchitecture.shishkin.base.utils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,7 +12,7 @@ import android.os.Looper;
 import android.os.PowerManager;
 import android.provider.Settings;
 
-import com.cleanarchitecture.shishkin.cleanarchitecture.BuildConfig;
+import com.cleanarchitecture.shishkin.BuildConfig;
 import com.github.snowdream.android.util.Log;
 public class ApplicationUtils {
 

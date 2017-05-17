@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.cleanarchitecture.application.app;
+package com.cleanarchitecture.shishkin.application.app;
 
 import android.Manifest;
 import android.app.Application;
@@ -6,9 +6,9 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
 
-import com.cleanarchitecture.shishkin.cleanarchitecture.BuildConfig;
-import com.cleanarchitecture.shishkin.cleanarchitecture.R;
-import com.cleanarchitecture.shishkin.cleanarchitecture.base.utils.ApplicationUtils;
+import com.cleanarchitecture.shishkin.BuildConfig;
+import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.github.snowdream.android.util.FilePathGenerator;
 import com.github.snowdream.android.util.Log;
 
