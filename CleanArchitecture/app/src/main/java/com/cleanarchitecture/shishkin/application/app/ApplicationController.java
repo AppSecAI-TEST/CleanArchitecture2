@@ -8,6 +8,7 @@ import android.os.Environment;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.github.snowdream.android.util.FilePathGenerator;
 import com.github.snowdream.android.util.Log;
@@ -77,6 +78,8 @@ public class ApplicationController extends Application {
             } else {
                 Log.setEnabled(false);
             }
+
+            EventController.instantiate();
 
 
         } catch (Exception e) {

@@ -29,5 +29,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     compile 'com.github.snowdream.android.util:log:1.2.0'
+    compile 'org.greenrobot:eventbus:3.0.0'
+
 
 }
