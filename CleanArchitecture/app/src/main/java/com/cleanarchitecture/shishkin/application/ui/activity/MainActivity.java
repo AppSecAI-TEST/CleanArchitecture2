@@ -5,7 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.application.ui.fragment.ReleaseHomeFragment;
+import com.cleanarchitecture.shishkin.application.ui.fragment.HomeFragment;
 import com.cleanarchitecture.shishkin.base.ui.activity.AbstractContentActivity;
 import com.cleanarchitecture.shishkin.base.utils.ViewUtils;
 
@@ -53,7 +53,7 @@ public class MainActivity extends AbstractContentActivity {
     }
 
     private void showHomeFragment() {
-        showFragment(ReleaseHomeFragment.newInstance());
+        showFragment(HomeFragment.newInstance());
     }
 
     @Override

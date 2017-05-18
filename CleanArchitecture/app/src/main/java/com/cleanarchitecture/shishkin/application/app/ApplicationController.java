@@ -2,6 +2,10 @@ package com.cleanarchitecture.shishkin.application.app;
 
 import android.Manifest;
 import android.app.Application;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
@@ -13,6 +17,10 @@ import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
 import com.cleanarchitecture.shishkin.base.controller.NavigationController;
 import com.cleanarchitecture.shishkin.base.controller.PresenterController;
+import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOffEvent;
+import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOnEvent;
+import com.cleanarchitecture.shishkin.base.net.ConnectivityController;
+import com.cleanarchitecture.shishkin.base.repository.Repository;
 import com.cleanarchitecture.shishkin.base.usecases.UseCasesController;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.github.snowdream.android.util.FilePathGenerator;
@@ -85,6 +93,10 @@ public class ApplicationController extends Application {
             PresenterController.instantiate();
             NavigationController.instantiate();
             UseCasesController.instantiate();
+            ConnectivityController.instantiate();
+            Repository.instantiate();
+
+            registerScreenOnOffBroadcastReceiver();
 
         } catch (Exception e) {
             android.util.Log.e(getClass().getSimpleName(), e.getMessage());
@@ -111,6 +123,27 @@ public class ApplicationController extends Application {
             }
         } catch (Exception e) {
         }
+    }
+
+    public void registerScreenOnOffBroadcastReceiver() {
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_SCREEN_ON);
+        intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+
+        final BroadcastReceiver screenOnOffReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                final String strAction = intent.getAction();
+
+                if (strAction.equals(Intent.ACTION_SCREEN_OFF)) {
+                    EventController.getInstance().post(new UseCaseOnScreenOffEvent());
+                } else {
+                    EventController.getInstance().post(new UseCaseOnScreenOnEvent());
+                }
+            }
+        };
+
+        registerReceiver(screenOnOffReceiver, intentFilter);
     }
 
 }
