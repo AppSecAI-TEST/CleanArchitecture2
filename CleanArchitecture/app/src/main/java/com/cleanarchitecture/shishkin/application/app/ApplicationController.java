@@ -27,7 +27,6 @@ import com.github.snowdream.android.util.FilePathGenerator;
 import com.github.snowdream.android.util.Log;
 
 import java.io.File;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class ApplicationController extends Application {
     private static volatile ApplicationController sInstance;
