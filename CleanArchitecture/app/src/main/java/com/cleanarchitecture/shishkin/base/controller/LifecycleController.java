@@ -6,6 +6,7 @@ import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.event.StartActivityEvent;
 import com.cleanarchitecture.shishkin.base.presenter.ActivityPresenter;
 import com.cleanarchitecture.shishkin.base.ui.activity.AbstractActivity;
+import com.cleanarchitecture.shishkin.base.ui.activity.AbstractContentActivity;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -162,6 +163,43 @@ public class LifecycleController extends AbstractController
         final AbstractActivity activity = getCurrentActivity();
         if (activity != null) {
             return activity.getActivityPresenter();
+        }
+        return null;
+    }
+
+    /**
+     * Получить AbstractContentActivity
+     *
+     * @return AbstractContentActivity
+     */
+    @Override
+    public synchronized AbstractContentActivity getContentActivity() {
+        final AbstractContentActivity activity = getCurrentContentActivity();
+        if (activity != null) {
+            return activity;
+        }
+
+        for (WeakReference<ILifecycleSubscriber> weakReference : mSubscribers.values()) {
+            final ILifecycleSubscriber subscriber = weakReference.get();
+            if (subscriber != null && subscriber instanceof AbstractContentActivity) {
+                return (AbstractContentActivity) subscriber;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Получить текущую AbstractContentActivity
+     *
+     * @return текущая AbstractContentActivity
+     */
+    @Override
+    public synchronized AbstractContentActivity getCurrentContentActivity() {
+        if (mCurrentSubscriber != null && mCurrentSubscriber.get() != null) {
+            final ILifecycleSubscriber subscriber = mCurrentSubscriber.get();
+            if (subscriber != null && subscriber instanceof AbstractContentActivity) {
+                return (AbstractContentActivity) subscriber;
+            }
         }
         return null;
     }
