@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar_ll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@color/blue">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/ic_arrow_left"
+            android:visibility="visible"
+            android:paddingLeft="@dimen/padding_4dp"
+            android:paddingRight="@dimen/padding_4dp" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:gravity="center_vertical|center_horizontal"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_xxlarge"
+            android:layout_marginLeft="@dimen/padding_48dp"
+            android:layout_marginRight="@dimen/padding_48dp" />
+
+        <ImageView
+            android:id="@+id/menu"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center_vertical"
+            android:paddingRight="@dimen/padding_4dp"
+            android:src="@mipmap/ic_dots_vertical"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/item"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center_vertical"
+            android:visibility="gone"
+            android:layout_toLeftOf="@+id/menu" />
+
+        <com.globus.ppfi.base.ui.widget.MaterialProgressBar
+            android:id="@+id/horizontalprogressbar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="-12dp"
+            android:layout_marginTop="-8dp"
+            android:indeterminate="true"
+            app:duration="2000"
+            app:progressColour="@color/orange"
+            app:backgroundColour="@color/blue"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+</LinearLayout>

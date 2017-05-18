@@ -13,8 +13,13 @@ import com.cleanarchitecture.shishkin.base.controller.INavigationSubscriber;
 import com.cleanarchitecture.shishkin.base.controller.ISubscriber;
 import com.cleanarchitecture.shishkin.base.controller.NavigationController;
 import com.cleanarchitecture.shishkin.base.event.ui.HideKeyboardEvent;
+import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractFragment;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.SafeUtils;
+import com.cleanarchitecture.shishkin.base.utils.StringUtils;
+import com.github.snowdream.android.util.Log;
+
+import java.util.List;
 
 public abstract class AbstractContentActivity extends AbstractActivity
         implements ActivityResultListener, INavigationSubscriber {
@@ -102,7 +107,6 @@ public abstract class AbstractContentActivity extends AbstractActivity
 
     @Override
     public boolean switchToFragment(@NonNull final String name) {
-        /*
         if (StringUtils.isNullOrEmpty(name)) {
             return false;
         }
@@ -123,7 +127,6 @@ public abstract class AbstractContentActivity extends AbstractActivity
         } catch (Exception e) {
             Log.e(LOG, e.getMessage());
         }
-        */
         return false;
     }
 
