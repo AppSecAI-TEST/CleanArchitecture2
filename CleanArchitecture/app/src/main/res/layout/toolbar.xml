@@ -54,18 +54,18 @@
             android:visibility="gone"
             android:layout_toLeftOf="@+id/menu" />
 
-        <com.globus.ppfi.base.ui.widget.MaterialProgressBar
+
+        <me.zhanghai.android.materialprogressbar.MaterialProgressBar
             android:id="@+id/horizontalprogressbar"
-            style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="-12dp"
-            android:layout_marginTop="-8dp"
+            android:layout_marginBottom="-6dp"
             android:indeterminate="true"
-            app:duration="2000"
-            app:progressColour="@color/orange"
-            app:backgroundColour="@color/blue"
+            app:mpb_progressStyle="horizontal"
+            app:mpb_showProgressBackground = "false"
+            app:mpb_indeterminateTint="@color/orange"
+            style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
             android:visibility="invisible" />
     </RelativeLayout>
 

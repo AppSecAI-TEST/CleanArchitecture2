@@ -13,7 +13,9 @@ import com.cleanarchitecture.shishkin.base.controller.INavigationSubscriber;
 import com.cleanarchitecture.shishkin.base.controller.ISubscriber;
 import com.cleanarchitecture.shishkin.base.controller.NavigationController;
 import com.cleanarchitecture.shishkin.base.event.ui.HideKeyboardEvent;
+import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractFragment;
+import com.cleanarchitecture.shishkin.base.ui.fragment.ToolbarFragment;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.SafeUtils;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
@@ -25,7 +27,7 @@ public abstract class AbstractContentActivity extends AbstractActivity
         implements ActivityResultListener, INavigationSubscriber {
 
     private static final String LOG = "AbstractContentActivity";
-    //private ToolbarFragment mToolbar;
+    private ToolbarFragment mToolbar;
 
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
@@ -181,12 +183,10 @@ public abstract class AbstractContentActivity extends AbstractActivity
     public void onRequestPermissions(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissions(requestCode, permissions, grantResults);
 
-        /*
         final AbstractContentFragment fragment = getContentFragment(AbstractContentFragment.class);
         if (fragment != null) {
             fragment.onRequestPermissions(requestCode, permissions, grantResults);
         }
-        */
     }
 
     @Nullable
@@ -234,16 +234,13 @@ public abstract class AbstractContentActivity extends AbstractActivity
                                  final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        /*
         final AbstractContentFragment fragment = getContentFragment(AbstractContentFragment.class);
         if (fragment != null) {
             fragment.onActivityResult(requestCode, 0, data);
         }
-        */
     }
 
     public synchronized void addToolbar() {
-        /*
         try {
             mToolbar = new ToolbarFragment();
             final FragmentManager fm = getSupportFragmentManager();
@@ -253,7 +250,6 @@ public abstract class AbstractContentActivity extends AbstractActivity
         } catch (Exception e) {
             Log.e(LOG, e.getMessage());
         }
-        */
     }
 
 }

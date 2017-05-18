@@ -74,7 +74,7 @@ dependencies {
     compile 'com.madgag.spongycastle:core:1.56.0.0'
     compile 'com.madgag.spongycastle:prov:1.56.0.0'
 
-    compile 'com.squareup.moshi:moshi:1.5.0'
+    compile 'me.zhanghai.android.materialprogressbar:library:1.4.1'
 
 
 }

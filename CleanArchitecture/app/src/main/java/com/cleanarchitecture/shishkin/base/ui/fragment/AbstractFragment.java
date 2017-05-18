@@ -88,7 +88,6 @@ public abstract class AbstractFragment extends Fragment implements IFragment
         super.onPause();
 
         mLifecycleState = Lifecycle.STATE_PAUSE;
-
         for (WeakReference<IState> object : mLifecycleList) {
             if (object.get() != null) {
                 object.get().setState(mLifecycleState);
@@ -101,7 +100,6 @@ public abstract class AbstractFragment extends Fragment implements IFragment
         super.onResume();
 
         mLifecycleState = Lifecycle.STATE_RESUME;
-
         for (WeakReference<IState> object : mLifecycleList) {
             if (object.get() != null) {
                 object.get().setState(mLifecycleState);
