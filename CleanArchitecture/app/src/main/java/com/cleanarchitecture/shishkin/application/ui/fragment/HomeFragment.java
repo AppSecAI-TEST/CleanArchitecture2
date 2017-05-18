@@ -10,10 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.base.controller.EventController;
-import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.event.OnNetworkConnectedEvent;
-import com.cleanarchitecture.shishkin.base.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.base.event.repository.RepositoryRequestGetImageEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.OnToolbarMenuItemClickEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetBackNavigationEvent;
@@ -33,7 +30,6 @@ import butterknife.ButterKnife;
 
 @SuppressWarnings("unused")
 public class HomeFragment extends AbstractContentFragment {
-
 
     public static final String NAME = "ReleaseHomeFragment";
 
@@ -104,13 +100,6 @@ public class HomeFragment extends AbstractContentFragment {
 
             default:
                 break;
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public synchronized void onPermisionGrantedEvent(final OnPermisionGrantedEvent event) {
-        if (event.getPermission().equalsIgnoreCase(Manifest.permission.READ_CONTACTS)) {
-            refreshData();
         }
     }
 
