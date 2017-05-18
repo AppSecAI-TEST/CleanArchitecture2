@@ -13,9 +13,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
 
-/**
- * Created by Администратор on 30.09.2015.
- */
 public class StringUtils {
     public static final String SPACE = " ";
     public static final String EMPTY = "";
