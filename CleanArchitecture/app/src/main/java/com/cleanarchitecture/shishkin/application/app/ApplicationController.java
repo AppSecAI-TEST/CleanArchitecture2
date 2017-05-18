@@ -11,6 +11,7 @@ import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.base.controller.CrashController;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
+import com.cleanarchitecture.shishkin.base.controller.NavigationController;
 import com.cleanarchitecture.shishkin.base.controller.PresenterController;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.github.snowdream.android.util.FilePathGenerator;
@@ -86,6 +87,7 @@ public class ApplicationController extends Application {
             CrashController.instantiate();
             LifecycleController.instantiate();
             PresenterController.instantiate();
+            NavigationController.instantiate();
 
         } catch (Exception e) {
             android.util.Log.e(getClass().getSimpleName(), e.getMessage());

@@ -3,9 +3,9 @@ package com.cleanarchitecture.shishkin.application.ui.activity;
 import android.os.Bundle;
 
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.base.ui.activity.AbstractActivity;
+import com.cleanarchitecture.shishkin.base.ui.activity.AbstractContentActivity;
 
-public class MainActivity extends AbstractActivity {
+public class MainActivity extends AbstractContentActivity {
 
     public static String NAME = "MainActivity";
 
