@@ -1,6 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="black">#000000</color>
+    <color name="red">#ff0000</color>
+    <color name="red_pressed">#80ff0000</color>
+    <color name="red_ripple">#ffC0C0</color>
+    <color name="orange">#ff5514</color>
+    <color name="white">#ffffff</color>
+    <color name="white_disabled">#9da0b0</color>
+    <color name="white_light">#b2caf1</color>
+    <color name="gray">#dbd8d8</color>
+    <color name="gray_light">#f6f6f6</color>
+    <color name="gray_switch">#cbc8c8</color>
+    <color name="gray_dark">#666666</color>
+    <color name="blue">#345d9d</color>
+    <color name="blue_pressed">#80345d9d</color>
+    <color name="blue_ripple">#f6f6f6</color>
+    <color name="blue_backgroud">#20345d9d</color>
+    <color name="blue_text_disabled">#b7b6b6</color>
+    <color name="green">#00d066</color>
+    <color name="transparent">#00000000</color>
+    <color name="part_transparent">#F0303030</color>
+    <color name="loyalty">#40edb32e</color>
+    <color name="cards">#40ff5514</color>
+    <color name="gray_text">#8c8c8c</color>
+    <color name="orange_button_background">#ff5514</color>
+
+    <color name="edittext_background">#ffffff</color>
+    <color name="edittext_background_disabled">#c0c0c0</color>
+    <color name="edittext_border">#929191</color>
+    <color name="edittext_border_disabled">#929191</color>
+    <color name="edittext_border_pressed">#ff5514</color>
+
+    <color name="text_dark">#212932</color>
+    <color name="text_sky">#7fe4f3</color>
+    <color name="text_light">#787878</color>
+
+    <color name="list_item_pressed_blue">#3c33b5e5</color>
+    <color name="list_item_pressed_blue_ripple">#404040</color>
+    <color name="list_item_disabled">#3c8c8c8c</color>
+
+    <color name="divider_color">#d9d9d9</color>
+    <color name="background_activity">#f4f4f4</color>
+
+    <color name="background_sky_end_color">#bff1f9</color>
+    <color name="background_sky_start_color">#7fe4f3</color>
+    <color name="background_dark_end_color">#293540</color>
+    <color name="background_dark_start_color">#212932</color>
+    <color name="background_light_end_color">#f4f4f4</color>
+    <color name="background_light_start_color">#eaeaea</color>
+
+
+
 </resources>
