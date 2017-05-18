@@ -7,6 +7,8 @@ import com.cleanarchitecture.shishkin.base.controller.ISubscriber;
 import com.cleanarchitecture.shishkin.base.presenter.ActivityPresenter;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
 
+import butterknife.Unbinder;
+
 /**
  * Интерфейс activity
  */
@@ -42,5 +44,19 @@ public interface IActivity extends ISubscriber {
      * @return ActivityPresenter activity
      */
     ActivityPresenter getActivityPresenter();
+
+    /**
+     * Получить Butter Knife Unbinder
+     *
+     * @return Unbinder the unbinder
+     */
+    Unbinder getUnbinder();
+
+    /**
+     * Установить Butter Knife Unbinder
+     *
+     * @param unbinder the unbinder
+     */
+    void setUnbinder(Unbinder unbinder);
 
 }

@@ -94,17 +94,6 @@ public interface IActivityPresenter extends ISubscriber {
     void showDialog(int id, int title, String message, int button_positive);
 
     /**
-     * Show Messagebox.
-     *
-     * @param id              the id
-     * @param title           the title
-     * @param message         the message
-     * @param button_positive the button positive
-     * @param cancelable   the set cancelable
-     */
-    void showMessageBox(int id, String title, String message, String button_positive, boolean cancelable);
-
-    /**
      * Show dialog.
      *
      * @param id              the id
@@ -114,18 +103,6 @@ public interface IActivityPresenter extends ISubscriber {
      * @param button_negative the button negative
      */
     void showDialog(int id, int title, String message, int button_positive, int button_negative);
-
-    /**
-     * Show Messagebox.
-     *
-     * @param id              the id
-     * @param title           the title
-     * @param message         the message
-     * @param button_positive the button positive
-     * @param button_negative the button negative
-     * @param cancelable   the set cancelable
-     */
-    void showMessageBox(int id, String title, String message, String button_positive, String button_negative, boolean cancelable);
 
     /**
      * Show dialog.

@@ -14,7 +14,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
+import com.cleanarchitecture.shishkin.base.event.IEvent;
+import com.cleanarchitecture.shishkin.base.event.ui.DialogResultEvent;
+import com.cleanarchitecture.shishkin.base.lifecycle.ILifecycle;
+import com.cleanarchitecture.shishkin.base.lifecycle.IState;
+import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
+import com.cleanarchitecture.shishkin.base.presenter.ActivityPresenter;
+import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
+import com.cleanarchitecture.shishkin.base.ui.dialog.MaterialDialogExt;
+import com.cleanarchitecture.shishkin.base.utils.ViewUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -26,6 +37,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.Unbinder;
+
 @SuppressWarnings("unused")
 public abstract class AbstractActivity extends AppCompatActivity
         implements IActivity, ILifecycleSubscriber, IEventVendor, IBackStack {
@@ -33,7 +46,7 @@ public abstract class AbstractActivity extends AppCompatActivity
     private static final String NAME = "AbstractActivity";
     private Map<String, IPresenter> mPresenters = Collections.synchronizedMap(new HashMap<String, IPresenter>());
     private List<WeakReference<IState>> mLifecycleList = Collections.synchronizedList(new ArrayList<WeakReference<IState>>());
-    private int mLifecycleState = STATE_CREATE;
+    private int mLifecycleState = Lifecycle.STATE_CREATE;
     private ActivityPresenter mActivityPresenter = new ActivityPresenter();
     private Unbinder mUnbinder = null;
 
@@ -44,7 +57,6 @@ public abstract class AbstractActivity extends AppCompatActivity
         EventController.getInstance().register(this);
         LifecycleController.getInstance().register(this);
         ActivityController.getInstance().register(this);
-        MailController.getInstance().register(this);
 
         mActivityPresenter.bindView(this);
         registerPresenter(mActivityPresenter);
@@ -72,7 +84,7 @@ public abstract class AbstractActivity extends AppCompatActivity
 
         mActivityPresenter.bindView(this);
 
-        mLifecycleState = STATE_VIEW_CREATED;
+        mLifecycleState = Lifecycle.STATE_VIEW_CREATED;
         for (WeakReference<IState> object : mLifecycleList) {
             if (object.get() != null) {
                 object.get().setState(mLifecycleState);
@@ -91,9 +103,8 @@ public abstract class AbstractActivity extends AppCompatActivity
         EventController.getInstance().unregister(this);
         ActivityController.getInstance().unregister(this);
         LifecycleController.getInstance().unregister(this);
-        MailController.getInstance().unregister(this);
 
-        mLifecycleState = STATE_DESTROY;
+        mLifecycleState = Lifecycle.STATE_DESTROY;
         for (WeakReference<IState> object : mLifecycleList) {
             if (object.get() != null) {
                 object.get().setState(mLifecycleState);
@@ -115,40 +126,24 @@ public abstract class AbstractActivity extends AppCompatActivity
         ActivityController.getInstance().setCurrentSubscriber(this);
         LifecycleController.getInstance().setCurrentSubscriber(this);
 
-        mLifecycleState = STATE_RESUME;
+        mLifecycleState = Lifecycle.STATE_RESUME;
         for (WeakReference<IState> object : mLifecycleList) {
             if (object.get() != null) {
                 object.get().setState(mLifecycleState);
             }
         }
-
-        readMail();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        mLifecycleState = STATE_PAUSE;
+        mLifecycleState = Lifecycle.STATE_PAUSE;
         for (WeakReference<IState> object : mLifecycleList) {
             if (object.get() != null) {
                 object.get().setState(mLifecycleState);
             }
         }
-    }
-
-    @Override
-    public void finish() {
-        onFinish();
-
-        super.finish();
-    }
-
-    /**
-     * Called before the activity is finished. Override this method to release resources.
-     */
-    @Override
-    public void onFinish() {
     }
 
     /**
@@ -272,15 +267,6 @@ public abstract class AbstractActivity extends AppCompatActivity
     @Override
     public void setUnbinder(Unbinder unbinder) {
         mUnbinder = unbinder;
-    }
-
-    @Override
-    public synchronized void readMail() {
-        final List<IMail> list = MailController.getInstance().get(this);
-        for (IMail mail : list) {
-            mail.read(this);
-            MailController.getInstance().remove(mail);
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

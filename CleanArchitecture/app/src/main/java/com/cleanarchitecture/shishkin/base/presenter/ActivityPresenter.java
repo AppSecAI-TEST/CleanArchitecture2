@@ -2,7 +2,6 @@ package com.cleanarchitecture.shishkin.base.presenter;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -19,8 +18,10 @@ import android.widget.Toast;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
+import com.cleanarchitecture.shishkin.base.event.ui.OnSnackBarClickEvent;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.ui.activity.AbstractActivity;
+import com.cleanarchitecture.shishkin.base.ui.dialog.MaterialDialogExt;
 import com.cleanarchitecture.shishkin.base.ui.widget.BaseSnackbar;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.ViewUtils;
@@ -229,18 +230,8 @@ public class ActivityPresenter extends AbstractPresenter<Void> implements IActiv
     }
 
     @Override
-    public void showMessageBox(final int id, final String title, final String message, final String button_positive, final boolean cancelable) {
-        showMessageBox(id, title, message, button_positive, null, cancelable);
-    }
-
-    @Override
     public void showDialog(final int id, final int title, final String message, final int button_positive, final int button_negative) {
         showDialog(id, title, message, button_positive, button_negative, false);
-    }
-
-    @Override
-    public void showMessageBox(final int id, final String title, final String message, final String button_positive, final String button_negative, final boolean cancelable) {
-        runOnUiThread(() -> new MessageBox(id, title, message, MESSAGEBOX_BUTTON_OKCANCEL, button_positive, button_negative, cancelable).show());
     }
 
     @Override
