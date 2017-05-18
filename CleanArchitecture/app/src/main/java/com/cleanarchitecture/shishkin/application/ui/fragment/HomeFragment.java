@@ -7,37 +7,41 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.base.controller.EventController;
-import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
-import com.cleanarchitecture.shishkin.base.event.OnPermisionGrantedEvent;
+import com.cleanarchitecture.shishkin.base.event.OnNetworkConnectedEvent;
+import com.cleanarchitecture.shishkin.base.event.repository.RepositoryRequestGetImageEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.OnToolbarMenuItemClickEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetBackNavigationEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetMenuEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetTitleEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseFinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
+import com.cleanarchitecture.shishkin.base.net.Connectivity;
 import com.cleanarchitecture.shishkin.base.presenter.OnBackPressedPresenter;
 import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractContentFragment;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 @SuppressWarnings("unused")
-public class ReleaseHomeFragment extends AbstractContentFragment {
-
+public class HomeFragment extends AbstractContentFragment {
 
     public static final String NAME = "ReleaseHomeFragment";
 
-    public static ReleaseHomeFragment newInstance() {
-        final ReleaseHomeFragment f = new ReleaseHomeFragment();
+    public static HomeFragment newInstance() {
+        final HomeFragment f = new HomeFragment();
         return f;
     }
 
     private OnBackPressedPresenter mOnBackPressedPresenter = new OnBackPressedPresenter();
+
+    @BindView(R.id.image)
+    ImageView mImage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -55,6 +59,10 @@ public class ReleaseHomeFragment extends AbstractContentFragment {
         registerPresenter(mOnBackPressedPresenter);
 
         postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.WRITE_EXTERNAL_STORAGE));
+
+        if (Connectivity.isNetworkConnected(getContext())) {
+            refreshPic();
+        }
     }
 
     @Override
@@ -78,8 +86,8 @@ public class ReleaseHomeFragment extends AbstractContentFragment {
         return NAME;
     }
 
-    private void onClickFab(View view) {
-        EventController.getInstance().post(new FinishApplicationEvent());
+    private void refreshPic() {
+        postEvent(new RepositoryRequestGetImageEvent("https://muzei-mira.com/templates/museum/images/paint/sosnovyy-les-shishkin+.jpg", mImage));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -95,12 +103,11 @@ public class ReleaseHomeFragment extends AbstractContentFragment {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public synchronized void onPermisionGrantedEvent(final OnPermisionGrantedEvent event) {
-        if (event.getPermission().equalsIgnoreCase(Manifest.permission.READ_CONTACTS)) {
-            refreshData();
-        }
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onNetworkConnectedEvent(OnNetworkConnectedEvent event) {
+        refreshPic();
     }
+
 
 }
 
