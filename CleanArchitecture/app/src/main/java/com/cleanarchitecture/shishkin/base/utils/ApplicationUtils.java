@@ -14,6 +14,7 @@ import android.provider.Settings;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.github.snowdream.android.util.Log;
+
 public class ApplicationUtils {
 
     private static final String LOG_TAG = "ApplicationUtils:";
@@ -98,14 +99,14 @@ public class ApplicationUtils {
      * Return the handle to a system-level service by name. The class of the
      * returned object varies by the requested name.
      */
-    public synchronized static <S> S getSystemService(final Context context, final String serviceName) {
+    public  static <S> S getSystemService(final Context context, final String serviceName) {
         if (context != null) {
             return SafeUtils.cast(context.getSystemService(serviceName));
         }
         return null;
     }
 
-    public static synchronized void runOnUiThread(Runnable action) {
+    public static  void runOnUiThread(Runnable action) {
         new Handler(Looper.getMainLooper()).post(action);
     }
 

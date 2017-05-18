@@ -80,6 +80,7 @@ public class ApplicationController extends Application {
 
 
         } catch (Exception e) {
+            android.util.Log.e(getClass().getSimpleName(), e.getMessage());
         } finally {
             mLock.unlock();
         }
