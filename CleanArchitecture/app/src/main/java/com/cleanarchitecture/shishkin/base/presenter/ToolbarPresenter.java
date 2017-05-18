@@ -26,6 +26,7 @@ import com.cleanarchitecture.shishkin.base.event.ui.HideHorizontalProgressBarEve
 import com.cleanarchitecture.shishkin.base.event.ui.ShowHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.ui.activity.AbstractContentActivity;
 import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractContentFragment;
+import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 import com.cleanarchitecture.shishkin.base.utils.ViewUtils;
 
@@ -195,22 +196,32 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         mPopupMenu = null;
     }
 
+    @Override
     public boolean hasBackNavigation() {
         return mBackNavigation;
     }
 
+    @Override
     public void setBackNavigation(final boolean backNavigation) {
         if (validate()) {
-            mBackNavigation = backNavigation;
-            mHome.get().setVisibility(mBackNavigation ? View.VISIBLE : View.INVISIBLE);
-            mHome.get().setImageDrawable(ViewUtils.getDrawable(mContext.get(), R.mipmap.ic_arrow_left));
+            ApplicationUtils.runOnUiThread(() -> {
+                mBackNavigation = backNavigation;
+                mHome.get().setVisibility(mBackNavigation ? View.VISIBLE : View.INVISIBLE);
+                if (!mBackNavigation) {
+                    mHome.get().setImageDrawable(ViewUtils.getDrawable(mContext.get(), R.mipmap.ic_menu));
+                } else {
+                    mHome.get().setImageDrawable(ViewUtils.getDrawable(mContext.get(), R.mipmap.ic_arrow_left));
+                }
+            });
         }
     }
 
+    @Override
     public void resetToolbar() {
-        resetToolbarTask();
+        ApplicationUtils.runOnUiThread(() -> resetToolbarTask());
     }
 
+    @Override
     public void setHome(final int iconId, final boolean isVisible) {
         if (validate()) {
             mHome.get().setImageResource(iconId);
@@ -239,122 +250,139 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         if (validate()) {
             mShow = isShow;
 
-            if (isShow()) {
-                mToolbarLL.get().setVisibility(View.VISIBLE);
-            } else {
-                mToolbarLL.get().setVisibility(View.GONE);
-            }
+            ApplicationUtils.runOnUiThread(() -> {
+                if (isShow()) {
+                    mToolbarLL.get().setVisibility(View.VISIBLE);
+                } else {
+                    mToolbarLL.get().setVisibility(View.GONE);
+                }
+            });
         }
     }
 
+    @Override
     public void showHorizontalProgressBar() {
         if (validate()) {
             final AbstractContentActivity activity = LifecycleController.getInstance().getContentActivity();
             if (activity != null) {
-                final AbstractContentFragment fragment = activity.getContentFragment(AbstractContentFragment.class);
-                if (fragment != null) {
-                    final ContentFragmentPresenter presenter = fragment.getContentFragmentPresenter();
-                    if (presenter != null) {
-                        final SwipeRefreshLayout swipeRefreshLayout = presenter.getSwipeRefreshLayout();
-                        if (swipeRefreshLayout != null && !swipeRefreshLayout.isRefreshing()) {
+                ApplicationUtils.runOnUiThread(() -> {
+                    final AbstractContentFragment fragment = activity.getContentFragment(AbstractContentFragment.class);
+                    if (fragment != null) {
+                        final ContentFragmentPresenter presenter = fragment.getContentFragmentPresenter();
+                        if (presenter != null) {
+                            final SwipeRefreshLayout swipeRefreshLayout = presenter.getSwipeRefreshLayout();
+                            if (swipeRefreshLayout != null && !swipeRefreshLayout.isRefreshing()) {
+                                mHorizontalPogressBar.get().setVisibility(View.VISIBLE);
+                            }
+                        } else {
                             mHorizontalPogressBar.get().setVisibility(View.VISIBLE);
                         }
                     } else {
                         mHorizontalPogressBar.get().setVisibility(View.VISIBLE);
                     }
-                } else {
-                    mHorizontalPogressBar.get().setVisibility(View.VISIBLE);
-                }
+                });
             }
         }
     }
 
+    @Override
     public void hideHorizontalProgressBar() {
         if (validate()) {
             final AbstractContentActivity activity = LifecycleController.getInstance().getContentActivity();
             if (activity != null) {
-                final AbstractContentFragment fragment = activity.getContentFragment(AbstractContentFragment.class);
-                if (fragment != null) {
-                    final ContentFragmentPresenter presenter = fragment.getContentFragmentPresenter();
-                    if (presenter != null) {
-                        final SwipeRefreshLayout swipeRefreshLayout = presenter.getSwipeRefreshLayout();
-                        if (swipeRefreshLayout != null) {
-                            swipeRefreshLayout.setRefreshing(false);
+                ApplicationUtils.runOnUiThread(() -> {
+                    final AbstractContentFragment fragment = activity.getContentFragment(AbstractContentFragment.class);
+                    if (fragment != null) {
+                        final ContentFragmentPresenter presenter = fragment.getContentFragmentPresenter();
+                        if (presenter != null) {
+                            final SwipeRefreshLayout swipeRefreshLayout = presenter.getSwipeRefreshLayout();
+                            if (swipeRefreshLayout != null) {
+                                swipeRefreshLayout.setRefreshing(false);
+                            }
                         }
                     }
-                }
-                mHorizontalPogressBar.get().setVisibility(View.INVISIBLE);
+                    mHorizontalPogressBar.get().setVisibility(View.INVISIBLE);
+                });
             }
         }
     }
 
+    @Override
     public void setItem(final int itemId, final boolean isVisible) {
         if (validate()) {
-            if (itemId > 0) {
-                mItem.get().setImageDrawable(ViewUtils.getDrawable(mContext.get(), itemId));
-            }
-            mItem.get().setVisibility(isVisible ? View.VISIBLE : View.GONE);
+            ApplicationUtils.runOnUiThread(() -> {
+                if (itemId > 0) {
+                    mItem.get().setImageDrawable(ViewUtils.getDrawable(mContext.get(), itemId));
+                }
+                mItem.get().setVisibility(isVisible ? View.VISIBLE : View.GONE);
+            });
         }
     }
 
+    @Override
     public void setMenu(final int menuId, final boolean isVisible) {
         if (validate()) {
-            mMenuId = menuId;
-            mMenu.get().setVisibility(isVisible ? View.VISIBLE : View.GONE);
+            ApplicationUtils.runOnUiThread(() -> {
+                mMenuId = menuId;
+                mMenu.get().setVisibility(isVisible ? View.VISIBLE : View.GONE);
+            });
         }
     }
 
+    @Override
     public void setTitle(final int iconId, final String title) {
         if (validate()) {
-            if (StringUtils.isNullOrEmpty(title)) {
-                mTitle.get().setText(StringUtils.EMPTY);
-            } else {
-                mTitle.get().setText(title);
-            }
-            mTitle.get().setCompoundDrawablesWithIntrinsicBounds(iconId, 0, 0, 0);
+            ApplicationUtils.runOnUiThread(() -> {
+                if (StringUtils.isNullOrEmpty(title)) {
+                    mTitle.get().setText(StringUtils.EMPTY);
+                } else {
+                    mTitle.get().setText(title);
+                }
+                mTitle.get().setCompoundDrawablesWithIntrinsicBounds(iconId, 0, 0, 0);
+            });
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onSetToolbarBackNavigationEvent(ToolbarSetBackNavigationEvent event) {
         setBackNavigation(event.getBackNavigation());
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onResetToolbarEvent(ToolbarResetEvent event) {
         resetToolbar();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onSetToolbarTitleEvent(ToolbarSetTitleEvent event) {
         setTitle(event.getIconId(), event.getTitle());
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onSetToolbarMenuEvent(ToolbarSetMenuEvent event) {
         setMenu(event.getMenuId(), event.isVisible());
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onSetToolbarItemEvent(ToolbarSetItemEvent event) {
         setItem(event.getItemId(), event.isVisible());
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onShowHorizontalProgressBarEvent(ShowHorizontalProgressBarEvent event) {
         showHorizontalProgressBar();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onHideHorizontalProgressBarEvent(HideHorizontalProgressBarEvent event) {
         hideHorizontalProgressBar();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onToolbarOnClickEvent(final OnToolbarClickEvent event) {
         final AbstractContentFragment fragment = NavigationController.getInstance().getContentFragment(AbstractContentFragment.class);
         if (fragment != null) {
-            fragment.onClick(event.getView());
+            ApplicationUtils.runOnUiThread(() -> fragment.onClick(event.getView()));
         }
     }
 
