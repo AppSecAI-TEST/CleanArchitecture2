@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Тестовое приложение</string>
+    <string name="app_name">Clean architecture</string>
 
     <string name="cancel_upper">CANCEL</string>
     <string name="ok_upper">OK</string>
