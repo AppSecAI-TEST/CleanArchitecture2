@@ -13,6 +13,7 @@ import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
 import com.cleanarchitecture.shishkin.base.controller.NavigationController;
 import com.cleanarchitecture.shishkin.base.controller.PresenterController;
+import com.cleanarchitecture.shishkin.base.usecases.UseCasesController;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.github.snowdream.android.util.FilePathGenerator;
 import com.github.snowdream.android.util.Log;
@@ -25,7 +26,6 @@ public class ApplicationController extends Application {
     private static final String LOG_TAG = "ApplicationController";
     private static final long MAX_LOG_LENGTH = 2000000;//2Mb
     public static String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    private ReentrantLock mLock;
 
     @Override
     public void onCreate() {
@@ -33,8 +33,6 @@ public class ApplicationController extends Application {
         super.onCreate();
 
         sInstance = this;
-
-        mLock = new ReentrantLock();
 
         init();
     }
@@ -47,8 +45,6 @@ public class ApplicationController extends Application {
     }
 
     public void init() {
-
-        mLock.lock();
 
         try {
             boolean isGrant = true;
@@ -88,11 +84,10 @@ public class ApplicationController extends Application {
             LifecycleController.instantiate();
             PresenterController.instantiate();
             NavigationController.instantiate();
+            UseCasesController.instantiate();
 
         } catch (Exception e) {
             android.util.Log.e(getClass().getSimpleName(), e.getMessage());
-        } finally {
-            mLock.unlock();
         }
     }
 

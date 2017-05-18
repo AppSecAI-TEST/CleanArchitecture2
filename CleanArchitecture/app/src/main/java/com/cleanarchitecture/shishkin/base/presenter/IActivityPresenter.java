@@ -26,6 +26,14 @@ public interface IActivityPresenter extends ISubscriber {
      */
     boolean checkPermission(String permission);
 
+    /**
+     * Запросить предоставление права приложению
+     *
+     * @param permission  право приложения
+     * @param helpMessage сообщение, выводимое в диалоге предоставления права
+     */
+    void grantPermission(String permission, String helpMessage);
+
 
     /**
      * Show progress bar.

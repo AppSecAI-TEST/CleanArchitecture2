@@ -1,12 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/setting"
-        android:icon="@drawable/ic_setting"
-        android:orderInCategory="100"
-        android:title="@string/setting" />
-    <item
         android:id="@+id/exit"
         android:icon="@drawable/ic_home_black"
-        android:orderInCategory="110"
+        android:orderInCategory="100"
         android:title="@string/exit" />
 </menu>

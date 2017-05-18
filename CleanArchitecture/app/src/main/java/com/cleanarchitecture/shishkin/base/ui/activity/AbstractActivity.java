@@ -30,6 +30,7 @@ import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.presenter.ActivityPresenter;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.base.ui.dialog.MaterialDialogExt;
+import com.cleanarchitecture.shishkin.base.usecases.UseCasesController;
 import com.cleanarchitecture.shishkin.base.utils.ViewUtils;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -196,7 +197,7 @@ public abstract class AbstractActivity extends AppCompatActivity
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        //UseCasesController.getInstance().setSystemDialogShown(false);
+        UseCasesController.getInstance().setSystemDialogShown(false);
 
         EventController.getInstance().post(new OnUserIteractionEvent());
 

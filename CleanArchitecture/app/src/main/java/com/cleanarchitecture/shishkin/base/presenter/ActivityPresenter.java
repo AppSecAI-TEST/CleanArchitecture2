@@ -23,6 +23,7 @@ import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.ui.activity.AbstractActivity;
 import com.cleanarchitecture.shishkin.base.ui.dialog.MaterialDialogExt;
 import com.cleanarchitecture.shishkin.base.ui.widget.BaseSnackbar;
+import com.cleanarchitecture.shishkin.base.usecases.UseCasesController;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.ViewUtils;
 
@@ -89,6 +90,24 @@ public class ActivityPresenter extends AbstractPresenter<Void> implements IActiv
             }
         }
         return true;
+    }
+
+    @Override
+    public void grantPermission(final String permission, final String helpMessage) {
+        if (Build.VERSION.SDK_INT >= 23 && ActivityCompat.checkSelfPermission(mActivity.get(), permission) != PackageManager.PERMISSION_GRANTED) {
+            if (validate()) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(mActivity.get(), permission)) {
+                    showDialog(R.id.dialog_request_permissions, -1, helpMessage, R.string.setting, R.string.cancel, false);
+                } else {
+                    if (!UseCasesController.getInstance().isSystemDialogShown()) {
+                        UseCasesController.getInstance().setSystemDialogShown(true);
+                        runOnUiThread(() -> {
+                            ActivityCompat.requestPermissions(mActivity.get(), new String[]{permission}, ApplicationUtils.REQ_PERMISSIONS);
+                        });
+                    }
+                }
+            }
+        }
     }
 
     @Override

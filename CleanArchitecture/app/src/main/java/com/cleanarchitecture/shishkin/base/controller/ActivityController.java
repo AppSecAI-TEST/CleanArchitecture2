@@ -149,6 +149,35 @@ public class ActivityController extends AbstractController implements IActivityC
         mCurrentSubscriber = new WeakReference<>(subscriber);
     }
 
+    /**
+     * Контроллировать права приложения
+     *
+     * @param permission право приложения
+     * @return the boolean флаг - право приложению предоставлено
+     */
+    @Override
+    public synchronized boolean checkPermission(String permission) {
+        final IActivity subscriber = getSubscriber();
+        if (subscriber != null && subscriber.getActivityPresenter() != null) {
+            return subscriber.getActivityPresenter().checkPermission(permission);
+        }
+        return true;
+    }
+
+    /**
+     * Запросить предоставление права приложению
+     *
+     * @param permission  право приложения
+     * @param helpMessage сообщение, выводимое в диалоге предоставления права
+     */
+    @Override
+    public synchronized void grantPermission(String permission, String helpMessage) {
+        final IActivity subscriber = getSubscriber();
+        if (subscriber != null && subscriber.getActivityPresenter() != null) {
+            subscriber.getActivityPresenter().grantPermission(permission, helpMessage);
+        }
+    }
+
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onShowMessageEvent(ShowMessageEvent event) {
         final IActivity subscriber = getSubscriber();
