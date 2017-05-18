@@ -3,6 +3,7 @@ package com.cleanarchitecture.shishkin.base.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -11,9 +12,16 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.PowerManager;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
+import com.cleanarchitecture.shishkin.application.app.ApplicationController;
+import com.cleanarchitecture.shishkin.base.usecases.UseCasesController;
 import com.github.snowdream.android.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class ApplicationUtils {
 
     private static final String LOG_TAG = "ApplicationUtils:";
@@ -98,14 +106,14 @@ public class ApplicationUtils {
      * Return the handle to a system-level service by name. The class of the
      * returned object varies by the requested name.
      */
-    public synchronized static <S> S getSystemService(final Context context, final String serviceName) {
+    public  static <S> S getSystemService(final Context context, final String serviceName) {
         if (context != null) {
             return SafeUtils.cast(context.getSystemService(serviceName));
         }
         return null;
     }
 
-    public static synchronized void runOnUiThread(Runnable action) {
+    public static  void runOnUiThread(Runnable action) {
         new Handler(Looper.getMainLooper()).post(action);
     }
 
@@ -132,6 +140,78 @@ public class ApplicationUtils {
                 }
             }
         }
+    }
+
+    public synchronized static boolean grantPermisions(final String[] permissions, final Activity activity) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ApplicationController.getInstance() != null) {
+                final List<String> listPermissionsNeeded = new ArrayList();
+
+                for (String permission : permissions) {
+                    if (ActivityCompat.checkSelfPermission(ApplicationController.getInstance(),
+                            permission)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        listPermissionsNeeded.add(permission);
+                    }
+                }
+
+                if (listPermissionsNeeded.size() > 0) {
+                    String[] arrayPermissionsNeeded = new String[listPermissionsNeeded.size()];
+                    listPermissionsNeeded.toArray(arrayPermissionsNeeded);
+                    if (activity != null) {
+                        if (!UseCasesController.getInstance().isSystemDialogShown()) {
+                            UseCasesController.getInstance().setSystemDialogShown(true);
+                            ActivityCompat.requestPermissions(activity,
+                                    arrayPermissionsNeeded,
+                                    REQ_PERMISSIONS);
+                        }
+                    }
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public synchronized static int countUngrantedPermisions(final String[] permissions, final Activity activity) {
+        final List<String> listPermissionsNeeded = new ArrayList();
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ApplicationController.getInstance() != null) {
+                for (String permission : permissions) {
+                    if (ActivityCompat.checkSelfPermission(ApplicationController.getInstance(),
+                            permission)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        listPermissionsNeeded.add(permission);
+                    }
+                }
+            }
+        }
+        return listPermissionsNeeded.size();
+    }
+
+
+    public synchronized static int getPermission(final String permission) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ApplicationController.getInstance() != null) {
+                return ActivityCompat.checkSelfPermission(ApplicationController.getInstance(), permission);
+            } else {
+                return PackageManager.PERMISSION_DENIED;
+            }
+        }
+        return PackageManager.PERMISSION_GRANTED;
+    }
+
+    public synchronized static boolean checkPermission(final String permission) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ApplicationController.getInstance() != null) {
+                return ActivityCompat.checkSelfPermission(ApplicationController.getInstance(), permission) == PackageManager.PERMISSION_GRANTED;
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 
     private ApplicationUtils() {

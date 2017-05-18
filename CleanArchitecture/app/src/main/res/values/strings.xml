@@ -1,3 +1,35 @@
 <resources>
-    <string name="app_name">Clean Architecture</string>
+    <string name="app_name">Clean architecture</string>
+
+    <string name="cancel_upper">CANCEL</string>
+    <string name="ok_upper">OK</string>
+    <string name="network_disconnected">Сеть недоступна</string>
+	<string name="double_back_pressed">Для выхода нажмите ещё раз</string>
+    <string name="setting">Настройки</string>
+    <string name="exit">Выход</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Отмена</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="connect_to_net">Включите сеть</string>
+
+    <string name="test">Тест</string>
+    <string name="test_mesage">Тестовое сообщение</string>
+
+    <string name="permission_write_external_storage">Нужно право для записи лога приложения</string>
+    <string name="permission_read_contacts">Нужно право для чтения контактов</string>
+    <string name="permission_call_phone">Нужно право для осуществления звонков по телефону</string>
+    <string name="contacts">Контакты</string>
+	<string name="search_hint">Найти</string>
+    <string name="no_data">Данных нет</string>
+    <string name="phone_call">Позвонить</string>
+
+    <string name="setting_caching_type_key">caching_type_default</string>
+    <string name="setting_caching_type_title">Тип кэширования данных</string>
+    <string name="setting_caching_type_summary">Выберите тип кэширования данных по умолчанию</string>
+
+    <string name="type_caching_0">Без кэширования</string>
+    <string name="type_caching_1">Кэширование в памяти</string>
+    <string name="type_caching_2">Кэширование на диске</string>
+    <string name="type_caching_3">Кэширование в пямяти и на диске</string>
 </resources>

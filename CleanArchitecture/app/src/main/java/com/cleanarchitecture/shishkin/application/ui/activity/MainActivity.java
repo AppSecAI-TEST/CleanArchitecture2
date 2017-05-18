@@ -1,15 +1,63 @@
 package com.cleanarchitecture.shishkin.application.ui.activity;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.application.ui.fragment.ReleaseHomeFragment;
+import com.cleanarchitecture.shishkin.base.ui.activity.AbstractContentActivity;
+import com.cleanarchitecture.shishkin.base.utils.ViewUtils;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AbstractContentActivity {
+
+    public static String NAME = "MainActivity";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
+
         super.onCreate(savedInstanceState);
+
+        ViewUtils.setStatusBarColor(this, R.color.blue);
+
         setContentView(R.layout.activity_main);
+
+        if (ViewUtils.isPhone(this)) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        } else {
+            if (ViewUtils.is7inchTablet(this)) {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            } else {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            }
+        }
+        getActivityPresenter().lockOrientation();
+
+        onNewIntent(getIntent());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        if (intent != null) {
+            final String action = intent.getAction();
+            if (action == null) {
+            } else if (action.equalsIgnoreCase("android.intent.action.MAIN")) {
+                showHomeFragment();
+            } else {
+                showHomeFragment();
+            }
+        } else {
+            showHomeFragment();
+        }
+    }
+
+    private void showHomeFragment() {
+        showFragment(ReleaseHomeFragment.newInstance());
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
     }
 }
