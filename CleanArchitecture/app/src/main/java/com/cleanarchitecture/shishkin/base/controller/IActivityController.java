@@ -45,22 +45,6 @@ public interface IActivityController extends ISubscriber {
     IActivity getCurrentSubscriber();
 
     /**
-     * Контроллировать права приложения
-     *
-     * @param permission право приложения
-     * @return the boolean флаг - право приложению предоставлено
-     */
-    boolean checkPermission(String permission);
-
-    /**
-     * Запросить предоставление права приложению
-     *
-     * @param permission  право приложения
-     * @param helpMessage сообщение, выводимое в диалоге предоставления права
-     */
-    void grantPermission(String permission, String helpMessage);
-
-    /**
      * Установить текущего подписчика
      *
      * @param subscriber подписчик

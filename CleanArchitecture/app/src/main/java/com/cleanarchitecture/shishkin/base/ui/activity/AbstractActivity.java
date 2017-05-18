@@ -15,9 +15,14 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.base.controller.ActivityController;
+import com.cleanarchitecture.shishkin.base.controller.AppPreferences;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
-import com.cleanarchitecture.shishkin.base.event.IEvent;
+import com.cleanarchitecture.shishkin.base.controller.ILifecycleSubscriber;
+import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
+import com.cleanarchitecture.shishkin.base.controller.PresenterController;
+import com.cleanarchitecture.shishkin.base.event.*;
 import com.cleanarchitecture.shishkin.base.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.base.lifecycle.ILifecycle;
 import com.cleanarchitecture.shishkin.base.lifecycle.IState;
@@ -191,7 +196,7 @@ public abstract class AbstractActivity extends AppCompatActivity
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        UseCasesController.getInstance().setSystemDialogShown(false);
+        //UseCasesController.getInstance().setSystemDialogShown(false);
 
         EventController.getInstance().post(new OnUserIteractionEvent());
 

@@ -1,6 +1,5 @@
 package com.cleanarchitecture.shishkin.base.controller;
 
-
 import com.cleanarchitecture.shishkin.base.event.IEvent;
 
 import org.greenrobot.eventbus.EventBus;

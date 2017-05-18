@@ -8,7 +8,10 @@ import android.os.Environment;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.base.controller.CrashController;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
+import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
+import com.cleanarchitecture.shishkin.base.controller.PresenterController;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.github.snowdream.android.util.FilePathGenerator;
 import com.github.snowdream.android.util.Log;
@@ -80,7 +83,9 @@ public class ApplicationController extends Application {
             }
 
             EventController.instantiate();
-
+            CrashController.instantiate();
+            LifecycleController.instantiate();
+            PresenterController.instantiate();
 
         } catch (Exception e) {
             android.util.Log.e(getClass().getSimpleName(), e.getMessage());

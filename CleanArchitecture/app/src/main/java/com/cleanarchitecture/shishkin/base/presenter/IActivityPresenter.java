@@ -18,7 +18,14 @@ public interface IActivityPresenter extends ISubscriber {
      */
     <V extends View> V findView(@IdRes final int id);
 
+    /**
+     * Контроллировать права приложения
+     *
+     * @param permission право приложения
+     * @return the boolean флаг - право приложению предоставлено
+     */
     boolean checkPermission(String permission);
+
 
     /**
      * Show progress bar.
