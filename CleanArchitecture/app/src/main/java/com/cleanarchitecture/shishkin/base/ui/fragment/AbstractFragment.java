@@ -55,20 +55,23 @@ public abstract class AbstractFragment extends Fragment implements IFragment
         return null;
     }
 
-    @Override
-    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        mLifecycleState = Lifecycle.STATE_VIEW_CREATED;
-
-        mFragmentPresenter.bindView(this);
-        registerPresenter(mFragmentPresenter);
-
+    private void setLifecycleStatus(final int status) {
+        mLifecycleState = status;
         for (WeakReference<IState> object : mLifecycleList) {
             if (object.get() != null) {
                 object.get().setState(mLifecycleState);
             }
         }
+    }
+
+    @Override
+    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        setLifecycleStatus(Lifecycle.STATE_VIEW_CREATED);
+
+        mFragmentPresenter.bindView(this);
+        registerPresenter(mFragmentPresenter);
 
         MailController.getInstance().register(this);
     }
@@ -92,24 +95,14 @@ public abstract class AbstractFragment extends Fragment implements IFragment
     public void onPause() {
         super.onPause();
 
-        mLifecycleState = Lifecycle.STATE_PAUSE;
-        for (WeakReference<IState> object : mLifecycleList) {
-            if (object.get() != null) {
-                object.get().setState(mLifecycleState);
-            }
-        }
+        setLifecycleStatus(Lifecycle.STATE_PAUSE);
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        mLifecycleState = Lifecycle.STATE_RESUME;
-        for (WeakReference<IState> object : mLifecycleList) {
-            if (object.get() != null) {
-                object.get().setState(mLifecycleState);
-            }
-        }
+        setLifecycleStatus(Lifecycle.STATE_RESUME);
 
         readMail();
     }
@@ -118,12 +111,7 @@ public abstract class AbstractFragment extends Fragment implements IFragment
     public void onDestroyView() {
         super.onDestroyView();
 
-        mLifecycleState = Lifecycle.STATE_DESTROY;
-        for (WeakReference<IState> object : mLifecycleList) {
-            if (object.get() != null) {
-                object.get().setState(mLifecycleState);
-            }
-        }
+        setLifecycleStatus(Lifecycle.STATE_DESTROY);
         mLifecycleList.clear();
 
         for (IPresenter presenter: mPresenters.values()) {

@@ -12,6 +12,7 @@ import com.cleanarchitecture.shishkin.base.event.ui.ShowListDialogEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowMessageEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowToastEvent;
+import com.cleanarchitecture.shishkin.base.repository.NetProvider;
 import com.cleanarchitecture.shishkin.base.ui.activity.AbstractActivity;
 import com.cleanarchitecture.shishkin.base.ui.activity.IActivity;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
@@ -35,7 +36,7 @@ public class ActivityController extends AbstractController implements IActivityC
     private static volatile ActivityController sInstance;
     private WeakReference<IActivity> mCurrentSubscriber;
 
-    public static ActivityController getInstance() {
+    public static synchronized void instantiate() {
         if (sInstance == null) {
             synchronized (ActivityController.class) {
                 if (sInstance == null) {
@@ -43,6 +44,10 @@ public class ActivityController extends AbstractController implements IActivityC
                 }
             }
         }
+    }
+
+    public static ActivityController getInstance() {
+        instantiate();
         return sInstance;
     }
 

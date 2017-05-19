@@ -12,6 +12,7 @@ import android.os.Environment;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.base.controller.ActivityController;
 import com.cleanarchitecture.shishkin.base.controller.CrashController;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
@@ -20,7 +21,7 @@ import com.cleanarchitecture.shishkin.base.controller.NavigationController;
 import com.cleanarchitecture.shishkin.base.controller.PresenterController;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOffEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOnEvent;
-import com.cleanarchitecture.shishkin.base.net.ConnectivityController;
+import com.cleanarchitecture.shishkin.base.repository.NetProvider;
 import com.cleanarchitecture.shishkin.base.repository.Repository;
 import com.cleanarchitecture.shishkin.base.usecases.UseCasesController;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
@@ -89,12 +90,13 @@ public class ApplicationController extends Application {
 
             EventController.instantiate();
             CrashController.instantiate();
+            ActivityController.instantiate();
             LifecycleController.instantiate();
             PresenterController.instantiate();
             NavigationController.instantiate();
             UseCasesController.instantiate();
-            ConnectivityController.instantiate();
             Repository.instantiate();
+            NetProvider.instantiate();
             MailController.instantiate();
 
             registerScreenOnOffBroadcastReceiver();

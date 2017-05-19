@@ -38,8 +38,6 @@ public class ConnectivityMonitor extends BroadcastReceiver implements ISubscribe
             context.registerReceiver(this, filter);
             mSubscribed = true;
         }
-
-        //checkState(context);
     }
 
     /**
