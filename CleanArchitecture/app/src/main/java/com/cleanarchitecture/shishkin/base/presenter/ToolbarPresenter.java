@@ -99,6 +99,8 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
 
     @Override
     public void onDestroyLifecycle() {
+        super.onDestroyLifecycle();
+
         mContext = null;
         mToolbarLL = null;
         mTitle = null;

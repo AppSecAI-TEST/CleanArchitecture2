@@ -55,6 +55,8 @@ public class OnBackPressedPresenter extends AbstractPresenter<Void> {
 
     @Override
     public void onDestroyLifecycle() {
+        super.onDestroyLifecycle();
+
         stopTimer();
     }
 

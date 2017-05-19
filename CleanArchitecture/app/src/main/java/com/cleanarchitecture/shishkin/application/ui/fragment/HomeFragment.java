@@ -8,8 +8,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.base.controller.MailController;
+import com.cleanarchitecture.shishkin.base.controller.NotificationService;
 import com.cleanarchitecture.shishkin.base.event.OnNetworkConnectedEvent;
 import com.cleanarchitecture.shishkin.base.event.repository.RepositoryRequestGetImageEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.OnToolbarMenuItemClickEvent;
@@ -18,7 +21,10 @@ import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetMenuEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetTitleEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseFinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
+import com.cleanarchitecture.shishkin.base.mail.ShowMessageMail;
+import com.cleanarchitecture.shishkin.base.mail.ShowToastMail;
 import com.cleanarchitecture.shishkin.base.net.Connectivity;
+import com.cleanarchitecture.shishkin.base.presenter.ActivityPresenter;
 import com.cleanarchitecture.shishkin.base.presenter.OnBackPressedPresenter;
 import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractContentFragment;
 
@@ -63,6 +69,9 @@ public class HomeFragment extends AbstractContentFragment {
         if (Connectivity.isNetworkConnected(getContext())) {
             refreshPic();
         }
+
+        MailController.getInstance().addMail(new ShowToastMail(getName(), "Тестирование почты", Toast.LENGTH_LONG, ActivityPresenter.TOAST_TYPE_INFO));
+        NotificationService.addMessage(getContext(), "Тестовое сообщение");
     }
 
     @Override
@@ -76,7 +85,7 @@ public class HomeFragment extends AbstractContentFragment {
 
     @Override
     public void prepareToolbar() {
-        postEvent(new ToolbarSetTitleEvent(0, getString(R.string.contacts)));
+        postEvent(new ToolbarSetTitleEvent(0, getString(R.string.app_name)));
         postEvent(new ToolbarSetMenuEvent(R.menu.main_menu, true));
         postEvent(new ToolbarSetBackNavigationEvent(true));
     }

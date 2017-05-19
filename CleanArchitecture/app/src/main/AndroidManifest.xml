@@ -11,11 +11,16 @@
     <application
         android:name=".application.app.ApplicationController"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/SplashTheme"
+        android:windowSoftInputMode="adjustPan"
+        android:excludeFromRecents="true"
+        android:launchMode="singleInstance"
+        android:configChanges="keyboardHidden|orientation|screenSize" >
+
         <activity android:name=".application.ui.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,9 +28,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
-    <service android:name=".base.storage.DiskCacheService"/>
-    <service android:name=".base.storage.MemoryCacheService"/>
+        <receiver android:name=".base.controller.NotificationBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="${applicationId}.action.NotificationBroadcastReceiver.ACTION_DELETE_MESSAGES" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".base.controller.NotificationService"/>
+        <service android:name=".base.storage.DiskCacheService"/>
+        <service android:name=".base.storage.MemoryCacheService"/>
+    </application>
 
 </manifest>

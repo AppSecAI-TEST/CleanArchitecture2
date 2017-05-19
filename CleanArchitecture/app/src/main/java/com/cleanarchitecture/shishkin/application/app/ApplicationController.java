@@ -15,6 +15,7 @@ import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.base.controller.CrashController;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
+import com.cleanarchitecture.shishkin.base.controller.MailController;
 import com.cleanarchitecture.shishkin.base.controller.NavigationController;
 import com.cleanarchitecture.shishkin.base.controller.PresenterController;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOffEvent;
@@ -51,7 +52,7 @@ public class ApplicationController extends Application {
         return sInstance;
     }
 
-    public void init() {
+    public synchronized void init() {
 
         try {
             boolean isGrant = true;
@@ -94,6 +95,7 @@ public class ApplicationController extends Application {
             UseCasesController.instantiate();
             ConnectivityController.instantiate();
             Repository.instantiate();
+            MailController.instantiate();
 
             registerScreenOnOffBroadcastReceiver();
 

@@ -12,10 +12,13 @@ import android.view.View;
 import com.cleanarchitecture.shishkin.base.controller.ActivityController;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
+import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
+import com.cleanarchitecture.shishkin.base.controller.MailController;
 import com.cleanarchitecture.shishkin.base.controller.PresenterController;
 import com.cleanarchitecture.shishkin.base.event.IEvent;
 import com.cleanarchitecture.shishkin.base.lifecycle.IState;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
+import com.cleanarchitecture.shishkin.base.mail.IMail;
 import com.cleanarchitecture.shishkin.base.presenter.ActivityPresenter;
 import com.cleanarchitecture.shishkin.base.presenter.FragmentPresenter;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
@@ -34,7 +37,7 @@ import butterknife.Unbinder;
 
 @SuppressWarnings("unused")
 public abstract class AbstractFragment extends Fragment implements IFragment
-        , IEventVendor {
+        , IEventVendor, IMailSubscriber {
 
     private Map<String, IPresenter> mPresenters = Collections.synchronizedMap(new HashMap<String, IPresenter>());
     private List<WeakReference<IState>> mLifecycleList = Collections.synchronizedList(new ArrayList<WeakReference<IState>>());
@@ -66,6 +69,8 @@ public abstract class AbstractFragment extends Fragment implements IFragment
                 object.get().setState(mLifecycleState);
             }
         }
+
+        MailController.getInstance().register(this);
     }
 
     @Override
@@ -105,6 +110,8 @@ public abstract class AbstractFragment extends Fragment implements IFragment
                 object.get().setState(mLifecycleState);
             }
         }
+
+        readMail();
     }
 
     @Override
@@ -123,6 +130,8 @@ public abstract class AbstractFragment extends Fragment implements IFragment
             PresenterController.getInstance().unregister(presenter);
         }
         mPresenters.clear();
+
+        MailController.getInstance().unregister(this);
     }
 
     @Override
@@ -241,6 +250,15 @@ public abstract class AbstractFragment extends Fragment implements IFragment
     @Override
     public void setUnbinder(Unbinder unbinder) {
         mUnbinder = unbinder;
+    }
+
+    @Override
+    public synchronized void readMail() {
+        List<IMail> list = MailController.getInstance().getMail(this);
+        for (IMail mail : list) {
+            mail.read(this);
+            MailController.getInstance().removeMail(mail);
+        }
     }
 
 }

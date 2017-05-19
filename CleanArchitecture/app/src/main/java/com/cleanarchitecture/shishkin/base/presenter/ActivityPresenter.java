@@ -52,6 +52,8 @@ public class ActivityPresenter extends AbstractPresenter<Void> implements IActiv
 
     @Override
     public void onDestroyLifecycle() {
+        super.onDestroyLifecycle();
+
         mActivity = null;
     }
 

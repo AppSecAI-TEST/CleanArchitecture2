@@ -41,6 +41,8 @@ public class ContentFragmentPresenter extends AbstractPresenter<Void> implements
 
     @Override
     public void onDestroyLifecycle() {
+        super.onDestroyLifecycle();
+
         mSwipeRefreshLayout = null;
         mContentFragment = null;
     }
