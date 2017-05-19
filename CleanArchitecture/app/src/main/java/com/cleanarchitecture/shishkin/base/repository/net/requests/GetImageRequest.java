@@ -39,11 +39,6 @@ public class GetImageRequest extends AbstractRequest {
             return;
         }
 
-        final Context context = ApplicationController.getInstance();
-        if (context == null) {
-            return;
-        }
-
         ApplicationUtils.runOnUiThread(() -> {
             if (!mWithCache) {
                 final RequestCreator requestCreator = picasso.load(mUrl);

@@ -96,7 +96,6 @@ public class ApplicationController extends Application {
             NavigationController.instantiate();
             UseCasesController.instantiate();
             Repository.instantiate();
-            NetProvider.instantiate();
             MailController.instantiate();
 
             registerScreenOnOffBroadcastReceiver();
