@@ -249,4 +249,13 @@ public abstract class AbstractFragment extends Fragment implements IFragment
         }
     }
 
+    @Override
+    public int getState() {
+        return mLifecycleState;
+    }
+
+    @Override
+    public void setState(int state){
+    }
+
 }

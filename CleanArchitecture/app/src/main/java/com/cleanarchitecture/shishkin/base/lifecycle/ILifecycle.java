@@ -5,13 +5,6 @@ package com.cleanarchitecture.shishkin.base.lifecycle;
  */
 public interface ILifecycle extends IState {
     /**
-     * Получить состояние объекта
-     *
-     * @return the state
-     */
-    int getState();
-
-    /**
      * Событие - объект на этапе создания
      */
     void onCreateLifecycle();

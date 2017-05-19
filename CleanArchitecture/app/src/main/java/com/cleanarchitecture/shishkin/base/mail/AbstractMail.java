@@ -55,12 +55,12 @@ public abstract class AbstractMail implements IMail, IEventVendor {
             return false;
         }
 
-        if (address.equals(mAddress)) {
+        if (address.equalsIgnoreCase(mAddress)) {
             return true;
         }
 
         for (String copyto : mCopyTo) {
-            if (copyto.equals(address)) {
+            if (copyto.equalsIgnoreCase(address)) {
                 return true;
             }
         }

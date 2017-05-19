@@ -1,6 +1,7 @@
 package com.cleanarchitecture.shishkin.base.controller;
 
 import com.annimon.stream.Stream;
+import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.mail.IMail;
 
 import java.lang.ref.WeakReference;
@@ -111,6 +112,15 @@ public class MailController extends AbstractController implements IMailControlle
                 } else {
                     removeDublicate(newMail);
                     mMail.put(id, newMail);
+                }
+
+                for (WeakReference<IMailSubscriber> ref : mSubscribers.values()) {
+                    final IMailSubscriber subscriber = ref.get();
+                    if (address.equalsIgnoreCase(subscriber.getName())) {
+                        if (subscriber.getState() == Lifecycle.STATE_RESUME) {
+                            subscriber.readMail();
+                        }
+                    }
                 }
             }
         }

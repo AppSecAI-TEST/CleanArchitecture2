@@ -268,6 +268,15 @@ public abstract class AbstractActivity extends AppCompatActivity
     }
 
     @Override
+    public int getState() {
+        return mLifecycleState;
+    }
+
+    @Override
+    public void setState(int state){
+    }
+
+    @Override
     public void setUnbinder(Unbinder unbinder) {
         mUnbinder = unbinder;
     }
@@ -338,6 +347,5 @@ public abstract class AbstractActivity extends AppCompatActivity
             }
         }
     }
-
 
 }

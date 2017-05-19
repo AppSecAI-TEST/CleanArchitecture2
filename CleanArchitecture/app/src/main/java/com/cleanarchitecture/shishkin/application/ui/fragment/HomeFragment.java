@@ -21,6 +21,7 @@ import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetMenuEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetTitleEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseFinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
+import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.mail.ShowToastMail;
 import com.cleanarchitecture.shishkin.base.net.Connectivity;
 import com.cleanarchitecture.shishkin.base.presenter.ActivityPresenter;
@@ -36,7 +37,7 @@ import butterknife.ButterKnife;
 @SuppressWarnings("unused")
 public class HomeFragment extends AbstractContentFragment {
 
-    public static final String NAME = "ReleaseHomeFragment";
+    public static final String NAME = "HomeFragment";
 
     public static HomeFragment newInstance() {
         final HomeFragment f = new HomeFragment();
