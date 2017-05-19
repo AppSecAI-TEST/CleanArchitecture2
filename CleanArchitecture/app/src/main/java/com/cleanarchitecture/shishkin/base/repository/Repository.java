@@ -49,6 +49,9 @@ public class Repository implements IRepository {
     }
 
     private Repository() {
+        NetProvider.instantiate();
+        ContentProvider.instantiate();
+
         mItemsCacheType = new SparseIntArray();
         final Context context = ApplicationController.getInstance();
         if (context != null) {

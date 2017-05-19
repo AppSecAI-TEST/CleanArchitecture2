@@ -2,10 +2,15 @@ package com.cleanarchitecture.shishkin.base.presenter;
 
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
+import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
+import com.cleanarchitecture.shishkin.base.controller.MailController;
 import com.cleanarchitecture.shishkin.base.event.IEvent;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
+import com.cleanarchitecture.shishkin.base.mail.IMail;
 
-public abstract class AbstractPresenter<M> implements IPresenter<M>, IEventVendor {
+import java.util.List;
+
+public abstract class AbstractPresenter<M> implements IPresenter<M>, IEventVendor, IMailSubscriber {
 
     private M mModel = null;
     private Lifecycle mLifecycle = new Lifecycle(this);
@@ -26,11 +31,13 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IEventVendo
 
     @Override
     public void onViewCreatedLifecycle() {
+        MailController.getInstance().register(this);
         updateView();
     }
 
     @Override
     public void onResumeLifecycle() {
+        readMail();
     }
 
     @Override
@@ -39,6 +46,7 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IEventVendo
 
     @Override
     public void onDestroyLifecycle() {
+        MailController.getInstance().unregister(this);
     }
 
     @Override
@@ -74,6 +82,15 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IEventVendo
      */
     public void postEvent(IEvent event) {
         EventController.getInstance().post(event);
+    }
+
+    @Override
+    public synchronized void readMail() {
+        final List<IMail> list = MailController.getInstance().getMail(this);
+        for (IMail mail : list) {
+            mail.read(this);
+            MailController.getInstance().removeMail(mail);
+        }
     }
 
 }

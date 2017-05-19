@@ -12,14 +12,16 @@ import android.os.Environment;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.base.controller.ActivityController;
 import com.cleanarchitecture.shishkin.base.controller.CrashController;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
+import com.cleanarchitecture.shishkin.base.controller.MailController;
 import com.cleanarchitecture.shishkin.base.controller.NavigationController;
 import com.cleanarchitecture.shishkin.base.controller.PresenterController;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOffEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOnEvent;
-import com.cleanarchitecture.shishkin.base.net.ConnectivityController;
+import com.cleanarchitecture.shishkin.base.repository.NetProvider;
 import com.cleanarchitecture.shishkin.base.repository.Repository;
 import com.cleanarchitecture.shishkin.base.usecases.UseCasesController;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
@@ -27,7 +29,6 @@ import com.github.snowdream.android.util.FilePathGenerator;
 import com.github.snowdream.android.util.Log;
 
 import java.io.File;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class ApplicationController extends Application {
     private static volatile ApplicationController sInstance;
@@ -52,7 +53,7 @@ public class ApplicationController extends Application {
         return sInstance;
     }
 
-    public void init() {
+    public synchronized void init() {
 
         try {
             boolean isGrant = true;
@@ -89,12 +90,13 @@ public class ApplicationController extends Application {
 
             EventController.instantiate();
             CrashController.instantiate();
+            ActivityController.instantiate();
             LifecycleController.instantiate();
             PresenterController.instantiate();
             NavigationController.instantiate();
             UseCasesController.instantiate();
-            ConnectivityController.instantiate();
             Repository.instantiate();
+            MailController.instantiate();
 
             registerScreenOnOffBroadcastReceiver();
 

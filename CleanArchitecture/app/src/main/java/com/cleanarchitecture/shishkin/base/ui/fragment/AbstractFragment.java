@@ -12,10 +12,13 @@ import android.view.View;
 import com.cleanarchitecture.shishkin.base.controller.ActivityController;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
+import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
+import com.cleanarchitecture.shishkin.base.controller.MailController;
 import com.cleanarchitecture.shishkin.base.controller.PresenterController;
 import com.cleanarchitecture.shishkin.base.event.IEvent;
 import com.cleanarchitecture.shishkin.base.lifecycle.IState;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
+import com.cleanarchitecture.shishkin.base.mail.IMail;
 import com.cleanarchitecture.shishkin.base.presenter.ActivityPresenter;
 import com.cleanarchitecture.shishkin.base.presenter.FragmentPresenter;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
@@ -34,7 +37,7 @@ import butterknife.Unbinder;
 
 @SuppressWarnings("unused")
 public abstract class AbstractFragment extends Fragment implements IFragment
-        , IEventVendor {
+        , IEventVendor, IMailSubscriber {
 
     private Map<String, IPresenter> mPresenters = Collections.synchronizedMap(new HashMap<String, IPresenter>());
     private List<WeakReference<IState>> mLifecycleList = Collections.synchronizedList(new ArrayList<WeakReference<IState>>());
@@ -52,20 +55,25 @@ public abstract class AbstractFragment extends Fragment implements IFragment
         return null;
     }
 
-    @Override
-    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        mLifecycleState = Lifecycle.STATE_VIEW_CREATED;
-
-        mFragmentPresenter.bindView(this);
-        registerPresenter(mFragmentPresenter);
-
+    private void setLifecycleStatus(final int status) {
+        mLifecycleState = status;
         for (WeakReference<IState> object : mLifecycleList) {
             if (object.get() != null) {
                 object.get().setState(mLifecycleState);
             }
         }
+    }
+
+    @Override
+    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        setLifecycleStatus(Lifecycle.STATE_VIEW_CREATED);
+
+        mFragmentPresenter.bindView(this);
+        registerPresenter(mFragmentPresenter);
+
+        MailController.getInstance().register(this);
     }
 
     @Override
@@ -87,42 +95,31 @@ public abstract class AbstractFragment extends Fragment implements IFragment
     public void onPause() {
         super.onPause();
 
-        mLifecycleState = Lifecycle.STATE_PAUSE;
-        for (WeakReference<IState> object : mLifecycleList) {
-            if (object.get() != null) {
-                object.get().setState(mLifecycleState);
-            }
-        }
+        setLifecycleStatus(Lifecycle.STATE_PAUSE);
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        mLifecycleState = Lifecycle.STATE_RESUME;
-        for (WeakReference<IState> object : mLifecycleList) {
-            if (object.get() != null) {
-                object.get().setState(mLifecycleState);
-            }
-        }
+        setLifecycleStatus(Lifecycle.STATE_RESUME);
+
+        readMail();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
 
-        mLifecycleState = Lifecycle.STATE_DESTROY;
-        for (WeakReference<IState> object : mLifecycleList) {
-            if (object.get() != null) {
-                object.get().setState(mLifecycleState);
-            }
-        }
+        setLifecycleStatus(Lifecycle.STATE_DESTROY);
         mLifecycleList.clear();
 
         for (IPresenter presenter: mPresenters.values()) {
             PresenterController.getInstance().unregister(presenter);
         }
         mPresenters.clear();
+
+        MailController.getInstance().unregister(this);
     }
 
     @Override
@@ -241,6 +238,15 @@ public abstract class AbstractFragment extends Fragment implements IFragment
     @Override
     public void setUnbinder(Unbinder unbinder) {
         mUnbinder = unbinder;
+    }
+
+    @Override
+    public synchronized void readMail() {
+        List<IMail> list = MailController.getInstance().getMail(this);
+        for (IMail mail : list) {
+            mail.read(this);
+            MailController.getInstance().removeMail(mail);
+        }
     }
 
 }

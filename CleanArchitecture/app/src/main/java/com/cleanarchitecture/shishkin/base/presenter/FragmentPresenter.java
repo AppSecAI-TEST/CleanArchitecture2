@@ -48,6 +48,8 @@ public class FragmentPresenter extends AbstractPresenter<Void> implements IFragm
 
     @Override
     public void onDestroyLifecycle() {
+        super.onDestroyLifecycle();
+
         mFragment = null;
     }
 

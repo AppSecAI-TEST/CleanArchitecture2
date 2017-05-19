@@ -20,13 +20,16 @@ import com.cleanarchitecture.shishkin.base.controller.AppPreferences;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
 import com.cleanarchitecture.shishkin.base.controller.ILifecycleSubscriber;
+import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
 import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
+import com.cleanarchitecture.shishkin.base.controller.MailController;
 import com.cleanarchitecture.shishkin.base.controller.PresenterController;
 import com.cleanarchitecture.shishkin.base.event.*;
 import com.cleanarchitecture.shishkin.base.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.base.lifecycle.ILifecycle;
 import com.cleanarchitecture.shishkin.base.lifecycle.IState;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
+import com.cleanarchitecture.shishkin.base.mail.IMail;
 import com.cleanarchitecture.shishkin.base.presenter.ActivityPresenter;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.base.ui.dialog.MaterialDialogExt;
@@ -47,7 +50,7 @@ import butterknife.Unbinder;
 
 @SuppressWarnings("unused")
 public abstract class AbstractActivity extends AppCompatActivity
-        implements IActivity, ILifecycleSubscriber, IEventVendor, IBackStack {
+        implements IActivity, ILifecycleSubscriber, IEventVendor, IBackStack, IMailSubscriber {
 
     private static final String NAME = "AbstractActivity";
     private Map<String, IPresenter> mPresenters = Collections.synchronizedMap(new HashMap<String, IPresenter>());
@@ -63,9 +66,19 @@ public abstract class AbstractActivity extends AppCompatActivity
         EventController.getInstance().register(this);
         LifecycleController.getInstance().register(this);
         ActivityController.getInstance().register(this);
+        MailController.getInstance().register(this);
 
         mActivityPresenter.bindView(this);
         registerPresenter(mActivityPresenter);
+    }
+
+    private void setLifecycleStatus(final int status) {
+        mLifecycleState = status;
+        for (WeakReference<IState> object : mLifecycleList) {
+            if (object.get() != null) {
+                object.get().setState(mLifecycleState);
+            }
+        }
     }
 
     @Override
@@ -90,12 +103,7 @@ public abstract class AbstractActivity extends AppCompatActivity
 
         mActivityPresenter.bindView(this);
 
-        mLifecycleState = Lifecycle.STATE_VIEW_CREATED;
-        for (WeakReference<IState> object : mLifecycleList) {
-            if (object.get() != null) {
-                object.get().setState(mLifecycleState);
-            }
-        }
+        setLifecycleStatus(Lifecycle.STATE_VIEW_CREATED);
 
         EventController.getInstance().post(new OnUserIteractionEvent());
     }
@@ -109,13 +117,10 @@ public abstract class AbstractActivity extends AppCompatActivity
         EventController.getInstance().unregister(this);
         ActivityController.getInstance().unregister(this);
         LifecycleController.getInstance().unregister(this);
+        MailController.getInstance().unregister(this);
 
-        mLifecycleState = Lifecycle.STATE_DESTROY;
-        for (WeakReference<IState> object : mLifecycleList) {
-            if (object.get() != null) {
-                object.get().setState(mLifecycleState);
-            }
-        }
+        setLifecycleStatus(Lifecycle.STATE_DESTROY);
+        mLifecycleList.clear();
 
         for (IPresenter presenter : mPresenters.values()) {
             PresenterController.getInstance().unregister(presenter);
@@ -132,24 +137,16 @@ public abstract class AbstractActivity extends AppCompatActivity
         ActivityController.getInstance().setCurrentSubscriber(this);
         LifecycleController.getInstance().setCurrentSubscriber(this);
 
-        mLifecycleState = Lifecycle.STATE_RESUME;
-        for (WeakReference<IState> object : mLifecycleList) {
-            if (object.get() != null) {
-                object.get().setState(mLifecycleState);
-            }
-        }
+        setLifecycleStatus(Lifecycle.STATE_RESUME);
+
+        readMail();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        mLifecycleState = Lifecycle.STATE_PAUSE;
-        for (WeakReference<IState> object : mLifecycleList) {
-            if (object.get() != null) {
-                object.get().setState(mLifecycleState);
-            }
-        }
+        setLifecycleStatus(Lifecycle.STATE_PAUSE);
     }
 
     /**
@@ -273,6 +270,15 @@ public abstract class AbstractActivity extends AppCompatActivity
     @Override
     public void setUnbinder(Unbinder unbinder) {
         mUnbinder = unbinder;
+    }
+
+    @Override
+    public synchronized void readMail() {
+        final List<IMail> list = MailController.getInstance().getMail(this);
+        for (IMail mail : list) {
+            mail.read(this);
+            MailController.getInstance().removeMail(mail);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
