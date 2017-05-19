@@ -21,7 +21,6 @@ import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetMenuEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetTitleEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseFinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
-import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.mail.ShowToastMail;
 import com.cleanarchitecture.shishkin.base.net.Connectivity;
 import com.cleanarchitecture.shishkin.base.presenter.ActivityPresenter;
