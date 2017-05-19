@@ -3,6 +3,7 @@ package com.cleanarchitecture.shishkin.base.controller;
 import com.annimon.stream.Stream;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.mail.IMail;
+import com.github.snowdream.android.util.Log;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -114,13 +115,20 @@ public class MailController extends AbstractController implements IMailControlle
                     mMail.put(id, newMail);
                 }
 
-                for (WeakReference<IMailSubscriber> ref : mSubscribers.values()) {
-                    final IMailSubscriber subscriber = ref.get();
-                    if (address.equalsIgnoreCase(subscriber.getName())) {
-                        if (subscriber.getState() == Lifecycle.STATE_RESUME) {
-                            subscriber.readMail();
+                try {
+                    for (WeakReference<IMailSubscriber> ref : mSubscribers.values()) {
+                        if (ref != null && ref.get() != null) {
+                            final IMailSubscriber subscriber = ref.get();
+                            if (address.equalsIgnoreCase(subscriber.getName())) {
+                                if (subscriber.getState() == Lifecycle.STATE_RESUME) {
+                                    subscriber.readMail();
+                                }
+
+                            }
                         }
                     }
+                } catch (Exception e) {
+                    Log.e(NAME, e.getMessage());
                 }
             }
         }
