@@ -273,7 +273,9 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
                         final ContentFragmentPresenter presenter = fragment.getContentFragmentPresenter();
                         if (presenter != null) {
                             final SwipeRefreshLayout swipeRefreshLayout = presenter.getSwipeRefreshLayout();
-                            if (swipeRefreshLayout != null && !swipeRefreshLayout.isRefreshing()) {
+                            if (swipeRefreshLayout == null) {
+                                mHorizontalPogressBar.get().setVisibility(View.VISIBLE);
+                            } else if (swipeRefreshLayout != null && !swipeRefreshLayout.isRefreshing()) {
                                 mHorizontalPogressBar.get().setVisibility(View.VISIBLE);
                             }
                         } else {
