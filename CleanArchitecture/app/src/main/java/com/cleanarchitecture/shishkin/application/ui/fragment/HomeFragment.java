@@ -21,6 +21,7 @@ import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetMenuEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetTitleEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseFinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
+import com.cleanarchitecture.shishkin.base.mail.IMail;
 import com.cleanarchitecture.shishkin.base.mail.ShowToastMail;
 import com.cleanarchitecture.shishkin.base.net.Connectivity;
 import com.cleanarchitecture.shishkin.base.presenter.ActivityPresenter;
@@ -36,7 +37,7 @@ import butterknife.ButterKnife;
 @SuppressWarnings("unused")
 public class HomeFragment extends AbstractContentFragment {
 
-    public static final String NAME = "ReleaseHomeFragment";
+    public static final String NAME = "HomeFragment";
 
     public static HomeFragment newInstance() {
         final HomeFragment f = new HomeFragment();
@@ -69,7 +70,8 @@ public class HomeFragment extends AbstractContentFragment {
             refreshPic();
         }
 
-        MailController.getInstance().addMail(new ShowToastMail(getName(), "Тестирование почты", Toast.LENGTH_LONG, ActivityPresenter.TOAST_TYPE_INFO));
+        MailController.getInstance().addMail(new ShowToastMail(getName(), "Тестирование почты")
+                .setType(ActivityPresenter.TOAST_TYPE_INFO));
         NotificationService.addDistinctMessage(getContext(), "Тестовое сообщение");
     }
 

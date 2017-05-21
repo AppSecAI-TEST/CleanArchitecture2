@@ -33,4 +33,8 @@ public interface IMail extends ISubscriber {
 
     boolean isSticky();
 
+    long getEndTime();
+
+    IMail setEndTime(long keepAliveTime);
+
 }

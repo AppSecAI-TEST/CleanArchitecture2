@@ -24,7 +24,7 @@ public class OnBackPressedPresenter extends AbstractPresenter<Void> {
                 final Context context = ApplicationController.getInstance();
                 if (context != null) {
                     mDoubleBackPressedOnce = true;
-                    EventController.getInstance().post(new ShowMessageEvent(context.getString(R.string.double_back_pressed), Snackbar.LENGTH_LONG, context.getString(R.string.exit)));
+                    EventController.getInstance().post(new ShowMessageEvent(context.getString(R.string.double_back_pressed)).setAction(context.getString(R.string.exit)));
                     startTimer();
                 }
             } else {

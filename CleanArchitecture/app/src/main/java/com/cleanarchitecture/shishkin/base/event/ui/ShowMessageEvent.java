@@ -10,24 +10,13 @@ import com.cleanarchitecture.shishkin.base.event.AbstractEvent;
  */
 public class ShowMessageEvent extends AbstractEvent {
     private String mMessage;
+
     private String mAction;
-    private Bundle mBundle;
     private int mDuration;
 
     public ShowMessageEvent(final String message) {
         mMessage = message;
         mDuration = Snackbar.LENGTH_LONG;
-    }
-
-    public ShowMessageEvent(final String message, final int duration, final String action) {
-        mMessage = message;
-        mDuration = duration;
-        mAction = action;
-    }
-
-    public ShowMessageEvent(final String message, final int duration, final String action, final Bundle bundle) {
-        this(message, duration, action);
-        mBundle = bundle;
     }
 
     public String getMessage() {
@@ -38,11 +27,19 @@ public class ShowMessageEvent extends AbstractEvent {
         return mAction;
     }
 
-    public Bundle getBundle() {
-        return mBundle;
+    public ShowMessageEvent setAction(String action) {
+        this.mAction = action;
+        return this;
     }
 
     public int getDuration() {
         return mDuration;
     }
+
+    public ShowMessageEvent setDuration(int duration) {
+        this.mDuration = duration;
+        return this;
+    }
+
+
 }

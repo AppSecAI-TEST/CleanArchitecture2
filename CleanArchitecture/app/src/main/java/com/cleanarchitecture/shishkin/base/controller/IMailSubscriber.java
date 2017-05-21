@@ -1,6 +1,8 @@
 package com.cleanarchitecture.shishkin.base.controller;
 
-public interface IMailSubscriber extends ISubscriber {
+import com.cleanarchitecture.shishkin.base.lifecycle.IState;
+
+public interface IMailSubscriber extends ISubscriber, IState {
     /**
      * Read mail by subscriber.
      */
