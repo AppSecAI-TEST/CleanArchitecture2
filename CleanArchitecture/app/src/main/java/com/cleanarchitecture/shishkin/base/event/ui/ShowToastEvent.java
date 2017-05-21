@@ -17,17 +17,6 @@ public class ShowToastEvent extends AbstractEvent {
         mMessage = message;
     }
 
-    public ShowToastEvent(final String message, final int duration) {
-        mMessage = message;
-        mDuration = duration;
-    }
-
-    public ShowToastEvent(final String message, final int duration, final int type) {
-        mMessage = message;
-        mDuration = duration;
-        mType = type;
-    }
-
     public String getMessage() {
         return mMessage;
     }
@@ -36,8 +25,18 @@ public class ShowToastEvent extends AbstractEvent {
         return mDuration;
     }
 
+    public ShowToastEvent setDuration(int duration) {
+        this.mDuration = duration;
+        return this;
+    }
+
     public int getType() {
         return mType;
+    }
+
+    public ShowToastEvent setType(int type) {
+        this.mType = type;
+        return this;
     }
 
 }

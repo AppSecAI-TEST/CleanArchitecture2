@@ -5,7 +5,7 @@ import android.support.design.widget.Snackbar;
 import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowMessageEvent;
 
-public class ShowMessageMail extends AbstractMail {
+public class ShowMessageMail extends AbstractMail{
 
     private static final String NAME = "ShowMessageMail";
 
@@ -19,29 +19,21 @@ public class ShowMessageMail extends AbstractMail {
         mMessage = message;
     }
 
-    public ShowMessageMail(final String address, final String message, final int duration) {
-        super(address);
-
-        mMessage = message;
-        mDuration = duration;
+    public ShowMessageMail setAction(String action) {
+        this.mAction = action;
+        return this;
     }
 
-    public ShowMessageMail(final String address, final String message, final int duration, final String action) {
-        super(address);
-
-        mMessage = message;
-        mDuration = duration;
-        mAction = action;
+    public ShowMessageMail setDuration(int duration) {
+        this.mDuration = duration;
+        return this;
     }
 
     @Override
     public void read(final IMailSubscriber subscriber) {
-        postEvent(new ShowMessageEvent(mMessage, mDuration, mAction));
-    }
-
-    @Override
-    public IMail copy() {
-        return new ShowMessageMail(getAddress(), mMessage, mDuration, mAction);
+        postEvent(new ShowMessageEvent(mMessage)
+                .setDuration(mDuration)
+                .setAction(mAction));
     }
 
     @Override

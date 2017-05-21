@@ -6,23 +6,25 @@ import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
 import com.cleanarchitecture.shishkin.base.event.IEvent;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 
+import org.apache.commons.lang3.SerializationUtils;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractMail implements IMail, IEventVendor {
+public abstract class AbstractMail implements IMail, IEventVendor, Serializable {
 
     private String mAddress;
     private String mSender;
     private List<String> mCopyTo = new ArrayList<>();
     private long mId = 0;
+    private long mEndTime = -1;
+
+    public AbstractMail() {
+    }
 
     public AbstractMail(final String address) {
         mAddress = address;
-    }
-
-    public AbstractMail(final String address, final List<String> copyTo) {
-        mAddress = address;
-        mCopyTo = copyTo;
     }
 
     @Override
@@ -80,7 +82,21 @@ public abstract class AbstractMail implements IMail, IEventVendor {
         return this;
     }
 
-    public abstract IMail copy();
+    @Override
+    public long getEndTime() {
+        return mEndTime;
+    }
+
+    @Override
+    public IMail setEndTime(final long endTime) {
+        mEndTime = endTime;
+        return this;
+    }
+
+    @Override
+    public IMail copy() {
+        return SerializationUtils.clone(this);
+    }
 
     @Override
     public boolean isCheckDublicate() {

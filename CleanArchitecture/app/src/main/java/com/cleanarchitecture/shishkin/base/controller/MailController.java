@@ -4,7 +4,6 @@ import com.annimon.stream.Stream;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.mail.IMail;
 import com.cleanarchitecture.shishkin.base.task.BaseAsyncTask;
-import com.github.snowdream.android.util.Log;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -90,9 +89,23 @@ public class MailController extends AbstractController implements IMailControlle
             if (mMail.isEmpty()) {
                 return new ArrayList<>();
             }
+
+            // удаляем старые письма
             final String name = subscriber.getName();
+            final long currentTime = System.currentTimeMillis();
+            final List<IMail> list = Stream.of(mMail.values()).filter(mail -> (mail.contains(name) && mail.getEndTime() != -1 && mail.getEndTime() < currentTime)).toList();
+            if (!list.isEmpty()) {
+                for (IMail mail: list) {
+                    mMail.remove(mail.getId());
+                }
+            }
+
+            if (mMail.isEmpty()) {
+                return new ArrayList<>();
+            }
+
             final Comparator<IMail> byId = (left, right) -> left.getId().compareTo(right.getId());
-            return Stream.of(mMail.values()).filter(mail -> mail.contains(name)).sorted(byId).toList();
+            return Stream.of(mMail.values()).filter(mail -> mail.contains(name) && (mail.getEndTime() == -1 || (mail.getEndTime() != -1 && mail.getEndTime() > currentTime))).sorted(byId).toList();
         }
         return new ArrayList<>();
     }
