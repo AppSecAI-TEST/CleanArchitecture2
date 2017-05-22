@@ -6,6 +6,7 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
 
+import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.event.OnScreenOffEvent;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -168,6 +169,13 @@ public abstract class LiveLongBackgroundIntentService extends Service
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onScreenOffEvent(final OnScreenOffEvent event) {
+        if (!mLiveLong) {
+            stopSelf();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onFinishApplicationEvent(final FinishApplicationEvent event) {
         if (!mLiveLong) {
             stopSelf();
         }

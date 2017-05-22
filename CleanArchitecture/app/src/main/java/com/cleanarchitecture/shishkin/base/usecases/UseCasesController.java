@@ -4,6 +4,9 @@ import com.cleanarchitecture.shishkin.base.controller.AbstractController;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.event.ui.OnSnackBarClickEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseFinishApplicationEvent;
+import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnLowMemoryEvent;
+import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOffEvent;
+import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOnEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
 import com.github.snowdream.android.util.Log;
 import org.greenrobot.eventbus.Subscribe;
@@ -79,6 +82,21 @@ public class UseCasesController extends AbstractController {
         if (!isSystemDialogShown()) {
             RequestPermissionUseCase.request(event);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onUseCaseOnScreenOffEvent(final UseCaseOnScreenOffEvent event) {
+        ScreenOnOffUseCase.onScreenOff();
+    }
+
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onUseCaseOnScreenOnEvent(final UseCaseOnScreenOnEvent event) {
+        ScreenOnOffUseCase.onScreenOn();
+    }
+
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onUseCaseOnLowMemoryEvent(final UseCaseOnLowMemoryEvent event) {
+        LowMemoryUseCase.onLowMemory();
     }
 
 }
