@@ -6,16 +6,20 @@ import android.util.SparseIntArray;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.AppPreferences;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
+import com.cleanarchitecture.shishkin.base.event.ClearDiskCacheEvent;
 import com.cleanarchitecture.shishkin.base.event.repository.RepositoryRequestGetImageEvent;
 import com.cleanarchitecture.shishkin.base.storage.DiskCache;
 import com.cleanarchitecture.shishkin.base.storage.DiskCacheService;
 import com.cleanarchitecture.shishkin.base.storage.MemoryCache;
 import com.cleanarchitecture.shishkin.base.storage.MemoryCacheService;
+import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Repository implements IRepository {
     public static final String NAME = "Repository";
@@ -160,5 +164,21 @@ public class Repository implements IRepository {
         RepositoryNetProvider.requestGetImage(event);
     }
 
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onClearDiskCacheEvent(final ClearDiskCacheEvent event) {
+        final Context context = ApplicationController.getInstance();
+        if (context == null) {
+            return;
+        }
+
+        // раз в сутки очищаем дисковый кэш
+        final SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+        final int currentDay = StringUtils.toInt(formatter.format(new Date()));
+        final int day = StringUtils.toInt(AppPreferences.getInstance().getLastDayStart(context));
+        if (currentDay > day) {
+            AppPreferences.getInstance().setLastDayStart(context, String.valueOf(currentDay));
+            DiskCache.getInstance(context).clearAll();
+        }
+    }
 
 }

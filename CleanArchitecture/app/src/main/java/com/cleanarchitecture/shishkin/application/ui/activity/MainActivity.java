@@ -6,12 +6,13 @@ import android.os.Bundle;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.ui.fragment.HomeFragment;
+import com.cleanarchitecture.shishkin.base.job.ClearDiskCacheJob;
 import com.cleanarchitecture.shishkin.base.ui.activity.AbstractContentActivity;
 import com.cleanarchitecture.shishkin.base.utils.ViewUtils;
 
 public class MainActivity extends AbstractContentActivity {
 
-    public static String NAME = "MainActivity";
+    public static final String NAME = "MainActivity";
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
