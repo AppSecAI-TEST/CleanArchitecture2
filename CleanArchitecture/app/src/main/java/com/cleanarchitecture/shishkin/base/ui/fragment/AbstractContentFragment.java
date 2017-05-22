@@ -12,7 +12,7 @@ import android.view.View;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
-import com.cleanarchitecture.shishkin.base.event.toolbar.FragmentPrepareToolbarEvent;
+import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarPrepareEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarInitEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarResetEvent;
 import com.cleanarchitecture.shishkin.base.presenter.ContentFragmentPresenter;
@@ -114,7 +114,7 @@ public abstract class AbstractContentFragment extends AbstractFragment  implemen
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
-    public synchronized void onFragmentPrepareToolbarEvent(FragmentPrepareToolbarEvent event) {
+    public synchronized void onToolbarPrepareEvent(ToolbarPrepareEvent event) {
         prepareToolbar();
     }
 

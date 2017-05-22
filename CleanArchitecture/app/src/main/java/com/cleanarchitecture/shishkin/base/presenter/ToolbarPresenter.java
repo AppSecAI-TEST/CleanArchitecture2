@@ -13,7 +13,7 @@ import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
 import com.cleanarchitecture.shishkin.base.controller.NavigationController;
-import com.cleanarchitecture.shishkin.base.event.toolbar.FragmentPrepareToolbarEvent;
+import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarPrepareEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.OnToolbarClickEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.OnToolbarMenuItemClickEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarInitEvent;
@@ -239,7 +239,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         setItem(0, false);
         setBackNavigation(false);
 
-        EventController.getInstance().post(new FragmentPrepareToolbarEvent());
+        EventController.getInstance().post(new ToolbarPrepareEvent());
     }
 
     @Override

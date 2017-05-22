@@ -3,6 +3,7 @@ package com.cleanarchitecture.shishkin.base.usecases;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
 import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
+import com.cleanarchitecture.shishkin.base.storage.MemoryCache;
 import com.cleanarchitecture.shishkin.base.ui.activity.IActivity;
 
 /**
@@ -12,12 +13,17 @@ public class FinishApplicationUseCase  extends AbstractUseCase{
     public static final String NAME = "FinishApplicationUseCase";
 
     public static synchronized void onFinishApplication() {
+        // скрыть клавиатуру
         final IActivity subscriber = LifecycleController.getInstance().getActivity();
         if (subscriber != null && subscriber.getActivityPresenter() != null) {
             subscriber.getActivityPresenter().hideKeyboard();
         }
 
+        // finish all activities и LiveLongBackgroundIntentService
         EventController.getInstance().post(new FinishApplicationEvent());
+
+        // очистить кэш в памяти
+        MemoryCache.getInstance().clearAll();
     }
 
     @Override

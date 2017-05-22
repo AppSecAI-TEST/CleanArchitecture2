@@ -3,6 +3,7 @@ package com.cleanarchitecture.shishkin.application.app;
 import android.Manifest;
 import android.app.Application;
 import android.content.BroadcastReceiver;
+import android.content.ComponentCallbacks2;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -19,6 +20,7 @@ import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
 import com.cleanarchitecture.shishkin.base.controller.MailController;
 import com.cleanarchitecture.shishkin.base.controller.NavigationController;
 import com.cleanarchitecture.shishkin.base.controller.PresenterController;
+import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnLowMemoryEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOffEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOnEvent;
 import com.cleanarchitecture.shishkin.base.repository.NetProvider;
@@ -147,5 +149,22 @@ public class ApplicationController extends Application {
 
         registerReceiver(screenOnOffReceiver, intentFilter);
     }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+
+        EventController.getInstance().post(new UseCaseOnLowMemoryEvent());
+    }
+
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+
+        if (level >= ComponentCallbacks2.TRIM_MEMORY_RUNNING_LOW) {
+            EventController.getInstance().post(new UseCaseOnLowMemoryEvent());
+        }
+    }
+
 
 }
