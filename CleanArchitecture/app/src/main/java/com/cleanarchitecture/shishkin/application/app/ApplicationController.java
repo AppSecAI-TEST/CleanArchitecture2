@@ -16,6 +16,7 @@ import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.base.controller.ActivityController;
 import com.cleanarchitecture.shishkin.base.controller.CrashController;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
+import com.cleanarchitecture.shishkin.base.controller.JobController;
 import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
 import com.cleanarchitecture.shishkin.base.controller.MailController;
 import com.cleanarchitecture.shishkin.base.controller.NavigationController;
@@ -23,6 +24,7 @@ import com.cleanarchitecture.shishkin.base.controller.PresenterController;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnLowMemoryEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOffEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOnEvent;
+import com.cleanarchitecture.shishkin.base.job.ClearDiskCacheJob;
 import com.cleanarchitecture.shishkin.base.repository.NetProvider;
 import com.cleanarchitecture.shishkin.base.repository.Repository;
 import com.cleanarchitecture.shishkin.base.usecases.UseCasesController;
@@ -99,8 +101,10 @@ public class ApplicationController extends Application {
             UseCasesController.instantiate();
             Repository.instantiate();
             MailController.instantiate();
+            JobController.instantiate();
 
             registerScreenOnOffBroadcastReceiver();
+            ClearDiskCacheJob.schedule();
 
         } catch (Exception e) {
             android.util.Log.e(getClass().getSimpleName(), e.getMessage());

@@ -12,7 +12,7 @@ import io.paperdb.Paper;
 
 public class DiskStorage implements IStorage {
 
-    public static String NAME = "DiskStorage";
+    public static final String NAME = "DiskStorage";
 
     private static volatile DiskStorage sInstance;
     private ReentrantLock mLock;

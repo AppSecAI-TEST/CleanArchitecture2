@@ -12,7 +12,7 @@ import io.paperdb.Paper;
 
 public class DiskCache implements IStorage {
 
-    public static String NAME = "DiskCache";
+    public static final String NAME = "DiskCache";
 
     private static volatile DiskCache sInstance;
     private ReentrantLock mLock;
@@ -53,33 +53,9 @@ public class DiskCache implements IStorage {
 
         try {
             if (value == null) {
-                Paper.book().delete(key);
+                Paper.book(NAME).delete(key);
             } else {
-                Paper.book().write(key, value);
-            }
-        } catch (Exception e) {
-            Log.e(getName(), e.getMessage());
-        } finally {
-            mLock.unlock();
-        }
-    }
-
-    public void put(final String book, final String key, final Serializable value) {
-        if(StringUtils.isNullOrEmpty(key)) {
-            return;
-        }
-
-        if(StringUtils.isNullOrEmpty(book)) {
-            return;
-        }
-
-        mLock.lock();
-
-        try {
-            if (value == null) {
-                Paper.book(book).delete(key);
-            } else {
-                Paper.book(book).write(key, value);
+                Paper.book(NAME).write(key, value);
             }
         } catch (Exception e) {
             Log.e(getName(), e.getMessage());
@@ -97,8 +73,8 @@ public class DiskCache implements IStorage {
         mLock.lock();
 
         try {
-            if (Paper.book().exist(key)) {
-                return Paper.book().read(key);
+            if (Paper.book(NAME).exist(key)) {
+                return Paper.book(NAME).read(key);
             }
         } catch (Exception e) {
             Log.e(getName(), e.getMessage());
@@ -117,28 +93,7 @@ public class DiskCache implements IStorage {
         mLock.lock();
 
         try {
-            return Paper.book().read(key, defaultValue);
-        } catch (Exception e) {
-            Log.e(getName(), e.getMessage());
-        } finally {
-            mLock.unlock();
-        }
-        return defaultValue;
-    }
-
-    public Serializable get(final String book, final String key, final Serializable defaultValue) {
-        if(StringUtils.isNullOrEmpty(book)) {
-            return defaultValue;
-        }
-
-        if(StringUtils.isNullOrEmpty(key)) {
-            return defaultValue;
-        }
-
-        mLock.lock();
-
-        try {
-            return Paper.book(book).read(key, defaultValue);
+            return Paper.book(NAME).read(key, defaultValue);
         } catch (Exception e) {
             Log.e(getName(), e.getMessage());
         } finally {
@@ -156,27 +111,7 @@ public class DiskCache implements IStorage {
         mLock.lock();
 
         try {
-            Paper.book().delete(key);
-        } catch (Exception e) {
-            Log.e(getName(), e.getMessage());
-        } finally {
-            mLock.unlock();
-        }
-    }
-
-    public void clear(final String book, final String key) {
-        if(StringUtils.isNullOrEmpty(key)) {
-            return;
-        }
-
-        if(StringUtils.isNullOrEmpty(book)) {
-            return;
-        }
-
-        mLock.lock();
-
-        try {
-            Paper.book(book).delete(key);
+            Paper.book(NAME).delete(key);
         } catch (Exception e) {
             Log.e(getName(), e.getMessage());
         } finally {
@@ -189,7 +124,7 @@ public class DiskCache implements IStorage {
         mLock.lock();
 
         try {
-            Paper.book().destroy();
+            Paper.book(NAME).destroy();
         } catch (Exception e) {
             Log.e(getName(), e.getMessage());
         } finally {
@@ -197,19 +132,4 @@ public class DiskCache implements IStorage {
         }
     }
 
-    public void clearAll(final String book) {
-        if(StringUtils.isNullOrEmpty(book)) {
-            return;
-        }
-
-        mLock.lock();
-
-        try {
-            Paper.book(book).destroy();
-        } catch (Exception e) {
-            Log.e(getName(), e.getMessage());
-        } finally {
-            mLock.unlock();
-        }
-    }
 }

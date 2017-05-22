@@ -15,6 +15,8 @@ import java.util.Map;
 @SuppressWarnings("unused")
 public class AppPreferences {
     public static final String VERSION_APPLICATION = "version_application";
+    public static final String LAST_DAY_START = "last_day_start";
+
 
     private static volatile AppPreferences sInstance;
 
@@ -53,6 +55,24 @@ public class AppPreferences {
      */
     public void setApplicationVersion(final Context context, final String version) {
         putString(context, VERSION_APPLICATION, version);
+    }
+
+    /**
+     * Получить последний день старта приложения
+     *
+     * @return последний день старта приложения
+     */
+    public String getLastDayStart(final Context context) {
+        return getString(context, LAST_DAY_START, null);
+    }
+
+    /**
+     * Установить последний день старта приложения.
+     *
+     * @param day версия приложения
+     */
+    public void setLastDayStart(final Context context, final String day) {
+        putString(context, LAST_DAY_START, day);
     }
 
     /**

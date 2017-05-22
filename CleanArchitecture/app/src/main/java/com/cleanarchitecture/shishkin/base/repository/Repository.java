@@ -6,16 +6,20 @@ import android.util.SparseIntArray;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.AppPreferences;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
+import com.cleanarchitecture.shishkin.base.event.ClearDiskCacheEvent;
 import com.cleanarchitecture.shishkin.base.event.repository.RepositoryRequestGetImageEvent;
 import com.cleanarchitecture.shishkin.base.storage.DiskCache;
 import com.cleanarchitecture.shishkin.base.storage.DiskCacheService;
 import com.cleanarchitecture.shishkin.base.storage.MemoryCache;
 import com.cleanarchitecture.shishkin.base.storage.MemoryCacheService;
+import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Repository implements IRepository {
     public static final String NAME = "Repository";
@@ -27,10 +31,13 @@ public class Repository implements IRepository {
     public static final int USE_MEMORY_CACHE = 1;
     public static final int USE_DISK_CACHE = 2;
     public static final int USE_MEMORY_AND_DISK_CACHE = 3;
+    public static final int USE_ONLY_MEMORY_CACHE = 4;
+    public static final int USE_ONLY_DISK_CACHE = 5;
+    public static final int USE_ONLY_CACHE = 6;
 
     private SparseIntArray mItemsCacheType;
 
-    private int mDefaultCaching = USE_MEMORY_CACHE;
+    private int mDefaultCaching = USE_ONLY_MEMORY_CACHE;
     private static volatile Repository sInstance;
 
     public static void instantiate() {
@@ -73,12 +80,15 @@ public class Repository implements IRepository {
             case USE_NO_CACHE:
                 break;
 
+            case USE_ONLY_MEMORY_CACHE:
             case USE_MEMORY_CACHE:
                 return MemoryCache.getInstance().get(String.valueOf(key));
 
+            case USE_ONLY_DISK_CACHE:
             case USE_DISK_CACHE:
                 return DiskCache.getInstance(context).get(String.valueOf(key));
 
+            case USE_ONLY_CACHE:
             case USE_MEMORY_AND_DISK_CACHE:
                 Serializable ser = MemoryCache.getInstance().get(String.valueOf(key));
                 if (ser == null) {
@@ -101,14 +111,17 @@ public class Repository implements IRepository {
             case USE_NO_CACHE:
                 break;
 
+            case USE_ONLY_MEMORY_CACHE:
             case USE_MEMORY_CACHE:
                 MemoryCacheService.put(context, String.valueOf(key), value);
                 break;
 
+            case USE_ONLY_DISK_CACHE:
             case USE_DISK_CACHE:
                 DiskCacheService.put(context, String.valueOf(key), value);
                 break;
 
+            case USE_ONLY_CACHE:
             case USE_MEMORY_AND_DISK_CACHE:
                 MemoryCacheService.put(context, String.valueOf(key), value);
                 DiskCacheService.put(context, String.valueOf(key), value);
@@ -117,12 +130,26 @@ public class Repository implements IRepository {
     }
 
     @Override
+    public synchronized int getTypeCached(final int key) {
+        if (mItemsCacheType.indexOfKey(key) >= 0) {
+            return mItemsCacheType.get(key);
+        }
+        return mDefaultCaching;
+    }
+
+    @Override
+    public synchronized Repository setTypeCached(int key, int cacheType) {
+        mItemsCacheType.put(key, cacheType);
+        return this;
+    }
+
+    @Override
     public String getName() {
         return NAME;
     }
 
     @Override
-    public void setDefaultCaching(int defaultCaching) {
+    public void setDefaultCaching(final int defaultCaching) {
         mDefaultCaching = defaultCaching;
 
         final Context context = ApplicationController.getInstance();
@@ -137,5 +164,21 @@ public class Repository implements IRepository {
         RepositoryNetProvider.requestGetImage(event);
     }
 
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onClearDiskCacheEvent(final ClearDiskCacheEvent event) {
+        final Context context = ApplicationController.getInstance();
+        if (context == null) {
+            return;
+        }
+
+        // раз в сутки очищаем дисковый кэш
+        final SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+        final int currentDay = StringUtils.toInt(formatter.format(new Date()));
+        final int day = StringUtils.toInt(AppPreferences.getInstance().getLastDayStart(context));
+        if (currentDay > day) {
+            AppPreferences.getInstance().setLastDayStart(context, String.valueOf(currentDay));
+            DiskCache.getInstance(context).clearAll();
+        }
+    }
 
 }

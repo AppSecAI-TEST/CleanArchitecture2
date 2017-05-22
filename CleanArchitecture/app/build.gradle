@@ -43,5 +43,6 @@ dependencies {
     compile 'com.google.guava:guava:20.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.annimon:stream:1.1.7'
+    compile 'com.evernote:android-job:1.1.10'
 
 }
