@@ -13,6 +13,7 @@ import android.os.Environment;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.application.task.CreateDbTask;
 import com.cleanarchitecture.shishkin.base.controller.ActivityController;
 import com.cleanarchitecture.shishkin.base.controller.CrashController;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
@@ -104,8 +105,9 @@ public class ApplicationController extends Application {
             JobController.instantiate();
 
             registerScreenOnOffBroadcastReceiver();
-            ClearDiskCacheJob.schedule();
 
+            // создаем БД
+            new CreateDbTask().execute();
         } catch (Exception e) {
             android.util.Log.e(getClass().getSimpleName(), e.getMessage());
         }

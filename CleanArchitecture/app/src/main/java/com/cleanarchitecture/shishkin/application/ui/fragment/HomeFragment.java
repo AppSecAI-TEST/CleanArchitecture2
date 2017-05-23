@@ -70,8 +70,6 @@ public class HomeFragment extends AbstractContentFragment {
             refreshPic();
         }
 
-        MailController.getInstance().addMail(new ShowToastMail(getName(), "Тестирование почты")
-                .setType(ActivityPresenter.TOAST_TYPE_INFO));
         NotificationService.addDistinctMessage(getContext(), "Тестовое сообщение");
     }
 

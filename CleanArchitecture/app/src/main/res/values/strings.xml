@@ -31,5 +31,8 @@
     <string name="type_caching_0">Без кэширования</string>
     <string name="type_caching_1">Кэширование в памяти</string>
     <string name="type_caching_2">Кэширование на диске</string>
-    <string name="type_caching_3">Кэширование в пямяти и на диске</string>
+    <string name="type_caching_3">Кэширование в памяти и на диске</string>
+
+    <string name="db_created">БД %s создана</string>
+    <string name="db_updated">БД %s обновлена</string>
 </resources>

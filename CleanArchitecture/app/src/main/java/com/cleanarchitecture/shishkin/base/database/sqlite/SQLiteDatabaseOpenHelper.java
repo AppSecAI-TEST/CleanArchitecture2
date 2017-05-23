@@ -9,7 +9,6 @@ import com.cleanarchitecture.shishkin.base.database.DatabaseCreator;
 import com.cleanarchitecture.shishkin.base.database.IDataController;
 import com.cleanarchitecture.shishkin.base.database.IDatabase;
 import com.cleanarchitecture.shishkin.base.database.IDatabaseOpenHelper;
-import com.cleanarchitecture.shishkin.base.utils.FileUtils;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 import com.github.snowdream.android.util.Log;
 import com.google.common.io.Files;
@@ -176,13 +175,14 @@ public class SQLiteDatabaseOpenHelper implements IDatabaseOpenHelper, IDataContr
             if (StringUtils.isNullOrEmpty(pathDb)) {
                 return false;
             }
-            if (!FileUtils.isFileExists(pathDb)) {
-                return false;
+
+            final File file = new File(pathDb);
+            if (file.exists()) {
+                return true;
             }
         } catch (Exception e) {
-            return false;
         }
-        return true;
+        return false;
     }
 
     @Override

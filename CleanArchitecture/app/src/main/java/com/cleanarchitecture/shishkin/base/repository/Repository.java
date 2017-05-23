@@ -3,11 +3,21 @@ package com.cleanarchitecture.shishkin.base.repository;
 import android.content.Context;
 import android.util.SparseIntArray;
 
+import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
+import com.cleanarchitecture.shishkin.application.ui.activity.MainActivity;
 import com.cleanarchitecture.shishkin.base.controller.AppPreferences;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
+import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
+import com.cleanarchitecture.shishkin.base.controller.MailController;
 import com.cleanarchitecture.shishkin.base.event.ClearDiskCacheEvent;
+import com.cleanarchitecture.shishkin.base.event.IEvent;
+import com.cleanarchitecture.shishkin.base.event.database.DbCreatedEvent;
+import com.cleanarchitecture.shishkin.base.event.database.DbUpdatedEvent;
 import com.cleanarchitecture.shishkin.base.event.repository.RepositoryRequestGetImageEvent;
+import com.cleanarchitecture.shishkin.base.event.ui.ShowMessageEvent;
+import com.cleanarchitecture.shishkin.base.mail.ShowMessageMail;
+import com.cleanarchitecture.shishkin.base.mail.ShowToastMail;
 import com.cleanarchitecture.shishkin.base.storage.DiskCache;
 import com.cleanarchitecture.shishkin.base.storage.DiskCacheService;
 import com.cleanarchitecture.shishkin.base.storage.MemoryCache;
@@ -21,7 +31,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Repository implements IRepository {
+public class Repository implements IRepository, IEventVendor {
     public static final String NAME = "Repository";
     public static final int FROM_CONTENT_PROVIDER = 0;
     public static final int FROM_CACHE = 1;
@@ -159,6 +169,11 @@ public class Repository implements IRepository {
         AppPreferences.getInstance().setDefaultCaching(context, defaultCaching);
     }
 
+    @Override
+    public void postEvent(IEvent event) {
+        EventController.getInstance().post(event);
+    }
+
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onRepositoryRequestGetImageEvent(final RepositoryRequestGetImageEvent event) {
         RepositoryNetProvider.requestGetImage(event);
@@ -178,6 +193,22 @@ public class Repository implements IRepository {
         if (currentDay > day) {
             AppPreferences.getInstance().setLastDayStart(context, String.valueOf(currentDay));
             DiskCache.getInstance(context).clearAll();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onDbCreatedEvent(final DbCreatedEvent event) {
+        final Context context = ApplicationController.getInstance();
+        if (context != null) {
+            MailController.getInstance().addMail(new ShowToastMail(MainActivity.NAME, context.getString(R.string.db_created, event.getName()) ));
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onDbUpdatedEvent(final DbUpdatedEvent event) {
+        final Context context = ApplicationController.getInstance();
+        if (context != null) {
+            MailController.getInstance().addMail(new ShowToastMail(MainActivity.NAME, context.getString(R.string.db_updated, event.getName())));
         }
     }
 

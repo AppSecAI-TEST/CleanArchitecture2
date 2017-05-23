@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.ui.fragment.HomeFragment;
+import com.cleanarchitecture.shishkin.base.controller.NotificationService;
 import com.cleanarchitecture.shishkin.base.job.ClearDiskCacheJob;
 import com.cleanarchitecture.shishkin.base.ui.activity.AbstractContentActivity;
 import com.cleanarchitecture.shishkin.base.utils.ViewUtils;
@@ -42,8 +43,10 @@ public class MainActivity extends AbstractContentActivity {
     protected void onNewIntent(Intent intent) {
         if (intent != null) {
             final String action = intent.getAction();
-            if (action == null) {
-            } else if (action.equalsIgnoreCase("android.intent.action.MAIN")) {
+            if ("android.intent.action.MAIN".equalsIgnoreCase(action)) {
+                ClearDiskCacheJob.schedule();
+                showHomeFragment();
+            } else if (NotificationService.ACTION_CLICK.equalsIgnoreCase(action)){
                 showHomeFragment();
             } else {
                 showHomeFragment();
