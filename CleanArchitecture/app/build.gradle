@@ -44,5 +44,6 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.annimon:stream:1.1.7'
     compile 'com.evernote:android-job:1.1.10'
+    compile 'joda-time:joda-time:2.9.9'
 
 }
