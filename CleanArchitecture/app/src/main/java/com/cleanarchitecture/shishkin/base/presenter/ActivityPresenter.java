@@ -312,6 +312,10 @@ public class ActivityPresenter extends AbstractPresenter<Void> implements IActiv
                         Toasty.success(mActivity.get(), message, duration).show();
                         break;
 
+                    default:
+                        Toasty.info(mActivity.get(), message, duration).show();
+                        break;
+
                 }
             });
         }

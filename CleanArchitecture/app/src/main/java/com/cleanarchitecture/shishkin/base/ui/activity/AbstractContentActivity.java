@@ -27,7 +27,6 @@ public abstract class AbstractContentActivity extends AbstractActivity
         implements ActivityResultListener, INavigationSubscriber {
 
     private static final String LOG = "AbstractContentActivity";
-    private ToolbarFragment mToolbar;
 
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
@@ -242,7 +241,7 @@ public abstract class AbstractContentActivity extends AbstractActivity
 
     public synchronized void addToolbar() {
         try {
-            mToolbar = new ToolbarFragment();
+            final ToolbarFragment mToolbar = new ToolbarFragment();
             final FragmentManager fm = getSupportFragmentManager();
             fm.beginTransaction().
                     replace(R.id.toolbar, mToolbar, ToolbarFragment.NAME).

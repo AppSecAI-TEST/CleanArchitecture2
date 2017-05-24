@@ -83,9 +83,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
             home.setOnClickListener(this::onClick);
             mHome = new WeakReference<>(home);
         }
-        if (context != null) {
-            mContext = new WeakReference<>(context);
-        }
+        mContext = new WeakReference<>(context);
         if (toolbarLL != null) {
             mToolbarLL = new WeakReference<>(toolbarLL);
         }
@@ -101,6 +99,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     public void onDestroyLifecycle() {
         super.onDestroyLifecycle();
 
+        dismissMenu();
         mContext = null;
         mToolbarLL = null;
         mTitle = null;

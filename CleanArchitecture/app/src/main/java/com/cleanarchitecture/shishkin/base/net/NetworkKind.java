@@ -58,11 +58,15 @@ public enum NetworkKind {
                     case TelephonyManager.NETWORK_TYPE_1xRTT:
                     case TelephonyManager.NETWORK_TYPE_IDEN:
                     //case TelephonyManager.NETWORK_TYPE_GSM:
+                        return MOBILE;
+
                     default:
                         return MOBILE;
                 }
 
             case ConnectivityManager.TYPE_BLUETOOTH:
+                return MOBILE;
+
             default:
                 return MOBILE;
         }

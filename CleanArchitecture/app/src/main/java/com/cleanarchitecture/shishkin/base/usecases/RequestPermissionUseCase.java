@@ -61,46 +61,6 @@ public class RequestPermissionUseCase extends AbstractUseCase {
                 }
                 break;
 
-            case Manifest.permission.READ_CONTACTS:
-                switch (grant) {
-                    case -111:
-                        if (ApplicationUtils.getPermission(permission) != PackageManager.PERMISSION_GRANTED) {
-                            ActivityController.getInstance().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_read_contacts));
-                        } else {
-                            UseCasesController.getInstance().setSystemDialogShown(false);
-                        }
-                        break;
-
-                    case PackageManager.PERMISSION_GRANTED:
-                        UseCasesController.getInstance().setSystemDialogShown(false);
-                        break;
-
-                    case PackageManager.PERMISSION_DENIED:
-                        ActivityController.getInstance().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_read_contacts));
-                        break;
-
-                }
-                break;
-            case Manifest.permission.CALL_PHONE:
-                switch (grant) {
-                    case -111:
-                        if (ApplicationUtils.getPermission(permission) != PackageManager.PERMISSION_GRANTED) {
-                            ActivityController.getInstance().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_call_phone));
-                        } else {
-                            UseCasesController.getInstance().setSystemDialogShown(false);
-                        }
-                        break;
-
-                    case PackageManager.PERMISSION_GRANTED:
-                        UseCasesController.getInstance().setSystemDialogShown(false);
-                        break;
-
-                    case PackageManager.PERMISSION_DENIED:
-                        UseCasesController.getInstance().setSystemDialogShown(false);
-                        break;
-
-                }
-                break;
         }
     }
 
