@@ -78,10 +78,10 @@ public class HomeFragment extends AbstractContentFragment {
         NotificationService.addDistinctMessage(getContext(), "Тестовое сообщение");
 
         PresenterController.getInstance().getPresenter(ToolbarPresenter.NAME).showProgressBar();
-        getActivityPresenter().showProgressBar();
+        getFragmentPresenter().showProgressBar();
         view.postDelayed(() -> {
             PresenterController.getInstance().getPresenter(ToolbarPresenter.NAME).hideProgressBar();
-            getActivityPresenter().hideProgressBar();
+            getFragmentPresenter().hideProgressBar();
         }, 5000);
 
     }

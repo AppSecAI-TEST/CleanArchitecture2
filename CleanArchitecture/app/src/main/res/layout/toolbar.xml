@@ -56,8 +56,8 @@
 
         <com.wang.avi.AVLoadingIndicatorView
             android:id="@+id/presenterProgressBar"
-            android:layout_width="@dimen/dimen_24dp"
-            android:layout_height="@dimen/dimen_24dp"
+            android:layout_width="@dimen/toolbar_progressbar_size"
+            android:layout_height="@dimen/toolbar_progressbar_size"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/item"
             android:visibility="gone"

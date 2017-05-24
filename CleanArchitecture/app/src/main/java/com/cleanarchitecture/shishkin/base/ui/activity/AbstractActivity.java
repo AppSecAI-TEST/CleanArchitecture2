@@ -68,6 +68,8 @@ public abstract class AbstractActivity extends AppCompatActivity
         ActivityController.getInstance().register(this);
         MailController.getInstance().register(this);
 
+        setLifecycleStatus(Lifecycle.STATE_CREATE);
+
         mActivityPresenter.bindView(this);
         registerPresenter(mActivityPresenter);
     }
@@ -101,9 +103,9 @@ public abstract class AbstractActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
 
-        mActivityPresenter.bindView(this);
-
         setLifecycleStatus(Lifecycle.STATE_VIEW_CREATED);
+
+        mActivityPresenter.bindView(this);
 
         EventController.getInstance().post(new OnUserIteractionEvent());
     }

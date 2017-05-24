@@ -67,7 +67,8 @@ public class ActivityPresenter extends AbstractPresenter<Void> implements IActiv
 
     @Override
     public boolean validate() {
-        return (getState() != Lifecycle.STATE_DESTROY && mActivity != null && mActivity.get() != null);
+        return (getState() != Lifecycle.STATE_DESTROY
+                && mActivity != null && mActivity.get() != null);
     }
 
     @Override
@@ -110,30 +111,6 @@ public class ActivityPresenter extends AbstractPresenter<Void> implements IActiv
                     }
                 }
             }
-        }
-    }
-
-    @Override
-    public void showProgressBar() {
-        if (validate()) {
-            runOnUiThread(() -> {
-                final View progressBar = findView(R.id.activityprogressbar);
-                if (progressBar != null) {
-                    progressBar.setVisibility(View.VISIBLE);
-                }
-            });
-        }
-    }
-
-    @Override
-    public void hideProgressBar() {
-        if (validate()) {
-            runOnUiThread(() -> {
-                final View progressBar = findView(R.id.activityprogressbar);
-                if (progressBar != null) {
-                    progressBar.setVisibility(View.INVISIBLE);
-                }
-            });
         }
     }
 
