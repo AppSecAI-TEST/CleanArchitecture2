@@ -1,5 +1,7 @@
 package com.cleanarchitecture.shishkin.base.utils;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.google.gson.Gson;
 import java.lang.reflect.Type;
 
@@ -40,19 +42,22 @@ public class SerializableUtil {
     }
 
     public static <T> Serializable toJson(final T obj) {
-        final Gson gson = new Gson();
-        return gson.toJson(obj);
-    }
-
-    public static <T> Serializable toJson(final T obj, Type type) {
-        // use example : type = new com.google.gson.reflect.TypeToken<List<ContactItem>>(){}.getType()
-        final Gson gson = new Gson();
-        return gson.toJson(obj, type);
+        return JSON.toJSONString(obj);
     }
 
     public static <T> T fromJson(final String json, final Class<T> cl) {
+        return JSON.parseObject(json, cl);
+    }
+
+    public static <T> T fromJson(final String json, final TypeReference<T> type) {
+        //use example : List<VO> list = JSON.parseObject("...", new TypeReference<List<VO>>() {});
+        return JSON.parseObject(json, type);
+    }
+
+    public static <T> Serializable toJson(final T obj, Type type) {
+        //use example : type = new com.google.gson.reflect.TypeToken<List<ContactItem>>(){}.getType()
         final Gson gson = new Gson();
-        return gson.fromJson(json, cl);
+        return gson.toJson(obj, type);
     }
 
     public static <T> T fromJson(final String json, Type type) {
