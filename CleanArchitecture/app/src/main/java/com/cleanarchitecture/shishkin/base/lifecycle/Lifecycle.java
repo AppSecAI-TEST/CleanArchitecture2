@@ -59,6 +59,9 @@ public class Lifecycle {
                 onResumeLifecycle();
                 break;
 
+            default:
+                break;
+
         }
     }
 

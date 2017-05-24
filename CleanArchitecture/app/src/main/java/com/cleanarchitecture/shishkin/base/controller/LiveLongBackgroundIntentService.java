@@ -63,7 +63,7 @@ public abstract class LiveLongBackgroundIntentService extends Service
 
         EventController.getInstance().register(this);
 
-        mServiceHandler = new AutoCompleteHandler<Intent>("LiveLongAndProsperIntentService [" + mName + "]");
+        mServiceHandler = new AutoCompleteHandler<>("LiveLongAndProsperIntentService [" + mName + "]");
         mServiceHandler.setOnHandleEventListener(this);
         mServiceHandler.setOnShutdownListener(this);
 

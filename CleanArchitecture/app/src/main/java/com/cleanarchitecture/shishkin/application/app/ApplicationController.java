@@ -25,8 +25,6 @@ import com.cleanarchitecture.shishkin.base.controller.PresenterController;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnLowMemoryEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOffEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOnEvent;
-import com.cleanarchitecture.shishkin.base.job.ClearDiskCacheJob;
-import com.cleanarchitecture.shishkin.base.repository.NetProvider;
 import com.cleanarchitecture.shishkin.base.repository.Repository;
 import com.cleanarchitecture.shishkin.base.usecases.UseCasesController;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
@@ -39,7 +37,7 @@ public class ApplicationController extends Application {
     private static volatile ApplicationController sInstance;
     private static final String LOG_TAG = "ApplicationController";
     private static final long MAX_LOG_LENGTH = 2000000;//2Mb
-    public static String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    public static final String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     @Override
     public void onCreate() {
@@ -59,58 +57,53 @@ public class ApplicationController extends Application {
     }
 
     public synchronized void init() {
-
-        try {
-            boolean isGrant = true;
-            if (Build.VERSION.SDK_INT >= 23) {
-                if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    isGrant = false;
-                }
+        boolean isGrant = true;
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                isGrant = false;
             }
+        }
 
-            if (isGrant) {
-                try {
-                    Log.setEnabled(true);
-                    Log.setLog2FileEnabled(true);
-                    final String path = Environment.getExternalStorageDirectory().getAbsolutePath() +
-                            File.separator + BuildConfig.APPLICATION_ID;
-                    final File file = new File(path + File.separator);
-                    if (!file.exists()) {
-                        file.mkdirs();
-                    }
-                    if (file.exists()) {
-                        Log.setFilePathGenerator(new FilePathGenerator.DefaultFilePathGenerator(path,
-                                getString(R.string.app_name), ".log"));
-                        checkLogSize();
-                    } else {
-                        Log.setEnabled(false);
-                    }
-                } catch (Exception e) {
+        if (isGrant) {
+            try {
+                Log.setEnabled(true);
+                Log.setLog2FileEnabled(true);
+                final String path = Environment.getExternalStorageDirectory().getAbsolutePath() +
+                        File.separator + BuildConfig.APPLICATION_ID;
+                final File file = new File(path + File.separator);
+                if (!file.exists()) {
+                    file.mkdirs();
+                }
+                if (file.exists()) {
+                    Log.setFilePathGenerator(new FilePathGenerator.DefaultFilePathGenerator(path,
+                            getString(R.string.app_name), ".log"));
+                    checkLogSize();
+                } else {
                     Log.setEnabled(false);
                 }
-            } else {
+            } catch (Exception e) {
                 Log.setEnabled(false);
             }
-
-            EventController.instantiate();
-            CrashController.instantiate();
-            ActivityController.instantiate();
-            LifecycleController.instantiate();
-            PresenterController.instantiate();
-            NavigationController.instantiate();
-            UseCasesController.instantiate();
-            Repository.instantiate();
-            MailController.instantiate();
-            JobController.instantiate();
-
-            registerScreenOnOffBroadcastReceiver();
-
-            // создаем БД
-            new CreateDbTask().execute();
-        } catch (Exception e) {
-            android.util.Log.e(getClass().getSimpleName(), e.getMessage());
+        } else {
+            Log.setEnabled(false);
         }
+
+        EventController.instantiate();
+        CrashController.instantiate();
+        ActivityController.instantiate();
+        LifecycleController.instantiate();
+        PresenterController.instantiate();
+        NavigationController.instantiate();
+        UseCasesController.instantiate();
+        Repository.instantiate();
+        MailController.instantiate();
+        JobController.instantiate();
+
+        registerScreenOnOffBroadcastReceiver();
+
+        // создаем БД
+        new CreateDbTask().execute();
     }
 
     private void checkLogSize() {
@@ -132,6 +125,7 @@ public class ApplicationController extends Application {
                 }
             }
         } catch (Exception e) {
+            android.util.Log.e(LOG_TAG, e.getMessage());
         }
     }
 

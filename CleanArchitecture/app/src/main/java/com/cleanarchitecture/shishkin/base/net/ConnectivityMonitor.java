@@ -17,14 +17,8 @@ import com.cleanarchitecture.shishkin.base.event.OnNetworkDisconnectedEvent;
  */
 public class ConnectivityMonitor extends BroadcastReceiver implements ISubscribeable {
 
-    private static final String EXTRA_AIRPLANE_STATE = "state";
+    //private static final String EXTRA_AIRPLANE_STATE = "state";
     private boolean mSubscribed = false;
-
-    /**
-     * Creates a connectivity monitor with a given connectivity listener.
-     */
-    public ConnectivityMonitor() {
-    }
 
     /**
      * {@inheritDoc}

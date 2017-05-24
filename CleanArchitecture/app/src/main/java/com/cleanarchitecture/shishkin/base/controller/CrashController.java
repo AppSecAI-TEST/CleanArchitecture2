@@ -9,7 +9,7 @@ public class CrashController implements Thread.UncaughtExceptionHandler {
 
     private static final String LOG_TAG = "CrashController";
     private static volatile CrashController sInstance;
-    private static Thread.UncaughtExceptionHandler mHandler;
+    private static Thread.UncaughtExceptionHandler mHandler = Thread.getDefaultUncaughtExceptionHandler();
 
     public static void instantiate() {
         if (sInstance == null) {
@@ -22,7 +22,6 @@ public class CrashController implements Thread.UncaughtExceptionHandler {
     }
 
     private CrashController() {
-        mHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(this);
     }
 

@@ -4,6 +4,7 @@ import com.annimon.stream.Stream;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.mail.IMail;
 import com.cleanarchitecture.shishkin.base.task.BaseAsyncTask;
+import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -129,19 +130,27 @@ public class MailController extends AbstractController implements IMailControlle
                     mMail.put(id, newMail);
                 }
 
-                for (WeakReference<IMailSubscriber> ref : mSubscribers.values()) {
-                    if (ref != null && ref.get() != null) {
-                        final IMailSubscriber subscriber = ref.get();
-                        if (address.equalsIgnoreCase(subscriber.getName())) {
-                            if (subscriber.getState() == Lifecycle.STATE_RESUME) {
-                                new BaseAsyncTask() {
-                                    @Override
-                                    public void run() {
-                                        subscriber.readMail();
-                                    }
-                                }.execute();
+                checkAddMailSubscriber(address);
+            }
+        }
+    }
+
+    private synchronized void checkAddMailSubscriber(final String address) {
+        if (StringUtils.isNullOrEmpty(address)) {
+            return;
+        }
+
+        for (WeakReference<IMailSubscriber> reference : mSubscribers.values()) {
+            if (reference != null && reference.get() != null) {
+                final IMailSubscriber subscriber = reference.get();
+                if (address.equalsIgnoreCase(subscriber.getName())) {
+                    if (subscriber.getState() == Lifecycle.STATE_RESUME) {
+                        new BaseAsyncTask() {
+                            @Override
+                            public void run() {
+                                subscriber.readMail();
                             }
-                        }
+                        }.execute();
                     }
                 }
             }
