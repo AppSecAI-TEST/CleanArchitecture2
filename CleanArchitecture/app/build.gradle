@@ -11,6 +11,7 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled = true
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
@@ -45,5 +46,6 @@ dependencies {
     compile 'com.annimon:stream:1.1.7'
     compile 'com.evernote:android-job:1.1.10'
     compile 'joda-time:joda-time:2.9.9'
+    compile 'com.wang.avi:library:2.1.3'
 
 }

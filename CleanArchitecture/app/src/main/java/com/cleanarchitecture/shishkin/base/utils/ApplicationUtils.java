@@ -142,7 +142,7 @@ public class ApplicationUtils {
         }
     }
 
-    public synchronized static boolean grantPermisions(final String[] permissions, final Activity activity) {
+    public static boolean grantPermisions(final String[] permissions, final Activity activity) {
         if (Build.VERSION.SDK_INT >= 23) {
             if (ApplicationController.getInstance() != null) {
                 final List<String> listPermissionsNeeded = new ArrayList();
@@ -155,7 +155,7 @@ public class ApplicationUtils {
                     }
                 }
 
-                if (listPermissionsNeeded.size() > 0) {
+                if (!listPermissionsNeeded.isEmpty()) {
                     String[] arrayPermissionsNeeded = new String[listPermissionsNeeded.size()];
                     listPermissionsNeeded.toArray(arrayPermissionsNeeded);
                     if (activity != null) {
@@ -175,7 +175,7 @@ public class ApplicationUtils {
         return true;
     }
 
-    public synchronized static int countUngrantedPermisions(final String[] permissions, final Activity activity) {
+    public static int countUngrantedPermisions(final String[] permissions) {
         final List<String> listPermissionsNeeded = new ArrayList();
         if (Build.VERSION.SDK_INT >= 23) {
             if (ApplicationController.getInstance() != null) {
@@ -192,7 +192,7 @@ public class ApplicationUtils {
     }
 
 
-    public synchronized static int getPermission(final String permission) {
+    public static int getPermission(final String permission) {
         if (Build.VERSION.SDK_INT >= 23) {
             if (ApplicationController.getInstance() != null) {
                 return ActivityCompat.checkSelfPermission(ApplicationController.getInstance(), permission);
@@ -203,7 +203,7 @@ public class ApplicationUtils {
         return PackageManager.PERMISSION_GRANTED;
     }
 
-    public synchronized static boolean checkPermission(final String permission) {
+    public static boolean checkPermission(final String permission) {
         if (Build.VERSION.SDK_INT >= 23) {
             if (ApplicationController.getInstance() != null) {
                 return ActivityCompat.checkSelfPermission(ApplicationController.getInstance(), permission) == PackageManager.PERMISSION_GRANTED;

@@ -29,6 +29,7 @@ import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 import com.cleanarchitecture.shishkin.base.utils.ViewUtils;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -49,6 +50,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     private WeakReference<ImageView> mHome;
     private WeakReference<ImageView> mMenu;
     private WeakReference<ImageView> mItem;
+    private WeakReference<AVLoadingIndicatorView> mPogressBar;
 
     private PopupMenu mPopupMenu;
     private boolean mPopupMenuShow = false;
@@ -69,7 +71,8 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         final ImageView home = ViewUtils.findView(root, R.id.back);
         final ImageView menu = ViewUtils.findView(root, R.id.menu);
         final ImageView item = ViewUtils.findView(root, R.id.item);
-        final MaterialProgressBar progresBar = ViewUtils.findView(root, R.id.horizontalprogressbar);
+        final MaterialProgressBar horizontalProgresBar = ViewUtils.findView(root, R.id.horizontalprogressbar);
+        final AVLoadingIndicatorView progresBar = ViewUtils.findView(root, R.id.presenterProgressBar);
 
         if (menu != null) {
             menu.setOnClickListener(this::onClick);
@@ -90,9 +93,13 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         if (title != null) {
             mTitle = new WeakReference<>(title);
         }
-        if (progresBar != null) {
-            mHorizontalPogressBar = new WeakReference<>(progresBar);
+        if (horizontalProgresBar != null) {
+            mHorizontalPogressBar = new WeakReference<>(horizontalProgresBar);
         }
+        if (progresBar != null) {
+            mPogressBar = new WeakReference<>(progresBar);
+        }
+
     }
 
     @Override
@@ -104,6 +111,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         mToolbarLL = null;
         mTitle = null;
         mHorizontalPogressBar = null;
+        mPogressBar = null;
         mHome = null;
         mMenu = null;
         mItem = null;
@@ -119,6 +127,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
                 && mToolbarLL != null && mToolbarLL.get() != null
                 && mTitle != null && mTitle.get() != null
                 && mHorizontalPogressBar != null && mHorizontalPogressBar.get() != null
+                && mPogressBar != null && mPogressBar.get() != null
                 && mHome != null && mHome.get() != null
                 && mMenu != null && mMenu.get() != null
                 && mItem != null && mItem.get() != null
@@ -132,7 +141,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
 
     @Override
     public boolean isRegister() {
-        return false;
+        return true;
     }
 
     private void dismissMenu() {
@@ -264,9 +273,9 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     @Override
     public void showHorizontalProgressBar() {
         if (validate()) {
-            final AbstractContentActivity activity = LifecycleController.getInstance().getContentActivity();
-            if (activity != null) {
-                ApplicationUtils.runOnUiThread(() -> {
+            ApplicationUtils.runOnUiThread(() -> {
+                final AbstractContentActivity activity = LifecycleController.getInstance().getContentActivity();
+                if (activity != null) {
                     final AbstractContentFragment fragment = activity.getContentFragment(AbstractContentFragment.class);
                     if (fragment != null) {
                         final ContentFragmentPresenter presenter = fragment.getContentFragmentPresenter();
@@ -283,17 +292,19 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
                     } else {
                         mHorizontalPogressBar.get().setVisibility(View.VISIBLE);
                     }
-                });
-            }
+                } else {
+                    mHorizontalPogressBar.get().setVisibility(View.VISIBLE);
+                }
+            });
         }
     }
 
     @Override
     public void hideHorizontalProgressBar() {
         if (validate()) {
-            final AbstractContentActivity activity = LifecycleController.getInstance().getContentActivity();
-            if (activity != null) {
-                ApplicationUtils.runOnUiThread(() -> {
+            ApplicationUtils.runOnUiThread(() -> {
+                final AbstractContentActivity activity = LifecycleController.getInstance().getContentActivity();
+                if (activity != null) {
                     final AbstractContentFragment fragment = activity.getContentFragment(AbstractContentFragment.class);
                     if (fragment != null) {
                         final ContentFragmentPresenter presenter = fragment.getContentFragmentPresenter();
@@ -305,8 +316,28 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
                         }
                     }
                     mHorizontalPogressBar.get().setVisibility(View.INVISIBLE);
-                });
-            }
+                } else {
+                    mHorizontalPogressBar.get().setVisibility(View.INVISIBLE);
+                }
+            });
+        }
+    }
+
+    @Override
+    public void showProgressBar() {
+        if (validate()) {
+            ApplicationUtils.runOnUiThread(() -> {
+                mPogressBar.get().setVisibility(View.VISIBLE);
+            });
+        }
+    }
+
+    @Override
+    public void hideProgressBar() {
+        if (validate()) {
+            ApplicationUtils.runOnUiThread(() -> {
+                mPogressBar.get().setVisibility(View.GONE);
+            });
         }
     }
 

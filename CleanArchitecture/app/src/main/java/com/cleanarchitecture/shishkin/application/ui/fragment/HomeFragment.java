@@ -11,8 +11,11 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.base.controller.ActivityController;
+import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
 import com.cleanarchitecture.shishkin.base.controller.MailController;
 import com.cleanarchitecture.shishkin.base.controller.NotificationService;
+import com.cleanarchitecture.shishkin.base.controller.PresenterController;
 import com.cleanarchitecture.shishkin.base.event.OnNetworkConnectedEvent;
 import com.cleanarchitecture.shishkin.base.event.repository.RepositoryRequestGetImageEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.OnToolbarMenuItemClickEvent;
@@ -25,7 +28,9 @@ import com.cleanarchitecture.shishkin.base.mail.IMail;
 import com.cleanarchitecture.shishkin.base.mail.ShowToastMail;
 import com.cleanarchitecture.shishkin.base.net.Connectivity;
 import com.cleanarchitecture.shishkin.base.presenter.ActivityPresenter;
+import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.base.presenter.OnBackPressedPresenter;
+import com.cleanarchitecture.shishkin.base.presenter.ToolbarPresenter;
 import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractContentFragment;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -71,6 +76,14 @@ public class HomeFragment extends AbstractContentFragment {
         }
 
         NotificationService.addDistinctMessage(getContext(), "Тестовое сообщение");
+
+        PresenterController.getInstance().getPresenter(ToolbarPresenter.NAME).showProgressBar();
+        getFragmentPresenter().showProgressBar();
+        view.postDelayed(() -> {
+            PresenterController.getInstance().getPresenter(ToolbarPresenter.NAME).hideProgressBar();
+            getFragmentPresenter().hideProgressBar();
+        }, 5000);
+
     }
 
     @Override

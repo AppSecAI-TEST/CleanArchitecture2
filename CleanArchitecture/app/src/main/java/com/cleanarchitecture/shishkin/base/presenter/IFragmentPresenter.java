@@ -28,8 +28,4 @@ public interface IFragmentPresenter extends ISubscriber {
 
     void refreshData();
 
-    void showProgressBar();
-
-    void hideProgressBar();
-
 }

@@ -11,6 +11,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 
 public class StringUtils {
@@ -444,7 +445,7 @@ public class StringUtils {
             return EMPTY;
         }
 
-        String s = EMPTY;
+        String s;
         if (start == 0) {
             s = replaceString + initialString.substring(1);
         } else {
@@ -483,7 +484,7 @@ public class StringUtils {
             return EMPTY;
         }
 
-        String s = EMPTY;
+        String s;
         if (start == 0) {
             s = replaceString + initialString.substring(length);
         } else {
@@ -636,13 +637,13 @@ public class StringUtils {
      * @param delimiter - the delimiter
      * @return
      */
-    public static ArrayList<String> toArrayList(final String s,
+    public static List<String> toList(final String s,
                                                 final String delimiter) {
         if (isNullOrEmpty(s)) {
-            return new ArrayList<String>(0);
+            return new ArrayList<>(0);
         }
 
-        final ArrayList<String> list = new ArrayList<String>();
+        final ArrayList<String> list = new ArrayList<>();
         if (isNullOrEmpty(delimiter)) {
             list.add(s);
             return list;
@@ -650,7 +651,7 @@ public class StringUtils {
 
         final String[] strArray = s.split(delimiter);
         if (strArray.length <= 0) {
-            return new ArrayList<String>(0);
+            return new ArrayList<>(0);
         }
 
         Collections.addAll(list, strArray);
@@ -664,17 +665,17 @@ public class StringUtils {
      * @param s - initial string with elements
      * @return
      */
-    public static ArrayList<String> toArrayList(final String s) {
+    public static List<String> toList(final String s) {
         if (isNullOrEmpty(s)) {
-            return new ArrayList<String>(0);
+            return new ArrayList<>(0);
         }
 
         final String[] strArray = s.split("[\r\n]");
         if (strArray.length <= 0) {
-            return new ArrayList<String>(0);
+            return new ArrayList<>(0);
         }
 
-        final ArrayList<String> list = new ArrayList<String>();
+        final ArrayList<String> list = new ArrayList<>();
         Collections.addAll(list, strArray);
         return list;
     }
@@ -784,7 +785,6 @@ public class StringUtils {
             md = MessageDigest.getInstance("SHA-512");
             byte byteData[] = md.digest(ss.getBytes());
             base64 = Base64.encodeToString(byteData, Base64.NO_WRAP);
-        } catch (NoSuchAlgorithmException e) {
         } catch (Exception e) {
         }
         return base64;
@@ -908,8 +908,7 @@ public class StringUtils {
         bitmapPicture.compress(Bitmap.CompressFormat.PNG, COMPRESSION_QUALITY,
                 byteArrayBitmapStream);
         final byte[] b = byteArrayBitmapStream.toByteArray();
-        encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
-        return encodedImage;
+        return Base64.encodeToString(b, Base64.DEFAULT);
     }
 
     /*
@@ -917,8 +916,7 @@ public class StringUtils {
     * */
     public static Bitmap toBitmapFromString(final String jsonString) {
         final byte[] decodedString = Base64.decode(jsonString, Base64.DEFAULT);
-        final Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-        return decodedByte;
+        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
 
 }

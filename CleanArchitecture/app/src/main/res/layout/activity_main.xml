@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root"
+    android:background="@color/white_light"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -16,21 +17,5 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/toolbar" />
-
-    <RelativeLayout
-        android:id="@+id/progressbar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clickable="true"
-        android:visibility="invisible">
-
-        <ProgressBar
-            style="@android:style/Widget.Holo.ProgressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true" />
-
-    </RelativeLayout>
 
 </RelativeLayout>

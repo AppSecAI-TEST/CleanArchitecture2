@@ -34,17 +34,6 @@ public interface IActivityPresenter extends ISubscriber {
      */
     void grantPermission(String permission, String helpMessage);
 
-
-    /**
-     * Show progress bar.
-     */
-    void showProgressBar();
-
-    /**
-     * Hide progress bar.
-     */
-    void hideProgressBar();
-
     /**
      * Show message.
      *

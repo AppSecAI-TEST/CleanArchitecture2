@@ -17,6 +17,7 @@
 	<dimen name="dimen_72dp">72dp</dimen>
 
     <dimen name="toolbar_height">48dp</dimen>
+	<dimen name="toolbar_progressbar_size">24dp</dimen>
 
     <dimen name="text_size_extra_small">10sp</dimen>
     <dimen name="text_size_small">12sp</dimen>
