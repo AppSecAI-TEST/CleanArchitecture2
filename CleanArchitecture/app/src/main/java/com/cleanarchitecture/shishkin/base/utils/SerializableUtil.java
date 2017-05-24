@@ -1,5 +1,8 @@
 package com.cleanarchitecture.shishkin.base.utils;
 
+import com.google.gson.Gson;
+import java.lang.reflect.Type;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -36,4 +39,25 @@ public class SerializableUtil {
         return null;
     }
 
+    public static <T> Serializable toJson(final T obj) {
+        final Gson gson = new Gson();
+        return gson.toJson(obj);
+    }
+
+    public static <T> Serializable toJson(final T obj, Type type) {
+        //use example : type = new com.google.gson.reflect.TypeToken<List<ContactItem>>(){}.getType()
+        final Gson gson = new Gson();
+        return gson.toJson(obj, type);
+    }
+
+    public static <T> T fromJson(final String json, final Class<T> cl) {
+        final Gson gson = new Gson();
+        return gson.fromJson(json, cl);
+    }
+
+    public static <T> T fromJson(final String json, Type type) {
+        // use example : type = new com.google.gson.reflect.TypeToken<List<ContactItem>>(){}.getType()
+        final Gson gson = new Gson();
+        return gson.fromJson(json, type);
+    }
 }

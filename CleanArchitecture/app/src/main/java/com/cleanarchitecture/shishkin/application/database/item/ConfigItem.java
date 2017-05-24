@@ -1,13 +1,16 @@
 package com.cleanarchitecture.shishkin.application.database.item;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.cleanarchitecture.shishkin.base.database.dao.IIdentify;
+import com.google.gson.annotations.SerializedName;
 
-public class ConfigItem implements IIdentify<String>, Parcelable  {
+import java.io.Serializable;
 
+public class ConfigItem implements IIdentify<String>, Serializable {
+
+    @SerializedName("RowId")
     private String mRowId;
+
+    @SerializedName("Version")
     private int mVersion;
 
     public ConfigItem() {
@@ -18,26 +21,23 @@ public class ConfigItem implements IIdentify<String>, Parcelable  {
         mVersion = version;
     }
 
-    public ConfigItem(final Parcel src) {
-        mRowId = (String) src.readValue(String.class.getClassLoader());
-        mVersion = (int) src.readValue(Integer.class.getClassLoader());
-    }
-
     @Override
     public String getId() {
         return mRowId;
     }
 
-    public void setId(final String id) {
+    public ConfigItem setId(final String id) {
         mRowId = id;
+        return this;
     }
 
     public int getVersion() {
         return mVersion;
     }
 
-    public void setVersion(final int text) {
+    public ConfigItem setVersion(final int text) {
         mVersion = text;
+        return this;
     }
 
     @Override
@@ -56,28 +56,4 @@ public class ConfigItem implements IIdentify<String>, Parcelable  {
             return mRowId.equals(that.mRowId);
         }
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(final Parcel dest, final int flags) {
-        dest.writeValue(mRowId);
-        dest.writeValue(mVersion);
-    }
-
-    public static final Creator<ConfigItem> CREATOR = new Creator<ConfigItem>() {
-        @Override
-        public ConfigItem createFromParcel(final Parcel source) {
-            return new ConfigItem(source);
-        }
-
-        @Override
-        public ConfigItem[] newArray(final int size) {
-            return new ConfigItem[size];
-        }
-    };
-
 }

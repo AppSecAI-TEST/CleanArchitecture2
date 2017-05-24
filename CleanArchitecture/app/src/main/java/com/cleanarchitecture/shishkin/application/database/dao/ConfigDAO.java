@@ -49,10 +49,9 @@ public class ConfigDAO extends AbstractIdentifyDAO<String, ConfigItem> {
     @NonNull
     @Override
     protected ConfigItem getItemFromCursor(final Cursor cursor) {
-        final ConfigItem configItem = new ConfigItem();
-        configItem.setId(getString(cursor, Columns.RowId));
-        configItem.setVersion(getInteger(cursor, Columns.Version));
-        return configItem;
+        return new ConfigItem()
+                .setId(getString(cursor, Columns.RowId))
+                .setVersion(getInteger(cursor, Columns.Version));
     }
 
     @NonNull
@@ -66,7 +65,6 @@ public class ConfigDAO extends AbstractIdentifyDAO<String, ConfigItem> {
 
     @Override
     protected String parseKey(@NonNull final String key) {
-        // No need to parse string key
         return key;
     }
 

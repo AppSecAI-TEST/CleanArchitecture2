@@ -9,7 +9,7 @@ import com.cleanarchitecture.shishkin.base.ui.activity.IActivity;
 public interface IFragmentPresenter extends ISubscriber {
 
     /**
-     * Find view v.
+     * Найти View в фрагменте
      *
      * @param <V> the type parameter
      * @param id  the id
@@ -18,14 +18,20 @@ public interface IFragmentPresenter extends ISubscriber {
     <V extends View> V findView(@IdRes final int id);
 
     /**
-     * Gets Activity subscriber.
+     * Получить ActivitySubscriber.
      *
      * @return the activity subscriber
      */
     IActivity getActivitySubscriber();
 
+    /**
+     * Обновить Views презентера.
+     */
     void refreshViews();
 
+    /**
+     * Обновить данные презентера.
+     */
     void refreshData();
 
 }
