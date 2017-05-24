@@ -64,7 +64,7 @@ public class FragmentPresenter extends AbstractPresenter<Void> implements IFragm
     @Override
     public void showProgressBar() {
         if (validate()) {
-            final View progressBar = mFragment.get().findView(R.id.progressbar);
+            final View progressBar = mFragment.get().findView(R.id.presenterProgressBar);
             if (progressBar != null) {
                 ApplicationUtils.runOnUiThread(() -> {
                     progressBar.setVisibility(View.VISIBLE);
@@ -81,7 +81,7 @@ public class FragmentPresenter extends AbstractPresenter<Void> implements IFragm
     @Override
     public void hideProgressBar() {
         if (validate()) {
-            final View progressBar = mFragment.get().findView(R.id.progressbar);
+            final View progressBar = mFragment.get().findView(R.id.presenterProgressBar);
             if (progressBar != null) {
                 ApplicationUtils.runOnUiThread(() -> {
                     progressBar.setVisibility(View.INVISIBLE);

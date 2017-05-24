@@ -12,6 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.view.Surface;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -116,7 +117,7 @@ public class ActivityPresenter extends AbstractPresenter<Void> implements IActiv
     public void showProgressBar() {
         if (validate()) {
             runOnUiThread(() -> {
-                final View progressBar = findView(R.id.progressbar);
+                final View progressBar = findView(R.id.activityprogressbar);
                 if (progressBar != null) {
                     progressBar.setVisibility(View.VISIBLE);
                 }
@@ -128,7 +129,7 @@ public class ActivityPresenter extends AbstractPresenter<Void> implements IActiv
     public void hideProgressBar() {
         if (validate()) {
             runOnUiThread(() -> {
-                final View progressBar = findView(R.id.progressbar);
+                final View progressBar = findView(R.id.activityprogressbar);
                 if (progressBar != null) {
                     progressBar.setVisibility(View.INVISIBLE);
                 }

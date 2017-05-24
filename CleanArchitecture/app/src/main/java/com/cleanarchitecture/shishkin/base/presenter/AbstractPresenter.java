@@ -93,4 +93,11 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IEventVendo
         }
     }
 
+    @Override
+    public void showProgressBar() {
+    }
+
+    @Override
+    public void hideProgressBar() {
+    }
 }

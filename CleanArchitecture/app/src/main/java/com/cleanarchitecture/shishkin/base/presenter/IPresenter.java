@@ -16,4 +16,15 @@ public interface IPresenter<M> extends ILifecycle {
 
     boolean validate();
 
+    /**
+     * Show progress bar.
+     */
+    void showProgressBar();
+
+    /**
+     * Hide progress bar.
+     */
+    void hideProgressBar();
+
+
 }
