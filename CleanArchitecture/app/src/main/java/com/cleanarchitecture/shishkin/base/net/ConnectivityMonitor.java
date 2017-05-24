@@ -17,14 +17,8 @@ import com.cleanarchitecture.shishkin.base.event.OnNetworkDisconnectedEvent;
  */
 public class ConnectivityMonitor extends BroadcastReceiver implements ISubscribeable {
 
-    private static final String EXTRA_AIRPLANE_STATE = "state";
+    //private static final String EXTRA_AIRPLANE_STATE = "state";
     private boolean mSubscribed = false;
-
-    /**
-     * Creates a connectivity monitor with a given connectivity listener.
-     */
-    public ConnectivityMonitor() {
-    }
 
     /**
      * {@inheritDoc}
@@ -61,19 +55,7 @@ public class ConnectivityMonitor extends BroadcastReceiver implements ISubscribe
         }
 
         final String action = intent.getAction();
-        if (Intent.ACTION_AIRPLANE_MODE_CHANGED.equals(action)) {
-            //if (!intent.hasExtra(EXTRA_AIRPLANE_STATE)) {
-            //	return; // No airplane state, ignore it. Should we query Utils.isAirplaneModeOn?
-            //}
-            // TODO: dispatcher.dispatchAirplaneModeChange(intent.getBooleanExtra(EXTRA_AIRPLANE_STATE, false));
-
-        } else if (ConnectivityManager.CONNECTIVITY_ACTION.equals(action)) {
-            checkState(context);
-        }
-    }
-
-    private synchronized void checkState(final Context context) {
-        if (context != null) {
+        if (ConnectivityManager.CONNECTIVITY_ACTION.equals(action)) {
             if (Connectivity.isNetworkConnected(context)) {
                 EventController.getInstance().post(new OnNetworkConnectedEvent());
             } else {
@@ -81,5 +63,4 @@ public class ConnectivityMonitor extends BroadcastReceiver implements ISubscribe
             }
         }
     }
-
 }

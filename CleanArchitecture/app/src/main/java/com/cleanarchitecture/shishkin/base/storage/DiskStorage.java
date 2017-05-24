@@ -33,8 +33,6 @@ public class DiskStorage implements IStorage {
 
         if (context != null) {
             Paper.init(context);
-        } else {
-            sInstance = null;
         }
     }
 

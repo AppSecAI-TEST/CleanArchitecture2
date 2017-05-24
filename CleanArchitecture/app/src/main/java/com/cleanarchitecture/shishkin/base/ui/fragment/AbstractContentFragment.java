@@ -75,12 +75,6 @@ public abstract class AbstractContentFragment extends AbstractFragment  implemen
     public void onActivityResult(final int requestCode, final int resultCode, final Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
 
-        switch (requestCode) {
-            case R.id.dialog_permisions_ok:
-                postEvent(new FinishApplicationEvent());
-                return;
-        }
-
         final List<Fragment> fragments = getChildFragmentManager().getFragments();
         if (fragments != null) {
             for (final Fragment child : fragments) {

@@ -21,9 +21,13 @@ public final class Connectivity {
      * <p>Always call this before attempting to perform data transactions.
      * @return {@code true} if network connectivity exists, {@code false} otherwise.
      */
-    public static boolean isNetworkConnected(@NonNull final Context context) {
+    public static boolean isNetworkConnected(final Context context) {
+        if (context == null) {
+            return false;
+        }
+
         final NetworkInfo activeNetwork = getActiveNetworkInfo(context);
-        return isNetworkConnected(context, activeNetwork);
+        return isNetworkConnected(activeNetwork);
     }
 
     /**
@@ -32,7 +36,7 @@ public final class Connectivity {
      * <p>Always call this before attempting to perform data transactions.
      * @return {@code true} if network connectivity exists, {@code false} otherwise.
      */
-    public static boolean isNetworkConnected(@NonNull final Context context, @Nullable final NetworkInfo activeNetwork) {
+    public static boolean isNetworkConnected(@Nullable final NetworkInfo activeNetwork) {
         return (activeNetwork != null && activeNetwork.isConnected());
     }
 
@@ -43,7 +47,11 @@ public final class Connectivity {
      * @return {@code true} if network connectivity exists or is in the process
      * of being established, {@code false} otherwise.
      */
-    public static boolean isNetworkConnectedOrConnecting(@NonNull final Context context) {
+    public static boolean isNetworkConnectedOrConnecting(final Context context) {
+        if (context == null) {
+            return false;
+        }
+
         final NetworkInfo activeNetwork = getActiveNetworkInfo(context);
         return isNetworkConnectedOrConnecting(activeNetwork);
     }

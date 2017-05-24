@@ -4,11 +4,6 @@
     <item name="notification_service" type="id" />
 
     <item name="dialog_request_permissions" type="id" />
-    <item name="dialog_permisions_ok" type="id" />
-    <item name="dialog_invalid_user" type="id" />
-    <item name="dialog_call_phone" type="id" />
-    <item name="search_presenter_change_search" type="id" />
-    <item name="loader_contacts" type="id" />
 
     <item name="cache_contact_items" type="id" />
 

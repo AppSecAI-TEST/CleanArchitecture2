@@ -68,7 +68,6 @@ public class AutoCompleteHandler<E> {
         mLock.lock();
         try {
             mShutdownTimeout = shutdownTimeout;
-        } catch (Exception e) {
         } finally {
             mLock.unlock();
         }
@@ -81,7 +80,6 @@ public class AutoCompleteHandler<E> {
         mLock.lock();
         try {
             mOnShutdownListener = onShutdownListener;
-        } catch (Exception e) {
         } finally {
             mLock.unlock();
         }
@@ -94,7 +92,6 @@ public class AutoCompleteHandler<E> {
         mLock.lock();
         try {
             mOnHandleEventListener = onHandleEventListener;
-        } catch (Exception e) {
         } finally {
             mLock.unlock();
         }
@@ -132,7 +129,6 @@ public class AutoCompleteHandler<E> {
                 mHandler.removeMessages(EVENT_TOKEN);
             }
             mHandler.obtainMessage(EVENT_TOKEN, event).sendToTarget();
-        } catch (Exception e) {
         } finally {
             mLock.unlock();
         }
@@ -151,7 +147,6 @@ public class AutoCompleteHandler<E> {
                 final Message shutdownMsg = mHandler.obtainMessage(SHUTDOWN_TOKEN);
                 mHandler.sendMessageDelayed(shutdownMsg, mShutdownTimeout);
             }
-        } catch (Exception e) {
         } finally {
             mLock.unlock();
         }
@@ -168,7 +163,6 @@ public class AutoCompleteHandler<E> {
                     mOnShutdownListener.onShutdown(this);
                 }
             }
-        } catch (Exception e) {
         } finally {
             mLock.unlock();
         }
