@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public interface IActivityPresenter extends ISubscriber {
 
     /**
-     * Find view v.
+     * Найти View презентера
      *
      * @param <V> the type parameter
      * @param id  the id
@@ -35,36 +35,36 @@ public interface IActivityPresenter extends ISubscriber {
     void grantPermission(String permission, String helpMessage);
 
     /**
-     * Show message.
+     * Показать сообщение
      *
      * @param message the message
      */
     void showMessage(String message);
 
     /**
-     * Show message.
+     * Показать сообщение
      *
-     * @param message the message
+     * @param message  the message
      * @param duration the duration
      */
     void showMessage(String message, int duration);
 
     /**
-     * Show message.
+     * Показать сообщение
      *
-     * @param message the message
+     * @param message  the message
      * @param duration the duration
-     * @param action the action text
+     * @param action   the action text
      */
     void showMessage(String message, int duration, String action);
 
     /**
-     * Hide keyboard.
+     * Скрыть клавиатуру
      */
     void hideKeyboard();
 
     /**
-     * Show keyboard.
+     * Показать клавиатуру
      */
     void showKeyboard();
 
@@ -79,7 +79,7 @@ public interface IActivityPresenter extends ISubscriber {
     void unlockOrientation();
 
     /**
-     * Show dialog.
+     * Показать диалог
      *
      * @param id      the id
      * @param title   the title
@@ -88,7 +88,7 @@ public interface IActivityPresenter extends ISubscriber {
     void showDialog(int id, int title, String message);
 
     /**
-     * Show dialog.
+     * Показать диалог
      *
      * @param id              the id
      * @param title           the title
@@ -98,7 +98,7 @@ public interface IActivityPresenter extends ISubscriber {
     void showDialog(int id, int title, String message, int button_positive);
 
     /**
-     * Show dialog.
+     * Показать диалог
      *
      * @param id              the id
      * @param title           the title
@@ -109,7 +109,7 @@ public interface IActivityPresenter extends ISubscriber {
     void showDialog(int id, int title, String message, int button_positive, int button_negative);
 
     /**
-     * Show dialog.
+     * Показать диалог
      *
      * @param id              the id
      * @param title           the title
@@ -121,7 +121,7 @@ public interface IActivityPresenter extends ISubscriber {
     void showDialog(int id, int title, String message, int button_positive, int button_negative, boolean setCancelable);
 
     /**
-     * Show edit dialog.
+     * Показать диалог с EditView
      *
      * @param id              the id
      * @param title           the title
@@ -136,7 +136,7 @@ public interface IActivityPresenter extends ISubscriber {
     void showEditDialog(int id, int title, String message, String editText, String hint, int input_type, int button_positive, int button_negative, boolean setCancelable);
 
     /**
-     * Show list dialog.
+     * Показать диалог с ListView
      *
      * @param id              the id
      * @param title           the title
@@ -151,28 +151,33 @@ public interface IActivityPresenter extends ISubscriber {
     void showListDialog(int id, int title, String message, ArrayList<String> list, Integer[] listSelected, boolean multiselect, int button_positive, int button_negative, boolean setCancelable);
 
     /**
-     * Show toast message.
+     * Показать Toast сообщение
      *
      * @param message the message
      */
     void showToast(String message);
 
     /**
-     * Show toast message.
+     * Показать Toast сообщение
      *
-     * @param message the message
+     * @param message  the message
      * @param duration the show duration
      */
     void showToast(String message, int duration);
 
     /**
-     * Show toast message.
+     * Показать Toast сообщение
      *
-     * @param message the message
+     * @param message  the message
      * @param duration the show duration
-     * @param type the toast type
+     * @param type     the toast type
      */
     void showToast(String message, int duration, int type);
 
+    /**
+     * Установить цвет status bar телефона
+     *
+     * @param color the color
+     */
     void setStatusBarColor(final int color);
 }
