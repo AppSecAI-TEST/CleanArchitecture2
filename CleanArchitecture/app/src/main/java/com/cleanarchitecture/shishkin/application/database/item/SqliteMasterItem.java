@@ -1,9 +1,10 @@
 package com.cleanarchitecture.shishkin.application.database.item;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
-public class SqliteMasterItem implements Parcelable {
+import java.io.Serializable;
+
+public class SqliteMasterItem implements Serializable{
 
     private String mType;
     private String mName;
@@ -30,40 +31,19 @@ public class SqliteMasterItem implements Parcelable {
         return mTblName;
     }
 
-    public void setType(String type) {
+    public SqliteMasterItem setType(String type) {
         this.mType = type;
+        return this;
     }
 
-    public void setName(String name) {
+    public SqliteMasterItem setName(String name) {
         this.mName = name;
+        return this;
     }
 
-    public void setTblName(String tblName) {
+    public SqliteMasterItem setTblName(String tblName) {
         this.mTblName = tblName;
+        return this;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(final Parcel dest, final int flags) {
-        dest.writeValue(mType);
-        dest.writeValue(mName);
-        dest.writeValue(mTblName);
-    }
-
-    public static final Creator<SqliteMasterItem> CREATOR = new Creator<SqliteMasterItem>() {
-        @Override
-        public SqliteMasterItem createFromParcel(final Parcel source) {
-            return new SqliteMasterItem(source);
-        }
-
-        @Override
-        public SqliteMasterItem[] newArray(final int size) {
-            return new SqliteMasterItem[size];
-        }
-    };
 
 }

@@ -49,11 +49,10 @@ public class SqliteMasterDAO extends AbstractReadOnlyDAO<SqliteMasterItem> {
     @NonNull
     @Override
     protected SqliteMasterItem getItemFromCursor(final Cursor cursor) {
-        final SqliteMasterItem item = new SqliteMasterItem();
-        item.setType(getString(cursor, Columns.type));
-        item.setName(getString(cursor, Columns.name));
-        item.setTblName(getString(cursor, Columns.tbl_name));
-        return item;
+        return new SqliteMasterItem()
+                .setType(getString(cursor, Columns.type))
+                .setName(getString(cursor, Columns.name))
+                .setTblName(getString(cursor, Columns.tbl_name));
     }
 
 }
