@@ -1,11 +1,16 @@
 package com.cleanarchitecture.shishkin.application.database.item;
 
 import com.cleanarchitecture.shishkin.base.database.dao.IIdentify;
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class ConfigItem implements IIdentify<String>, Serializable {
 
+    @SerializedName("RowId")
     private String mRowId;
+
+    @SerializedName("Version")
     private int mVersion;
 
     public ConfigItem() {
