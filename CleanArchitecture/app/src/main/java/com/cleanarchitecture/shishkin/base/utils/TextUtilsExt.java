@@ -98,26 +98,6 @@ public class TextUtilsExt {
         return (s == null ? null : s.toUpperCase(Locale.getDefault()));
     }
 
-    /*@NonNull
-    public static String getAbbreviation(@NonNull final String name) {
-        final String[] words = TextUtils.split(name, " ");
-        final StringBuilder sb = new StringBuilder();
-        for (final String w : words) {
-            if (w.length() > 0) {
-                final char firstChar = w.charAt(0);
-                if (Character.isLetterOrDigit(firstChar)) {
-                    sb.append(toUpperCase(Character.toString(firstChar)));
-                }
-            }
-        }
-        return sb.toString();
-    }*/
-
-    /*@NonNull
-    public static String getFirstLetter(@NonNull final String name) {
-        return (name.length() > 0 ? toUpperCase(Character.toString(name.charAt(0))) : "");
-    }*/
-
     /**
      * Returns a string containing the tokens joined by delimiters.
      *

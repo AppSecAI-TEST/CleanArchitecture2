@@ -1,14 +1,9 @@
 package com.cleanarchitecture.shishkin.base.utils;
 
-import com.google.common.reflect.TypeToken;
-
 import java.io.Serializable;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class SerializableUtil {
 
@@ -20,7 +15,7 @@ public class SerializableUtil {
             return null;
         }
 
-        final LinkedList<T> linkedList = new LinkedList<T>();
+        final LinkedList<T> linkedList = new LinkedList<>();
         linkedList.addAll(list);
         return linkedList;
     }
@@ -32,7 +27,7 @@ public class SerializableUtil {
 
         if (value instanceof LinkedList) {
             LinkedList<T> items = (LinkedList) value;
-            final List<T> list = new ArrayList<T>();
+            final List<T> list = new ArrayList<>();
             list.addAll(items);
             return list;
         } else if (value instanceof ArrayList) {

@@ -24,4 +24,8 @@ public class SafeUtils {
             return null;
         }
     }
+
+    private SafeUtils() {
+    }
+
 }
