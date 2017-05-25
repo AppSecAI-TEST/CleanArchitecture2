@@ -86,7 +86,7 @@ public abstract class AbstractActivity extends AppCompatActivity
 
     @Override
     public void onUserInteraction() {
-        EventController.getInstance().post(new OnUserIteractionEvent());
+        // EventController.getInstance().post(new OnUserIteractionEvent());
     }
 
     /**
@@ -108,7 +108,7 @@ public abstract class AbstractActivity extends AppCompatActivity
 
         mActivityPresenter.bindView(this);
 
-        EventController.getInstance().post(new OnUserIteractionEvent());
+        //EventController.getInstance().post(new OnUserIteractionEvent());
     }
 
     @Override
@@ -187,10 +187,7 @@ public abstract class AbstractActivity extends AppCompatActivity
 
     @Override
     public void clearBackStack() {
-        final FragmentManager fragmentManager = getSupportFragmentManager();
-        while (fragmentManager.getBackStackEntryCount() > 0) {
-            fragmentManager.popBackStackImmediate();
-        }
+        getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
     @Override
@@ -199,7 +196,7 @@ public abstract class AbstractActivity extends AppCompatActivity
 
         UseCasesController.getInstance().setSystemDialogShown(false);
 
-        EventController.getInstance().post(new OnUserIteractionEvent());
+        //EventController.getInstance().post(new OnUserIteractionEvent());
 
         for (int i = 0; i < permissions.length; i++) {
             AppPreferences.getInstance().putInt(this, permissions[i], grantResults[i]);
@@ -328,7 +325,7 @@ public abstract class AbstractActivity extends AppCompatActivity
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDialogResultEvent(DialogResultEvent event) {
 
-        EventController.getInstance().post(new OnUserIteractionEvent());
+        //EventController.getInstance().post(new OnUserIteractionEvent());
 
         final Bundle bundle = event.getResult();
         if (bundle.getInt("id", -1) == R.id.dialog_request_permissions) {

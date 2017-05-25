@@ -16,7 +16,6 @@ import com.cleanarchitecture.shishkin.application.task.CreateDbTask;
 import com.cleanarchitecture.shishkin.base.controller.ActivityController;
 import com.cleanarchitecture.shishkin.base.controller.CrashController;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
-import com.cleanarchitecture.shishkin.base.controller.JobController;
 import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
 import com.cleanarchitecture.shishkin.base.controller.MailController;
 import com.cleanarchitecture.shishkin.base.controller.NavigationController;
@@ -97,7 +96,6 @@ public class ApplicationController extends Application {
         UseCasesController.instantiate();
         Repository.instantiate();
         MailController.instantiate();
-        JobController.instantiate();
 
         registerScreenOnOffBroadcastReceiver();
 
