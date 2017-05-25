@@ -8,12 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.base.controller.ActivityController;
-import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
-import com.cleanarchitecture.shishkin.base.controller.MailController;
 import com.cleanarchitecture.shishkin.base.controller.NotificationService;
 import com.cleanarchitecture.shishkin.base.controller.PresenterController;
 import com.cleanarchitecture.shishkin.base.event.OnNetworkConnectedEvent;
@@ -22,12 +18,11 @@ import com.cleanarchitecture.shishkin.base.event.toolbar.OnToolbarMenuItemClickE
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetBackNavigationEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetMenuEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetTitleEvent;
+import com.cleanarchitecture.shishkin.base.event.ui.HideHorizontalProgressBarEvent;
+import com.cleanarchitecture.shishkin.base.event.ui.ShowHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseFinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
-import com.cleanarchitecture.shishkin.base.mail.IMail;
-import com.cleanarchitecture.shishkin.base.mail.ShowToastMail;
 import com.cleanarchitecture.shishkin.base.net.Connectivity;
-import com.cleanarchitecture.shishkin.base.presenter.ActivityPresenter;
 import com.cleanarchitecture.shishkin.base.presenter.FragmentPresenter;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.base.presenter.OnBackPressedPresenter;
@@ -80,6 +75,7 @@ public class HomeFragment extends AbstractContentFragment {
 
         PresenterController.getInstance().getPresenter(ToolbarPresenter.NAME).showProgressBar();
         getFragmentPresenter().showProgressBar();
+        postEvent(new ShowHorizontalProgressBarEvent());
         view.postDelayed(() -> {
             final IPresenter presenter = PresenterController.getInstance().getPresenter(ToolbarPresenter.NAME);
             if (presenter != null) {
@@ -90,6 +86,8 @@ public class HomeFragment extends AbstractContentFragment {
             if (fragmentPresenter != null) {
                 fragmentPresenter.hideProgressBar();
             }
+
+            postEvent(new HideHorizontalProgressBarEvent());
         }, 5000);
 
     }
