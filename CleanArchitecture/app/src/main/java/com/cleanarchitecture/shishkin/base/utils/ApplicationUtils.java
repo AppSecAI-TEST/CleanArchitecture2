@@ -1,6 +1,7 @@
 package com.cleanarchitecture.shishkin.base.utils;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -19,6 +20,8 @@ import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.usecases.UseCasesController;
 import com.github.snowdream.android.util.Log;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,14 +109,14 @@ public class ApplicationUtils {
      * Return the handle to a system-level service by name. The class of the
      * returned object varies by the requested name.
      */
-    public  static <S> S getSystemService(final Context context, final String serviceName) {
+    public static <S> S getSystemService(final Context context, final String serviceName) {
         if (context != null) {
             return SafeUtils.cast(context.getSystemService(serviceName));
         }
         return null;
     }
 
-    public static  void runOnUiThread(Runnable action) {
+    public static void runOnUiThread(Runnable action) {
         new Handler(Looper.getMainLooper()).post(action);
     }
 
@@ -125,6 +128,26 @@ public class ApplicationUtils {
                     if (!pm.isIgnoringBatteryOptimizations(BuildConfig.APPLICATION_ID)) {
                         final Intent myIntent = new Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
                         activity.startActivity(myIntent);
+                    }
+                }
+            }
+        }
+    }
+
+    public static void checkGooglePlayServices(final Activity activity) {
+        if (activity != null) {
+            final GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
+            final int result = googleAPI.isGooglePlayServicesAvailable(activity);
+            if (result != ConnectionResult.SUCCESS) {
+                if (googleAPI.isUserResolvableError(result)) {
+                    if (!UseCasesController.getInstance().isSystemDialogShown()) {
+                        UseCasesController.getInstance().setSystemDialogShown(true);
+                        runOnUiThread(() -> {
+                            final Dialog dialog = googleAPI.getErrorDialog(activity, result, ApplicationUtils.REQUEST_GOOGLE_PLAY_SERVICES);
+                            dialog.setOnCancelListener(dialogInterface -> activity.finish());
+                            dialog.setOnDismissListener(dialog1 -> UseCasesController.getInstance().setSystemDialogShown(false));
+                            dialog.show();
+                        });
                     }
                 }
             }
@@ -175,24 +198,7 @@ public class ApplicationUtils {
         return true;
     }
 
-    public static int countUngrantedPermisions(final String[] permissions) {
-        final List<String> listPermissionsNeeded = new ArrayList();
-        if (hasMarshmallow()) {
-            if (ApplicationController.getInstance() != null) {
-                for (String permission : permissions) {
-                    if (ActivityCompat.checkSelfPermission(ApplicationController.getInstance(),
-                            permission)
-                            != PackageManager.PERMISSION_GRANTED) {
-                        listPermissionsNeeded.add(permission);
-                    }
-                }
-            }
-        }
-        return listPermissionsNeeded.size();
-    }
-
-
-    public static int getPermission(final String permission) {
+    public static int getStatusPermission(final String permission) {
         if (hasMarshmallow()) {
             if (ApplicationController.getInstance() != null) {
                 return ActivityCompat.checkSelfPermission(ApplicationController.getInstance(), permission);
@@ -205,11 +211,7 @@ public class ApplicationUtils {
 
     public static boolean checkPermission(final String permission) {
         if (hasMarshmallow()) {
-            if (ApplicationController.getInstance() != null) {
-                return ActivityCompat.checkSelfPermission(ApplicationController.getInstance(), permission) == PackageManager.PERMISSION_GRANTED;
-            } else {
-                return false;
-            }
+            return getStatusPermission(permission) == PackageManager.PERMISSION_GRANTED;
         }
         return true;
     }

@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.ActivityController;
-import com.cleanarchitecture.shishkin.base.controller.AppPreferences;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionDeniedEvent;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
@@ -28,10 +27,10 @@ public class RequestPermissionUseCase extends AbstractUseCase {
             return;
         }
 
-        final int grant = ApplicationUtils.getPermission(permission);
+        final int status = ApplicationUtils.getStatusPermission(permission);
         switch (permission) {
             case Manifest.permission.WRITE_EXTERNAL_STORAGE:
-                switch (grant) {
+                switch (status) {
                     case PackageManager.PERMISSION_GRANTED:
                         enableLog();
                         break;

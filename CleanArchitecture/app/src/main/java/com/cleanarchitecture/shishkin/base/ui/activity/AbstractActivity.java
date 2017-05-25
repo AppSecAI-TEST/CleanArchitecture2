@@ -312,7 +312,6 @@ public abstract class AbstractActivity extends AppCompatActivity
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public synchronized void onFinishApplicationEvent(FinishApplicationEvent event) {
-        clearBackStack();
         if (ApplicationUtils.hasLollipop()) {
             finishAndRemoveTask();
         } else if (ApplicationUtils.hasJellyBean()) {
