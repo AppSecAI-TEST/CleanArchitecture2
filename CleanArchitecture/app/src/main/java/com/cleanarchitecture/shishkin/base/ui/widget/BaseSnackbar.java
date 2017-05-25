@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 
 public class BaseSnackbar {
     @CheckResult
@@ -27,7 +28,7 @@ public class BaseSnackbar {
         final View snackbarView = snackbar.getView();
         final TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
         textView.setTextColor(ContextCompat.getColor(view.getContext(), R.color.white));
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
+        if (ApplicationUtils.hasJellyBeanMR1()) {
             textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         }
         textView.setSingleLine(false);

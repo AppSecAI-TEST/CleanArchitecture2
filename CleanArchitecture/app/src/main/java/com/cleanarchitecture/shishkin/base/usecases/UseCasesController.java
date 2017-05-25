@@ -2,6 +2,8 @@ package com.cleanarchitecture.shishkin.base.usecases;
 
 import com.cleanarchitecture.shishkin.base.controller.AbstractController;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
+import com.cleanarchitecture.shishkin.base.event.OnPermisionDeniedEvent;
+import com.cleanarchitecture.shishkin.base.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.OnSnackBarClickEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseFinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnLowMemoryEvent;
@@ -82,6 +84,16 @@ public class UseCasesController extends AbstractController {
         if (!isSystemDialogShown()) {
             RequestPermissionUseCase.request(event);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onRequestPermissionUseCaseEvent(final OnPermisionGrantedEvent event) {
+        RequestPermissionUseCase.grantedPermision(event);
+    }
+
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onRequestPermissionUseCaseEvent(final OnPermisionDeniedEvent event) {
+        RequestPermissionUseCase.deniedPermision(event);
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)

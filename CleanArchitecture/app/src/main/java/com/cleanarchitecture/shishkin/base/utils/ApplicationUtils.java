@@ -15,6 +15,7 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
+import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.usecases.UseCasesController;
 import com.github.snowdream.android.util.Log;
@@ -25,9 +26,8 @@ import java.util.List;
 public class ApplicationUtils {
 
     private static final String LOG_TAG = "ApplicationUtils:";
-
-    public static final int REQ_GOOGLE_PLAY_SERVICES = 10001;
-    public static final int REQ_PERMISSIONS = 1;
+    public static final int REQUEST_PERMISSIONS = 10000;
+    public static final int REQUEST_GOOGLE_PLAY_SERVICES = 10001;
 
     public static boolean hasJellyBean() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
@@ -119,7 +119,7 @@ public class ApplicationUtils {
 
     public static void isIgnoringBatteryOptimizations(final Activity activity) {
         if (activity != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (hasMarshmallow()) {
                 final PowerManager pm = (PowerManager) activity.getSystemService(Context.POWER_SERVICE);
                 if (pm != null) {
                     if (!pm.isIgnoringBatteryOptimizations(BuildConfig.APPLICATION_ID)) {
@@ -133,7 +133,7 @@ public class ApplicationUtils {
 
     public static void canDrawOverlays(final Activity activity) {
         if (activity != null) {
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if (hasMarshmallow()) {
                 if (!Settings.canDrawOverlays(activity)) {
                     final Intent myIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
                     activity.startActivity(myIntent);
@@ -143,7 +143,7 @@ public class ApplicationUtils {
     }
 
     public static boolean grantPermisions(final String[] permissions, final Activity activity) {
-        if (Build.VERSION.SDK_INT >= 23) {
+        if (hasMarshmallow()) {
             if (ApplicationController.getInstance() != null) {
                 final List<String> listPermissionsNeeded = new ArrayList();
 
@@ -163,7 +163,7 @@ public class ApplicationUtils {
                             UseCasesController.getInstance().setSystemDialogShown(true);
                             ActivityCompat.requestPermissions(activity,
                                     arrayPermissionsNeeded,
-                                    REQ_PERMISSIONS);
+                                    REQUEST_PERMISSIONS);
                         }
                     }
                     return false;
@@ -177,7 +177,7 @@ public class ApplicationUtils {
 
     public static int countUngrantedPermisions(final String[] permissions) {
         final List<String> listPermissionsNeeded = new ArrayList();
-        if (Build.VERSION.SDK_INT >= 23) {
+        if (hasMarshmallow()) {
             if (ApplicationController.getInstance() != null) {
                 for (String permission : permissions) {
                     if (ActivityCompat.checkSelfPermission(ApplicationController.getInstance(),
@@ -193,7 +193,7 @@ public class ApplicationUtils {
 
 
     public static int getPermission(final String permission) {
-        if (Build.VERSION.SDK_INT >= 23) {
+        if (hasMarshmallow()) {
             if (ApplicationController.getInstance() != null) {
                 return ActivityCompat.checkSelfPermission(ApplicationController.getInstance(), permission);
             } else {
@@ -204,7 +204,7 @@ public class ApplicationUtils {
     }
 
     public static boolean checkPermission(final String permission) {
-        if (Build.VERSION.SDK_INT >= 23) {
+        if (hasMarshmallow()) {
             if (ApplicationController.getInstance() != null) {
                 return ActivityCompat.checkSelfPermission(ApplicationController.getInstance(), permission) == PackageManager.PERMISSION_GRANTED;
             } else {

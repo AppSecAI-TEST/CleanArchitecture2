@@ -3,6 +3,8 @@
 
     <item name="notification_service" type="id" />
 
+    <item name="request_permissions" type="id" />
+
     <item name="dialog_request_permissions" type="id" />
 
     <item name="cache_contact_items" type="id" />

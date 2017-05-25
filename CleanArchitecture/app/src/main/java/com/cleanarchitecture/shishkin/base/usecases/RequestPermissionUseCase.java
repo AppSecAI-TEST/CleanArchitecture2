@@ -8,6 +8,8 @@ import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.ActivityController;
 import com.cleanarchitecture.shishkin.base.controller.AppPreferences;
+import com.cleanarchitecture.shishkin.base.event.OnPermisionDeniedEvent;
+import com.cleanarchitecture.shishkin.base.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.github.snowdream.android.util.Log;
@@ -26,35 +28,18 @@ public class RequestPermissionUseCase extends AbstractUseCase {
             return;
         }
 
-        final int grant = AppPreferences.getInstance().getInt(context, permission, -111);
-        AppPreferences.getInstance().putInt(context, permission, ApplicationUtils.getPermission(permission));
+        final int grant = ApplicationUtils.getPermission(permission);
         switch (permission) {
             case Manifest.permission.WRITE_EXTERNAL_STORAGE:
                 switch (grant) {
-                    case -111:
-                        Log.setLog2FileEnabled(false);
-                        if (ApplicationUtils.getPermission(permission) != PackageManager.PERMISSION_GRANTED) {
-                            ActivityController.getInstance().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_write_external_storage));
-                        } else {
-                            UseCasesController.getInstance().setSystemDialogShown(false);
-                            Log.setLog2FileEnabled(true);
-                        }
-                        break;
-
                     case PackageManager.PERMISSION_GRANTED:
-                        Log.setLog2FileEnabled(true);
-                        UseCasesController.getInstance().setSystemDialogShown(false);
+                        enableLog();
                         break;
 
                     case PackageManager.PERMISSION_DENIED:
-                        Log.setLog2FileEnabled(false);
-                        int dialog = AppPreferences.getInstance().getInt(context, "dialog." + permission, 0);
-                        if (dialog == 0) {
-                            dialog++;
-                            AppPreferences.getInstance().putInt(context, "dialog." + permission, dialog);
+                        disabledLog();
+                        if (!UseCasesController.getInstance().isSystemDialogShown()) {
                             ActivityController.getInstance().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_write_external_storage));
-                        } else {
-                            UseCasesController.getInstance().setSystemDialogShown(false);
                         }
                         break;
 
@@ -62,6 +47,38 @@ public class RequestPermissionUseCase extends AbstractUseCase {
                 break;
 
         }
+    }
+
+    private static void enableLog() {
+        Log.setEnabled(true);
+        Log.setLog2FileEnabled(true);
+    }
+
+    private static void disabledLog() {
+        Log.setEnabled(false);
+        Log.setLog2FileEnabled(false);
+    }
+
+    public static synchronized void grantedPermision(final OnPermisionGrantedEvent event) {
+        final String permission = event.getPermission();
+        switch (permission) {
+            case Manifest.permission.WRITE_EXTERNAL_STORAGE:
+                enableLog();
+                break;
+
+        }
+
+    }
+
+    public static synchronized void deniedPermision(final OnPermisionDeniedEvent event) {
+        final String permission = event.getPermission();
+        switch (permission) {
+            case Manifest.permission.WRITE_EXTERNAL_STORAGE:
+                disabledLog();
+                break;
+
+        }
+
     }
 
     @Override

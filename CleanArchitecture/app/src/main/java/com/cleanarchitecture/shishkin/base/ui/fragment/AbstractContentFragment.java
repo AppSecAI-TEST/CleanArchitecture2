@@ -6,17 +6,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
-import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
-import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
-import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarPrepareEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarInitEvent;
+import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarPrepareEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarResetEvent;
 import com.cleanarchitecture.shishkin.base.presenter.ContentFragmentPresenter;
-import com.cleanarchitecture.shishkin.base.presenter.IContentFragmentPresenter;
 import com.cleanarchitecture.shishkin.base.ui.activity.OnBackPressListener;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -27,8 +23,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 public abstract class AbstractContentFragment extends AbstractFragment  implements
         IContentFragment,
-        OnBackPressListener,
-        IContentFragmentPresenter {
+        OnBackPressListener {
 
     private ContentFragmentPresenter mContentFragmentPresenter = new ContentFragmentPresenter();
 
@@ -83,18 +78,6 @@ public abstract class AbstractContentFragment extends AbstractFragment  implemen
                 }
             }
         }
-    }
-
-    public SwipeRefreshLayout getSwipeRefreshLayout() {
-        return mContentFragmentPresenter.getSwipeRefreshLayout();
-    }
-
-    public void setSwipeRefreshLayout(SwipeRefreshLayout swipeRefreshLayout) {
-        mContentFragmentPresenter.setSwipeRefreshLayout(swipeRefreshLayout);
-    }
-
-    public void onClick(View view) {
-        mContentFragmentPresenter.onClick(view);
     }
 
     public abstract void prepareToolbar();
