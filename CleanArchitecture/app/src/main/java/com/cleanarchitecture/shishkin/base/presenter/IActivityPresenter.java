@@ -180,4 +180,11 @@ public interface IActivityPresenter extends ISubscriber {
      * @param color the color
      */
     void setStatusBarColor(final int color);
+
+    /**
+     * Контролировать наличие и текущую версию Google Play Services
+     *
+     */
+    boolean checkGooglePlayServices();
+
 }

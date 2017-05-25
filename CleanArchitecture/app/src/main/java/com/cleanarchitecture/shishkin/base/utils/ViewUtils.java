@@ -147,7 +147,7 @@ public class ViewUtils {
     }
 
     public static void setStatusBarColor(Activity activity, int color_res) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (ApplicationUtils.hasLollipop()) {
             final Window window = activity.getWindow();
 
             // clear FLAG_TRANSLUCENT_STATUS flag:

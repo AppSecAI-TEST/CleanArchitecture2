@@ -213,8 +213,8 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
 
     @Override
     public void setBackNavigation(final boolean backNavigation) {
-        if (validate()) {
-            ApplicationUtils.runOnUiThread(() -> {
+        ApplicationUtils.runOnUiThread(() -> {
+            if (validate()) {
                 mBackNavigation = backNavigation;
                 mHome.get().setVisibility(mBackNavigation ? View.VISIBLE : View.INVISIBLE);
                 if (!mBackNavigation) {
@@ -222,8 +222,8 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
                 } else {
                     mHome.get().setImageDrawable(ViewUtils.getDrawable(mContext.get(), R.mipmap.ic_arrow_left));
                 }
-            });
-        }
+            }
+        });
     }
 
     @Override
@@ -257,23 +257,23 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
 
     @Override
     public void setShow(boolean isShow) {
-        if (validate()) {
-            mShow = isShow;
+        mShow = isShow;
 
-            ApplicationUtils.runOnUiThread(() -> {
+        ApplicationUtils.runOnUiThread(() -> {
+            if (validate()) {
                 if (isShow()) {
                     mToolbarLL.get().setVisibility(View.VISIBLE);
                 } else {
                     mToolbarLL.get().setVisibility(View.GONE);
                 }
-            });
-        }
+            }
+        });
     }
 
     @Override
     public void showHorizontalProgressBar() {
-        if (validate()) {
-            ApplicationUtils.runOnUiThread(() -> {
+        ApplicationUtils.runOnUiThread(() -> {
+            if (validate()) {
                 final AbstractContentActivity activity = LifecycleController.getInstance().getContentActivity();
                 if (activity != null) {
                     final AbstractContentFragment fragment = activity.getContentFragment(AbstractContentFragment.class);
@@ -295,14 +295,14 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
                 } else {
                     mHorizontalPogressBar.get().setVisibility(View.VISIBLE);
                 }
-            });
-        }
+            }
+        });
     }
 
     @Override
     public void hideHorizontalProgressBar() {
-        if (validate()) {
-            ApplicationUtils.runOnUiThread(() -> {
+        ApplicationUtils.runOnUiThread(() -> {
+            if (validate()) {
                 final AbstractContentActivity activity = LifecycleController.getInstance().getContentActivity();
                 if (activity != null) {
                     final AbstractContentFragment fragment = activity.getContentFragment(AbstractContentFragment.class);
@@ -319,62 +319,62 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
                 } else {
                     mHorizontalPogressBar.get().setVisibility(View.INVISIBLE);
                 }
-            });
-        }
+            }
+        });
     }
 
     @Override
     public void showProgressBar() {
-        if (validate()) {
-            ApplicationUtils.runOnUiThread(() -> {
+        ApplicationUtils.runOnUiThread(() -> {
+            if (validate()) {
                 mPogressBar.get().setVisibility(View.VISIBLE);
-            });
-        }
+            }
+        });
     }
 
     @Override
     public void hideProgressBar() {
-        if (validate()) {
-            ApplicationUtils.runOnUiThread(() -> {
+        ApplicationUtils.runOnUiThread(() -> {
+            if (validate()) {
                 mPogressBar.get().setVisibility(View.GONE);
-            });
-        }
+            }
+        });
     }
 
     @Override
     public void setItem(final int itemId, final boolean isVisible) {
-        if (validate()) {
-            ApplicationUtils.runOnUiThread(() -> {
+        ApplicationUtils.runOnUiThread(() -> {
+            if (validate()) {
                 if (itemId > 0) {
                     mItem.get().setImageDrawable(ViewUtils.getDrawable(mContext.get(), itemId));
                 }
                 mItem.get().setVisibility(isVisible ? View.VISIBLE : View.GONE);
-            });
-        }
+            }
+        });
     }
 
     @Override
     public void setMenu(final int menuId, final boolean isVisible) {
-        if (validate()) {
-            ApplicationUtils.runOnUiThread(() -> {
+        ApplicationUtils.runOnUiThread(() -> {
+            if (validate()) {
                 mMenuId = menuId;
                 mMenu.get().setVisibility(isVisible ? View.VISIBLE : View.GONE);
-            });
-        }
+            }
+        });
     }
 
     @Override
     public void setTitle(final int iconId, final String title) {
-        if (validate()) {
-            ApplicationUtils.runOnUiThread(() -> {
+        ApplicationUtils.runOnUiThread(() -> {
+            if (validate()) {
                 if (StringUtils.isNullOrEmpty(title)) {
                     mTitle.get().setText(StringUtils.EMPTY);
                 } else {
                     mTitle.get().setText(title);
                 }
                 mTitle.get().setCompoundDrawablesWithIntrinsicBounds(iconId, 0, 0, 0);
-            });
-        }
+            }
+        });
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
@@ -415,8 +415,8 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onToolbarOnClickEvent(final OnToolbarClickEvent event) {
         final AbstractContentFragment fragment = NavigationController.getInstance().getContentFragment(AbstractContentFragment.class);
-        if (fragment != null) {
-            ApplicationUtils.runOnUiThread(() -> fragment.onClick(event.getView()));
+        if (fragment != null && fragment.getContentFragmentPresenter() != null) {
+            ApplicationUtils.runOnUiThread(() -> fragment.getContentFragmentPresenter().onClick(event.getView()));
         }
     }
 

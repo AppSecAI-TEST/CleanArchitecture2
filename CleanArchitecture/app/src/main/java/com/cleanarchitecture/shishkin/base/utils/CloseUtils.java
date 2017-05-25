@@ -11,7 +11,7 @@ public class CloseUtils {
     private CloseUtils() {
     }
 
-    public static void closeIO(Closeable... closeables) {
+    public static void close(Closeable... closeables) {
         if (closeables == null) return;
         try {
             for (Closeable closeable : closeables) {

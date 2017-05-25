@@ -34,6 +34,7 @@ import com.cleanarchitecture.shishkin.base.presenter.ActivityPresenter;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.base.ui.dialog.MaterialDialogExt;
 import com.cleanarchitecture.shishkin.base.usecases.UseCasesController;
+import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.ViewUtils;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -85,7 +86,7 @@ public abstract class AbstractActivity extends AppCompatActivity
 
     @Override
     public void onUserInteraction() {
-        EventController.getInstance().post(new OnUserIteractionEvent());
+        // EventController.getInstance().post(new OnUserIteractionEvent());
     }
 
     /**
@@ -107,7 +108,7 @@ public abstract class AbstractActivity extends AppCompatActivity
 
         mActivityPresenter.bindView(this);
 
-        EventController.getInstance().post(new OnUserIteractionEvent());
+        //EventController.getInstance().post(new OnUserIteractionEvent());
     }
 
     @Override
@@ -186,10 +187,7 @@ public abstract class AbstractActivity extends AppCompatActivity
 
     @Override
     public void clearBackStack() {
-        final FragmentManager fragmentManager = getSupportFragmentManager();
-        while (fragmentManager.getBackStackEntryCount() > 0) {
-            fragmentManager.popBackStackImmediate();
-        }
+        getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
     @Override
@@ -198,20 +196,21 @@ public abstract class AbstractActivity extends AppCompatActivity
 
         UseCasesController.getInstance().setSystemDialogShown(false);
 
-        EventController.getInstance().post(new OnUserIteractionEvent());
-
-        onRequestPermissions(requestCode, permissions, grantResults);
-    }
-
-    public void onRequestPermissions(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        EventController.getInstance().post(new OnUserIteractionEvent());
+        //EventController.getInstance().post(new OnUserIteractionEvent());
 
         for (int i = 0; i < permissions.length; i++) {
             AppPreferences.getInstance().putInt(this, permissions[i], grantResults[i]);
             if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                 postEvent(new OnPermisionGrantedEvent(permissions[i]));
+            } else if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                postEvent(new OnPermisionDeniedEvent(permissions[i]));
             }
         }
+
+        onRequestPermissions(requestCode, permissions, grantResults);
+    }
+
+    public void onRequestPermissions(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
     }
 
     @Override
@@ -275,7 +274,7 @@ public abstract class AbstractActivity extends AppCompatActivity
     }
 
     @Override
-    public void setState(int state){
+    public void setState(int state) {
     }
 
     @Override
@@ -314,9 +313,9 @@ public abstract class AbstractActivity extends AppCompatActivity
     @Subscribe(threadMode = ThreadMode.MAIN)
     public synchronized void onFinishApplicationEvent(FinishApplicationEvent event) {
         clearBackStack();
-        if (Build.VERSION.SDK_INT >= 21) {
+        if (ApplicationUtils.hasLollipop()) {
             finishAndRemoveTask();
-        } else if (Build.VERSION.SDK_INT >= 16) {
+        } else if (ApplicationUtils.hasJellyBean()) {
             finishAffinity();
         } else {
             finish();
@@ -326,25 +325,16 @@ public abstract class AbstractActivity extends AppCompatActivity
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDialogResultEvent(DialogResultEvent event) {
 
-        EventController.getInstance().post(new OnUserIteractionEvent());
+        //EventController.getInstance().post(new OnUserIteractionEvent());
 
         final Bundle bundle = event.getResult();
         if (bundle.getInt("id", -1) == R.id.dialog_request_permissions) {
             final String button = bundle.getString(MaterialDialogExt.BUTTON);
             if (button != null && button.equalsIgnoreCase(MaterialDialogExt.POSITIVE)) {
-                final int apiLevel = Build.VERSION.SDK_INT;
                 final Intent intent = new Intent();
                 final String packageName = getPackageName();
-                if (apiLevel >= 9) {
-                    intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    intent.setData(Uri.parse("package:" + packageName));
-                } else {
-                    final String appPkgName = (apiLevel == 8 ? "pkg" : "com.android.settings.ApplicationPkgName");
-
-                    intent.setAction(Intent.ACTION_VIEW);
-                    intent.setClassName("com.android.settings", "com.android.settings.InstalledAppDetails");
-                    intent.putExtra(appPkgName, packageName);
-                }
+                intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                intent.setData(Uri.parse("package:" + packageName));
                 startActivity(intent);
             }
         }

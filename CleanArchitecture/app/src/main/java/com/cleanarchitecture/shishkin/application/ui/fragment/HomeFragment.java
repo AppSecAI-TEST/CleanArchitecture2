@@ -28,6 +28,7 @@ import com.cleanarchitecture.shishkin.base.mail.IMail;
 import com.cleanarchitecture.shishkin.base.mail.ShowToastMail;
 import com.cleanarchitecture.shishkin.base.net.Connectivity;
 import com.cleanarchitecture.shishkin.base.presenter.ActivityPresenter;
+import com.cleanarchitecture.shishkin.base.presenter.FragmentPresenter;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.base.presenter.OnBackPressedPresenter;
 import com.cleanarchitecture.shishkin.base.presenter.ToolbarPresenter;
@@ -80,8 +81,15 @@ public class HomeFragment extends AbstractContentFragment {
         PresenterController.getInstance().getPresenter(ToolbarPresenter.NAME).showProgressBar();
         getFragmentPresenter().showProgressBar();
         view.postDelayed(() -> {
-            PresenterController.getInstance().getPresenter(ToolbarPresenter.NAME).hideProgressBar();
-            getFragmentPresenter().hideProgressBar();
+            final IPresenter presenter = PresenterController.getInstance().getPresenter(ToolbarPresenter.NAME);
+            if (presenter != null) {
+                presenter.hideProgressBar();
+            }
+
+            final FragmentPresenter fragmentPresenter = getFragmentPresenter();
+            if (fragmentPresenter != null) {
+                fragmentPresenter.hideProgressBar();
+            }
         }, 5000);
 
     }

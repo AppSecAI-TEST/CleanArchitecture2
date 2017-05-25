@@ -8,17 +8,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Environment;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.application.database.item.ConfigItem;
 import com.cleanarchitecture.shishkin.application.task.CreateDbTask;
 import com.cleanarchitecture.shishkin.base.controller.ActivityController;
 import com.cleanarchitecture.shishkin.base.controller.CrashController;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
-import com.cleanarchitecture.shishkin.base.controller.JobController;
 import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
 import com.cleanarchitecture.shishkin.base.controller.MailController;
 import com.cleanarchitecture.shishkin.base.controller.NavigationController;
@@ -29,7 +26,6 @@ import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOnEvent;
 import com.cleanarchitecture.shishkin.base.repository.Repository;
 import com.cleanarchitecture.shishkin.base.usecases.UseCasesController;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
-import com.cleanarchitecture.shishkin.base.utils.SerializableUtil;
 import com.github.snowdream.android.util.FilePathGenerator;
 import com.github.snowdream.android.util.Log;
 
@@ -60,7 +56,7 @@ public class ApplicationController extends Application {
 
     public synchronized void init() {
         boolean isGrant = true;
-        if (Build.VERSION.SDK_INT >= 23) {
+        if (ApplicationUtils.hasMarshmallow()) {
             if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
                 isGrant = false;
@@ -100,7 +96,6 @@ public class ApplicationController extends Application {
         UseCasesController.instantiate();
         Repository.instantiate();
         MailController.instantiate();
-        JobController.instantiate();
 
         registerScreenOnOffBroadcastReceiver();
 
