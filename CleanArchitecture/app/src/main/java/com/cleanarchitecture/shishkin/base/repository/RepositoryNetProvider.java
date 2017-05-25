@@ -1,7 +1,7 @@
 package com.cleanarchitecture.shishkin.base.repository;
 
 import com.cleanarchitecture.shishkin.base.event.repository.RepositoryRequestGetImageEvent;
-import com.cleanarchitecture.shishkin.base.repository.net.requests.GetImageRequest;
+import com.cleanarchitecture.shishkin.base.repository.requests.GetImageRequest;
 
 public class RepositoryNetProvider {
 

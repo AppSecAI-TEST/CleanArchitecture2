@@ -1,7 +1,6 @@
 package com.cleanarchitecture.shishkin.base.repository;
 
 import android.content.Context;
-import android.util.SparseIntArray;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
@@ -15,8 +14,6 @@ import com.cleanarchitecture.shishkin.base.event.IEvent;
 import com.cleanarchitecture.shishkin.base.event.database.DbCreatedEvent;
 import com.cleanarchitecture.shishkin.base.event.database.DbUpdatedEvent;
 import com.cleanarchitecture.shishkin.base.event.repository.RepositoryRequestGetImageEvent;
-import com.cleanarchitecture.shishkin.base.event.ui.ShowMessageEvent;
-import com.cleanarchitecture.shishkin.base.mail.ShowMessageMail;
 import com.cleanarchitecture.shishkin.base.mail.ShowToastMail;
 import com.cleanarchitecture.shishkin.base.storage.DiskCache;
 import com.cleanarchitecture.shishkin.base.storage.DiskCacheService;
@@ -45,9 +42,6 @@ public class Repository implements IRepository, IEventVendor {
     public static final int USE_ONLY_DISK_CACHE = 5;
     public static final int USE_ONLY_CACHE = 6;
 
-    private SparseIntArray mItemsCacheType;
-
-    private int mDefaultCaching = USE_ONLY_MEMORY_CACHE;
     private static volatile Repository sInstance;
 
     public static void instantiate() {
@@ -69,40 +63,33 @@ public class Repository implements IRepository, IEventVendor {
         NetProvider.instantiate();
         ContentProvider.instantiate();
 
-        mItemsCacheType = new SparseIntArray();
-        final Context context = ApplicationController.getInstance();
-        if (context != null) {
-            mDefaultCaching = AppPreferences.getInstance().getDefaultCaching(context, USE_MEMORY_CACHE);
-        }
-
         EventController.getInstance().register(this);
     }
 
     @Override
-    public synchronized Serializable getFromCache(int key) {
+    public synchronized Serializable getFromCache(final String key, final int cacheType) {
         final Context context = ApplicationController.getInstance();
         if (context == null) {
             return null;
         }
 
-        final int use = mItemsCacheType.get(key, mDefaultCaching);
-        switch (use) {
+        switch (cacheType) {
             case USE_NO_CACHE:
                 break;
 
             case USE_ONLY_MEMORY_CACHE:
             case USE_MEMORY_CACHE:
-                return MemoryCache.getInstance().get(String.valueOf(key));
+                return MemoryCache.getInstance().get(key);
 
             case USE_ONLY_DISK_CACHE:
             case USE_DISK_CACHE:
-                return DiskCache.getInstance(context).get(String.valueOf(key));
+                return DiskCache.getInstance(context).get(key);
 
             case USE_ONLY_CACHE:
             case USE_MEMORY_AND_DISK_CACHE:
-                Serializable ser = MemoryCache.getInstance().get(String.valueOf(key));
+                Serializable ser = MemoryCache.getInstance().get(key);
                 if (ser == null) {
-                    ser = DiskCache.getInstance(context).get(String.valueOf(key));
+                    ser = DiskCache.getInstance(context).get(key);
                 }
                 return ser;
         }
@@ -110,63 +97,37 @@ public class Repository implements IRepository, IEventVendor {
     }
 
     @Override
-    public synchronized void putToCache(int key, Serializable value) {
+    public synchronized void putToCache(final String key, final int cacheType, Serializable value) {
         final Context context = ApplicationController.getInstance();
         if (context == null) {
             return;
         }
 
-        final int use = mItemsCacheType.get(key, mDefaultCaching);
-        switch (use) {
+        switch (cacheType) {
             case USE_NO_CACHE:
                 break;
 
             case USE_ONLY_MEMORY_CACHE:
             case USE_MEMORY_CACHE:
-                MemoryCacheService.put(context, String.valueOf(key), value);
+                MemoryCacheService.put(context, key, value);
                 break;
 
             case USE_ONLY_DISK_CACHE:
             case USE_DISK_CACHE:
-                DiskCacheService.put(context, String.valueOf(key), value);
+                DiskCacheService.put(context, key, value);
                 break;
 
             case USE_ONLY_CACHE:
             case USE_MEMORY_AND_DISK_CACHE:
-                MemoryCacheService.put(context, String.valueOf(key), value);
-                DiskCacheService.put(context, String.valueOf(key), value);
+                MemoryCacheService.put(context, key, value);
+                DiskCacheService.put(context, key, value);
                 break;
         }
-    }
-
-    @Override
-    public synchronized int getTypeCached(final int key) {
-        if (mItemsCacheType.indexOfKey(key) >= 0) {
-            return mItemsCacheType.get(key);
-        }
-        return mDefaultCaching;
-    }
-
-    @Override
-    public synchronized Repository setTypeCached(int key, int cacheType) {
-        mItemsCacheType.put(key, cacheType);
-        return this;
     }
 
     @Override
     public String getName() {
         return NAME;
-    }
-
-    @Override
-    public void setDefaultCaching(final int defaultCaching) {
-        mDefaultCaching = defaultCaching;
-
-        final Context context = ApplicationController.getInstance();
-        if (context == null) {
-            return;
-        }
-        AppPreferences.getInstance().setDefaultCaching(context, defaultCaching);
     }
 
     @Override
