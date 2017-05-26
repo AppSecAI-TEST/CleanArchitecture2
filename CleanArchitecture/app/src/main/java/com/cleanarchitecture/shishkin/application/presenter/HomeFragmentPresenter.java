@@ -27,6 +27,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
 
+@SuppressWarnings("unused")
 public class HomeFragmentPresenter extends AbstractPresenter {
     private static final String NAME = "HomeFragmentPresenter";
 
@@ -50,31 +51,32 @@ public class HomeFragmentPresenter extends AbstractPresenter {
 
         EventController.getInstance().register(this);
 
-        if (Connectivity.isNetworkConnected(mFragment.get().getContext())) {
-            refreshPic();
-        }
-
-        NotificationService.addDistinctMessage(mFragment.get().getContext(), "Тестовое сообщение");
-
-        PresenterController.getInstance().getPresenter(ToolbarPresenter.NAME).showProgressBar();
-        mFragment.get().getFragmentPresenter().showProgressBar();
-        postEvent(new ShowHorizontalProgressBarEvent());
-        mRoot.postDelayed(() -> {
-            if (validate()) {
-                final IPresenter presenter = PresenterController.getInstance().getPresenter(ToolbarPresenter.NAME);
-                if (presenter != null) {
-                    presenter.hideProgressBar();
-                }
-
-                final FragmentPresenter fragmentPresenter = mFragment.get().getFragmentPresenter();
-                if (fragmentPresenter != null) {
-                    fragmentPresenter.hideProgressBar();
-                }
-
-                postEvent(new HideHorizontalProgressBarEvent());
+        if (validate()) {
+            if (Connectivity.isNetworkConnected(mFragment.get().getContext())) {
+                refreshPic();
             }
-        }, 5000);
 
+            NotificationService.addDistinctMessage(mFragment.get().getContext(), "Тестовое сообщение");
+
+            PresenterController.getInstance().getPresenter(ToolbarPresenter.NAME).showProgressBar();
+            mFragment.get().getFragmentPresenter().showProgressBar();
+            postEvent(new ShowHorizontalProgressBarEvent());
+            mRoot.postDelayed(() -> {
+                if (validate()) {
+                    final IPresenter presenter = PresenterController.getInstance().getPresenter(ToolbarPresenter.NAME);
+                    if (presenter != null) {
+                        presenter.hideProgressBar();
+                    }
+
+                    final FragmentPresenter fragmentPresenter = mFragment.get().getFragmentPresenter();
+                    if (fragmentPresenter != null) {
+                        fragmentPresenter.hideProgressBar();
+                    }
+
+                    postEvent(new HideHorizontalProgressBarEvent());
+                }
+            }, 5000);
+        }
     }
 
     @Override
@@ -109,7 +111,9 @@ public class HomeFragmentPresenter extends AbstractPresenter {
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onNetworkConnectedEvent(OnNetworkConnectedEvent event) {
-        refreshPic();
+        if (validate()) {
+            refreshPic();
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

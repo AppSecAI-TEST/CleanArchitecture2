@@ -22,8 +22,7 @@ public class HomeFragment extends AbstractContentFragment {
     public static final String NAME = "HomeFragment";
 
     public static HomeFragment newInstance() {
-        final HomeFragment f = new HomeFragment();
-        return f;
+        return new HomeFragment();
     }
 
     private OnBackPressedPresenter mOnBackPressedPresenter = new OnBackPressedPresenter();
@@ -32,8 +31,7 @@ public class HomeFragment extends AbstractContentFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        final View root = inflater.inflate(R.layout.fragment_home, container, false);
-        return root;
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
