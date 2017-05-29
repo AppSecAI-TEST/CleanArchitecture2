@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/SplashTheme"
         android:windowSoftInputMode="adjustPan"
-        android:excludeFromRecents="true"
+        android:excludeFromRecents="false"
         android:launchMode="singleInstance"
         android:configChanges="keyboardHidden|orientation|screenSize" >
 
