@@ -3,7 +3,7 @@ package com.cleanarchitecture.shishkin.base.event.repository;
 import android.widget.ImageView;
 
 import com.cleanarchitecture.shishkin.base.event.AbstractEvent;
-import com.cleanarchitecture.shishkin.base.repository.net.requests.AbstractRequest;
+import com.cleanarchitecture.shishkin.base.repository.requests.AbstractRequest;
 
 import java.lang.ref.WeakReference;
 

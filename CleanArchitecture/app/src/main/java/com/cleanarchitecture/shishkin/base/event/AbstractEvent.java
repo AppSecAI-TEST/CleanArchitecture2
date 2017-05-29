@@ -8,8 +8,8 @@ public abstract class AbstractEvent implements IEvent{
 
     private String mErrorText = null;
     private int mErrorCode = 0;
-    private WeakReference<Object> mSender = null;
     private int mId = -1;
+    private WeakReference<Object> mSender = null;
 
     @Override
     public String getErrorText() {
@@ -39,6 +39,17 @@ public abstract class AbstractEvent implements IEvent{
     }
 
     @Override
+    public int getId() {
+        return mId;
+    }
+
+    @Override
+    public IEvent setId(final int id) {
+        mId = id;
+        return this;
+    }
+
+    @Override
     public Object getSender() {
         if (mSender != null && mSender.get() != null) {
             return mSender.get();
@@ -52,16 +63,6 @@ public abstract class AbstractEvent implements IEvent{
             mSender = new WeakReference<>(sender);
         }
         return this;
-    }
-
-    @Override
-    public int getId() {
-        return mId;
-    }
-
-    @Override
-    public void setId(int id) {
-        mId = id;
     }
 
 }

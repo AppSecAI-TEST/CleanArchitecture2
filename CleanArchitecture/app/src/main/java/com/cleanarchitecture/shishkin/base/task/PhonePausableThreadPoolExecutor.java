@@ -8,7 +8,7 @@ import android.telephony.TelephonyManager;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.net.Connectivity;
-import com.cleanarchitecture.shishkin.base.repository.net.requests.AbstractRequest;
+import com.cleanarchitecture.shishkin.base.repository.requests.AbstractRequest;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;

@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.base.repository.net.requests;
+package com.cleanarchitecture.shishkin.base.repository.requests;
 
 public abstract class AbstractRequest implements Runnable, IRequest {
 	public static final int MAX_RANK = 10;
@@ -7,12 +7,11 @@ public abstract class AbstractRequest implements Runnable, IRequest {
 	public static final int LOW_RANK = 2;
 	public static final int MIN_RANK = 0;
 
-
 	public AbstractRequest(int rank) {
 		mRank = rank;
 	}
 
-	private int mRank = 0;
+	private int mRank = MIN_RANK;
 
 	@Override
 	public int getRank() {
@@ -20,8 +19,11 @@ public abstract class AbstractRequest implements Runnable, IRequest {
 	}
 
 	@Override
-	public void setRank(int rank) {
+	public IRequest setRank(int rank) {
 		this.mRank = rank;
+		return this;
 	}
+
+	public abstract int getCacheType();
 
 }

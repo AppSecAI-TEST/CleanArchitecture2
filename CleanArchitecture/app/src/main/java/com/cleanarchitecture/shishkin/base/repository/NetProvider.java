@@ -10,7 +10,7 @@ import com.cleanarchitecture.shishkin.base.event.OnNetworkDisconnectedEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowMessageEvent;
 import com.cleanarchitecture.shishkin.base.net.Connectivity;
 import com.cleanarchitecture.shishkin.base.net.ConnectivityMonitor;
-import com.cleanarchitecture.shishkin.base.repository.net.requests.AbstractRequest;
+import com.cleanarchitecture.shishkin.base.repository.requests.AbstractRequest;
 import com.cleanarchitecture.shishkin.base.task.PhonePausableThreadPoolExecutor;
 import com.squareup.picasso.Picasso;
 

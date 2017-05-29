@@ -1,11 +1,10 @@
-package com.cleanarchitecture.shishkin.base.repository.net.requests;
+package com.cleanarchitecture.shishkin.base.repository.requests;
 
-import android.content.Context;
 import android.widget.ImageView;
 
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.event.repository.RepositoryRequestGetImageEvent;
 import com.cleanarchitecture.shishkin.base.repository.NetProvider;
+import com.cleanarchitecture.shishkin.base.repository.Repository;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
@@ -97,5 +96,10 @@ public class GetImageRequest extends AbstractRequest {
 
             }
         });
+    }
+
+    @Override
+    public int getCacheType() {
+        return Repository.USE_NO_CACHE;
     }
 }

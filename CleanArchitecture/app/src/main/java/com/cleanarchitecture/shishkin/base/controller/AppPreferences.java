@@ -75,28 +75,6 @@ public class AppPreferences {
         putString(context, LAST_DAY_START, day);
     }
 
-    /**
-     * Получить тип кеширования по умолчанию.
-     *
-     * @return тип кеширования
-     */
-    public int getDefaultCaching(final Context context, final int defaultValue) {
-        if (context != null) {
-            final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-            return settings.getInt(context.getString(R.string.setting_caching_type_key), defaultValue);
-        }
-        return defaultValue;
-    }
-
-    /**
-     * Установить тип кеширования по умолчанию.
-     *
-     * @param defaultCaching тип кеширования
-     */
-    public void setDefaultCaching(final Context context, final int defaultCaching) {
-        putInt(context, context.getString(R.string.setting_caching_type_key), defaultCaching);
-    }
-
     public synchronized void putString(final Context context, final String key, final String value) {
         if (context != null) {
             final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);

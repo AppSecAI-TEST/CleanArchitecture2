@@ -210,10 +210,7 @@ public class ApplicationUtils {
     }
 
     public static boolean checkPermission(final String permission) {
-        if (hasMarshmallow()) {
-            return getStatusPermission(permission) == PackageManager.PERMISSION_GRANTED;
-        }
-        return true;
+        return getStatusPermission(permission) == PackageManager.PERMISSION_GRANTED;
     }
 
     private ApplicationUtils() {

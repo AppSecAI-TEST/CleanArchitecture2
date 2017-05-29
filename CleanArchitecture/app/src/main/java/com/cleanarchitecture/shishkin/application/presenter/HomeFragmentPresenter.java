@@ -27,21 +27,22 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
 
+@SuppressWarnings("unused")
 public class HomeFragmentPresenter extends AbstractPresenter {
     private static final String NAME = "HomeFragmentPresenter";
 
-    private ImageView mImage;
+    private WeakReference<ImageView> mImage;
     private WeakReference<HomeFragment> mFragment;
-    private View mRoot;
+    private WeakReference<View> mRoot;
 
     public void bindView(final View root, final HomeFragment fragment) {
-        mImage = ViewUtils.findView(root, R.id.image);
+        mImage = new WeakReference<>(ViewUtils.findView(root, R.id.image));
         mFragment = new WeakReference<>(fragment);
-        mRoot = root;
+        mRoot = new WeakReference<>(root);
     }
 
     private void refreshPic() {
-        postEvent(new RepositoryRequestGetImageEvent("https://muzei-mira.com/templates/museum/images/paint/sosnovyy-les-shishkin+.jpg", mImage));
+        postEvent(new RepositoryRequestGetImageEvent("https://muzei-mira.com/templates/museum/images/paint/sosnovyy-les-shishkin+.jpg", mImage.get()));
     }
 
     @Override
@@ -50,39 +51,40 @@ public class HomeFragmentPresenter extends AbstractPresenter {
 
         EventController.getInstance().register(this);
 
-        if (Connectivity.isNetworkConnected(mFragment.get().getContext())) {
-            refreshPic();
-        }
-
-        NotificationService.addDistinctMessage(mFragment.get().getContext(), "Тестовое сообщение");
-
-        PresenterController.getInstance().getPresenter(ToolbarPresenter.NAME).showProgressBar();
-        mFragment.get().getFragmentPresenter().showProgressBar();
-        postEvent(new ShowHorizontalProgressBarEvent());
-        mRoot.postDelayed(() -> {
-            if (validate()) {
-                final IPresenter presenter = PresenterController.getInstance().getPresenter(ToolbarPresenter.NAME);
-                if (presenter != null) {
-                    presenter.hideProgressBar();
-                }
-
-                final FragmentPresenter fragmentPresenter = mFragment.get().getFragmentPresenter();
-                if (fragmentPresenter != null) {
-                    fragmentPresenter.hideProgressBar();
-                }
-
-                postEvent(new HideHorizontalProgressBarEvent());
+        if (validate()) {
+            if (Connectivity.isNetworkConnected(mFragment.get().getContext())) {
+                refreshPic();
             }
-        }, 5000);
 
+            NotificationService.addDistinctMessage(mFragment.get().getContext(), "Тестовое сообщение");
+
+            PresenterController.getInstance().getPresenter(ToolbarPresenter.NAME).showProgressBar();
+            mFragment.get().getFragmentPresenter().showProgressBar();
+            postEvent(new ShowHorizontalProgressBarEvent());
+            mRoot.get().postDelayed(() -> {
+                if (validate()) {
+                    final IPresenter presenter = PresenterController.getInstance().getPresenter(ToolbarPresenter.NAME);
+                    if (presenter != null) {
+                        presenter.hideProgressBar();
+                    }
+
+                    final FragmentPresenter fragmentPresenter = mFragment.get().getFragmentPresenter();
+                    if (fragmentPresenter != null) {
+                        fragmentPresenter.hideProgressBar();
+                    }
+
+                    postEvent(new HideHorizontalProgressBarEvent());
+                }
+            }, 5000);
+        }
     }
 
     @Override
     public boolean validate() {
         return (super.validate()
                 && mFragment != null && mFragment.get() != null
-                && mImage != null
-                && mRoot != null
+                && mImage != null && mImage.get() != null
+                && mRoot != null && mRoot.get() != null
         );
     }
 
@@ -109,19 +111,16 @@ public class HomeFragmentPresenter extends AbstractPresenter {
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onNetworkConnectedEvent(OnNetworkConnectedEvent event) {
-        refreshPic();
+        if (validate()) {
+            refreshPic();
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public synchronized void onToolbarMenuItemClickEvent(OnToolbarMenuItemClickEvent event) {
         final MenuItem item = event.getMenuItem();
-        switch (item.getItemId()) {
-            case R.id.exit:
-                postEvent(new UseCaseFinishApplicationEvent());
-                break;
-
-            default:
-                break;
+        if (item != null && item.getItemId() == R.id.exit) {
+            postEvent(new UseCaseFinishApplicationEvent());
         }
     }
 

@@ -44,9 +44,11 @@ public class MainActivity extends AbstractContentActivity {
         if (intent != null) {
             final String action = intent.getAction();
             if ("android.intent.action.MAIN".equalsIgnoreCase(action)) {
+                // вызов из Launcher
                 postEvent(new ClearDiskCacheEvent());
                 showHomeFragment();
             } else if (NotificationService.ACTION_CLICK.equalsIgnoreCase(action)){
+                // клик на сообщении в зоне уведомлений
                 showHomeFragment();
             } else {
                 showHomeFragment();

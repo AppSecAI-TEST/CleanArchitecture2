@@ -1,6 +1,6 @@
 package com.cleanarchitecture.shishkin.base.task;
 
-import com.cleanarchitecture.shishkin.base.repository.net.requests.AbstractRequest;
+import com.cleanarchitecture.shishkin.base.repository.requests.AbstractRequest;
 
 public interface IPhonePausableThreadPoolExecutor {
 
