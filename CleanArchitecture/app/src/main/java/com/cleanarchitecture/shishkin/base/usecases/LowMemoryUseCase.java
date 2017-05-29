@@ -11,6 +11,7 @@ public class LowMemoryUseCase extends AbstractUseCase{
 
     public static synchronized void onLowMemory() {
         MemoryCache.getInstance().clearAll();
+
     }
 
     @Override

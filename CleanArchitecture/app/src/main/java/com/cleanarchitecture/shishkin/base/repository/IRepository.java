@@ -4,9 +4,6 @@ import com.cleanarchitecture.shishkin.base.controller.ISubscriber;
 
 import java.io.Serializable;
 
-/**
- * The interface Repository.
- */
 public interface IRepository extends ISubscriber {
 
 

@@ -56,11 +56,8 @@ public class ApplicationController extends Application {
 
     public synchronized void init() {
         boolean isGrant = true;
-        if (ApplicationUtils.hasMarshmallow()) {
-            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED) {
-                isGrant = false;
-            }
+        if (!ApplicationUtils.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            isGrant = false;
         }
 
         if (isGrant) {
@@ -151,6 +148,7 @@ public class ApplicationController extends Application {
     public void onLowMemory() {
         super.onLowMemory();
 
+        Log.e(LOG_TAG, "Low memory - onLowMemory");
         EventController.getInstance().post(new UseCaseOnLowMemoryEvent());
     }
 
@@ -158,7 +156,8 @@ public class ApplicationController extends Application {
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
 
-        if (level >= ComponentCallbacks2.TRIM_MEMORY_RUNNING_LOW) {
+        if (level >= ComponentCallbacks2.TRIM_MEMORY_BACKGROUND) {
+            Log.e(LOG_TAG, "Low memory - onTrimMemory: " + level);
             EventController.getInstance().post(new UseCaseOnLowMemoryEvent());
         }
     }
