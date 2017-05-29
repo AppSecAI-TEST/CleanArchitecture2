@@ -28,6 +28,7 @@ import com.cleanarchitecture.shishkin.base.usecases.UseCasesController;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.github.snowdream.android.util.FilePathGenerator;
 import com.github.snowdream.android.util.Log;
+import com.squareup.leakcanary.LeakCanary;
 
 import java.io.File;
 
@@ -43,6 +44,10 @@ public class ApplicationController extends Application {
         super.onCreate();
 
         sInstance = this;
+
+        if (!LeakCanary.isInAnalyzerProcess(this)) {
+            LeakCanary.install(this);
+        }
 
         init();
     }
