@@ -13,7 +13,6 @@ import com.cleanarchitecture.shishkin.base.event.ClearDiskCacheEvent;
 import com.cleanarchitecture.shishkin.base.event.IEvent;
 import com.cleanarchitecture.shishkin.base.event.database.DbCreatedEvent;
 import com.cleanarchitecture.shishkin.base.event.database.DbUpdatedEvent;
-import com.cleanarchitecture.shishkin.base.event.repository.RepositoryRequestGetImageEvent;
 import com.cleanarchitecture.shishkin.base.mail.ShowToastMail;
 import com.cleanarchitecture.shishkin.base.storage.DiskCache;
 import com.cleanarchitecture.shishkin.base.storage.DiskCacheService;
@@ -139,11 +138,6 @@ public class Repository implements IRepository, IEventVendor {
     @Override
     public void postEvent(IEvent event) {
         EventController.getInstance().post(event);
-    }
-
-    @Subscribe(threadMode = ThreadMode.ASYNC)
-    public void onRepositoryRequestGetImageEvent(final RepositoryRequestGetImageEvent event) {
-        RepositoryNetProvider.requestGetImage(event);
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)

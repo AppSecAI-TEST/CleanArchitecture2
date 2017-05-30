@@ -42,7 +42,6 @@ dependencies {
     compile 'me.zhanghai.android.materialprogressbar:library:1.4.1'
     compile 'io.paperdb:paperdb:2.0'
     compile 'com.google.guava:guava:20.0'
-    compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.annimon:stream:1.1.7'
     compile 'joda-time:joda-time:2.9.9'
     compile 'com.wang.avi:library:2.1.3'

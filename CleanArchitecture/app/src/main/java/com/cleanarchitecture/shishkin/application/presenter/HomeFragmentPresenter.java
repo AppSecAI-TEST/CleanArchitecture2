@@ -2,25 +2,20 @@ package com.cleanarchitecture.shishkin.application.presenter;
 
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.ui.fragment.HomeFragment;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.controller.NotificationService;
 import com.cleanarchitecture.shishkin.base.controller.PresenterController;
-import com.cleanarchitecture.shishkin.base.event.OnNetworkConnectedEvent;
-import com.cleanarchitecture.shishkin.base.event.repository.RepositoryRequestGetImageEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.OnToolbarMenuItemClickEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.HideHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseFinishApplicationEvent;
-import com.cleanarchitecture.shishkin.base.net.Connectivity;
 import com.cleanarchitecture.shishkin.base.presenter.AbstractPresenter;
 import com.cleanarchitecture.shishkin.base.presenter.FragmentPresenter;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.base.presenter.ToolbarPresenter;
-import com.cleanarchitecture.shishkin.base.utils.ViewUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -31,18 +26,12 @@ import java.lang.ref.WeakReference;
 public class HomeFragmentPresenter extends AbstractPresenter {
     private static final String NAME = "HomeFragmentPresenter";
 
-    private WeakReference<ImageView> mImage;
     private WeakReference<HomeFragment> mFragment;
     private WeakReference<View> mRoot;
 
     public void bindView(final View root, final HomeFragment fragment) {
-        mImage = new WeakReference<>(ViewUtils.findView(root, R.id.image));
         mFragment = new WeakReference<>(fragment);
         mRoot = new WeakReference<>(root);
-    }
-
-    private void refreshPic() {
-        postEvent(new RepositoryRequestGetImageEvent("https://muzei-mira.com/templates/museum/images/paint/sosnovyy-les-shishkin+.jpg", mImage.get()));
     }
 
     @Override
@@ -52,10 +41,6 @@ public class HomeFragmentPresenter extends AbstractPresenter {
         EventController.getInstance().register(this);
 
         if (validate()) {
-            if (Connectivity.isNetworkConnected(mFragment.get().getContext())) {
-                refreshPic();
-            }
-
             NotificationService.addDistinctMessage(mFragment.get().getContext(), "Тестовое сообщение");
 
             PresenterController.getInstance().getPresenter(ToolbarPresenter.NAME).showProgressBar();
@@ -83,7 +68,6 @@ public class HomeFragmentPresenter extends AbstractPresenter {
     public boolean validate() {
         return (super.validate()
                 && mFragment != null && mFragment.get() != null
-                && mImage != null && mImage.get() != null
                 && mRoot != null && mRoot.get() != null
         );
     }
@@ -91,7 +75,6 @@ public class HomeFragmentPresenter extends AbstractPresenter {
     @Override
     public void onDestroyLifecycle() {
         mRoot = null;
-        mImage = null;
         mFragment = null;
 
         EventController.getInstance().unregister(this);
@@ -107,13 +90,6 @@ public class HomeFragmentPresenter extends AbstractPresenter {
     @Override
     public String getName() {
         return NAME;
-    }
-
-    @Subscribe(threadMode = ThreadMode.ASYNC)
-    public void onNetworkConnectedEvent(OnNetworkConnectedEvent event) {
-        if (validate()) {
-            refreshPic();
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
