@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.ActivityController;
 import com.cleanarchitecture.shishkin.base.controller.AppPreferences;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
@@ -63,9 +64,9 @@ public abstract class AbstractActivity extends AppCompatActivity
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        EventController.getInstance().register(this);
+        ApplicationController.getInstance().getEventController().register(this);
         LifecycleController.getInstance().register(this);
-        ActivityController.getInstance().register(this);
+        ApplicationController.getInstance().getActivityController().register(this);
         MailController.getInstance().register(this);
 
         setLifecycleStatus(Lifecycle.STATE_CREATE);
@@ -116,8 +117,8 @@ public abstract class AbstractActivity extends AppCompatActivity
             mUnbinder.unbind();
         }
 
-        EventController.getInstance().unregister(this);
-        ActivityController.getInstance().unregister(this);
+        ApplicationController.getInstance().getEventController().unregister(this);
+        ApplicationController.getInstance().getActivityController().unregister(this);
         LifecycleController.getInstance().unregister(this);
         MailController.getInstance().unregister(this);
 
@@ -136,7 +137,7 @@ public abstract class AbstractActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
 
-        ActivityController.getInstance().setCurrentSubscriber(this);
+        ApplicationController.getInstance().getActivityController().setCurrentSubscriber(this);
         LifecycleController.getInstance().setCurrentSubscriber(this);
 
         setLifecycleStatus(Lifecycle.STATE_RESUME);
@@ -246,7 +247,7 @@ public abstract class AbstractActivity extends AppCompatActivity
 
     @Override
     public void postEvent(IEvent event) {
-        EventController.getInstance().post(event);
+        ApplicationController.getInstance().getEventController().post(event);
     }
 
     @Override

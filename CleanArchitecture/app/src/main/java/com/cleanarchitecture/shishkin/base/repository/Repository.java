@@ -69,7 +69,7 @@ public class Repository implements IRepository, IEventVendor {
         NetProvider.instantiate();
         ContentProvider.instantiate();
 
-        EventController.getInstance().register(this);
+        ApplicationController.getInstance().getEventController().register(this);
     }
 
     @Override
@@ -141,7 +141,7 @@ public class Repository implements IRepository, IEventVendor {
 
     @Override
     public void postEvent(IEvent event) {
-        EventController.getInstance().post(event);
+        ApplicationController.getInstance().getEventController().post(event);
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)

@@ -19,6 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.event.ui.OnSnackBarClickEvent;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
@@ -62,7 +63,7 @@ public class ActivityPresenter extends AbstractPresenter<Void> implements IActiv
     private void onSnackbarClick(final View view) {
         if (validate()) {
             final String action = ((AppCompatButton) view).getText().toString();
-            EventController.getInstance().post(new OnSnackBarClickEvent(action));
+            ApplicationController.getInstance().getEventController().post(new OnSnackBarClickEvent(action));
         }
     }
 

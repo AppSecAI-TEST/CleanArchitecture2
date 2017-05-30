@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.event.searchpresenter.OnSearchPresenterItemClick;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
@@ -73,7 +74,7 @@ public class ContactRecyclerViewAdapter extends AbstractRecyclerViewAdapter<Phon
         }
 
         private void onClick(View v) {
-            EventController.getInstance().post(new OnSearchPresenterItemClick((PhoneContactItem) v.getTag()));
+            ApplicationController.getInstance().getEventController().post(new OnSearchPresenterItemClick((PhoneContactItem) v.getTag()));
         }
     }
 

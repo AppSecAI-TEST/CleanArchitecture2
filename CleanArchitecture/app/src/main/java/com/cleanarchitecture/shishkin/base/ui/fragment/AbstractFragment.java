@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.ActivityController;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
@@ -137,7 +138,7 @@ public abstract class AbstractFragment extends Fragment implements IFragment
 
     @Override
     public void postEvent(IEvent event) {
-        EventController.getInstance().post(event);
+        ApplicationController.getInstance().getEventController().post(event);
     }
 
     @Override
@@ -148,7 +149,7 @@ public abstract class AbstractFragment extends Fragment implements IFragment
                 return (AppCompatActivity) activity;
             }
         } else {
-            final IActivity subscriber = ActivityController.getInstance().getSubscriber();
+            final IActivity subscriber = ApplicationController.getInstance().getActivityController().getSubscriber();
             if (subscriber != null && subscriber instanceof AppCompatActivity) {
                 return (AppCompatActivity)subscriber;
             }
@@ -162,7 +163,7 @@ public abstract class AbstractFragment extends Fragment implements IFragment
         if (activity != null && activity instanceof IActivity) {
             return (IActivity) activity;
         }
-        return ActivityController.getInstance().getSubscriber();
+        return ApplicationController.getInstance().getActivityController().getSubscriber();
     }
 
     @Override
@@ -214,7 +215,7 @@ public abstract class AbstractFragment extends Fragment implements IFragment
         if (mActivityPresenter != null) {
             return mActivityPresenter;
         } else {
-            final IActivity subscriber = ActivityController.getInstance().getSubscriber();
+            final IActivity subscriber = ApplicationController.getInstance().getActivityController().getSubscriber();
             if (subscriber != null && subscriber instanceof AbstractActivity) {
                 return subscriber.getActivityPresenter();
             }

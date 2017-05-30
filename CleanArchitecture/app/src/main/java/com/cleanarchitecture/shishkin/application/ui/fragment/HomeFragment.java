@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.application.data.dao.PhoneContactDAO;
 import com.cleanarchitecture.shishkin.application.presenter.SearchPresenter;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
@@ -79,7 +80,7 @@ public class HomeFragment extends AbstractContentFragment {
     }
 
     private void onClickFab(View view) {
-        EventController.getInstance().post(new FinishApplicationEvent());
+        ApplicationController.getInstance().getEventController().post(new FinishApplicationEvent());
     }
 
     @Override

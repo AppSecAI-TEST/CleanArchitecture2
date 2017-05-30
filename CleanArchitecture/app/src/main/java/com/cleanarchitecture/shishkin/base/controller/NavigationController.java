@@ -1,5 +1,6 @@
 package com.cleanarchitecture.shishkin.base.controller;
 
+import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.event.OnActivityBackPressedEvent;
 import com.cleanarchitecture.shishkin.base.event.ShowFragmentEvent;
 import com.cleanarchitecture.shishkin.base.event.SwitchToFragmentEvent;
@@ -39,7 +40,7 @@ public class NavigationController extends AbstractController implements INavigat
 
     private NavigationController() {
         mSubscribers = Collections.synchronizedMap(new HashMap<String, WeakReference<INavigationSubscriber>>());
-        EventController.getInstance().register(this);
+        ApplicationController.getInstance().getEventController().register(this);
     }
 
     private synchronized void checkNullSubscriber() {

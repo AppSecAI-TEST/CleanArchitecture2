@@ -1,5 +1,6 @@
 package com.cleanarchitecture.shishkin.base.usecases;
 
+import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.AbstractController;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionDeniedEvent;
@@ -24,7 +25,7 @@ public class UseCasesController extends AbstractController {
     private UseCasesController() {
         mLock = new ReentrantLock();
 
-        EventController.getInstance().register(this);
+        ApplicationController.getInstance().getEventController().register(this);
     }
 
     private static final String NAME = "UseCasesController";

@@ -38,7 +38,7 @@ public class RequestPermissionUseCase extends AbstractUseCase {
                     case PackageManager.PERMISSION_DENIED:
                         disabledLog();
                         if (!UseCasesController.getInstance().isSystemDialogShown()) {
-                            ActivityController.getInstance().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_write_external_storage));
+                            ApplicationController.getInstance().getActivityController().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_write_external_storage));
                         }
                         break;
 
@@ -52,7 +52,7 @@ public class RequestPermissionUseCase extends AbstractUseCase {
 
                     case PackageManager.PERMISSION_DENIED:
                         if (!UseCasesController.getInstance().isSystemDialogShown()) {
-                            ActivityController.getInstance().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_read_contacts));
+                            ApplicationController.getInstance().getActivityController().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_read_contacts));
                         }
                         break;
 
@@ -66,7 +66,7 @@ public class RequestPermissionUseCase extends AbstractUseCase {
 
                     case PackageManager.PERMISSION_DENIED:
                         if (!UseCasesController.getInstance().isSystemDialogShown()) {
-                            ActivityController.getInstance().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_call_phone));
+                            ApplicationController.getInstance().getActivityController().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_call_phone));
                         }
                         break;
 

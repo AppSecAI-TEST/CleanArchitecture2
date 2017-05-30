@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 
+import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.controller.ISubscribeable;
 import com.cleanarchitecture.shishkin.base.event.OnNetworkConnectedEvent;
@@ -57,9 +58,9 @@ public class ConnectivityMonitor extends BroadcastReceiver implements ISubscribe
         final String action = intent.getAction();
         if (ConnectivityManager.CONNECTIVITY_ACTION.equals(action)) {
             if (Connectivity.isNetworkConnected(context)) {
-                EventController.getInstance().post(new OnNetworkConnectedEvent());
+                ApplicationController.getInstance().getEventController().post(new OnNetworkConnectedEvent());
             } else {
-                EventController.getInstance().post(new OnNetworkDisconnectedEvent());
+                ApplicationController.getInstance().getEventController().post(new OnNetworkDisconnectedEvent());
             }
         }
     }

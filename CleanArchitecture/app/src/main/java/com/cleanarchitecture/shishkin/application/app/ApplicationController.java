@@ -38,6 +38,9 @@ public class ApplicationController extends Application {
     private static final long MAX_LOG_LENGTH = 2000000;//2Mb
     public static final String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CALL_PHONE, Manifest.permission.READ_CONTACTS};
 
+    private EventController mEventController;
+    private ActivityController mActivityController;
+
     @Override
     public void onCreate() {
 
@@ -89,9 +92,9 @@ public class ApplicationController extends Application {
             Log.setEnabled(false);
         }
 
-        EventController.instantiate();
+        mEventController = getController(EventController.NAME);
         CrashController.instantiate();
-        ActivityController.instantiate();
+        mActivityController = getController(ActivityController.NAME);
         LifecycleController.instantiate();
         PresenterController.instantiate();
         NavigationController.instantiate();
@@ -139,9 +142,9 @@ public class ApplicationController extends Application {
                 final String strAction = intent.getAction();
 
                 if (strAction.equals(Intent.ACTION_SCREEN_OFF)) {
-                    EventController.getInstance().post(new UseCaseOnScreenOffEvent());
+                    getEventController().post(new UseCaseOnScreenOffEvent());
                 } else {
-                    EventController.getInstance().post(new UseCaseOnScreenOnEvent());
+                    getEventController().post(new UseCaseOnScreenOnEvent());
                 }
             }
         };
@@ -154,7 +157,23 @@ public class ApplicationController extends Application {
         super.onLowMemory();
 
         Log.e(LOG_TAG, "Low memory - onLowMemory");
-        EventController.getInstance().post(new UseCaseOnLowMemoryEvent());
+        getEventController().post(new UseCaseOnLowMemoryEvent());
+    }
+
+    public synchronized <C> C getController(final String controllerName) {
+        switch (controllerName) {
+            case ActivityController.NAME:
+                return (C) mActivityController;
+        }
+        return null;
+    }
+
+    public ActivityController getActivityController() {
+        return mActivityController;
+    }
+
+    public EventController getEventController() {
+        return mEventController;
     }
 
 }

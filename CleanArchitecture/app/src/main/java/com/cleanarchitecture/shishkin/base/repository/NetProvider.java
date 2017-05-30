@@ -48,7 +48,7 @@ public class NetProvider implements INetProvider {
             return;
         }
 
-        EventController.getInstance().register(this);
+        ApplicationController.getInstance().getEventController().register(this);
 
         mConnectivityMonitor = new ConnectivityMonitor();
         mConnectivityMonitor.subscribe(context);
@@ -81,7 +81,7 @@ public class NetProvider implements INetProvider {
 
         final Context context = ApplicationController.getInstance();
         if (context != null) {
-            EventController.getInstance().post(new ShowMessageEvent(context.getString(R.string.network_disconnected)));
+            ApplicationController.getInstance().getEventController().post(new ShowMessageEvent(context.getString(R.string.network_disconnected)));
         }
     }
 

@@ -1,5 +1,6 @@
 package com.cleanarchitecture.shishkin.base.presenter;
 
+import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
 import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
@@ -88,7 +89,7 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IEventVendo
      * @param event событие
      */
     public void postEvent(IEvent event) {
-        EventController.getInstance().post(event);
+        ApplicationController.getInstance().getEventController().post(event);
     }
 
     @Override

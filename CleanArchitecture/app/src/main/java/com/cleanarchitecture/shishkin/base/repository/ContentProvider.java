@@ -43,7 +43,7 @@ public class ContentProvider {
 
     public synchronized List<PhoneContactItem> getContacts() {
         if (!ApplicationUtils.checkPermission(Manifest.permission.READ_CONTACTS)) {
-            EventController.getInstance().post(new UseCaseRequestPermissionEvent(Manifest.permission.READ_CONTACTS));
+            ApplicationController.getInstance().getEventController().post(new UseCaseRequestPermissionEvent(Manifest.permission.READ_CONTACTS));
             return null;
         }
 
