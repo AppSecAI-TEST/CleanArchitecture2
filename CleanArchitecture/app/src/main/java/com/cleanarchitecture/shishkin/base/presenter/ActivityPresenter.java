@@ -105,8 +105,8 @@ public class ActivityPresenter extends AbstractPresenter<Void> implements IActiv
                 if (ActivityCompat.shouldShowRequestPermissionRationale(mActivity.get(), permission)) {
                     showDialog(R.id.dialog_request_permissions, -1, helpMessage, R.string.setting, R.string.cancel, false);
                 } else {
-                    if (!UseCasesController.getInstance().isSystemDialogShown()) {
-                        UseCasesController.getInstance().setSystemDialogShown(true);
+                    if (!ApplicationController.getInstance().getUseCasesController().isSystemDialogShown()) {
+                        ApplicationController.getInstance().getUseCasesController().setSystemDialogShown(true);
                         runOnUiThread(() -> {
                             ActivityCompat.requestPermissions(mActivity.get(), new String[]{permission}, ApplicationUtils.REQUEST_PERMISSIONS);
                         });
@@ -123,12 +123,12 @@ public class ActivityPresenter extends AbstractPresenter<Void> implements IActiv
             final int result = googleAPI.isGooglePlayServicesAvailable(mActivity.get());
             if (result != ConnectionResult.SUCCESS) {
                 if (googleAPI.isUserResolvableError(result)) {
-                    if (!UseCasesController.getInstance().isSystemDialogShown()) {
-                        UseCasesController.getInstance().setSystemDialogShown(true);
+                    if (!ApplicationController.getInstance().getUseCasesController().isSystemDialogShown()) {
+                        ApplicationController.getInstance().getUseCasesController().setSystemDialogShown(true);
                         runOnUiThread(() -> {
                             final Dialog dialog = googleAPI.getErrorDialog(mActivity.get(), result, ApplicationUtils.REQUEST_GOOGLE_PLAY_SERVICES);
                             dialog.setOnCancelListener(dialogInterface -> mActivity.get().finish());
-                            dialog.setOnDismissListener(dialog1 -> UseCasesController.getInstance().setSystemDialogShown(false));
+                            dialog.setOnDismissListener(dialog1 -> ApplicationController.getInstance().getUseCasesController().setSystemDialogShown(false));
                             dialog.show();
                         });
                     }

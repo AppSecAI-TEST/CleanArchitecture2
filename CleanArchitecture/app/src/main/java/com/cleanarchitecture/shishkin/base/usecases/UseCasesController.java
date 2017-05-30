@@ -22,37 +22,19 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 @SuppressWarnings("unused")
 public class UseCasesController extends AbstractController {
-    private UseCasesController() {
+    public static final String NAME = "UseCasesController";
+    private boolean mSystemDialogShown = false;
+    private ReentrantLock mLock;
+    public synchronized boolean isSystemDialogShown() {
+        return mSystemDialogShown;
+    }
+
+    public UseCasesController() {
         mLock = new ReentrantLock();
 
         ApplicationController.getInstance().getEventController().register(this);
     }
 
-    private static final String NAME = "UseCasesController";
-
-    private static volatile UseCasesController sInstance;
-
-    private boolean mSystemDialogShown = false;
-    private ReentrantLock mLock;
-
-    public static void instantiate() {
-        if (sInstance == null) {
-            synchronized (UseCasesController.class) {
-                if (sInstance == null) {
-                    sInstance = new UseCasesController();
-                }
-            }
-        }
-    }
-
-    public static UseCasesController getInstance() {
-        instantiate();
-        return sInstance;
-    }
-
-    public synchronized boolean isSystemDialogShown() {
-        return mSystemDialogShown;
-    }
 
     public synchronized void setSystemDialogShown(boolean shown) {
         mLock.lock();

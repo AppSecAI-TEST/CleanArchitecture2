@@ -42,6 +42,9 @@ public class ApplicationController extends Application {
     private final CrashController mCrashController = new CrashController();
     private final ActivityController mActivityController = new ActivityController();
     private final LifecycleController mLifecycleController = new LifecycleController();
+    private final PresenterController mPresenterController = new PresenterController();
+    private final NavigationController mNavigationController = new NavigationController();
+    private final UseCasesController mUseCasesController = new UseCasesController();
 
     @Override
     public void onCreate() {
@@ -94,9 +97,6 @@ public class ApplicationController extends Application {
             Log.setEnabled(false);
         }
 
-        PresenterController.instantiate();
-        NavigationController.instantiate();
-        UseCasesController.instantiate();
         Repository.instantiate();
         MailController.instantiate();
 
@@ -154,7 +154,7 @@ public class ApplicationController extends Application {
     public void onLowMemory() {
         super.onLowMemory();
 
-        Log.e(LOG_TAG, "Low memory - onLowMemory");
+        Log.e(LOG_TAG, "Low memory");
         getEventController().post(new UseCaseOnLowMemoryEvent());
     }
 
@@ -172,6 +172,15 @@ public class ApplicationController extends Application {
             case LifecycleController.NAME:
                 return (C) mLifecycleController;
 
+            case PresenterController.NAME:
+                return (C) mPresenterController;
+
+            case NavigationController.NAME:
+                return (C) mNavigationController;
+
+            case UseCasesController.NAME:
+                return (C) mUseCasesController;
+
         }
         return null;
     }
@@ -186,6 +195,18 @@ public class ApplicationController extends Application {
 
     public LifecycleController getLifecycleController() {
         return mLifecycleController;
+    }
+
+    public PresenterController getPresenterController() {
+        return mPresenterController;
+    }
+
+    public NavigationController getNavigationController() {
+        return mNavigationController;
+    }
+
+    public UseCasesController getUseCasesController() {
+        return mUseCasesController;
     }
 
 }

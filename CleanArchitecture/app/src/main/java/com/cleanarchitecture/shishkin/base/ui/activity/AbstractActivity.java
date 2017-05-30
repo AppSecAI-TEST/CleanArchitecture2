@@ -126,7 +126,7 @@ public abstract class AbstractActivity extends AppCompatActivity
         mLifecycleList.clear();
 
         for (IPresenter presenter : mPresenters.values()) {
-            PresenterController.getInstance().unregister(presenter);
+            ApplicationController.getInstance().getPresenterController().unregister(presenter);
         }
         mPresenters.clear();
 
@@ -194,7 +194,7 @@ public abstract class AbstractActivity extends AppCompatActivity
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        UseCasesController.getInstance().setSystemDialogShown(false);
+        ApplicationController.getInstance().getUseCasesController().setSystemDialogShown(false);
 
         //EventController.getInstance().post(new OnUserIteractionEvent());
 
@@ -218,10 +218,10 @@ public abstract class AbstractActivity extends AppCompatActivity
         presenter.setState(mLifecycleState);
         if (mPresenters.containsKey(presenter.getName())) {
             mPresenters.remove(presenter);
-            PresenterController.getInstance().unregister(presenter);
+            ApplicationController.getInstance().getPresenterController().unregister(presenter);
         }
         mPresenters.put(presenter.getName(), presenter);
-        PresenterController.getInstance().register(presenter);
+        ApplicationController.getInstance().getPresenterController().register(presenter);
         registerLifecycleObject(presenter);
     }
 

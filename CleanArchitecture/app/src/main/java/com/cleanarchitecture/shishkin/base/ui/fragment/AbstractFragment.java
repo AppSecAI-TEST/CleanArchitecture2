@@ -116,7 +116,7 @@ public abstract class AbstractFragment extends Fragment implements IFragment
         mLifecycleList.clear();
 
         for (IPresenter presenter: mPresenters.values()) {
-            PresenterController.getInstance().unregister(presenter);
+            ApplicationController.getInstance().getPresenterController().unregister(presenter);
         }
         mPresenters.clear();
 
@@ -171,10 +171,10 @@ public abstract class AbstractFragment extends Fragment implements IFragment
         presenter.setState(mLifecycleState);
         if (mPresenters.containsKey(presenter.getName())) {
             mPresenters.remove(presenter);
-            PresenterController.getInstance().unregister(presenter);
+            ApplicationController.getInstance().getPresenterController().unregister(presenter);
         }
         mPresenters.put(presenter.getName(), presenter);
-        PresenterController.getInstance().register(presenter);
+        ApplicationController.getInstance().getPresenterController().register(presenter);
         registerLifecycleObject(presenter);
     }
 

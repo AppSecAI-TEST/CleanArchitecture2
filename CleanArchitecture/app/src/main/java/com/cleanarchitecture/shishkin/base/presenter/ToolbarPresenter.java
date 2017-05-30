@@ -415,7 +415,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onToolbarOnClickEvent(final OnToolbarClickEvent event) {
-        final AbstractContentFragment fragment = NavigationController.getInstance().getContentFragment(AbstractContentFragment.class);
+        final AbstractContentFragment fragment = ApplicationController.getInstance().getNavigationController().getContentFragment(AbstractContentFragment.class);
         if (fragment != null && fragment.getContentFragmentPresenter() != null) {
             ApplicationUtils.runOnUiThread(() -> fragment.getContentFragmentPresenter().onClick(event.getView()));
         }

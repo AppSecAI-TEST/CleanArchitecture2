@@ -18,27 +18,11 @@ import java.util.Map;
  */
 public class NavigationController extends AbstractController implements INavigationController{
 
-    private static final String NAME = "NavigationController";
+    public static final String NAME = "NavigationController";
     private Map<String, WeakReference<INavigationSubscriber>> mSubscribers = Collections.synchronizedMap(new HashMap<String, WeakReference<INavigationSubscriber>>());
-    private static volatile NavigationController sInstance;
     private WeakReference<INavigationSubscriber> mCurrentSubscriber;
 
-    public static synchronized void instantiate() {
-        if (sInstance == null) {
-            synchronized (NavigationController.class) {
-                if (sInstance == null) {
-                    sInstance = new NavigationController();
-                }
-            }
-        }
-    }
-
-    public static NavigationController getInstance() {
-        instantiate();
-        return sInstance;
-    }
-
-    private NavigationController() {
+    public NavigationController() {
         mSubscribers = Collections.synchronizedMap(new HashMap<String, WeakReference<INavigationSubscriber>>());
         ApplicationController.getInstance().getEventController().register(this);
     }
