@@ -8,10 +8,8 @@ import com.cleanarchitecture.shishkin.application.event.repository.RepositoryReq
 import com.cleanarchitecture.shishkin.application.ui.activity.MainActivity;
 import com.cleanarchitecture.shishkin.base.controller.AppPreferences;
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
-import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.controller.IEventController;
 import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
-import com.cleanarchitecture.shishkin.base.controller.MailController;
 import com.cleanarchitecture.shishkin.base.event.ClearDiskCacheEvent;
 import com.cleanarchitecture.shishkin.base.event.IEvent;
 import com.cleanarchitecture.shishkin.base.event.database.DbCreatedEvent;

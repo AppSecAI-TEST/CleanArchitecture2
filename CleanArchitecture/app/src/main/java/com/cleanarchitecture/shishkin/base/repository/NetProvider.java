@@ -5,7 +5,6 @@ import android.content.Context;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
-import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.controller.IEventController;
 import com.cleanarchitecture.shishkin.base.event.OnNetworkConnectedEvent;
 import com.cleanarchitecture.shishkin.base.event.OnNetworkDisconnectedEvent;
@@ -31,16 +30,20 @@ public class NetProvider implements INetProvider {
     public NetProvider (final IEventController controller) {
         controller.register(this);
 
-        mConnectivityMonitor = new ConnectivityMonitor();
-        mConnectivityMonitor.subscribe(ApplicationController.getInstance());
+        final Context context = ApplicationController.getInstance();
 
-        mConnected = Connectivity.isNetworkConnected(ApplicationController.getInstance());
-        mPhonePausableThreadPoolExecutor = new PhonePausableThreadPoolExecutor(ApplicationController.getInstance(), 4, TimeUnit.MINUTES);
+        if (context != null) {
+            mConnectivityMonitor = new ConnectivityMonitor();
+            mConnectivityMonitor.subscribe(context);
+
+            mConnected = Connectivity.isNetworkConnected(context);
+            mPhonePausableThreadPoolExecutor = new PhonePausableThreadPoolExecutor(context, 4, TimeUnit.MINUTES);
+        }
     }
 
     @Override
     public synchronized void request(final IRequest request) {
-        if (mConnected) {
+        if (mConnected && mPhonePausableThreadPoolExecutor != null) {
             mPhonePausableThreadPoolExecutor.execute(request);
         }
     }
@@ -48,7 +51,10 @@ public class NetProvider implements INetProvider {
     @Override
     public synchronized void setPaused(boolean paused) {
         mConnected = !paused;
-        mPhonePausableThreadPoolExecutor.setPaused(paused);
+
+        if (mPhonePausableThreadPoolExecutor != null) {
+            mPhonePausableThreadPoolExecutor.setPaused(paused);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
