@@ -16,6 +16,12 @@ import com.cleanarchitecture.shishkin.application.task.CreateDbTask;
 import com.cleanarchitecture.shishkin.base.controller.ActivityController;
 import com.cleanarchitecture.shishkin.base.controller.CrashController;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
+import com.cleanarchitecture.shishkin.base.controller.IActivityController;
+import com.cleanarchitecture.shishkin.base.controller.IEventController;
+import com.cleanarchitecture.shishkin.base.controller.ILifecycleController;
+import com.cleanarchitecture.shishkin.base.controller.IMailController;
+import com.cleanarchitecture.shishkin.base.controller.INavigationController;
+import com.cleanarchitecture.shishkin.base.controller.IPresenterController;
 import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
 import com.cleanarchitecture.shishkin.base.controller.MailController;
 import com.cleanarchitecture.shishkin.base.controller.NavigationController;
@@ -23,6 +29,7 @@ import com.cleanarchitecture.shishkin.base.controller.PresenterController;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnLowMemoryEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOffEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOnEvent;
+import com.cleanarchitecture.shishkin.base.repository.IRepository;
 import com.cleanarchitecture.shishkin.base.repository.Repository;
 import com.cleanarchitecture.shishkin.base.usecases.UseCasesController;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
@@ -38,13 +45,15 @@ public class ApplicationController extends Application {
     private static final long MAX_LOG_LENGTH = 2000000;//2Mb
     public static final String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CALL_PHONE, Manifest.permission.READ_CONTACTS};
 
-    private final EventController mEventController = new EventController();
-    private final CrashController mCrashController = new CrashController();
-    private final ActivityController mActivityController = new ActivityController();
-    private final LifecycleController mLifecycleController = new LifecycleController();
-    private final PresenterController mPresenterController = new PresenterController();
-    private final NavigationController mNavigationController = new NavigationController();
-    private final UseCasesController mUseCasesController = new UseCasesController();
+    private IEventController mEventController;
+    private CrashController mCrashController;
+    private IActivityController mActivityController;
+    private ILifecycleController mLifecycleController;
+    private IPresenterController mPresenterController;
+    private INavigationController mNavigationController;
+    private UseCasesController mUseCasesController;
+    private IRepository mRepository;
+    private IMailController mMailController;
 
     @Override
     public void onCreate() {
@@ -52,6 +61,16 @@ public class ApplicationController extends Application {
         super.onCreate();
 
         sInstance = this;
+
+        mEventController = new EventController();
+        mCrashController = new CrashController();
+        mActivityController = new ActivityController();
+        mLifecycleController = new LifecycleController();
+        mPresenterController = new PresenterController();
+        mNavigationController = new NavigationController();
+        mUseCasesController = new UseCasesController();
+        mRepository = new Repository();
+        mMailController = new MailController();
 
         if (!LeakCanary.isInAnalyzerProcess(this)) {
             LeakCanary.install(this);
@@ -96,9 +115,6 @@ public class ApplicationController extends Application {
         } else {
             Log.setEnabled(false);
         }
-
-        Repository.instantiate();
-        MailController.instantiate();
 
         registerScreenOnOffBroadcastReceiver();
 
@@ -181,32 +197,45 @@ public class ApplicationController extends Application {
             case UseCasesController.NAME:
                 return (C) mUseCasesController;
 
+            case Repository.NAME:
+                return (C) mRepository;
+
+            case MailController.NAME:
+                return (C) mMailController;
         }
         return null;
     }
 
-    public ActivityController getActivityController() {
+    public IActivityController getActivityController() {
         return mActivityController;
     }
 
-    public EventController getEventController() {
+    public IEventController getEventController() {
         return mEventController;
     }
 
-    public LifecycleController getLifecycleController() {
+    public ILifecycleController getLifecycleController() {
         return mLifecycleController;
     }
 
-    public PresenterController getPresenterController() {
+    public IPresenterController getPresenterController() {
         return mPresenterController;
     }
 
-    public NavigationController getNavigationController() {
+    public INavigationController getNavigationController() {
         return mNavigationController;
     }
 
     public UseCasesController getUseCasesController() {
         return mUseCasesController;
+    }
+
+    public IRepository getRepository() {
+        return mRepository;
+    }
+
+    public IMailController getMailController() {
+        return mMailController;
     }
 
 }

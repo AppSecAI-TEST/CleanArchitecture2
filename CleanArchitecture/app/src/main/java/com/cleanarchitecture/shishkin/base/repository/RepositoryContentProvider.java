@@ -15,14 +15,14 @@ public class RepositoryContentProvider {
     }
 
     public static synchronized void requestContacts(final RepositoryRequestGetContactsEvent event) {
-        List<PhoneContactItem> list = SerializableUtil.serializableToList(Repository.getInstance().getFromCache(String.valueOf(event.getId()), event.getCacheType()));
+        List<PhoneContactItem> list = SerializableUtil.serializableToList(ApplicationController.getInstance().getRepository().getFromCache(String.valueOf(event.getId()), event.getCacheType()));
         if (list != null) {
             ApplicationController.getInstance().getEventController().post(new RepositoryResponseGetContactsEvent(list, Repository.FROM_CACHE));
         } else {
-            list = ContentProvider.getInstance().getContacts();
+            list = ApplicationController.getInstance().getRepository().getContentProvider().getContacts();
 
             if (list != null) {
-                Repository.getInstance().putToCache(String.valueOf(event.getId()), event.getCacheType(), (Serializable) list);
+                ApplicationController.getInstance().getRepository().putToCache(String.valueOf(event.getId()), event.getCacheType(), (Serializable) list);
             }
             ApplicationController.getInstance().getEventController().post(new RepositoryResponseGetContactsEvent(list, Repository.FROM_CONTENT_PROVIDER));
         }

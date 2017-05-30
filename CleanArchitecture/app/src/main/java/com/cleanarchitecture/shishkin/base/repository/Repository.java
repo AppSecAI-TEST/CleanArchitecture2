@@ -48,27 +48,10 @@ public class Repository implements IRepository, IEventVendor {
     public static final int USE_SAVE_DISK_CACHE = 8; // сохранять только в кеше на диске после получения данных. Не использовать кеш для чтения
     public static final int USE_SAVE_CACHE = 9; // сохранять в кеш в памяти и на диске после получения данных. Не использовать кеш для чтения
 
-    private static volatile Repository sInstance;
+    private final NetProvider mNetProvider = new NetProvider();
+    private final ContentProvider mContentProvider = new ContentProvider();
 
-    public static void instantiate() {
-        if (sInstance == null) {
-            synchronized (Repository.class) {
-                if (sInstance == null) {
-                    sInstance = new Repository();
-                }
-            }
-        }
-    }
-
-    public static Repository getInstance() {
-        instantiate();
-        return sInstance;
-    }
-
-    private Repository() {
-        NetProvider.instantiate();
-        ContentProvider.instantiate();
-
+    public Repository() {
         ApplicationController.getInstance().getEventController().register(this);
     }
 
@@ -144,6 +127,14 @@ public class Repository implements IRepository, IEventVendor {
         ApplicationController.getInstance().getEventController().post(event);
     }
 
+    public NetProvider getNetProvider() {
+        return mNetProvider;
+    }
+
+    public ContentProvider getContentProvider() {
+        return mContentProvider;
+    }
+
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onClearDiskCacheEvent(final ClearDiskCacheEvent event) {
         final Context context = ApplicationController.getInstance();
@@ -165,7 +156,7 @@ public class Repository implements IRepository, IEventVendor {
     public void onDbCreatedEvent(final DbCreatedEvent event) {
         final Context context = ApplicationController.getInstance();
         if (context != null) {
-            MailController.getInstance().addMail(new ShowToastMail(MainActivity.NAME, context.getString(R.string.db_created, event.getName()) ));
+            ApplicationController.getInstance().getMailController().addMail(new ShowToastMail(MainActivity.NAME, context.getString(R.string.db_created, event.getName()) ));
         }
     }
 
@@ -173,7 +164,7 @@ public class Repository implements IRepository, IEventVendor {
     public void onDbUpdatedEvent(final DbUpdatedEvent event) {
         final Context context = ApplicationController.getInstance();
         if (context != null) {
-            MailController.getInstance().addMail(new ShowToastMail(MainActivity.NAME, context.getString(R.string.db_updated, event.getName())));
+            ApplicationController.getInstance().getMailController().addMail(new ShowToastMail(MainActivity.NAME, context.getString(R.string.db_updated, event.getName())));
         }
     }
 
@@ -181,4 +172,5 @@ public class Repository implements IRepository, IEventVendor {
     public void onRepositoryRequestGetContactsEvent(final RepositoryRequestGetContactsEvent event) {
         RepositoryContentProvider.requestContacts(event);
     }
+
 }

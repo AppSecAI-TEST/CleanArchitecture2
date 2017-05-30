@@ -74,7 +74,7 @@ public abstract class AbstractFragment extends Fragment implements IFragment
         mFragmentPresenter.bindView(this);
         registerPresenter(mFragmentPresenter);
 
-        MailController.getInstance().register(this);
+        ApplicationController.getInstance().getMailController().register(this);
     }
 
     @Override
@@ -120,7 +120,7 @@ public abstract class AbstractFragment extends Fragment implements IFragment
         }
         mPresenters.clear();
 
-        MailController.getInstance().unregister(this);
+        ApplicationController.getInstance().getMailController().unregister(this);
     }
 
     @Override
@@ -243,10 +243,10 @@ public abstract class AbstractFragment extends Fragment implements IFragment
 
     @Override
     public synchronized void readMail() {
-        List<IMail> list = MailController.getInstance().getMail(this);
+        List<IMail> list = ApplicationController.getInstance().getMailController().getMail(this);
         for (IMail mail : list) {
             mail.read(this);
-            MailController.getInstance().removeMail(mail);
+            ApplicationController.getInstance().getMailController().removeMail(mail);
         }
     }
 

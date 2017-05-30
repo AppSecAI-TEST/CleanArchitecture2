@@ -67,7 +67,7 @@ public abstract class AbstractActivity extends AppCompatActivity
         ApplicationController.getInstance().getEventController().register(this);
         ApplicationController.getInstance().getLifecycleController().register(this);
         ApplicationController.getInstance().getActivityController().register(this);
-        MailController.getInstance().register(this);
+        ApplicationController.getInstance().getMailController().register(this);
 
         setLifecycleStatus(Lifecycle.STATE_CREATE);
 
@@ -120,7 +120,7 @@ public abstract class AbstractActivity extends AppCompatActivity
         ApplicationController.getInstance().getEventController().unregister(this);
         ApplicationController.getInstance().getActivityController().unregister(this);
         ApplicationController.getInstance().getLifecycleController().unregister(this);
-        MailController.getInstance().unregister(this);
+        ApplicationController.getInstance().getMailController().unregister(this);
 
         setLifecycleStatus(Lifecycle.STATE_DESTROY);
         mLifecycleList.clear();
@@ -284,10 +284,10 @@ public abstract class AbstractActivity extends AppCompatActivity
 
     @Override
     public synchronized void readMail() {
-        final List<IMail> list = MailController.getInstance().getMail(this);
+        final List<IMail> list = ApplicationController.getInstance().getMailController().getMail(this);
         for (IMail mail : list) {
             mail.read(this);
-            MailController.getInstance().removeMail(mail);
+            ApplicationController.getInstance().getMailController().removeMail(mail);
         }
     }
 
