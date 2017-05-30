@@ -36,7 +36,7 @@ public class ApplicationController extends Application {
     private static volatile ApplicationController sInstance;
     private static final String LOG_TAG = "ApplicationController";
     private static final long MAX_LOG_LENGTH = 2000000;//2Mb
-    public static final String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    public static final String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CALL_PHONE, Manifest.permission.READ_CONTACTS};
 
     @Override
     public void onCreate() {
@@ -156,16 +156,5 @@ public class ApplicationController extends Application {
         Log.e(LOG_TAG, "Low memory - onLowMemory");
         EventController.getInstance().post(new UseCaseOnLowMemoryEvent());
     }
-
-    @Override
-    public void onTrimMemory(int level) {
-        super.onTrimMemory(level);
-
-        if (level >= ComponentCallbacks2.TRIM_MEMORY_BACKGROUND) {
-            Log.e(LOG_TAG, "Low memory - onTrimMemory: " + level);
-            EventController.getInstance().post(new UseCaseOnLowMemoryEvent());
-        }
-    }
-
 
 }

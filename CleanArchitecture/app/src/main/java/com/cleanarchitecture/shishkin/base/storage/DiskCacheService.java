@@ -38,11 +38,15 @@ public class DiskCacheService extends LiveLongBackgroundIntentService {
 
     public synchronized static void put(final Context context, final String key, final Serializable object) {
         if (context != null) {
-            final Intent intent = IntentUtils.createActionIntent(context, DiskCacheService.class,
-                    ACTION_PUT);
-            intent.putExtra(Intent.EXTRA_TEXT, key);
-            intent.putExtra(EXTRA_SERIALIZABLE, object);
-            context.startService(intent);
+            try {
+                final Intent intent = IntentUtils.createActionIntent(context, DiskCacheService.class,
+                        ACTION_PUT);
+                intent.putExtra(Intent.EXTRA_TEXT, key);
+                intent.putExtra(EXTRA_SERIALIZABLE, object);
+                context.startService(intent);
+            } catch (Exception e) {
+                Log.e(LOG_TAG, e.getMessage());
+            }
         }
     }
 

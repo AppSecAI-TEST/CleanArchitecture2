@@ -3,7 +3,7 @@ package com.cleanarchitecture.shishkin.base.lifecycle;
 /**
  * Интерфейс объекта, имеющего состояния
  */
-public interface ILifecycle extends IState {
+public interface ILifecycle extends IStateable {
     /**
      * Событие - объект на этапе создания
      */

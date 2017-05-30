@@ -1,6 +1,6 @@
 package com.cleanarchitecture.shishkin.base.lifecycle;
 
-public interface IState {
+public interface IStateable {
 
     /**
      * Получить состояние объекта

@@ -7,6 +7,8 @@
 
     <item name="dialog_request_permissions" type="id" />
 
+    <item name="dialog_call_phone" type="id" />
+
     <item name="cache_contact_items" type="id" />
 
     <item name="type_caching" type="id" />

@@ -3,7 +3,6 @@ package com.cleanarchitecture.shishkin.base.ui.activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -27,7 +26,7 @@ import com.cleanarchitecture.shishkin.base.controller.PresenterController;
 import com.cleanarchitecture.shishkin.base.event.*;
 import com.cleanarchitecture.shishkin.base.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.base.lifecycle.ILifecycle;
-import com.cleanarchitecture.shishkin.base.lifecycle.IState;
+import com.cleanarchitecture.shishkin.base.lifecycle.IStateable;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.mail.IMail;
 import com.cleanarchitecture.shishkin.base.presenter.ActivityPresenter;
@@ -55,7 +54,7 @@ public abstract class AbstractActivity extends AppCompatActivity
 
     private static final String NAME = "AbstractActivity";
     private Map<String, IPresenter> mPresenters = Collections.synchronizedMap(new HashMap<String, IPresenter>());
-    private List<WeakReference<IState>> mLifecycleList = Collections.synchronizedList(new ArrayList<WeakReference<IState>>());
+    private List<WeakReference<IStateable>> mLifecycleList = Collections.synchronizedList(new ArrayList<WeakReference<IStateable>>());
     private int mLifecycleState = Lifecycle.STATE_CREATE;
     private ActivityPresenter mActivityPresenter = new ActivityPresenter();
     private Unbinder mUnbinder = null;
@@ -77,7 +76,7 @@ public abstract class AbstractActivity extends AppCompatActivity
 
     private void setLifecycleStatus(final int status) {
         mLifecycleState = status;
-        for (WeakReference<IState> object : mLifecycleList) {
+        for (WeakReference<IStateable> object : mLifecycleList) {
             if (object.get() != null) {
                 object.get().setState(mLifecycleState);
             }
@@ -227,21 +226,21 @@ public abstract class AbstractActivity extends AppCompatActivity
 
     @Override
     public synchronized void registerLifecycleObject(final ILifecycle object) {
-        for (WeakReference<IState> reference : mLifecycleList) {
+        for (WeakReference<IStateable> reference : mLifecycleList) {
             if (reference.get() == null) {
                 mLifecycleList.remove(reference);
             }
         }
 
         boolean found = false;
-        for (WeakReference<IState> reference : mLifecycleList) {
+        for (WeakReference<IStateable> reference : mLifecycleList) {
             if (reference.get() != null && reference.get() == object) {
                 found = true;
                 break;
             }
         }
         if (!found) {
-            mLifecycleList.add(new WeakReference<IState>(object));
+            mLifecycleList.add(new WeakReference<IStateable>(object));
         }
     }
 
