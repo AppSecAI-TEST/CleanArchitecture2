@@ -14,26 +14,9 @@ public class EventController extends AbstractController implements IEventControl
     public static final int LOW_RANK = 2;
     public static final int MIN_RANK = 0;
 
-    private static final String NAME = "EventController";
+    public static final String NAME = "EventController";
 
-    private static volatile EventController sInstance;
-
-    public static void instantiate() {
-        if (sInstance == null) {
-            synchronized (EventController.class) {
-                if (sInstance == null) {
-                    sInstance = new EventController();
-                }
-            }
-        }
-    }
-
-    public static EventController getInstance() {
-        instantiate();
-        return sInstance;
-    }
-
-    private EventController() {
+    public EventController() {
         EventBus.getDefault();
     }
 

@@ -1,5 +1,6 @@
 package com.cleanarchitecture.shishkin.base.usecases;
 
+import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.event.OnScreenOffEvent;
 
@@ -12,7 +13,7 @@ public class ScreenOnOffUseCase extends AbstractUseCase{
 
     public static synchronized void onScreenOff() {
         // остановить все LiveLongBackgroundIntentService
-        EventController.getInstance().post(new OnScreenOffEvent());
+        ApplicationController.getInstance().getEventController().post(new OnScreenOffEvent());
     }
 
     public static synchronized void onScreenOn() {

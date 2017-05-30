@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.ActivityController;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
@@ -73,7 +74,7 @@ public abstract class AbstractFragment extends Fragment implements IFragment
         mFragmentPresenter.bindView(this);
         registerPresenter(mFragmentPresenter);
 
-        MailController.getInstance().register(this);
+        ApplicationController.getInstance().getMailController().register(this);
     }
 
     @Override
@@ -115,11 +116,11 @@ public abstract class AbstractFragment extends Fragment implements IFragment
         mLifecycleList.clear();
 
         for (IPresenter presenter: mPresenters.values()) {
-            PresenterController.getInstance().unregister(presenter);
+            ApplicationController.getInstance().getPresenterController().unregister(presenter);
         }
         mPresenters.clear();
 
-        MailController.getInstance().unregister(this);
+        ApplicationController.getInstance().getMailController().unregister(this);
     }
 
     @Override
@@ -137,7 +138,7 @@ public abstract class AbstractFragment extends Fragment implements IFragment
 
     @Override
     public void postEvent(IEvent event) {
-        EventController.getInstance().post(event);
+        ApplicationController.getInstance().getEventController().post(event);
     }
 
     @Override
@@ -148,7 +149,7 @@ public abstract class AbstractFragment extends Fragment implements IFragment
                 return (AppCompatActivity) activity;
             }
         } else {
-            final IActivity subscriber = ActivityController.getInstance().getSubscriber();
+            final IActivity subscriber = ApplicationController.getInstance().getActivityController().getSubscriber();
             if (subscriber != null && subscriber instanceof AppCompatActivity) {
                 return (AppCompatActivity)subscriber;
             }
@@ -162,7 +163,7 @@ public abstract class AbstractFragment extends Fragment implements IFragment
         if (activity != null && activity instanceof IActivity) {
             return (IActivity) activity;
         }
-        return ActivityController.getInstance().getSubscriber();
+        return ApplicationController.getInstance().getActivityController().getSubscriber();
     }
 
     @Override
@@ -170,10 +171,10 @@ public abstract class AbstractFragment extends Fragment implements IFragment
         presenter.setState(mLifecycleState);
         if (mPresenters.containsKey(presenter.getName())) {
             mPresenters.remove(presenter);
-            PresenterController.getInstance().unregister(presenter);
+            ApplicationController.getInstance().getPresenterController().unregister(presenter);
         }
         mPresenters.put(presenter.getName(), presenter);
-        PresenterController.getInstance().register(presenter);
+        ApplicationController.getInstance().getPresenterController().register(presenter);
         registerLifecycleObject(presenter);
     }
 
@@ -214,7 +215,7 @@ public abstract class AbstractFragment extends Fragment implements IFragment
         if (mActivityPresenter != null) {
             return mActivityPresenter;
         } else {
-            final IActivity subscriber = ActivityController.getInstance().getSubscriber();
+            final IActivity subscriber = ApplicationController.getInstance().getActivityController().getSubscriber();
             if (subscriber != null && subscriber instanceof AbstractActivity) {
                 return subscriber.getActivityPresenter();
             }
@@ -242,10 +243,10 @@ public abstract class AbstractFragment extends Fragment implements IFragment
 
     @Override
     public synchronized void readMail() {
-        List<IMail> list = MailController.getInstance().getMail(this);
+        List<IMail> list = ApplicationController.getInstance().getMailController().getMail(this);
         for (IMail mail : list) {
             mail.read(this);
-            MailController.getInstance().removeMail(mail);
+            ApplicationController.getInstance().getMailController().removeMail(mail);
         }
     }
 

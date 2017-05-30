@@ -1,5 +1,6 @@
 package com.cleanarchitecture.shishkin.base.presenter;
 
+import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
 import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
@@ -32,7 +33,7 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IEventVendo
 
     @Override
     public void onViewCreatedLifecycle() {
-        MailController.getInstance().register(this);
+        ApplicationController.getInstance().getMailController().register(this);
         updateView();
     }
 
@@ -47,7 +48,7 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IEventVendo
 
     @Override
     public void onDestroyLifecycle() {
-        MailController.getInstance().unregister(this);
+        ApplicationController.getInstance().getMailController().unregister(this);
     }
 
     @Override
@@ -58,7 +59,7 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IEventVendo
             if (getState() == Lifecycle.STATE_RESUME || getState() == Lifecycle.STATE_VIEW_CREATED) {
                 updateView();
             } else {
-                MailController.getInstance().addMail(new UpdateViewPresenterMail(getName()));
+                ApplicationController.getInstance().getMailController().addMail(new UpdateViewPresenterMail(getName()));
             }
         }
     }
@@ -88,15 +89,15 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IEventVendo
      * @param event событие
      */
     public void postEvent(IEvent event) {
-        EventController.getInstance().post(event);
+        ApplicationController.getInstance().getEventController().post(event);
     }
 
     @Override
     public synchronized void readMail() {
-        final List<IMail> list = MailController.getInstance().getMail(this);
+        final List<IMail> list = ApplicationController.getInstance().getMailController().getMail(this);
         for (IMail mail : list) {
             mail.read(this);
-            MailController.getInstance().removeMail(mail);
+            ApplicationController.getInstance().getMailController().removeMail(mail);
         }
     }
 

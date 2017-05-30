@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 
+import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarInitEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarPrepareEvent;
@@ -29,7 +30,7 @@ public abstract class AbstractContentFragment extends AbstractFragment  implemen
 
     @Override
     public void onDestroyView() {
-        EventController.getInstance().unregister(this);
+        ApplicationController.getInstance().getEventController().unregister(this);
 
         super.onDestroyView();
     }
@@ -38,7 +39,7 @@ public abstract class AbstractContentFragment extends AbstractFragment  implemen
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        EventController.getInstance().register(this);
+        ApplicationController.getInstance().getEventController().register(this);
 
         mContentFragmentPresenter.bindView(this);
         registerPresenter(mContentFragmentPresenter);

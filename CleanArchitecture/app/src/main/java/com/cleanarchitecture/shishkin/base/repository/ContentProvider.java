@@ -8,7 +8,6 @@ import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.application.data.cursor.ContactCursor;
 import com.cleanarchitecture.shishkin.application.data.dao.PhoneContactDAO;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
-import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.database.dao.AbstractReadOnlyDAO;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
@@ -21,29 +20,12 @@ import java.util.List;
 public class ContentProvider {
     public static final String NAME = "ContentProvider";
 
-    private static volatile ContentProvider sInstance;
-
-    public static synchronized void instantiate() {
-        if (sInstance == null) {
-            synchronized (ContentProvider.class) {
-                if (sInstance == null) {
-                    sInstance = new ContentProvider();
-                }
-            }
-        }
-    }
-
-    public static ContentProvider getInstance() {
-        instantiate();
-        return sInstance;
-    }
-
-    private ContentProvider() {
+    public ContentProvider() {
     }
 
     public synchronized List<PhoneContactItem> getContacts() {
         if (!ApplicationUtils.checkPermission(Manifest.permission.READ_CONTACTS)) {
-            EventController.getInstance().post(new UseCaseRequestPermissionEvent(Manifest.permission.READ_CONTACTS));
+            ApplicationController.getInstance().getEventController().post(new UseCaseRequestPermissionEvent(Manifest.permission.READ_CONTACTS));
             return null;
         }
 
