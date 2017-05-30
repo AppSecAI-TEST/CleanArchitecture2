@@ -14,26 +14,10 @@ import java.util.Map;
 public class PresenterController extends AbstractController
         implements IPresenterController {
 
-    private static final String NAME = "PresenterController";
+    public static final String NAME = "PresenterController";
     private Map<String, WeakReference<IPresenter>> mPresenters = Collections.synchronizedMap(new HashMap<String, WeakReference<IPresenter>>());
-    private static volatile PresenterController sInstance;
 
-    public static void instantiate() {
-        if (sInstance == null) {
-            synchronized (PresenterController.class) {
-                if (sInstance == null) {
-                    sInstance = new PresenterController();
-                }
-            }
-        }
-    }
-
-    public static synchronized PresenterController getInstance() {
-        instantiate();
-        return sInstance;
-    }
-
-    private PresenterController() {
+    public PresenterController() {
         mPresenters = Collections.synchronizedMap(new HashMap<String, WeakReference<IPresenter>>());
     }
 

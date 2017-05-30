@@ -22,39 +22,18 @@ import java.util.concurrent.TimeUnit;
 public class NetProvider implements INetProvider {
     public static final String NAME = "NetProvider";
 
-    private static volatile NetProvider sInstance;
     private boolean mConnected = false;
     private ConnectivityMonitor mConnectivityMonitor;
     private IPhonePausableThreadPoolExecutor mPhonePausableThreadPoolExecutor;
 
-    public static synchronized void instantiate() {
-        if (sInstance == null) {
-            synchronized (NetProvider.class) {
-                if (sInstance == null) {
-                    sInstance = new NetProvider();
-                }
-            }
-        }
-    }
-
-    public static NetProvider getInstance() {
-        instantiate();
-        return sInstance;
-    }
-
-    private NetProvider () {
-        final Context context = ApplicationController.getInstance();
-        if (context == null) {
-            return;
-        }
-
-        EventController.getInstance().register(this);
+    public NetProvider () {
+        ApplicationController.getInstance().getEventController().register(this);
 
         mConnectivityMonitor = new ConnectivityMonitor();
-        mConnectivityMonitor.subscribe(context);
+        mConnectivityMonitor.subscribe(ApplicationController.getInstance());
 
-        mConnected = Connectivity.isNetworkConnected(context);
-        mPhonePausableThreadPoolExecutor = new PhonePausableThreadPoolExecutor(context, 4, TimeUnit.MINUTES);
+        mConnected = Connectivity.isNetworkConnected(ApplicationController.getInstance());
+        mPhonePausableThreadPoolExecutor = new PhonePausableThreadPoolExecutor(ApplicationController.getInstance(), 4, TimeUnit.MINUTES);
     }
 
     @Override
@@ -81,7 +60,7 @@ public class NetProvider implements INetProvider {
 
         final Context context = ApplicationController.getInstance();
         if (context != null) {
-            EventController.getInstance().post(new ShowMessageEvent(context.getString(R.string.network_disconnected)));
+            ApplicationController.getInstance().getEventController().post(new ShowMessageEvent(context.getString(R.string.network_disconnected)));
         }
     }
 

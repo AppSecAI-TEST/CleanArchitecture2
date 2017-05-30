@@ -75,7 +75,7 @@ public class SearchPresenter extends AbstractContentProviderPresenter<List<Phone
 
     public void bindView(@NonNull final View root, final AbstractContentFragment fragment) {
 
-        EventController.getInstance().register(this);
+        ApplicationController.getInstance().getEventController().register(this);
 
         final EditText searchView = ViewUtils.findView(root, R.id.search);
         if (searchView != null) {
@@ -90,7 +90,7 @@ public class SearchPresenter extends AbstractContentProviderPresenter<List<Phone
 
         final FastScrollRecyclerView recyclerView = ViewUtils.findView(root, R.id.list);
         if (recyclerView != null) {
-            mLinearLayoutManager = new LinearLayoutManager(LifecycleController.getInstance().getActivity());
+            mLinearLayoutManager = new LinearLayoutManager(ApplicationController.getInstance().getLifecycleController().getActivity());
             recyclerView.setLayoutManager(mLinearLayoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             mContactAdapter = new ContactRecyclerViewAdapter(root.getContext());
@@ -118,7 +118,7 @@ public class SearchPresenter extends AbstractContentProviderPresenter<List<Phone
             mDisposableSearchView.dispose();
         }
 
-        EventController.getInstance().unregister(this);
+        ApplicationController.getInstance().getEventController().unregister(this);
 
         super.onDestroyLifecycle();
     }
@@ -143,8 +143,8 @@ public class SearchPresenter extends AbstractContentProviderPresenter<List<Phone
 
     @Override
     public void onContentChanged() {
-        EventController.getInstance().post(new ShowHorizontalProgressBarEvent());
-        EventController.getInstance().post(new RepositoryRequestGetContactsEvent(Repository.USE_SAVE_CACHE));
+        ApplicationController.getInstance().getEventController().post(new ShowHorizontalProgressBarEvent());
+        ApplicationController.getInstance().getEventController().post(new RepositoryRequestGetContactsEvent(Repository.USE_SAVE_CACHE));
     }
 
     private List<PhoneContactItem> filter(final String pattern) {
@@ -166,8 +166,8 @@ public class SearchPresenter extends AbstractContentProviderPresenter<List<Phone
             if (getModel() != null && !getModel().isEmpty()) {
                 updateView();
             } else {
-                EventController.getInstance().post(new ShowHorizontalProgressBarEvent());
-                EventController.getInstance().post(new RepositoryRequestGetContactsEvent(Repository.USE_ONLY_CACHE));
+                ApplicationController.getInstance().getEventController().post(new ShowHorizontalProgressBarEvent());
+                ApplicationController.getInstance().getEventController().post(new RepositoryRequestGetContactsEvent(Repository.USE_ONLY_CACHE));
             }
         }
     }
@@ -184,9 +184,9 @@ public class SearchPresenter extends AbstractContentProviderPresenter<List<Phone
                 }
 
                 if (!mContactAdapter.isEmpty()) {
-                    EventController.getInstance().post(new HideKeyboardEvent());
+                    ApplicationController.getInstance().getEventController().post(new HideKeyboardEvent());
                 } else {
-                    EventController.getInstance().post(new ShowToastEvent(ApplicationController.getInstance().getString(R.string.no_data)));
+                    ApplicationController.getInstance().getEventController().post(new ShowToastEvent(ApplicationController.getInstance().getString(R.string.no_data)));
                 }
             }
         });
@@ -194,7 +194,7 @@ public class SearchPresenter extends AbstractContentProviderPresenter<List<Phone
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public synchronized void onResponseGetContactsEvent(RepositoryResponseGetContactsEvent event) {
-        EventController.getInstance().post(new HideHorizontalProgressBarEvent());
+        ApplicationController.getInstance().getEventController().post(new HideHorizontalProgressBarEvent());
         List<PhoneContactItem> list = event.getContacts();
         if (list == null) {
             list = new ArrayList<>();
@@ -219,7 +219,7 @@ public class SearchPresenter extends AbstractContentProviderPresenter<List<Phone
                     list.add(phone1);
                 }
             }
-            EventController.getInstance().post(new ShowListDialogEvent(R.id.dialog_call_phone, R.string.phone_call, null, list, -1, R.string.exit, true));
+            ApplicationController.getInstance().getEventController().post(new ShowListDialogEvent(R.id.dialog_call_phone, R.string.phone_call, null, list, -1, R.string.exit, true));
         }
     }
 
@@ -231,7 +231,7 @@ public class SearchPresenter extends AbstractContentProviderPresenter<List<Phone
                 if (bundle.getString(MaterialDialogExt.BUTTON).equals(MaterialDialogExt.POSITIVE)) {
                     final ArrayList<String> list = bundle.getStringArrayList("list");
                     if (list != null && list.size() == 1) {
-                        PhoneUtils.call(LifecycleController.getInstance().getActivity(), list.get(0));
+                        PhoneUtils.call(ApplicationController.getInstance().getLifecycleController().getActivity(), list.get(0));
                     }
                 }
             }

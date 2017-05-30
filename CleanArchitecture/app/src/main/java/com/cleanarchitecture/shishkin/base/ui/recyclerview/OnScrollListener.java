@@ -4,6 +4,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.ui.recyclerview.event.OnRecyclerViewFirstRecordVisibledEvent;
 import com.cleanarchitecture.shishkin.base.ui.recyclerview.event.OnRecyclerViewIdleEvent;
@@ -44,26 +45,26 @@ public class OnScrollListener extends RecyclerView.OnScrollListener {
             }
         }
         if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-            EventController.getInstance().post(new OnRecyclerViewIdleEvent(recyclerView));
+            ApplicationController.getInstance().getEventController().post(new OnRecyclerViewIdleEvent(recyclerView));
             checkPosition();
         } else {
             if (!(mLinearLayoutManager.findLastCompletelyVisibleItemPosition() == mRecyclerView.getAdapter().getItemCount() - 1)) {
-                EventController.getInstance().post(new OnRecyclerViewScrolledEvent(recyclerView));
+                ApplicationController.getInstance().getEventController().post(new OnRecyclerViewScrolledEvent(recyclerView));
             }
         }
     }
 
     private void checkPosition(){
         if (mLinearLayoutManager.findLastCompletelyVisibleItemPosition() == mRecyclerView.getAdapter().getItemCount() - 1){
-            EventController.getInstance().post(new OnRecyclerViewLastRecordVisibledEvent(mRecyclerView, VISIBLE));
+            ApplicationController.getInstance().getEventController().post(new OnRecyclerViewLastRecordVisibledEvent(mRecyclerView, VISIBLE));
         } else {
-            EventController.getInstance().post(new OnRecyclerViewLastRecordVisibledEvent(mRecyclerView, GONE));
+            ApplicationController.getInstance().getEventController().post(new OnRecyclerViewLastRecordVisibledEvent(mRecyclerView, GONE));
         }
 
         if (mLinearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
-            EventController.getInstance().post(new OnRecyclerViewFirstRecordVisibledEvent(mRecyclerView, VISIBLE));
+            ApplicationController.getInstance().getEventController().post(new OnRecyclerViewFirstRecordVisibledEvent(mRecyclerView, VISIBLE));
         } else {
-            EventController.getInstance().post(new OnRecyclerViewFirstRecordVisibledEvent(mRecyclerView, GONE));
+            ApplicationController.getInstance().getEventController().post(new OnRecyclerViewFirstRecordVisibledEvent(mRecyclerView, GONE));
         }
     }
 

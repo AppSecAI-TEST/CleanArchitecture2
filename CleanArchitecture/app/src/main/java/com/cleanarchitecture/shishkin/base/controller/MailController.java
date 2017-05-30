@@ -17,28 +17,12 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class MailController extends AbstractController implements IMailController {
 
-    private static final String NAME = "MailController";
-    private static volatile MailController sInstance;
+    public static final String NAME = "MailController";
     private Map<String, WeakReference<IMailSubscriber>> mSubscribers = Collections.synchronizedMap(new HashMap<String, WeakReference<IMailSubscriber>>());
     private Map<Long, IMail> mMail = Collections.synchronizedMap(new HashMap<Long, IMail>());
     private AtomicLong mId = new AtomicLong(0L);
 
-    public static synchronized void instantiate() {
-        if (sInstance == null) {
-            synchronized (MailController.class) {
-                if (sInstance == null) {
-                    sInstance = new MailController();
-                }
-            }
-        }
-    }
-
-    public static synchronized MailController getInstance() {
-        instantiate();
-        return sInstance;
-    }
-
-    private MailController() {
+    public MailController() {
         mSubscribers = Collections.synchronizedMap(new HashMap<String, WeakReference<IMailSubscriber>>());
         mMail = Collections.synchronizedMap(new HashMap<Long, IMail>());
     }

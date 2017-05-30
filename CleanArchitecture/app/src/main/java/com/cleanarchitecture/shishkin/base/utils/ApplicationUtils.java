@@ -140,12 +140,12 @@ public class ApplicationUtils {
             final int result = googleAPI.isGooglePlayServicesAvailable(activity);
             if (result != ConnectionResult.SUCCESS) {
                 if (googleAPI.isUserResolvableError(result)) {
-                    if (!UseCasesController.getInstance().isSystemDialogShown()) {
-                        UseCasesController.getInstance().setSystemDialogShown(true);
+                    if (!ApplicationController.getInstance().getUseCasesController().isSystemDialogShown()) {
+                        ApplicationController.getInstance().getUseCasesController().setSystemDialogShown(true);
                         runOnUiThread(() -> {
                             final Dialog dialog = googleAPI.getErrorDialog(activity, result, ApplicationUtils.REQUEST_GOOGLE_PLAY_SERVICES);
                             dialog.setOnCancelListener(dialogInterface -> activity.finish());
-                            dialog.setOnDismissListener(dialog1 -> UseCasesController.getInstance().setSystemDialogShown(false));
+                            dialog.setOnDismissListener(dialog1 -> ApplicationController.getInstance().getUseCasesController().setSystemDialogShown(false));
                             dialog.show();
                         });
                     }
@@ -182,8 +182,8 @@ public class ApplicationUtils {
                     String[] arrayPermissionsNeeded = new String[listPermissionsNeeded.size()];
                     listPermissionsNeeded.toArray(arrayPermissionsNeeded);
                     if (activity != null) {
-                        if (!UseCasesController.getInstance().isSystemDialogShown()) {
-                            UseCasesController.getInstance().setSystemDialogShown(true);
+                        if (!ApplicationController.getInstance().getUseCasesController().isSystemDialogShown()) {
+                            ApplicationController.getInstance().getUseCasesController().setSystemDialogShown(true);
                             ActivityCompat.requestPermissions(activity,
                                     arrayPermissionsNeeded,
                                     REQUEST_PERMISSIONS);

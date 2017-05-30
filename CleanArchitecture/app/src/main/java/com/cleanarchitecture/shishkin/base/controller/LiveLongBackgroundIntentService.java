@@ -6,6 +6,7 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
 
+import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.event.OnScreenOffEvent;
 
@@ -61,7 +62,7 @@ public abstract class LiveLongBackgroundIntentService extends Service
     public void onCreate() {
         super.onCreate();
 
-        EventController.getInstance().register(this);
+        ApplicationController.getInstance().getEventController().register(this);
 
         mServiceHandler = new AutoCompleteHandler<>("LiveLongAndProsperIntentService [" + mName + "]");
         mServiceHandler.setOnHandleEventListener(this);
@@ -73,7 +74,7 @@ public abstract class LiveLongBackgroundIntentService extends Service
     public void onDestroy() {
         super.onDestroy();
 
-        EventController.getInstance().unregister(this);
+        ApplicationController.getInstance().getEventController().unregister(this);
     }
 
     /**

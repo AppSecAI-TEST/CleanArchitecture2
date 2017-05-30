@@ -7,28 +7,17 @@ import com.github.snowdream.android.util.Log;
  */
 public class CrashController implements Thread.UncaughtExceptionHandler {
 
-    private static final String LOG_TAG = "CrashController";
-    private static volatile CrashController sInstance;
+    public static final String NAME = "CrashController";
     private static Thread.UncaughtExceptionHandler mHandler = Thread.getDefaultUncaughtExceptionHandler();
 
-    public static void instantiate() {
-        if (sInstance == null) {
-            synchronized (CrashController.class) {
-                if (sInstance == null) {
-                    sInstance = new CrashController();
-                }
-            }
-        }
-    }
-
-    private CrashController() {
+    public CrashController() {
         Thread.setDefaultUncaughtExceptionHandler(this);
     }
 
     @Override
     public void uncaughtException(Thread thread, Throwable throwable) {
-        android.util.Log.e(LOG_TAG, throwable.getMessage(), throwable);
-        Log.e(LOG_TAG, throwable);
+        android.util.Log.e(NAME, throwable.getMessage(), throwable);
+        Log.e(NAME, throwable);
         if (mHandler != null) {
             mHandler.uncaughtException(thread, throwable);
         }
