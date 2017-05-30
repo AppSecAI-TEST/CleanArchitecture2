@@ -187,23 +187,14 @@ public class SearchPresenter extends AbstractContentProviderPresenter<List<Phone
                 } else {
                     mContactAdapter.setItems(getModel());
                 }
-                checkData();
+
+                if (!mContactAdapter.isEmpty()) {
+                    EventController.getInstance().post(new HideKeyboardEvent());
+                } else {
+                    EventController.getInstance().post(new ShowToastEvent(ApplicationController.getInstance().getString(R.string.no_data)));
+                }
             }
         });
-    }
-
-    private void checkData() {
-        if (!mContactAdapter.isEmpty()) {
-            EventController.getInstance().post(new HideKeyboardEvent());
-        } else {
-            EventController.getInstance().post(new ShowToastEvent(ApplicationController.getInstance().getString(R.string.no_data)));
-        }
-
-        if (mLinearLayoutManager.findLastCompletelyVisibleItemPosition() >= mContactAdapter.getItemCount() - 2){
-            EventController.getInstance().post(new OnRecyclerViewLastRecordVisibledEvent(mRecyclerView.get(), VISIBLE));
-        } else {
-            EventController.getInstance().post(new OnRecyclerViewLastRecordVisibledEvent(mRecyclerView.get(), GONE));
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
@@ -224,7 +215,7 @@ public class SearchPresenter extends AbstractContentProviderPresenter<List<Phone
             for (int i = 1; i <= StringUtils.numToken(item.getPhones(), ";"); i++) {
                 String phone = StringUtils.token(item.getPhones(), ";", i);
                 String phone1 = null;
-                if (Build.VERSION.SDK_INT >= 21) {
+                if (ApplicationUtils.hasLollipop()) {
                     phone1 = PhoneNumberUtils.formatNumber(phone, Locale.getDefault().getCountry());
                 }
                 if (StringUtils.isNullOrEmpty(phone1)) {
