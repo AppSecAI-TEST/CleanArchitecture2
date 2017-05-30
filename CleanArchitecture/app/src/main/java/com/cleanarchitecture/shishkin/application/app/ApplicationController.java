@@ -38,8 +38,10 @@ public class ApplicationController extends Application {
     private static final long MAX_LOG_LENGTH = 2000000;//2Mb
     public static final String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CALL_PHONE, Manifest.permission.READ_CONTACTS};
 
-    private EventController mEventController;
-    private ActivityController mActivityController;
+    private final EventController mEventController = new EventController();
+    private final CrashController mCrashController = new CrashController();
+    private final ActivityController mActivityController = new ActivityController();
+    private final LifecycleController mLifecycleController = new LifecycleController();
 
     @Override
     public void onCreate() {
@@ -92,10 +94,6 @@ public class ApplicationController extends Application {
             Log.setEnabled(false);
         }
 
-        mEventController = getController(EventController.NAME);
-        CrashController.instantiate();
-        mActivityController = getController(ActivityController.NAME);
-        LifecycleController.instantiate();
         PresenterController.instantiate();
         NavigationController.instantiate();
         UseCasesController.instantiate();
@@ -164,6 +162,16 @@ public class ApplicationController extends Application {
         switch (controllerName) {
             case ActivityController.NAME:
                 return (C) mActivityController;
+
+            case EventController.NAME:
+                return (C) mEventController;
+
+            case CrashController.NAME:
+                return (C) mCrashController;
+
+            case LifecycleController.NAME:
+                return (C) mLifecycleController;
+
         }
         return null;
     }
@@ -174,6 +182,10 @@ public class ApplicationController extends Application {
 
     public EventController getEventController() {
         return mEventController;
+    }
+
+    public LifecycleController getLifecycleController() {
+        return mLifecycleController;
     }
 
 }

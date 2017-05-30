@@ -65,7 +65,7 @@ public abstract class AbstractActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         ApplicationController.getInstance().getEventController().register(this);
-        LifecycleController.getInstance().register(this);
+        ApplicationController.getInstance().getLifecycleController().register(this);
         ApplicationController.getInstance().getActivityController().register(this);
         MailController.getInstance().register(this);
 
@@ -119,7 +119,7 @@ public abstract class AbstractActivity extends AppCompatActivity
 
         ApplicationController.getInstance().getEventController().unregister(this);
         ApplicationController.getInstance().getActivityController().unregister(this);
-        LifecycleController.getInstance().unregister(this);
+        ApplicationController.getInstance().getLifecycleController().unregister(this);
         MailController.getInstance().unregister(this);
 
         setLifecycleStatus(Lifecycle.STATE_DESTROY);
@@ -138,7 +138,7 @@ public abstract class AbstractActivity extends AppCompatActivity
         super.onResume();
 
         ApplicationController.getInstance().getActivityController().setCurrentSubscriber(this);
-        LifecycleController.getInstance().setCurrentSubscriber(this);
+        ApplicationController.getInstance().getLifecycleController().setCurrentSubscriber(this);
 
         setLifecycleStatus(Lifecycle.STATE_RESUME);
 

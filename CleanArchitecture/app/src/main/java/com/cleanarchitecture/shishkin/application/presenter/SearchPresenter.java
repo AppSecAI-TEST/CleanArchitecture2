@@ -90,7 +90,7 @@ public class SearchPresenter extends AbstractContentProviderPresenter<List<Phone
 
         final FastScrollRecyclerView recyclerView = ViewUtils.findView(root, R.id.list);
         if (recyclerView != null) {
-            mLinearLayoutManager = new LinearLayoutManager(LifecycleController.getInstance().getActivity());
+            mLinearLayoutManager = new LinearLayoutManager(ApplicationController.getInstance().getLifecycleController().getActivity());
             recyclerView.setLayoutManager(mLinearLayoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             mContactAdapter = new ContactRecyclerViewAdapter(root.getContext());
@@ -231,7 +231,7 @@ public class SearchPresenter extends AbstractContentProviderPresenter<List<Phone
                 if (bundle.getString(MaterialDialogExt.BUTTON).equals(MaterialDialogExt.POSITIVE)) {
                     final ArrayList<String> list = bundle.getStringArrayList("list");
                     if (list != null && list.size() == 1) {
-                        PhoneUtils.call(LifecycleController.getInstance().getActivity(), list.get(0));
+                        PhoneUtils.call(ApplicationController.getInstance().getLifecycleController().getActivity(), list.get(0));
                     }
                 }
             }

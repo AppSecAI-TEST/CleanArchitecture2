@@ -23,27 +23,11 @@ import java.util.Map;
 public class LifecycleController extends AbstractController
         implements ILifecycleController {
 
-    private static final String NAME = "LifecycleController";
+    public static final String NAME = "LifecycleController";
     private Map<String, WeakReference<ILifecycleSubscriber>> mSubscribers = Collections.synchronizedMap(new HashMap<String, WeakReference<ILifecycleSubscriber>>());
-    private static volatile LifecycleController sInstance;
     private WeakReference<ILifecycleSubscriber> mCurrentSubscriber;
 
-    public static synchronized void instantiate() {
-        if (sInstance == null) {
-            synchronized (LifecycleController.class) {
-                if (sInstance == null) {
-                    sInstance = new LifecycleController();
-                }
-            }
-        }
-    }
-
-    public static LifecycleController getInstance() {
-        instantiate();
-        return sInstance;
-    }
-
-    private LifecycleController() {
+    public LifecycleController() {
         mSubscribers = Collections.synchronizedMap(new HashMap<String, WeakReference<ILifecycleSubscriber>>());
 
         ApplicationController.getInstance().getEventController().register(this);

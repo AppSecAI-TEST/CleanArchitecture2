@@ -275,7 +275,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     public void showHorizontalProgressBar() {
         ApplicationUtils.runOnUiThread(() -> {
             if (validate()) {
-                final AbstractContentActivity activity = LifecycleController.getInstance().getContentActivity();
+                final AbstractContentActivity activity = ApplicationController.getInstance().getLifecycleController().getContentActivity();
                 if (activity != null) {
                     final AbstractContentFragment fragment = activity.getContentFragment(AbstractContentFragment.class);
                     if (fragment != null) {
@@ -304,7 +304,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     public void hideHorizontalProgressBar() {
         ApplicationUtils.runOnUiThread(() -> {
             if (validate()) {
-                final AbstractContentActivity activity = LifecycleController.getInstance().getContentActivity();
+                final AbstractContentActivity activity = ApplicationController.getInstance().getLifecycleController().getContentActivity();
                 if (activity != null) {
                     final AbstractContentFragment fragment = activity.getContentFragment(AbstractContentFragment.class);
                     if (fragment != null) {

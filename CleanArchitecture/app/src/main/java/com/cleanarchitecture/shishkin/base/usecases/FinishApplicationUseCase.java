@@ -15,7 +15,7 @@ public class FinishApplicationUseCase  extends AbstractUseCase{
 
     public static synchronized void onFinishApplication() {
         // скрыть клавиатуру
-        final IActivity subscriber = LifecycleController.getInstance().getActivity();
+        final IActivity subscriber = ApplicationController.getInstance().getLifecycleController().getActivity();
         if (subscriber != null && subscriber.getActivityPresenter() != null) {
             subscriber.getActivityPresenter().hideKeyboard();
         }
