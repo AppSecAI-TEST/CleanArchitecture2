@@ -40,7 +40,7 @@ public class ContactRecyclerViewAdapter extends AbstractRecyclerViewAdapter<Phon
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, PhoneContactItem item, int position) {
-        holder.bind(getItem(position));
+        holder.bind(getItemCount(), getItem(position));
     }
 
     static class ViewHolder extends AbstractViewHolder {
@@ -48,6 +48,7 @@ public class ContactRecyclerViewAdapter extends AbstractRecyclerViewAdapter<Phon
         private TextView mTextView;
         private CircularImageView mImageView;
         private View mLayout;
+        private View mDivider;
 
         ViewHolder(@NonNull final View itemView) {
             super(itemView);
@@ -56,9 +57,10 @@ public class ContactRecyclerViewAdapter extends AbstractRecyclerViewAdapter<Phon
             mImageView = findView(R.id.image);
             mLayout = findView(R.id.ll);
             mLayout.setOnClickListener(this::onClick);
+            mDivider = findView(R.id.divider);
         }
 
-        void bind(@NonNull final PhoneContactItem item) {
+        void bind(final int cnt, @NonNull final PhoneContactItem item) {
             mTextView.setText(item.getName());
             mLayout.setTag(item);
             if (!StringUtils.isNullOrEmpty(item.getPhoto())) {
@@ -66,10 +68,12 @@ public class ContactRecyclerViewAdapter extends AbstractRecyclerViewAdapter<Phon
             } else {
                 mImageView.setImageDrawable(ViewUtils.getDrawable(mImageView.getContext(), R.drawable.ic_account));
             }
+            final int position = getAdapterPosition();
+            mDivider.setVisibility(position == cnt - 1 ? View.VISIBLE : View.GONE);
         }
 
         private void onClick(View v) {
-            EventController.getInstance().post(new OnSearchPresenterItemClick((PhoneContactItem)v.getTag()));
+            EventController.getInstance().post(new OnSearchPresenterItemClick((PhoneContactItem) v.getTag()));
         }
     }
 

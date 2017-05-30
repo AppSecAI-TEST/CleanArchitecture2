@@ -54,6 +54,12 @@
     </com.balysv.materialripple.MaterialRippleLayout>
 
     <View style="@style/HorizontalDivider" />
+
+    <View
+        android:id="@+id/divider"
+        style="@style/HorizontalDividerBlue2dp"
+        android:visibility="gone" />
+
 </LinearLayout>
 
 
