@@ -7,6 +7,7 @@ import com.cleanarchitecture.shishkin.base.controller.MailController;
 import com.cleanarchitecture.shishkin.base.event.IEvent;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.mail.IMail;
+import com.cleanarchitecture.shishkin.base.mail.UpdateViewPresenterMail;
 
 import java.util.List;
 
@@ -53,7 +54,13 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IEventVendo
     public synchronized void setModel(final M model) {
         mModel = model;
 
-        updateView();
+        if (validate()) {
+            if (getState() == Lifecycle.STATE_RESUME || getState() == Lifecycle.STATE_VIEW_CREATED) {
+                updateView();
+            } else {
+                MailController.getInstance().addMail(new UpdateViewPresenterMail(getName()));
+            }
+        }
     }
 
     @Override
