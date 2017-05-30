@@ -14,6 +14,7 @@ import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.task.CreateDbTask;
 import com.cleanarchitecture.shishkin.base.controller.ActivityController;
+import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.CrashController;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.controller.IActivityController;
@@ -31,6 +32,7 @@ import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOffEvent
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOnEvent;
 import com.cleanarchitecture.shishkin.base.repository.IRepository;
 import com.cleanarchitecture.shishkin.base.repository.Repository;
+import com.cleanarchitecture.shishkin.base.usecases.IUseCasesController;
 import com.cleanarchitecture.shishkin.base.usecases.UseCasesController;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.github.snowdream.android.util.FilePathGenerator;
@@ -45,36 +47,17 @@ public class ApplicationController extends Application {
     private static final long MAX_LOG_LENGTH = 2000000;//2Mb
     public static final String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CALL_PHONE, Manifest.permission.READ_CONTACTS};
 
-    private IEventController mEventController;
-    private CrashController mCrashController;
-    private IActivityController mActivityController;
-    private ILifecycleController mLifecycleController;
-    private IPresenterController mPresenterController;
-    private INavigationController mNavigationController;
-    private UseCasesController mUseCasesController;
-    private IRepository mRepository;
-    private IMailController mMailController;
-
     @Override
     public void onCreate() {
-
-        super.onCreate();
-
         sInstance = this;
 
-        mEventController = new EventController();
-        mCrashController = new CrashController();
-        mActivityController = new ActivityController();
-        mLifecycleController = new LifecycleController();
-        mPresenterController = new PresenterController();
-        mNavigationController = new NavigationController();
-        mUseCasesController = new UseCasesController();
-        mRepository = new Repository();
-        mMailController = new MailController();
+        super.onCreate();
 
         if (!LeakCanary.isInAnalyzerProcess(this)) {
             LeakCanary.install(this);
         }
+
+        Controllers.instantiate();
 
         init();
     }
@@ -86,7 +69,8 @@ public class ApplicationController extends Application {
         return sInstance;
     }
 
-    public synchronized void init() {
+    private void init() {
+
         boolean isGrant = true;
         if (!ApplicationUtils.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             isGrant = false;
@@ -120,6 +104,8 @@ public class ApplicationController extends Application {
 
         // создаем БД
         new CreateDbTask().execute();
+
+        Log.i(LOG_TAG, "Application inited");
     }
 
     private void checkLogSize() {
@@ -156,9 +142,9 @@ public class ApplicationController extends Application {
                 final String strAction = intent.getAction();
 
                 if (strAction.equals(Intent.ACTION_SCREEN_OFF)) {
-                    getEventController().post(new UseCaseOnScreenOffEvent());
+                    Controllers.getInstance().getEventController().post(new UseCaseOnScreenOffEvent());
                 } else {
-                    getEventController().post(new UseCaseOnScreenOnEvent());
+                    Controllers.getInstance().getEventController().post(new UseCaseOnScreenOnEvent());
                 }
             }
         };
@@ -171,71 +157,7 @@ public class ApplicationController extends Application {
         super.onLowMemory();
 
         Log.e(LOG_TAG, "Low memory");
-        getEventController().post(new UseCaseOnLowMemoryEvent());
-    }
-
-    public synchronized <C> C getController(final String controllerName) {
-        switch (controllerName) {
-            case ActivityController.NAME:
-                return (C) mActivityController;
-
-            case EventController.NAME:
-                return (C) mEventController;
-
-            case CrashController.NAME:
-                return (C) mCrashController;
-
-            case LifecycleController.NAME:
-                return (C) mLifecycleController;
-
-            case PresenterController.NAME:
-                return (C) mPresenterController;
-
-            case NavigationController.NAME:
-                return (C) mNavigationController;
-
-            case UseCasesController.NAME:
-                return (C) mUseCasesController;
-
-            case Repository.NAME:
-                return (C) mRepository;
-
-            case MailController.NAME:
-                return (C) mMailController;
-        }
-        return null;
-    }
-
-    public IActivityController getActivityController() {
-        return mActivityController;
-    }
-
-    public IEventController getEventController() {
-        return mEventController;
-    }
-
-    public ILifecycleController getLifecycleController() {
-        return mLifecycleController;
-    }
-
-    public IPresenterController getPresenterController() {
-        return mPresenterController;
-    }
-
-    public INavigationController getNavigationController() {
-        return mNavigationController;
-    }
-
-    public UseCasesController getUseCasesController() {
-        return mUseCasesController;
-    }
-
-    public IRepository getRepository() {
-        return mRepository;
-    }
-
-    public IMailController getMailController() {
-        return mMailController;
+        Controllers.getInstance().getEventController().post(new UseCaseOnLowMemoryEvent());
     }
 
 }

@@ -17,6 +17,7 @@ import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.ActivityController;
 import com.cleanarchitecture.shishkin.base.controller.AppPreferences;
+import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
 import com.cleanarchitecture.shishkin.base.controller.ILifecycleSubscriber;
@@ -64,10 +65,10 @@ public abstract class AbstractActivity extends AppCompatActivity
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ApplicationController.getInstance().getEventController().register(this);
-        ApplicationController.getInstance().getLifecycleController().register(this);
-        ApplicationController.getInstance().getActivityController().register(this);
-        ApplicationController.getInstance().getMailController().register(this);
+        Controllers.getInstance().getEventController().register(this);
+        Controllers.getInstance().getLifecycleController().register(this);
+        Controllers.getInstance().getActivityController().register(this);
+        Controllers.getInstance().getMailController().register(this);
 
         setLifecycleStatus(Lifecycle.STATE_CREATE);
 
@@ -117,16 +118,16 @@ public abstract class AbstractActivity extends AppCompatActivity
             mUnbinder.unbind();
         }
 
-        ApplicationController.getInstance().getEventController().unregister(this);
-        ApplicationController.getInstance().getActivityController().unregister(this);
-        ApplicationController.getInstance().getLifecycleController().unregister(this);
-        ApplicationController.getInstance().getMailController().unregister(this);
+        Controllers.getInstance().getEventController().unregister(this);
+        Controllers.getInstance().getActivityController().unregister(this);
+        Controllers.getInstance().getLifecycleController().unregister(this);
+        Controllers.getInstance().getMailController().unregister(this);
 
         setLifecycleStatus(Lifecycle.STATE_DESTROY);
         mLifecycleList.clear();
 
         for (IPresenter presenter : mPresenters.values()) {
-            ApplicationController.getInstance().getPresenterController().unregister(presenter);
+            Controllers.getInstance().getPresenterController().unregister(presenter);
         }
         mPresenters.clear();
 
@@ -137,8 +138,8 @@ public abstract class AbstractActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
 
-        ApplicationController.getInstance().getActivityController().setCurrentSubscriber(this);
-        ApplicationController.getInstance().getLifecycleController().setCurrentSubscriber(this);
+        Controllers.getInstance().getActivityController().setCurrentSubscriber(this);
+        Controllers.getInstance().getLifecycleController().setCurrentSubscriber(this);
 
         setLifecycleStatus(Lifecycle.STATE_RESUME);
 
@@ -194,7 +195,7 @@ public abstract class AbstractActivity extends AppCompatActivity
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        ApplicationController.getInstance().getUseCasesController().setSystemDialogShown(false);
+        Controllers.getInstance().getUseCasesController().setSystemDialogShown(false);
 
         //EventController.getInstance().post(new OnUserIteractionEvent());
 
@@ -218,10 +219,10 @@ public abstract class AbstractActivity extends AppCompatActivity
         presenter.setState(mLifecycleState);
         if (mPresenters.containsKey(presenter.getName())) {
             mPresenters.remove(presenter);
-            ApplicationController.getInstance().getPresenterController().unregister(presenter);
+            Controllers.getInstance().getPresenterController().unregister(presenter);
         }
         mPresenters.put(presenter.getName(), presenter);
-        ApplicationController.getInstance().getPresenterController().register(presenter);
+        Controllers.getInstance().getPresenterController().register(presenter);
         registerLifecycleObject(presenter);
     }
 
@@ -247,7 +248,7 @@ public abstract class AbstractActivity extends AppCompatActivity
 
     @Override
     public void postEvent(IEvent event) {
-        ApplicationController.getInstance().getEventController().post(event);
+        Controllers.getInstance().getEventController().post(event);
     }
 
     @Override
@@ -284,10 +285,10 @@ public abstract class AbstractActivity extends AppCompatActivity
 
     @Override
     public synchronized void readMail() {
-        final List<IMail> list = ApplicationController.getInstance().getMailController().getMail(this);
+        final List<IMail> list = Controllers.getInstance().getMailController().getMail(this);
         for (IMail mail : list) {
             mail.read(this);
-            ApplicationController.getInstance().getMailController().removeMail(mail);
+            Controllers.getInstance().getMailController().removeMail(mail);
         }
     }
 

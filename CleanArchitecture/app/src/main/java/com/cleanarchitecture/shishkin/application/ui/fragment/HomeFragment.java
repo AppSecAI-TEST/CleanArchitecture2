@@ -12,6 +12,7 @@ import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.application.data.dao.PhoneContactDAO;
 import com.cleanarchitecture.shishkin.application.presenter.SearchPresenter;
+import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.OnToolbarMenuItemClickEvent;
@@ -80,7 +81,7 @@ public class HomeFragment extends AbstractContentFragment {
     }
 
     private void onClickFab(View view) {
-        ApplicationController.getInstance().getEventController().post(new FinishApplicationEvent());
+        Controllers.getInstance().getEventController().post(new FinishApplicationEvent());
     }
 
     @Override

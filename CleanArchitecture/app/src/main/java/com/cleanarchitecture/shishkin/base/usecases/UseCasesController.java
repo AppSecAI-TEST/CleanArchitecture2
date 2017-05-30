@@ -2,7 +2,9 @@ package com.cleanarchitecture.shishkin.base.usecases;
 
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.AbstractController;
+import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
+import com.cleanarchitecture.shishkin.base.controller.IEventController;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionDeniedEvent;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.OnSnackBarClickEvent;
@@ -21,21 +23,23 @@ import java.util.concurrent.locks.ReentrantLock;
  * Контроллер бизнес и пользовательской логики в приложении
  */
 @SuppressWarnings("unused")
-public class UseCasesController extends AbstractController {
+public class UseCasesController extends AbstractController implements IUseCasesController {
     public static final String NAME = "UseCasesController";
     private boolean mSystemDialogShown = false;
     private ReentrantLock mLock;
+
+    public UseCasesController(final IEventController controller) {
+        mLock = new ReentrantLock();
+
+        controller.register(this);
+    }
+
+    @Override
     public synchronized boolean isSystemDialogShown() {
         return mSystemDialogShown;
     }
 
-    public UseCasesController() {
-        mLock = new ReentrantLock();
-
-        ApplicationController.getInstance().getEventController().register(this);
-    }
-
-
+    @Override
     public synchronized void setSystemDialogShown(boolean shown) {
         mLock.lock();
         try {

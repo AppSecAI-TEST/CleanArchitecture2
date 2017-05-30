@@ -27,10 +27,10 @@ public class LifecycleController extends AbstractController
     private Map<String, WeakReference<ILifecycleSubscriber>> mSubscribers = Collections.synchronizedMap(new HashMap<String, WeakReference<ILifecycleSubscriber>>());
     private WeakReference<ILifecycleSubscriber> mCurrentSubscriber;
 
-    public LifecycleController() {
+    public LifecycleController(final IEventController controller) {
         mSubscribers = Collections.synchronizedMap(new HashMap<String, WeakReference<ILifecycleSubscriber>>());
 
-        ApplicationController.getInstance().getEventController().register(this);
+        controller.register(this);
     }
 
     /**

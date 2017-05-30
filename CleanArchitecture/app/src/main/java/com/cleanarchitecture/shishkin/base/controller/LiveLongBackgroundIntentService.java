@@ -62,7 +62,7 @@ public abstract class LiveLongBackgroundIntentService extends Service
     public void onCreate() {
         super.onCreate();
 
-        ApplicationController.getInstance().getEventController().register(this);
+        Controllers.getInstance().getEventController().register(this);
 
         mServiceHandler = new AutoCompleteHandler<>("LiveLongAndProsperIntentService [" + mName + "]");
         mServiceHandler.setOnHandleEventListener(this);
@@ -74,7 +74,7 @@ public abstract class LiveLongBackgroundIntentService extends Service
     public void onDestroy() {
         super.onDestroy();
 
-        ApplicationController.getInstance().getEventController().unregister(this);
+        Controllers.getInstance().getEventController().unregister(this);
     }
 
     /**

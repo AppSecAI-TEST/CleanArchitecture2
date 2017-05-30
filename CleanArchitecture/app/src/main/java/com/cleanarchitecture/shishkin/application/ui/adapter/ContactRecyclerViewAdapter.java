@@ -12,6 +12,7 @@ import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.event.searchpresenter.OnSearchPresenterItemClick;
+import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.ui.recyclerview.AbstractRecyclerViewAdapter;
 import com.cleanarchitecture.shishkin.base.ui.recyclerview.AbstractViewHolder;
@@ -74,7 +75,7 @@ public class ContactRecyclerViewAdapter extends AbstractRecyclerViewAdapter<Phon
         }
 
         private void onClick(View v) {
-            ApplicationController.getInstance().getEventController().post(new OnSearchPresenterItemClick((PhoneContactItem) v.getTag()));
+            Controllers.getInstance().getEventController().post(new OnSearchPresenterItemClick((PhoneContactItem) v.getTag()));
         }
     }
 

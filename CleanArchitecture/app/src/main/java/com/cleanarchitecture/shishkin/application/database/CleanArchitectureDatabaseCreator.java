@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.application.database.dao.ConfigDAO;
 import com.cleanarchitecture.shishkin.application.database.item.ConfigItem;
+import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.database.Column;
 import com.cleanarchitecture.shishkin.base.database.ConflictResolution;
@@ -25,14 +26,14 @@ public class CleanArchitectureDatabaseCreator extends DatabaseCreator {
     @Override
     public void onCreate(@NonNull final Context context, final IDatabase db) {
         createConfig(context, db);
-        ApplicationController.getInstance().getEventController().post(new DbCreatedEvent(db.getName()));
+        Controllers.getInstance().getEventController().post(new DbCreatedEvent(db.getName()));
     }
 
     @Override
     public boolean onUpgrade(@NonNull final Context context, final IDatabase db, final int toVersion) {
         switch (toVersion) {
         }
-        ApplicationController.getInstance().getEventController().post(new DbUpdatedEvent(db.getName()));
+        Controllers.getInstance().getEventController().post(new DbUpdatedEvent(db.getName()));
         return true;
     }
 

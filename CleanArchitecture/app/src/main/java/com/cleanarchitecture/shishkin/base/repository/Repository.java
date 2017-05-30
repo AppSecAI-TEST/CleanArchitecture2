@@ -7,7 +7,9 @@ import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.ui.activity.MainActivity;
 import com.cleanarchitecture.shishkin.base.controller.AppPreferences;
+import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
+import com.cleanarchitecture.shishkin.base.controller.IEventController;
 import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
 import com.cleanarchitecture.shishkin.base.controller.MailController;
 import com.cleanarchitecture.shishkin.base.event.ClearDiskCacheEvent;
@@ -48,11 +50,14 @@ public class Repository implements IRepository, IEventVendor {
     public static final int USE_SAVE_DISK_CACHE = 8; // сохранять только в кеше на диске после получения данных. Не использовать кеш для чтения
     public static final int USE_SAVE_CACHE = 9; // сохранять в кеш в памяти и на диске после получения данных. Не использовать кеш для чтения
 
-    private final NetProvider mNetProvider = new NetProvider();
-    private final ContentProvider mContentProvider = new ContentProvider();
+    private NetProvider mNetProvider;
+    private ContentProvider mContentProvider;
 
-    public Repository() {
-        ApplicationController.getInstance().getEventController().register(this);
+    public Repository(final IEventController controller) {
+        controller.register(this);
+
+        mNetProvider = new NetProvider(controller);
+        mContentProvider = new ContentProvider();
     }
 
     @Override
@@ -124,7 +129,7 @@ public class Repository implements IRepository, IEventVendor {
 
     @Override
     public void postEvent(IEvent event) {
-        ApplicationController.getInstance().getEventController().post(event);
+        Controllers.getInstance().getEventController().post(event);
     }
 
     public NetProvider getNetProvider() {
@@ -156,7 +161,7 @@ public class Repository implements IRepository, IEventVendor {
     public void onDbCreatedEvent(final DbCreatedEvent event) {
         final Context context = ApplicationController.getInstance();
         if (context != null) {
-            ApplicationController.getInstance().getMailController().addMail(new ShowToastMail(MainActivity.NAME, context.getString(R.string.db_created, event.getName()) ));
+            Controllers.getInstance().getMailController().addMail(new ShowToastMail(MainActivity.NAME, context.getString(R.string.db_created, event.getName()) ));
         }
     }
 
@@ -164,7 +169,7 @@ public class Repository implements IRepository, IEventVendor {
     public void onDbUpdatedEvent(final DbUpdatedEvent event) {
         final Context context = ApplicationController.getInstance();
         if (context != null) {
-            ApplicationController.getInstance().getMailController().addMail(new ShowToastMail(MainActivity.NAME, context.getString(R.string.db_updated, event.getName())));
+            Controllers.getInstance().getMailController().addMail(new ShowToastMail(MainActivity.NAME, context.getString(R.string.db_updated, event.getName())));
         }
     }
 

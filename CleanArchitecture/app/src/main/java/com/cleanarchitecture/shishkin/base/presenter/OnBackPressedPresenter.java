@@ -5,6 +5,7 @@ import android.support.design.widget.Snackbar;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
+import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowMessageEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseFinishApplicationEvent;
@@ -24,11 +25,11 @@ public class OnBackPressedPresenter extends AbstractPresenter<Void> {
                 final Context context = ApplicationController.getInstance();
                 if (context != null) {
                     mDoubleBackPressedOnce = true;
-                    ApplicationController.getInstance().getEventController().post(new ShowMessageEvent(context.getString(R.string.double_back_pressed)).setAction(context.getString(R.string.exit)));
+                    Controllers.getInstance().getEventController().post(new ShowMessageEvent(context.getString(R.string.double_back_pressed)).setAction(context.getString(R.string.exit)));
                     startTimer();
                 }
             } else {
-                ApplicationController.getInstance().getEventController().post(new UseCaseFinishApplicationEvent());
+                Controllers.getInstance().getEventController().post(new UseCaseFinishApplicationEvent());
             }
         }
     }
