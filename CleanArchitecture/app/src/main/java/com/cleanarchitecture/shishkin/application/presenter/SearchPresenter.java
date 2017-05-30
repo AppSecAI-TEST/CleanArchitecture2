@@ -2,7 +2,6 @@ package com.cleanarchitecture.shishkin.application.presenter;
 
 import android.Manifest;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -37,7 +36,6 @@ import com.cleanarchitecture.shishkin.base.ui.dialog.MaterialDialogExt;
 import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.base.ui.recyclerview.OnScrollListener;
 import com.cleanarchitecture.shishkin.base.ui.recyclerview.SwipeTouchHelper;
-import com.cleanarchitecture.shishkin.base.ui.recyclerview.event.OnRecyclerViewLastRecordVisibledEvent;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.PhoneUtils;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
@@ -58,9 +56,6 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 
 
 @SuppressWarnings("unused")
