@@ -31,6 +31,7 @@ import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOffEvent
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOnEvent;
 import com.cleanarchitecture.shishkin.base.repository.IRepository;
 import com.cleanarchitecture.shishkin.base.repository.Repository;
+import com.cleanarchitecture.shishkin.base.usecases.IUseCasesController;
 import com.cleanarchitecture.shishkin.base.usecases.UseCasesController;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.github.snowdream.android.util.FilePathGenerator;
@@ -51,7 +52,7 @@ public class ApplicationController extends Application {
     private ILifecycleController mLifecycleController;
     private IPresenterController mPresenterController;
     private INavigationController mNavigationController;
-    private UseCasesController mUseCasesController;
+    private IUseCasesController mUseCasesController;
     private IRepository mRepository;
     private IMailController mMailController;
 
@@ -226,7 +227,7 @@ public class ApplicationController extends Application {
         return mNavigationController;
     }
 
-    public UseCasesController getUseCasesController() {
+    public IUseCasesController getUseCasesController() {
         return mUseCasesController;
     }
 

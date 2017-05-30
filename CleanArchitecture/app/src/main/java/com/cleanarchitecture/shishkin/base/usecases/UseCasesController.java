@@ -21,13 +21,10 @@ import java.util.concurrent.locks.ReentrantLock;
  * Контроллер бизнес и пользовательской логики в приложении
  */
 @SuppressWarnings("unused")
-public class UseCasesController extends AbstractController {
+public class UseCasesController extends AbstractController implements IUseCasesController {
     public static final String NAME = "UseCasesController";
     private boolean mSystemDialogShown = false;
     private ReentrantLock mLock;
-    public synchronized boolean isSystemDialogShown() {
-        return mSystemDialogShown;
-    }
 
     public UseCasesController() {
         mLock = new ReentrantLock();
@@ -35,7 +32,12 @@ public class UseCasesController extends AbstractController {
         ApplicationController.getInstance().getEventController().register(this);
     }
 
+    @Override
+    public synchronized boolean isSystemDialogShown() {
+        return mSystemDialogShown;
+    }
 
+    @Override
     public synchronized void setSystemDialogShown(boolean shown) {
         mLock.lock();
         try {
