@@ -39,29 +39,6 @@ public class HomeFragmentPresenter extends AbstractPresenter {
         super.onViewCreatedLifecycle();
 
         EventController.getInstance().register(this);
-
-        if (validate()) {
-            NotificationService.addDistinctMessage(mFragment.get().getContext(), "Тестовое сообщение");
-
-            PresenterController.getInstance().getPresenter(ToolbarPresenter.NAME).showProgressBar();
-            mFragment.get().getFragmentPresenter().showProgressBar();
-            postEvent(new ShowHorizontalProgressBarEvent());
-            mRoot.get().postDelayed(() -> {
-                if (validate()) {
-                    final IPresenter presenter = PresenterController.getInstance().getPresenter(ToolbarPresenter.NAME);
-                    if (presenter != null) {
-                        presenter.hideProgressBar();
-                    }
-
-                    final FragmentPresenter fragmentPresenter = mFragment.get().getFragmentPresenter();
-                    if (fragmentPresenter != null) {
-                        fragmentPresenter.hideProgressBar();
-                    }
-
-                    postEvent(new HideHorizontalProgressBarEvent());
-                }
-            }, 5000);
-        }
     }
 
     @Override

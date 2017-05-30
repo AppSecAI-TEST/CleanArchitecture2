@@ -45,6 +45,19 @@ public class RequestPermissionUseCase extends AbstractUseCase {
                 }
                 break;
 
+            case Manifest.permission.READ_CONTACTS:
+                switch (status) {
+                    case PackageManager.PERMISSION_GRANTED:
+                        break;
+
+                    case PackageManager.PERMISSION_DENIED:
+                        if (!UseCasesController.getInstance().isSystemDialogShown()) {
+                            ActivityController.getInstance().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_read_contacts));
+                        }
+                        break;
+
+                }
+                break;
         }
     }
 
