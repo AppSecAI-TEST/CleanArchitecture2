@@ -58,20 +58,9 @@ public class ApplicationController extends Application {
 
     @Override
     public void onCreate() {
-
-        super.onCreate();
-
         sInstance = this;
 
-        mEventController = new EventController();
-        mCrashController = new CrashController();
-        mActivityController = new ActivityController();
-        mLifecycleController = new LifecycleController();
-        mPresenterController = new PresenterController();
-        mNavigationController = new NavigationController();
-        mUseCasesController = new UseCasesController();
-        mRepository = new Repository();
-        mMailController = new MailController();
+        super.onCreate();
 
         if (!LeakCanary.isInAnalyzerProcess(this)) {
             LeakCanary.install(this);
@@ -87,7 +76,18 @@ public class ApplicationController extends Application {
         return sInstance;
     }
 
-    public synchronized void init() {
+    private void init() {
+
+        mEventController = new EventController();
+        mCrashController = new CrashController();
+        mActivityController = new ActivityController();
+        mLifecycleController = new LifecycleController();
+        mPresenterController = new PresenterController();
+        mNavigationController = new NavigationController();
+        mUseCasesController = new UseCasesController();
+        mRepository = new Repository();
+        mMailController = new MailController();
+
         boolean isGrant = true;
         if (!ApplicationUtils.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             isGrant = false;
@@ -121,6 +121,8 @@ public class ApplicationController extends Application {
 
         // создаем БД
         new CreateDbTask().execute();
+
+        Log.i(LOG_TAG, "Application inited");
     }
 
     private void checkLogSize() {
