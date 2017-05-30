@@ -9,6 +9,7 @@ import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.net.Connectivity;
 import com.cleanarchitecture.shishkin.base.repository.requests.AbstractRequest;
+import com.cleanarchitecture.shishkin.base.repository.requests.IRequest;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -89,7 +90,7 @@ public class PhonePausableThreadPoolExecutor implements IPhonePausableThreadPool
     }
 
     @Override
-    public synchronized void execute(final AbstractRequest request) {
+    public synchronized void execute(final IRequest request) {
         mPausableThreadPoolExecutor.execute(request);
     }
 
