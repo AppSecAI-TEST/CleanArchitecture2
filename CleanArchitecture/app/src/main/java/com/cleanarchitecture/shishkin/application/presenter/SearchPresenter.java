@@ -21,8 +21,6 @@ import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRes
 import com.cleanarchitecture.shishkin.application.event.searchpresenter.OnSearchPresenterItemClick;
 import com.cleanarchitecture.shishkin.application.ui.adapter.ContactRecyclerViewAdapter;
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
-import com.cleanarchitecture.shishkin.base.controller.EventController;
-import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.HideHorizontalProgressBarEvent;
@@ -114,7 +112,7 @@ public class SearchPresenter extends AbstractContentProviderPresenter<List<Phone
     @Override
     public void onDestroyLifecycle() {
         mSearchView = null;
-        mRecyclerView = null;
+        //mRecyclerView = null;
         if (!mDisposableSearchView.isDisposed()) {
             mDisposableSearchView.dispose();
         }

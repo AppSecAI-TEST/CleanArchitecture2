@@ -26,14 +26,6 @@ public class OnScrollListener extends RecyclerView.OnScrollListener {
         mLinearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         mSwipeRefreshLayout = swipeRefreshLayout;
 
-        checkPosition();
-    }
-
-    @Override
-    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-        super.onScrolled(recyclerView, dx, dy);
-
-        checkPosition();
     }
 
     @Override
@@ -47,25 +39,10 @@ public class OnScrollListener extends RecyclerView.OnScrollListener {
         }
         if (newState == RecyclerView.SCROLL_STATE_IDLE) {
             Controllers.getInstance().getEventController().post(new OnRecyclerViewIdleEvent(recyclerView));
-            checkPosition();
         } else {
             if (!(mLinearLayoutManager.findLastCompletelyVisibleItemPosition() == mRecyclerView.getAdapter().getItemCount() - 1)) {
                 Controllers.getInstance().getEventController().post(new OnRecyclerViewScrolledEvent(recyclerView));
             }
-        }
-    }
-
-    private void checkPosition(){
-        if (mLinearLayoutManager.findLastCompletelyVisibleItemPosition() == mRecyclerView.getAdapter().getItemCount() - 1){
-            Controllers.getInstance().getEventController().post(new OnRecyclerViewLastRecordVisibledEvent(mRecyclerView, VISIBLE));
-        } else {
-            Controllers.getInstance().getEventController().post(new OnRecyclerViewLastRecordVisibledEvent(mRecyclerView, GONE));
-        }
-
-        if (mLinearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
-            Controllers.getInstance().getEventController().post(new OnRecyclerViewFirstRecordVisibledEvent(mRecyclerView, VISIBLE));
-        } else {
-            Controllers.getInstance().getEventController().post(new OnRecyclerViewFirstRecordVisibledEvent(mRecyclerView, GONE));
         }
     }
 
