@@ -22,9 +22,9 @@ public class NavigationController extends AbstractController implements INavigat
     private Map<String, WeakReference<INavigationSubscriber>> mSubscribers = Collections.synchronizedMap(new HashMap<String, WeakReference<INavigationSubscriber>>());
     private WeakReference<INavigationSubscriber> mCurrentSubscriber;
 
-    public NavigationController() {
+    public NavigationController(final IEventController controller) {
         mSubscribers = Collections.synchronizedMap(new HashMap<String, WeakReference<INavigationSubscriber>>());
-        ApplicationController.getInstance().getEventController().register(this);
+        controller.register(this);
     }
 
     private synchronized void checkNullSubscriber() {

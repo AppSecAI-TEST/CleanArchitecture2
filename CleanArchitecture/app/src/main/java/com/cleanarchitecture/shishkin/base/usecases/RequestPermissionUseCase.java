@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.ActivityController;
+import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionDeniedEvent;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
@@ -37,8 +38,8 @@ public class RequestPermissionUseCase extends AbstractUseCase {
 
                     case PackageManager.PERMISSION_DENIED:
                         disabledLog();
-                        if (!ApplicationController.getInstance().getUseCasesController().isSystemDialogShown()) {
-                            ApplicationController.getInstance().getActivityController().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_write_external_storage));
+                        if (!Controllers.getInstance().getUseCasesController().isSystemDialogShown()) {
+                            Controllers.getInstance().getActivityController().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_write_external_storage));
                         }
                         break;
 
@@ -51,8 +52,8 @@ public class RequestPermissionUseCase extends AbstractUseCase {
                         break;
 
                     case PackageManager.PERMISSION_DENIED:
-                        if (!ApplicationController.getInstance().getUseCasesController().isSystemDialogShown()) {
-                            ApplicationController.getInstance().getActivityController().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_read_contacts));
+                        if (!Controllers.getInstance().getUseCasesController().isSystemDialogShown()) {
+                            Controllers.getInstance().getActivityController().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_read_contacts));
                         }
                         break;
 
@@ -65,8 +66,8 @@ public class RequestPermissionUseCase extends AbstractUseCase {
                         break;
 
                     case PackageManager.PERMISSION_DENIED:
-                        if (!ApplicationController.getInstance().getUseCasesController().isSystemDialogShown()) {
-                            ApplicationController.getInstance().getActivityController().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_call_phone));
+                        if (!Controllers.getInstance().getUseCasesController().isSystemDialogShown()) {
+                            Controllers.getInstance().getActivityController().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_call_phone));
                         }
                         break;
 

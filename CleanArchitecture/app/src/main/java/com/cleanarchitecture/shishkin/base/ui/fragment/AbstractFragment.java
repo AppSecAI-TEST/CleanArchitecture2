@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.ActivityController;
+import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
 import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
 import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
@@ -74,7 +75,7 @@ public abstract class AbstractFragment extends Fragment implements IFragment
         mFragmentPresenter.bindView(this);
         registerPresenter(mFragmentPresenter);
 
-        ApplicationController.getInstance().getMailController().register(this);
+        Controllers.getInstance().getMailController().register(this);
     }
 
     @Override
@@ -116,11 +117,11 @@ public abstract class AbstractFragment extends Fragment implements IFragment
         mLifecycleList.clear();
 
         for (IPresenter presenter: mPresenters.values()) {
-            ApplicationController.getInstance().getPresenterController().unregister(presenter);
+            Controllers.getInstance().getPresenterController().unregister(presenter);
         }
         mPresenters.clear();
 
-        ApplicationController.getInstance().getMailController().unregister(this);
+        Controllers.getInstance().getMailController().unregister(this);
     }
 
     @Override
@@ -138,7 +139,7 @@ public abstract class AbstractFragment extends Fragment implements IFragment
 
     @Override
     public void postEvent(IEvent event) {
-        ApplicationController.getInstance().getEventController().post(event);
+        Controllers.getInstance().getEventController().post(event);
     }
 
     @Override
@@ -149,7 +150,7 @@ public abstract class AbstractFragment extends Fragment implements IFragment
                 return (AppCompatActivity) activity;
             }
         } else {
-            final IActivity subscriber = ApplicationController.getInstance().getActivityController().getSubscriber();
+            final IActivity subscriber = Controllers.getInstance().getActivityController().getSubscriber();
             if (subscriber != null && subscriber instanceof AppCompatActivity) {
                 return (AppCompatActivity)subscriber;
             }
@@ -163,7 +164,7 @@ public abstract class AbstractFragment extends Fragment implements IFragment
         if (activity != null && activity instanceof IActivity) {
             return (IActivity) activity;
         }
-        return ApplicationController.getInstance().getActivityController().getSubscriber();
+        return Controllers.getInstance().getActivityController().getSubscriber();
     }
 
     @Override
@@ -171,10 +172,10 @@ public abstract class AbstractFragment extends Fragment implements IFragment
         presenter.setState(mLifecycleState);
         if (mPresenters.containsKey(presenter.getName())) {
             mPresenters.remove(presenter);
-            ApplicationController.getInstance().getPresenterController().unregister(presenter);
+            Controllers.getInstance().getPresenterController().unregister(presenter);
         }
         mPresenters.put(presenter.getName(), presenter);
-        ApplicationController.getInstance().getPresenterController().register(presenter);
+        Controllers.getInstance().getPresenterController().register(presenter);
         registerLifecycleObject(presenter);
     }
 
@@ -215,7 +216,7 @@ public abstract class AbstractFragment extends Fragment implements IFragment
         if (mActivityPresenter != null) {
             return mActivityPresenter;
         } else {
-            final IActivity subscriber = ApplicationController.getInstance().getActivityController().getSubscriber();
+            final IActivity subscriber = Controllers.getInstance().getActivityController().getSubscriber();
             if (subscriber != null && subscriber instanceof AbstractActivity) {
                 return subscriber.getActivityPresenter();
             }
@@ -243,10 +244,10 @@ public abstract class AbstractFragment extends Fragment implements IFragment
 
     @Override
     public synchronized void readMail() {
-        List<IMail> list = ApplicationController.getInstance().getMailController().getMail(this);
+        List<IMail> list = Controllers.getInstance().getMailController().getMail(this);
         for (IMail mail : list) {
             mail.read(this);
-            ApplicationController.getInstance().getMailController().removeMail(mail);
+            Controllers.getInstance().getMailController().removeMail(mail);
         }
     }
 

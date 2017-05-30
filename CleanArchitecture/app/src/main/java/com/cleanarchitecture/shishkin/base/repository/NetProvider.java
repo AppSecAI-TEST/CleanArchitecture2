@@ -4,7 +4,9 @@ import android.content.Context;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
+import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
+import com.cleanarchitecture.shishkin.base.controller.IEventController;
 import com.cleanarchitecture.shishkin.base.event.OnNetworkConnectedEvent;
 import com.cleanarchitecture.shishkin.base.event.OnNetworkDisconnectedEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowMessageEvent;
@@ -26,8 +28,8 @@ public class NetProvider implements INetProvider {
     private ConnectivityMonitor mConnectivityMonitor;
     private IPhonePausableThreadPoolExecutor mPhonePausableThreadPoolExecutor;
 
-    public NetProvider () {
-        ApplicationController.getInstance().getEventController().register(this);
+    public NetProvider (final IEventController controller) {
+        controller.register(this);
 
         mConnectivityMonitor = new ConnectivityMonitor();
         mConnectivityMonitor.subscribe(ApplicationController.getInstance());
@@ -60,7 +62,7 @@ public class NetProvider implements INetProvider {
 
         final Context context = ApplicationController.getInstance();
         if (context != null) {
-            ApplicationController.getInstance().getEventController().post(new ShowMessageEvent(context.getString(R.string.network_disconnected)));
+            Controllers.getInstance().getEventController().post(new ShowMessageEvent(context.getString(R.string.network_disconnected)));
         }
     }
 

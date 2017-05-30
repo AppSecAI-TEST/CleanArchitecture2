@@ -6,6 +6,7 @@ import android.view.View;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.ActivityController;
+import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.ui.activity.IActivity;
 import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractFragment;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
@@ -31,7 +32,7 @@ public class FragmentPresenter extends AbstractPresenter<Void> implements IFragm
             if (activity != null && activity instanceof IActivity) {
                 return (IActivity) activity;
             }
-            return ApplicationController.getInstance().getActivityController().getSubscriber();
+            return Controllers.getInstance().getActivityController().getSubscriber();
         }
         return null;
     }

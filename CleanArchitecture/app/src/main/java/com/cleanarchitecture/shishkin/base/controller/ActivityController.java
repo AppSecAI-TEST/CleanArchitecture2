@@ -35,10 +35,10 @@ public class ActivityController extends AbstractController implements IActivityC
     private Map<String, WeakReference<IActivity>> mSubscribers;
     private WeakReference<IActivity> mCurrentSubscriber;
 
-    public ActivityController() {
+    public ActivityController(final IEventController controller) {
         mSubscribers = Collections.synchronizedMap(new HashMap<String, WeakReference<IActivity>>());
 
-        ApplicationController.getInstance().getEventController().register(this);
+        controller.register(this);
     }
 
     /**

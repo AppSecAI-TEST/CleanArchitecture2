@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
+import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.INavigationSubscriber;
 import com.cleanarchitecture.shishkin.base.controller.ISubscriber;
 import com.cleanarchitecture.shishkin.base.controller.NavigationController;
@@ -36,14 +37,14 @@ public abstract class AbstractContentActivity extends AbstractActivity
 
         setContentView(R.layout.activity_main);
 
-        ApplicationController.getInstance().getNavigationController().register(this);
+        Controllers.getInstance().getNavigationController().register(this);
 
         addToolbar();
     }
 
     @Override
     protected void onDestroy() {
-        ApplicationController.getInstance().getNavigationController().unregister(this);
+        Controllers.getInstance().getNavigationController().unregister(this);
 
         super.onDestroy();
     }
@@ -52,7 +53,7 @@ public abstract class AbstractContentActivity extends AbstractActivity
     protected void onResume() {
         super.onResume();
 
-        ApplicationController.getInstance().getNavigationController().setCurrentSubscriber(this);
+        Controllers.getInstance().getNavigationController().setCurrentSubscriber(this);
     }
 
     @Override
