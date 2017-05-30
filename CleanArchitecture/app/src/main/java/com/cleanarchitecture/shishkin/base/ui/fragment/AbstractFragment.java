@@ -16,7 +16,7 @@ import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
 import com.cleanarchitecture.shishkin.base.controller.MailController;
 import com.cleanarchitecture.shishkin.base.controller.PresenterController;
 import com.cleanarchitecture.shishkin.base.event.IEvent;
-import com.cleanarchitecture.shishkin.base.lifecycle.IState;
+import com.cleanarchitecture.shishkin.base.lifecycle.IStateable;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.mail.IMail;
 import com.cleanarchitecture.shishkin.base.presenter.ActivityPresenter;
@@ -40,7 +40,7 @@ public abstract class AbstractFragment extends Fragment implements IFragment
         , IEventVendor, IMailSubscriber {
 
     private Map<String, IPresenter> mPresenters = Collections.synchronizedMap(new HashMap<String, IPresenter>());
-    private List<WeakReference<IState>> mLifecycleList = Collections.synchronizedList(new ArrayList<WeakReference<IState>>());
+    private List<WeakReference<IStateable>> mLifecycleList = Collections.synchronizedList(new ArrayList<WeakReference<IStateable>>());
     private int mLifecycleState = Lifecycle.STATE_CREATE;
     private FragmentPresenter mFragmentPresenter = new FragmentPresenter();
     private Unbinder mUnbinder = null;
@@ -57,7 +57,7 @@ public abstract class AbstractFragment extends Fragment implements IFragment
 
     private void setLifecycleStatus(final int status) {
         mLifecycleState = status;
-        for (WeakReference<IState> object : mLifecycleList) {
+        for (WeakReference<IStateable> object : mLifecycleList) {
             if (object.get() != null) {
                 object.get().setState(mLifecycleState);
             }
@@ -177,22 +177,22 @@ public abstract class AbstractFragment extends Fragment implements IFragment
         registerLifecycleObject(presenter);
     }
 
-    public synchronized void registerLifecycleObject(final IState object) {
-        for (WeakReference<IState> reference: mLifecycleList) {
+    public synchronized void registerLifecycleObject(final IStateable object) {
+        for (WeakReference<IStateable> reference: mLifecycleList) {
             if (reference.get() == null) {
                 mLifecycleList.remove(reference);
             }
         }
 
         boolean found = false;
-        for (WeakReference<IState> reference: mLifecycleList) {
+        for (WeakReference<IStateable> reference: mLifecycleList) {
             if (reference.get() != null && reference.get() == object) {
                 found = true;
                 break;
             }
         }
         if (!found) {
-            mLifecycleList.add(new WeakReference<IState>(object));
+            mLifecycleList.add(new WeakReference<IStateable>(object));
         }
     }
 

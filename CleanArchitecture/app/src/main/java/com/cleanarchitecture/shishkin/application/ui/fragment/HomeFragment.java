@@ -4,17 +4,34 @@ import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.application.presenter.HomeFragmentPresenter;
+import com.cleanarchitecture.shishkin.application.data.dao.PhoneContactDAO;
+import com.cleanarchitecture.shishkin.application.presenter.SearchPresenter;
+import com.cleanarchitecture.shishkin.base.controller.EventController;
+import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
+import com.cleanarchitecture.shishkin.base.event.toolbar.OnToolbarMenuItemClickEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetBackNavigationEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetMenuEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetTitleEvent;
+import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseFinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
 import com.cleanarchitecture.shishkin.base.presenter.OnBackPressedPresenter;
 import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractContentFragment;
+import com.cleanarchitecture.shishkin.base.ui.recyclerview.event.OnRecyclerViewIdleEvent;
+import com.cleanarchitecture.shishkin.base.ui.recyclerview.event.OnRecyclerViewScrolledEvent;
+import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 @SuppressWarnings("unused")
 public class HomeFragment extends AbstractContentFragment {
@@ -26,25 +43,48 @@ public class HomeFragment extends AbstractContentFragment {
     }
 
     private OnBackPressedPresenter mOnBackPressedPresenter = new OnBackPressedPresenter();
-    private HomeFragmentPresenter mHomeFragmentPresenter = new HomeFragmentPresenter();
+    private SearchPresenter mSearchPresenter = new SearchPresenter(PhoneContactDAO.CONTENT_URI);
+
+    @BindView(R.id.fab_menu)
+    FloatingActionMenu mFloatingActionMenu;
+
+    @BindView(R.id.fab_btn_exit)
+    FloatingActionButton mFloatingActionButtonExit;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        final View root = inflater.inflate(R.layout.fragment_home, container, false);
+        setUnbinder(ButterKnife.bind(this, root));
+
+        return root;
     }
 
     @Override
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mFloatingActionButtonExit.setOnClickListener(this::onClickFab);
+
         registerPresenter(mOnBackPressedPresenter);
 
-        mHomeFragmentPresenter.bindView(view, this);
-        registerPresenter(mHomeFragmentPresenter);
+        mSearchPresenter.bindView(view, this);
+        registerPresenter(mSearchPresenter);
 
-        postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.WRITE_EXTERNAL_STORAGE));
+        if (!ApplicationUtils.checkPermission(Manifest.permission.READ_CONTACTS)) {
+            postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.READ_CONTACTS));
+        } else if (!ApplicationUtils.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.WRITE_EXTERNAL_STORAGE));
+        }
+    }
 
+    private void onClickFab(View view) {
+        EventController.getInstance().post(new FinishApplicationEvent());
+    }
+
+    @Override
+    public void refreshData() {
+        mSearchPresenter.refreshData();
     }
 
     @Override
@@ -68,6 +108,24 @@ public class HomeFragment extends AbstractContentFragment {
         return NAME;
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public synchronized void onRecyclerViewIdleEvent(final OnRecyclerViewIdleEvent event) {
+        mFloatingActionMenu.setVisibility(View.VISIBLE);
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public synchronized void onRecyclerViewScrolledEvent(final OnRecyclerViewScrolledEvent event) {
+        mFloatingActionMenu.setVisibility(View.INVISIBLE);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public synchronized void onToolbarMenuItemClickEvent(OnToolbarMenuItemClickEvent event) {
+        final MenuItem item = event.getMenuItem();
+        if (item != null && item.getItemId() == R.id.exit) {
+            postEvent(new UseCaseFinishApplicationEvent());
+        }
+    }
 
 }
 

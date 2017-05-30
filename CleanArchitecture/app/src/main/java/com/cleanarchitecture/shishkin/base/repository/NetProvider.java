@@ -10,9 +10,9 @@ import com.cleanarchitecture.shishkin.base.event.OnNetworkDisconnectedEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowMessageEvent;
 import com.cleanarchitecture.shishkin.base.net.Connectivity;
 import com.cleanarchitecture.shishkin.base.net.ConnectivityMonitor;
-import com.cleanarchitecture.shishkin.base.repository.requests.AbstractRequest;
+import com.cleanarchitecture.shishkin.base.repository.requests.IRequest;
+import com.cleanarchitecture.shishkin.base.task.IPhonePausableThreadPoolExecutor;
 import com.cleanarchitecture.shishkin.base.task.PhonePausableThreadPoolExecutor;
-import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -23,10 +23,9 @@ public class NetProvider implements INetProvider {
     public static final String NAME = "NetProvider";
 
     private static volatile NetProvider sInstance;
-    private Picasso mPicasso;
     private boolean mConnected = false;
     private ConnectivityMonitor mConnectivityMonitor;
-    private PhonePausableThreadPoolExecutor mPhonePausableThreadPoolExecutor;
+    private IPhonePausableThreadPoolExecutor mPhonePausableThreadPoolExecutor;
 
     public static synchronized void instantiate() {
         if (sInstance == null) {
@@ -55,12 +54,11 @@ public class NetProvider implements INetProvider {
         mConnectivityMonitor.subscribe(context);
 
         mConnected = Connectivity.isNetworkConnected(context);
-        mPicasso = Picasso.with(context);
         mPhonePausableThreadPoolExecutor = new PhonePausableThreadPoolExecutor(context, 4, TimeUnit.MINUTES);
     }
 
     @Override
-    public synchronized void request(final AbstractRequest request) {
+    public synchronized void request(final IRequest request) {
         if (mConnected) {
             mPhonePausableThreadPoolExecutor.execute(request);
         }
@@ -70,10 +68,6 @@ public class NetProvider implements INetProvider {
     public synchronized void setPaused(boolean paused) {
         mConnected = !paused;
         mPhonePausableThreadPoolExecutor.setPaused(paused);
-    }
-
-    public Picasso getPicasso() {
-        return mPicasso;
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)

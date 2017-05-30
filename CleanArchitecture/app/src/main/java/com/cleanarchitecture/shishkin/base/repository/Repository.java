@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
+import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.ui.activity.MainActivity;
 import com.cleanarchitecture.shishkin.base.controller.AppPreferences;
 import com.cleanarchitecture.shishkin.base.controller.EventController;
@@ -13,7 +14,6 @@ import com.cleanarchitecture.shishkin.base.event.ClearDiskCacheEvent;
 import com.cleanarchitecture.shishkin.base.event.IEvent;
 import com.cleanarchitecture.shishkin.base.event.database.DbCreatedEvent;
 import com.cleanarchitecture.shishkin.base.event.database.DbUpdatedEvent;
-import com.cleanarchitecture.shishkin.base.event.repository.RepositoryRequestGetImageEvent;
 import com.cleanarchitecture.shishkin.base.mail.ShowToastMail;
 import com.cleanarchitecture.shishkin.base.storage.DiskCache;
 import com.cleanarchitecture.shishkin.base.storage.DiskCacheService;
@@ -113,16 +113,19 @@ public class Repository implements IRepository, IEventVendor {
             case USE_NO_CACHE:
                 break;
 
+            case USE_ONLY_MEMORY_CACHE:
             case USE_SAVE_MEMORY_CACHE:
             case USE_MEMORY_CACHE:
                 MemoryCacheService.put(context, key, value);
                 break;
 
+            case USE_ONLY_DISK_CACHE:
             case USE_SAVE_DISK_CACHE:
             case USE_DISK_CACHE:
                 DiskCacheService.put(context, key, value);
                 break;
 
+            case USE_ONLY_CACHE:
             case USE_SAVE_CACHE:
             case USE_MEMORY_AND_DISK_CACHE:
                 MemoryCacheService.put(context, key, value);
@@ -139,11 +142,6 @@ public class Repository implements IRepository, IEventVendor {
     @Override
     public void postEvent(IEvent event) {
         EventController.getInstance().post(event);
-    }
-
-    @Subscribe(threadMode = ThreadMode.ASYNC)
-    public void onRepositoryRequestGetImageEvent(final RepositoryRequestGetImageEvent event) {
-        RepositoryNetProvider.requestGetImage(event);
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
@@ -179,4 +177,8 @@ public class Repository implements IRepository, IEventVendor {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onRepositoryRequestGetContactsEvent(final RepositoryRequestGetContactsEvent event) {
+        RepositoryContentProvider.requestContacts(event);
+    }
 }

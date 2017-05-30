@@ -1,0 +1,76 @@
+package com.cleanarchitecture.shishkin.application.ui.adapter;
+
+import android.content.Context;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
+import com.cleanarchitecture.shishkin.application.event.searchpresenter.OnSearchPresenterItemClick;
+import com.cleanarchitecture.shishkin.base.controller.EventController;
+import com.cleanarchitecture.shishkin.base.ui.recyclerview.AbstractRecyclerViewAdapter;
+import com.cleanarchitecture.shishkin.base.ui.recyclerview.AbstractViewHolder;
+import com.cleanarchitecture.shishkin.base.utils.StringUtils;
+import com.cleanarchitecture.shishkin.base.utils.ViewUtils;
+import com.pkmmte.view.CircularImageView;
+
+public class ContactRecyclerViewAdapter extends AbstractRecyclerViewAdapter<PhoneContactItem, ContactRecyclerViewAdapter.ViewHolder> {
+
+    public ContactRecyclerViewAdapter(@NonNull Context context) {
+        super(context);
+
+        setHasStableIds(true);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return StringUtils.toLong(getItem(position).getId());
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent, int viewType) {
+        final View view = inflater.inflate(R.layout.list_contact_item, parent, false);
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, PhoneContactItem item, int position) {
+        holder.bind(getItem(position));
+    }
+
+    static class ViewHolder extends AbstractViewHolder {
+
+        private TextView mTextView;
+        private CircularImageView mImageView;
+        private View mLayout;
+
+        ViewHolder(@NonNull final View itemView) {
+            super(itemView);
+
+            mTextView = findView(R.id.text);
+            mImageView = findView(R.id.image);
+            mLayout = findView(R.id.ll);
+            mLayout.setOnClickListener(this::onClick);
+        }
+
+        void bind(@NonNull final PhoneContactItem item) {
+            mTextView.setText(item.getName());
+            mLayout.setTag(item);
+            if (!StringUtils.isNullOrEmpty(item.getPhoto())) {
+                mImageView.setImageURI(Uri.parse(item.getPhoto()));
+            } else {
+                mImageView.setImageDrawable(ViewUtils.getDrawable(mImageView.getContext(), R.drawable.ic_account));
+            }
+        }
+
+        private void onClick(View v) {
+            EventController.getInstance().post(new OnSearchPresenterItemClick((PhoneContactItem)v.getTag()));
+        }
+    }
+
+}
