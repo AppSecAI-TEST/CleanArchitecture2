@@ -50,9 +50,6 @@
                 app:fastScrollThumbColor="@color/blue"
                 app:fastScrollTrackColor="@color/blue_ripple" />
 
-            <View
-                android:id="@+id/divider"
-                style="@style/HorizontalDividerBlue2dp" />
         </LinearLayout>
 
     </android.support.v4.widget.SwipeRefreshLayout>

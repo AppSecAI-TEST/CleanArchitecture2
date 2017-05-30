@@ -1,6 +1,5 @@
 package com.cleanarchitecture.shishkin.base.repository;
 
-import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryResponseGetContactsEvent;

@@ -157,15 +157,4 @@ public class ApplicationController extends Application {
         EventController.getInstance().post(new UseCaseOnLowMemoryEvent());
     }
 
-    @Override
-    public void onTrimMemory(int level) {
-        super.onTrimMemory(level);
-
-        if (level >= ComponentCallbacks2.TRIM_MEMORY_BACKGROUND) {
-            Log.e(LOG_TAG, "Low memory - onTrimMemory: " + level);
-            EventController.getInstance().post(new UseCaseOnLowMemoryEvent());
-        }
-    }
-
-
 }

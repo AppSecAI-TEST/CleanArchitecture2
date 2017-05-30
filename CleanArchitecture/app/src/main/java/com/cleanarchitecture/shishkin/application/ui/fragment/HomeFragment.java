@@ -51,9 +51,6 @@ public class HomeFragment extends AbstractContentFragment {
     @BindView(R.id.fab_btn_exit)
     FloatingActionButton mFloatingActionButtonExit;
 
-    @BindView(R.id.divider)
-    View mDivider;
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
@@ -125,12 +122,6 @@ public class HomeFragment extends AbstractContentFragment {
     public synchronized void onRecyclerViewScrolledEvent(final OnRecyclerViewScrolledEvent event) {
         mFloatingActionMenu.setVisibility(View.INVISIBLE);
     }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public synchronized void onRecyclerViewLastRecordVisibledEvent(final OnRecyclerViewLastRecordVisibledEvent event) {
-        mDivider.setVisibility(event.getState());
-    }
-
 
 }
 
