@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.event.StartActivityEvent;
-import com.cleanarchitecture.shishkin.base.presenter.ActivityPresenter;
 import com.cleanarchitecture.shishkin.base.ui.activity.AbstractActivity;
 import com.cleanarchitecture.shishkin.base.ui.activity.AbstractContentActivity;
 
@@ -140,15 +139,6 @@ public class LifecycleController extends AbstractController
     @Override
     public String getName() {
         return NAME;
-    }
-
-    @Override
-    public ActivityPresenter getActivityPresenter() {
-        final AbstractActivity activity = getCurrentActivity();
-        if (activity != null) {
-            return activity.getActivityPresenter();
-        }
-        return null;
     }
 
     /**

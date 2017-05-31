@@ -222,7 +222,10 @@ public class ApplicationUtils {
 
             final File file = new File(pathDb);
             if (file.exists()) {
-                return true;
+                final long length = file.length();
+                if (length > 0) {
+                    return true;
+                }
             }
         } catch (Exception e) {
             Log.e(LOG_TAG, e.getMessage());

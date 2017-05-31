@@ -1,6 +1,5 @@
 package com.cleanarchitecture.shishkin.base.controller;
 
-import com.cleanarchitecture.shishkin.base.presenter.ActivityPresenter;
 import com.cleanarchitecture.shishkin.base.ui.activity.AbstractActivity;
 import com.cleanarchitecture.shishkin.base.ui.activity.AbstractContentActivity;
 
@@ -36,13 +35,6 @@ public interface ILifecycleController extends ISubscriber {
      * @return текущая AbstractActivity
      */
     AbstractActivity getCurrentActivity();
-
-    /**
-     * Получить текущий ActivityPresenter
-     *
-     * @return текущий ActivityPresenter
-     */
-    ActivityPresenter getActivityPresenter();
 
     /**
      * Установить текущего подписчика

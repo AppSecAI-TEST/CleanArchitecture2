@@ -15,6 +15,7 @@ import com.cleanarchitecture.shishkin.base.event.toolbar.OnToolbarMenuItemClickE
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetBackNavigationEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetMenuEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetTitleEvent;
+import com.cleanarchitecture.shishkin.base.event.ui.ShowProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseFinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
 import com.cleanarchitecture.shishkin.base.presenter.OnBackPressedPresenter;
@@ -70,6 +71,8 @@ public class HomeFragment extends AbstractContentFragment {
         } else if (!ApplicationUtils.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.WRITE_EXTERNAL_STORAGE));
         }
+
+        postEvent(new ShowProgressBarEvent());
     }
 
     private void onClickFab(View view) {

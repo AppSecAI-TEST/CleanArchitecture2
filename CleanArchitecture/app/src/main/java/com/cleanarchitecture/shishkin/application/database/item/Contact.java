@@ -24,4 +24,24 @@ public class Contact {
     @SerializedName("Photo")
     @ColumnInfo(name = "Photo")
     public String Photo;
+
+    public Contact setRowId(final String rowId) {
+        RowId = rowId;
+        return this;
+    }
+
+    public Contact setName(final String name) {
+        Name = name;
+        return this;
+    }
+
+    public Contact setPhones(final String phones) {
+        Phones = phones;
+        return this;
+    }
+
+    public Contact setPhoto(final String photo) {
+        Photo = photo;
+        return this;
+    }
 }

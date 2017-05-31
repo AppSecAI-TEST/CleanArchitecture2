@@ -277,15 +277,10 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
                 if (activity != null) {
                     final AbstractContentFragment fragment = activity.getContentFragment(AbstractContentFragment.class);
                     if (fragment != null) {
-                        final ContentFragmentPresenter presenter = fragment.getContentFragmentPresenter();
-                        if (presenter != null) {
-                            final SwipeRefreshLayout swipeRefreshLayout = presenter.getSwipeRefreshLayout();
-                            if (swipeRefreshLayout == null) {
-                                mHorizontalPogressBar.get().setVisibility(View.VISIBLE);
-                            } else if (!swipeRefreshLayout.isRefreshing()) {
-                                mHorizontalPogressBar.get().setVisibility(View.VISIBLE);
-                            }
-                        } else {
+                        final SwipeRefreshLayout swipeRefreshLayout = fragment.getSwipeRefreshLayout();
+                        if (swipeRefreshLayout == null) {
+                            mHorizontalPogressBar.get().setVisibility(View.VISIBLE);
+                        } else if (!swipeRefreshLayout.isRefreshing()) {
                             mHorizontalPogressBar.get().setVisibility(View.VISIBLE);
                         }
                     } else {
@@ -306,12 +301,9 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
                 if (activity != null) {
                     final AbstractContentFragment fragment = activity.getContentFragment(AbstractContentFragment.class);
                     if (fragment != null) {
-                        final ContentFragmentPresenter presenter = fragment.getContentFragmentPresenter();
-                        if (presenter != null) {
-                            final SwipeRefreshLayout swipeRefreshLayout = presenter.getSwipeRefreshLayout();
-                            if (swipeRefreshLayout != null) {
-                                swipeRefreshLayout.setRefreshing(false);
-                            }
+                        final SwipeRefreshLayout swipeRefreshLayout = fragment.getSwipeRefreshLayout();
+                        if (swipeRefreshLayout != null) {
+                            swipeRefreshLayout.setRefreshing(false);
                         }
                     }
                     mHorizontalPogressBar.get().setVisibility(View.INVISIBLE);
@@ -414,8 +406,8 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onToolbarOnClickEvent(final OnToolbarClickEvent event) {
         final AbstractContentFragment fragment = Controllers.getInstance().getNavigationController().getContentFragment(AbstractContentFragment.class);
-        if (fragment != null && fragment.getContentFragmentPresenter() != null) {
-            ApplicationUtils.runOnUiThread(() -> fragment.getContentFragmentPresenter().onClick(event.getView()));
+        if (fragment != null) {
+            ApplicationUtils.runOnUiThread(() -> fragment.onClick(event.getView()));
         }
     }
 

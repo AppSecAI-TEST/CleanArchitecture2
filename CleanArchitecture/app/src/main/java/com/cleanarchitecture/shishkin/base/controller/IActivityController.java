@@ -58,5 +58,10 @@ public interface IActivityController extends ISubscriber {
      */
     void grantPermission(String permission, String helpMessage);
 
+    /**
+     * Контролировать наличие и текущую версию Google Play Services
+     */
+    boolean checkGooglePlayServices();
+
 
 }

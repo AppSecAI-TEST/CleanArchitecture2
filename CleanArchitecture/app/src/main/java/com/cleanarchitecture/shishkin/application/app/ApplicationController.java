@@ -144,7 +144,7 @@ public class ApplicationController extends Application {
         EventBusController.getInstance().post(new UseCaseOnLowMemoryEvent());
     }
 
-    public RoomDatabase getDb() {
+    public CleanArchitectureDb getDb() {
         return mCleanArchitectureDb;
     }
 
