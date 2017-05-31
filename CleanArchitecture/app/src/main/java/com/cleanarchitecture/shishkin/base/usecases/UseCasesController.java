@@ -1,10 +1,7 @@
 package com.cleanarchitecture.shishkin.base.usecases;
 
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.AbstractController;
-import com.cleanarchitecture.shishkin.base.controller.Controllers;
-import com.cleanarchitecture.shishkin.base.controller.EventController;
-import com.cleanarchitecture.shishkin.base.controller.IEventController;
+import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionDeniedEvent;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.OnSnackBarClickEvent;
@@ -28,10 +25,10 @@ public class UseCasesController extends AbstractController implements IUseCasesC
     private boolean mSystemDialogShown = false;
     private ReentrantLock mLock;
 
-    public UseCasesController(final IEventController controller) {
+    public UseCasesController() {
         mLock = new ReentrantLock();
 
-        controller.register(this);
+        EventBusController.getInstance().register(this);
     }
 
     @Override

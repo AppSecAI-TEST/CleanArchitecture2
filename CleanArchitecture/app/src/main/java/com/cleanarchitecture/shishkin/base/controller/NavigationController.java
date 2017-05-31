@@ -1,6 +1,5 @@
 package com.cleanarchitecture.shishkin.base.controller;
 
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.event.OnActivityBackPressedEvent;
 import com.cleanarchitecture.shishkin.base.event.ShowFragmentEvent;
 import com.cleanarchitecture.shishkin.base.event.SwitchToFragmentEvent;
@@ -22,9 +21,9 @@ public class NavigationController extends AbstractController implements INavigat
     private Map<String, WeakReference<INavigationSubscriber>> mSubscribers = Collections.synchronizedMap(new HashMap<String, WeakReference<INavigationSubscriber>>());
     private WeakReference<INavigationSubscriber> mCurrentSubscriber;
 
-    public NavigationController(final IEventController controller) {
+    public NavigationController() {
         mSubscribers = Collections.synchronizedMap(new HashMap<String, WeakReference<INavigationSubscriber>>());
-        controller.register(this);
+        EventBusController.getInstance().register(this);
     }
 
     private synchronized void checkNullSubscriber() {

@@ -9,14 +9,10 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
-import com.cleanarchitecture.shishkin.base.controller.ActivityController;
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
-import com.cleanarchitecture.shishkin.base.controller.EventController;
+import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
 import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
-import com.cleanarchitecture.shishkin.base.controller.MailController;
-import com.cleanarchitecture.shishkin.base.controller.PresenterController;
 import com.cleanarchitecture.shishkin.base.event.IEvent;
 import com.cleanarchitecture.shishkin.base.lifecycle.IStateable;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
@@ -139,7 +135,7 @@ public abstract class AbstractFragment extends Fragment implements IFragment
 
     @Override
     public void postEvent(IEvent event) {
-        Controllers.getInstance().getEventController().post(event);
+        EventBusController.getInstance().post(event);
     }
 
     @Override

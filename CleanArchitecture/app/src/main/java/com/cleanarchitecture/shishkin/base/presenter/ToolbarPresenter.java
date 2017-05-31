@@ -10,11 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
-import com.cleanarchitecture.shishkin.base.controller.EventController;
-import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
-import com.cleanarchitecture.shishkin.base.controller.NavigationController;
+import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarPrepareEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.OnToolbarClickEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.OnToolbarMenuItemClickEvent;
@@ -66,7 +63,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
             return;
         }
 
-        Controllers.getInstance().getEventController().register(this);
+        EventBusController.getInstance().register(this);
 
         final View toolbarLL = ViewUtils.findView(root, R.id.toolbar_ll);
         final TextView title = ViewUtils.findView(root, R.id.title);
@@ -118,8 +115,8 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         mMenu = null;
         mItem = null;
 
-        Controllers.getInstance().getEventController().removeSticky(new ToolbarInitEvent());
-        Controllers.getInstance().getEventController().unregister(this);
+        EventBusController.getInstance().removeSticky(new ToolbarInitEvent());
+        EventBusController.getInstance().unregister(this);
     }
 
     @Override
@@ -160,7 +157,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     public void onResumeLifecycle() {
         super.onResumeLifecycle();
 
-        Controllers.getInstance().getEventController().postSticky(new ToolbarInitEvent());
+        EventBusController.getInstance().postSticky(new ToolbarInitEvent());
     }
 
     private void onClick(View view) {
@@ -168,7 +165,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         switch (id) {
             case R.id.item:
             case R.id.back:
-                Controllers.getInstance().getEventController().post(new OnToolbarClickEvent(view));
+                EventBusController.getInstance().post(new OnToolbarClickEvent(view));
                 break;
 
             case R.id.menu:
@@ -199,7 +196,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     }
 
     private boolean onMenuItemClick(MenuItem item) {
-        Controllers.getInstance().getEventController().post(new OnToolbarMenuItemClickEvent(item));
+        EventBusController.getInstance().post(new OnToolbarMenuItemClickEvent(item));
         return true;
     }
 
@@ -249,7 +246,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         setItem(0, false);
         setBackNavigation(false);
 
-        Controllers.getInstance().getEventController().post(new ToolbarPrepareEvent());
+        EventBusController.getInstance().post(new ToolbarPrepareEvent());
     }
 
     @Override

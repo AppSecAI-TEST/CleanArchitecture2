@@ -13,21 +13,18 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.view.Surface;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
-import com.cleanarchitecture.shishkin.base.controller.EventController;
+import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.ui.OnSnackBarClickEvent;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.ui.activity.AbstractActivity;
 import com.cleanarchitecture.shishkin.base.ui.dialog.MaterialDialogExt;
 import com.cleanarchitecture.shishkin.base.ui.widget.BaseSnackbar;
-import com.cleanarchitecture.shishkin.base.usecases.UseCasesController;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.ViewUtils;
 import com.google.android.gms.common.ConnectionResult;
@@ -64,7 +61,7 @@ public class ActivityPresenter extends AbstractPresenter<Void> implements IActiv
     private void onSnackbarClick(final View view) {
         if (validate()) {
             final String action = ((AppCompatButton) view).getText().toString();
-            Controllers.getInstance().getEventController().post(new OnSnackBarClickEvent(action));
+            EventBusController.getInstance().post(new OnSnackBarClickEvent(action));
         }
     }
 
