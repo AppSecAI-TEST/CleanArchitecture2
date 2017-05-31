@@ -3,7 +3,6 @@ package com.cleanarchitecture.shishkin.base.controller;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.event.ui.HideKeyboardEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.HideProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowDialogEvent;
@@ -35,10 +34,10 @@ public class ActivityController extends AbstractController implements IActivityC
     private Map<String, WeakReference<IActivity>> mSubscribers;
     private WeakReference<IActivity> mCurrentSubscriber;
 
-    public ActivityController(final IEventController controller) {
+    public ActivityController() {
         mSubscribers = Collections.synchronizedMap(new HashMap<String, WeakReference<IActivity>>());
 
-        controller.register(this);
+        EventBusController.getInstance().register(this);
     }
 
     /**

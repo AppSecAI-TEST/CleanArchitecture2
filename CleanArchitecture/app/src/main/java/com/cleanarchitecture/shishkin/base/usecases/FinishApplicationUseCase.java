@@ -1,9 +1,7 @@
 package com.cleanarchitecture.shishkin.base.usecases;
 
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
-import com.cleanarchitecture.shishkin.base.controller.EventController;
-import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
+import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.storage.MemoryCache;
 import com.cleanarchitecture.shishkin.base.ui.activity.IActivity;
@@ -22,7 +20,7 @@ public class FinishApplicationUseCase  extends AbstractUseCase{
         }
 
         // finish all activities и LiveLongBackgroundIntentService
-        Controllers.getInstance().getEventController().post(new FinishApplicationEvent());
+        EventBusController.getInstance().post(new FinishApplicationEvent());
 
         // очистить кэш в памяти
         MemoryCache.getInstance().clearAll();

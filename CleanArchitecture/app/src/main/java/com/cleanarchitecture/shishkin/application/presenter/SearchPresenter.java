@@ -21,6 +21,7 @@ import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRes
 import com.cleanarchitecture.shishkin.application.event.searchpresenter.OnSearchPresenterItemClick;
 import com.cleanarchitecture.shishkin.application.ui.adapter.ContactRecyclerViewAdapter;
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
+import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.HideHorizontalProgressBarEvent;
@@ -74,7 +75,7 @@ public class SearchPresenter extends AbstractContentProviderPresenter<List<Phone
 
     public void bindView(@NonNull final View root, final AbstractContentFragment fragment) {
 
-        Controllers.getInstance().getEventController().register(this);
+        EventBusController.getInstance().register(this);
 
         final EditText searchView = ViewUtils.findView(root, R.id.search);
         if (searchView != null) {
@@ -117,7 +118,7 @@ public class SearchPresenter extends AbstractContentProviderPresenter<List<Phone
             mDisposableSearchView.dispose();
         }
 
-        Controllers.getInstance().getEventController().unregister(this);
+        EventBusController.getInstance().unregister(this);
 
         super.onDestroyLifecycle();
     }
@@ -142,8 +143,8 @@ public class SearchPresenter extends AbstractContentProviderPresenter<List<Phone
 
     @Override
     public void onContentChanged() {
-        Controllers.getInstance().getEventController().post(new ShowHorizontalProgressBarEvent());
-        Controllers.getInstance().getEventController().post(new RepositoryRequestGetContactsEvent(Repository.USE_SAVE_CACHE));
+        EventBusController.getInstance().post(new ShowHorizontalProgressBarEvent());
+        EventBusController.getInstance().post(new RepositoryRequestGetContactsEvent(Repository.USE_SAVE_CACHE));
     }
 
     private List<PhoneContactItem> filter(final String pattern) {
@@ -165,8 +166,8 @@ public class SearchPresenter extends AbstractContentProviderPresenter<List<Phone
             if (getModel() != null && !getModel().isEmpty()) {
                 updateView();
             } else {
-                Controllers.getInstance().getEventController().post(new ShowHorizontalProgressBarEvent());
-                Controllers.getInstance().getEventController().post(new RepositoryRequestGetContactsEvent(Repository.USE_ONLY_CACHE));
+                EventBusController.getInstance().post(new ShowHorizontalProgressBarEvent());
+                EventBusController.getInstance().post(new RepositoryRequestGetContactsEvent(Repository.USE_ONLY_CACHE));
             }
         }
     }
@@ -183,9 +184,9 @@ public class SearchPresenter extends AbstractContentProviderPresenter<List<Phone
                 }
 
                 if (!mContactAdapter.isEmpty()) {
-                    Controllers.getInstance().getEventController().post(new HideKeyboardEvent());
+                    EventBusController.getInstance().post(new HideKeyboardEvent());
                 } else {
-                    Controllers.getInstance().getEventController().post(new ShowToastEvent(ApplicationController.getInstance().getString(R.string.no_data)));
+                    EventBusController.getInstance().post(new ShowToastEvent(ApplicationController.getInstance().getString(R.string.no_data)));
                 }
             }
         });
@@ -193,7 +194,7 @@ public class SearchPresenter extends AbstractContentProviderPresenter<List<Phone
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public synchronized void onResponseGetContactsEvent(RepositoryResponseGetContactsEvent event) {
-        Controllers.getInstance().getEventController().post(new HideHorizontalProgressBarEvent());
+        EventBusController.getInstance().post(new HideHorizontalProgressBarEvent());
         List<PhoneContactItem> list = event.getContacts();
         if (list == null) {
             list = new ArrayList<>();
@@ -218,7 +219,7 @@ public class SearchPresenter extends AbstractContentProviderPresenter<List<Phone
                     list.add(phone1);
                 }
             }
-            Controllers.getInstance().getEventController().post(new ShowListDialogEvent(R.id.dialog_call_phone, R.string.phone_call, null, list, -1, R.string.exit, true));
+            EventBusController.getInstance().post(new ShowListDialogEvent(R.id.dialog_call_phone, R.string.phone_call, null, list, -1, R.string.exit, true));
         }
     }
 

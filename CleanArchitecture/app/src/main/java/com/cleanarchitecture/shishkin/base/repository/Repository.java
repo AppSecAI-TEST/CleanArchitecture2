@@ -8,7 +8,7 @@ import com.cleanarchitecture.shishkin.application.event.repository.RepositoryReq
 import com.cleanarchitecture.shishkin.application.ui.activity.MainActivity;
 import com.cleanarchitecture.shishkin.base.controller.AppPreferences;
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
-import com.cleanarchitecture.shishkin.base.controller.IEventController;
+import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
 import com.cleanarchitecture.shishkin.base.event.ClearDiskCacheEvent;
 import com.cleanarchitecture.shishkin.base.event.IEvent;
@@ -51,10 +51,10 @@ public class Repository implements IRepository, IEventVendor {
     private NetProvider mNetProvider;
     private ContentProvider mContentProvider;
 
-    public Repository(final IEventController controller) {
-        controller.register(this);
+    public Repository() {
+        EventBusController.getInstance().register(this);
 
-        mNetProvider = new NetProvider(controller);
+        mNetProvider = new NetProvider();
         mContentProvider = new ContentProvider();
     }
 
@@ -127,7 +127,7 @@ public class Repository implements IRepository, IEventVendor {
 
     @Override
     public void postEvent(IEvent event) {
-        Controllers.getInstance().getEventController().post(event);
+        EventBusController.getInstance().post(event);
     }
 
     public NetProvider getNetProvider() {

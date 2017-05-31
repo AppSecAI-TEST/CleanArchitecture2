@@ -3,37 +3,19 @@ package com.cleanarchitecture.shishkin.application.app;
 import android.Manifest;
 import android.app.Application;
 import android.content.BroadcastReceiver;
-import android.content.ComponentCallbacks2;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.os.Environment;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.task.CreateDbTask;
-import com.cleanarchitecture.shishkin.base.controller.ActivityController;
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
-import com.cleanarchitecture.shishkin.base.controller.CrashController;
-import com.cleanarchitecture.shishkin.base.controller.EventController;
-import com.cleanarchitecture.shishkin.base.controller.IActivityController;
-import com.cleanarchitecture.shishkin.base.controller.IEventController;
-import com.cleanarchitecture.shishkin.base.controller.ILifecycleController;
-import com.cleanarchitecture.shishkin.base.controller.IMailController;
-import com.cleanarchitecture.shishkin.base.controller.INavigationController;
-import com.cleanarchitecture.shishkin.base.controller.IPresenterController;
-import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
-import com.cleanarchitecture.shishkin.base.controller.MailController;
-import com.cleanarchitecture.shishkin.base.controller.NavigationController;
-import com.cleanarchitecture.shishkin.base.controller.PresenterController;
+import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnLowMemoryEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOffEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOnEvent;
-import com.cleanarchitecture.shishkin.base.repository.IRepository;
-import com.cleanarchitecture.shishkin.base.repository.Repository;
-import com.cleanarchitecture.shishkin.base.usecases.IUseCasesController;
-import com.cleanarchitecture.shishkin.base.usecases.UseCasesController;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.github.snowdream.android.util.FilePathGenerator;
 import com.github.snowdream.android.util.Log;
@@ -62,7 +44,7 @@ public class ApplicationController extends Application {
         init();
     }
 
-    public static synchronized ApplicationController getInstance() {
+    public static ApplicationController getInstance() {
         if (sInstance == null) {
             Log.e(LOG_TAG, "Application is null");
         }
@@ -142,9 +124,9 @@ public class ApplicationController extends Application {
                 final String strAction = intent.getAction();
 
                 if (strAction.equals(Intent.ACTION_SCREEN_OFF)) {
-                    Controllers.getInstance().getEventController().post(new UseCaseOnScreenOffEvent());
+                    EventBusController.getInstance().post(new UseCaseOnScreenOffEvent());
                 } else {
-                    Controllers.getInstance().getEventController().post(new UseCaseOnScreenOnEvent());
+                    EventBusController.getInstance().post(new UseCaseOnScreenOnEvent());
                 }
             }
         };
@@ -157,7 +139,7 @@ public class ApplicationController extends Application {
         super.onLowMemory();
 
         Log.e(LOG_TAG, "Low memory");
-        Controllers.getInstance().getEventController().post(new UseCaseOnLowMemoryEvent());
+        EventBusController.getInstance().post(new UseCaseOnLowMemoryEvent());
     }
 
 }

@@ -14,17 +14,12 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
-import com.cleanarchitecture.shishkin.base.controller.ActivityController;
 import com.cleanarchitecture.shishkin.base.controller.AppPreferences;
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
-import com.cleanarchitecture.shishkin.base.controller.EventController;
+import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
 import com.cleanarchitecture.shishkin.base.controller.ILifecycleSubscriber;
 import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
-import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
-import com.cleanarchitecture.shishkin.base.controller.MailController;
-import com.cleanarchitecture.shishkin.base.controller.PresenterController;
 import com.cleanarchitecture.shishkin.base.event.*;
 import com.cleanarchitecture.shishkin.base.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.base.lifecycle.ILifecycle;
@@ -34,7 +29,6 @@ import com.cleanarchitecture.shishkin.base.mail.IMail;
 import com.cleanarchitecture.shishkin.base.presenter.ActivityPresenter;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.base.ui.dialog.MaterialDialogExt;
-import com.cleanarchitecture.shishkin.base.usecases.UseCasesController;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.ViewUtils;
 
@@ -65,7 +59,7 @@ public abstract class AbstractActivity extends AppCompatActivity
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Controllers.getInstance().getEventController().register(this);
+        EventBusController.getInstance().register(this);
         Controllers.getInstance().getLifecycleController().register(this);
         Controllers.getInstance().getActivityController().register(this);
         Controllers.getInstance().getMailController().register(this);
@@ -118,7 +112,7 @@ public abstract class AbstractActivity extends AppCompatActivity
             mUnbinder.unbind();
         }
 
-        Controllers.getInstance().getEventController().unregister(this);
+        EventBusController.getInstance().unregister(this);
         Controllers.getInstance().getActivityController().unregister(this);
         Controllers.getInstance().getLifecycleController().unregister(this);
         Controllers.getInstance().getMailController().unregister(this);
@@ -248,7 +242,7 @@ public abstract class AbstractActivity extends AppCompatActivity
 
     @Override
     public void postEvent(IEvent event) {
-        Controllers.getInstance().getEventController().post(event);
+        EventBusController.getInstance().post(event);
     }
 
     @Override

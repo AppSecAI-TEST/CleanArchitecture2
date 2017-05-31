@@ -7,7 +7,7 @@ import org.greenrobot.eventbus.EventBus;
 /**
  * Контроллер шины событий приложения
  */
-public class EventController extends AbstractController implements IEventController {
+public class EventBusController extends AbstractController implements IEventController {
     public static final int MAX_RANK = 10;
     public static final int HIGH_RANK = 8;
     public static final int MIDDLE_RANK = 5;
@@ -15,8 +15,20 @@ public class EventController extends AbstractController implements IEventControl
     public static final int MIN_RANK = 0;
 
     public static final String NAME = "EventController";
+    private static volatile EventBusController sInstance;
 
-    public EventController() {
+    public static EventBusController getInstance() {
+        if (sInstance == null) {
+            synchronized (EventBusController.class) {
+                if (sInstance == null) {
+                    sInstance = new EventBusController();
+                }
+            }
+        }
+        return sInstance;
+    }
+
+    private EventBusController() {
         EventBus.getDefault();
     }
 

@@ -4,16 +4,10 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
-import com.cleanarchitecture.shishkin.base.controller.EventController;
-import com.cleanarchitecture.shishkin.base.ui.recyclerview.event.OnRecyclerViewFirstRecordVisibledEvent;
+import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.ui.recyclerview.event.OnRecyclerViewIdleEvent;
-import com.cleanarchitecture.shishkin.base.ui.recyclerview.event.OnRecyclerViewLastRecordVisibledEvent;
 import com.cleanarchitecture.shishkin.base.ui.recyclerview.event.OnRecyclerViewScrolledEvent;
-
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 
 public class OnScrollListener extends RecyclerView.OnScrollListener {
 
@@ -38,10 +32,10 @@ public class OnScrollListener extends RecyclerView.OnScrollListener {
             }
         }
         if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-            Controllers.getInstance().getEventController().post(new OnRecyclerViewIdleEvent(recyclerView));
+            EventBusController.getInstance().post(new OnRecyclerViewIdleEvent(recyclerView));
         } else {
             if (!(mLinearLayoutManager.findLastCompletelyVisibleItemPosition() == mRecyclerView.getAdapter().getItemCount() - 1)) {
-                Controllers.getInstance().getEventController().post(new OnRecyclerViewScrolledEvent(recyclerView));
+                EventBusController.getInstance().post(new OnRecyclerViewScrolledEvent(recyclerView));
             }
         }
     }

@@ -35,15 +35,15 @@ public class Controllers {
     private Controllers() {
         mMap = Collections.synchronizedMap(new HashMap<String, Object>());
 
-        final IEventController controller = new EventController();
-        register(EventController.NAME, controller);
+        register(EventBusController.NAME, EventBusController.getInstance());
+
         register(CrashController.NAME, new CrashController());
-        register(ActivityController.NAME, new ActivityController(controller));
-        register(LifecycleController.NAME, new LifecycleController(controller));
+        register(ActivityController.NAME, new ActivityController());
+        register(LifecycleController.NAME, new LifecycleController());
         register(PresenterController.NAME, new PresenterController());
-        register(NavigationController.NAME, new NavigationController(controller));
-        register(UseCasesController.NAME, new UseCasesController(controller));
-        register(Repository.NAME, new Repository(controller));
+        register(NavigationController.NAME, new NavigationController());
+        register(UseCasesController.NAME, new UseCasesController());
+        register(Repository.NAME, new Repository());
         register(MailController.NAME, new MailController());
     }
 
@@ -70,11 +70,6 @@ public class Controllers {
 
     public synchronized IActivityController getActivityController() {
         return getController(ActivityController.NAME);
-    }
-
-    public synchronized IEventController getEventController() {
-        IEventController mEventController = getController(EventController.NAME);
-        return mEventController;
     }
 
     public synchronized ILifecycleController getLifecycleController() {

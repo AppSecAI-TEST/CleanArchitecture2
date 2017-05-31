@@ -1,8 +1,7 @@
 package com.cleanarchitecture.shishkin.base.mail;
 
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
-import com.cleanarchitecture.shishkin.base.controller.EventController;
+import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
 import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
 import com.cleanarchitecture.shishkin.base.event.IEvent;
@@ -124,7 +123,7 @@ public abstract class AbstractMail implements IMail, IEventVendor, Serializable 
     @Override
     public void postEvent(IEvent event) {
         if (event != null) {
-            Controllers.getInstance().getEventController().post(event);
+            EventBusController.getInstance().post(event);
         }
     }
 }
