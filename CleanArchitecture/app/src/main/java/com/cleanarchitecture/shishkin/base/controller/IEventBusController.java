@@ -5,7 +5,7 @@ import com.cleanarchitecture.shishkin.base.event.IEvent;
 /**
  * Интерфейс контроллера шины событий приложения
  */
-public interface IEventController {
+public interface IEventBusController {
 
     /**
      * добавить событие

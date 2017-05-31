@@ -7,7 +7,7 @@ import org.greenrobot.eventbus.EventBus;
 /**
  * Контроллер шины событий приложения
  */
-public class EventBusController extends AbstractController implements IEventController {
+public class EventBusController extends AbstractController implements IEventBusController {
     public static final int MAX_RANK = 10;
     public static final int HIGH_RANK = 8;
     public static final int MIDDLE_RANK = 5;
