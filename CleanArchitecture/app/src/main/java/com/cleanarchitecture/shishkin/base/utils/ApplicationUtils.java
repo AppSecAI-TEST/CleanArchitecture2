@@ -22,6 +22,7 @@ import com.github.snowdream.android.util.Log;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -211,6 +212,24 @@ public class ApplicationUtils {
     public static boolean checkPermission(final String permission) {
         return getStatusPermission(permission) == PackageManager.PERMISSION_GRANTED;
     }
+
+    public static boolean existsDb(final Context context, final String nameDb) {
+        try {
+            final String pathDb = context.getDatabasePath(nameDb).getAbsolutePath();
+            if (StringUtils.isNullOrEmpty(pathDb)) {
+                return false;
+            }
+
+            final File file = new File(pathDb);
+            if (file.exists()) {
+                return true;
+            }
+        } catch (Exception e) {
+            Log.e(LOG_TAG, e.getMessage());
+        }
+        return false;
+    }
+
 
     private ApplicationUtils() {
     }

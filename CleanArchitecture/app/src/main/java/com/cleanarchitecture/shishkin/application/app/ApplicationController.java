@@ -2,6 +2,7 @@ package com.cleanarchitecture.shishkin.application.app;
 
 import android.Manifest;
 import android.app.Application;
+import android.arch.persistence.room.RoomDatabase;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.os.Environment;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.application.database.CleanArchitectureDb;
 import com.cleanarchitecture.shishkin.application.task.CreateDbTask;
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
@@ -28,6 +30,8 @@ public class ApplicationController extends Application {
     private static final String LOG_TAG = "ApplicationController";
     private static final long MAX_LOG_LENGTH = 2000000;//2Mb
     public static final String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CALL_PHONE, Manifest.permission.READ_CONTACTS};
+
+    private CleanArchitectureDb mCleanArchitectureDb;
 
     @Override
     public void onCreate() {
@@ -85,7 +89,7 @@ public class ApplicationController extends Application {
         registerScreenOnOffBroadcastReceiver();
 
         // создаем БД
-        //new CreateDbTask().execute();
+        new CreateDbTask().execute();
     }
 
     private void checkLogSize() {
@@ -139,5 +143,14 @@ public class ApplicationController extends Application {
         Log.e(LOG_TAG, "Low memory");
         EventBusController.getInstance().post(new UseCaseOnLowMemoryEvent());
     }
+
+    public RoomDatabase getDb() {
+        return mCleanArchitectureDb;
+    }
+
+    public void setDb(CleanArchitectureDb mCleanArchitectureDb) {
+        this.mCleanArchitectureDb = mCleanArchitectureDb;
+    }
+
 
 }
