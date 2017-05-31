@@ -71,8 +71,6 @@ public class HomeFragment extends AbstractContentFragment {
         } else if (!ApplicationUtils.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.WRITE_EXTERNAL_STORAGE));
         }
-
-        postEvent(new ShowProgressBarEvent());
     }
 
     private void onClickFab(View view) {

@@ -1,28 +1,35 @@
 package com.cleanarchitecture.shishkin.base.presenter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.PopupMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
+import com.cleanarchitecture.shishkin.base.event.OnNetworkConnectedEvent;
+import com.cleanarchitecture.shishkin.base.event.OnNetworkDisconnectedEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.OnToolbarClickEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.OnToolbarMenuItemClickEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarInitEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarPrepareEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarResetEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetBackNavigationEvent;
+import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetBackgroundEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetItemEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetMenuEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetTitleEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.HideHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowHorizontalProgressBarEvent;
+import com.cleanarchitecture.shishkin.base.event.ui.ShowMessageEvent;
 import com.cleanarchitecture.shishkin.base.ui.activity.AbstractContentActivity;
 import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
@@ -44,12 +51,14 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
 
     private WeakReference<Context> mContext;
     private WeakReference<View> mToolbarLL;
+    private WeakReference<RelativeLayout> mToolbar;
     private WeakReference<TextView> mTitle;
     private WeakReference<MaterialProgressBar> mHorizontalPogressBar;
     private WeakReference<ImageView> mHome;
     private WeakReference<ImageView> mMenu;
     private WeakReference<ImageView> mItem;
     private WeakReference<AVLoadingIndicatorView> mPogressBar;
+
 
     private PopupMenu mPopupMenu;
     private boolean mPopupMenuShow = false;
@@ -66,6 +75,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         EventBusController.getInstance().register(this);
 
         final View toolbarLL = ViewUtils.findView(root, R.id.toolbar_ll);
+        final RelativeLayout toolbar = ViewUtils.findView(root, R.id.toolbar);
         final TextView title = ViewUtils.findView(root, R.id.title);
         final ImageView home = ViewUtils.findView(root, R.id.back);
         final ImageView menu = ViewUtils.findView(root, R.id.menu);
@@ -89,6 +99,9 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         if (toolbarLL != null) {
             mToolbarLL = new WeakReference<>(toolbarLL);
         }
+        if (toolbar != null) {
+            mToolbar = new WeakReference<>(toolbar);
+        }
         if (title != null) {
             mTitle = new WeakReference<>(title);
         }
@@ -108,6 +121,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         dismissMenu();
         mContext = null;
         mToolbarLL = null;
+        mToolbar = null;
         mTitle = null;
         mHorizontalPogressBar = null;
         mPogressBar = null;
@@ -124,6 +138,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         return (super.validate()
                 && mContext != null && mContext.get() != null
                 && mToolbarLL != null && mToolbarLL.get() != null
+                && mToolbar != null && mToolbar.get() != null
                 && mTitle != null && mTitle.get() != null
                 && mHorizontalPogressBar != null && mHorizontalPogressBar.get() != null
                 && mPogressBar != null && mPogressBar.get() != null
@@ -345,6 +360,15 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     }
 
     @Override
+    public void setBackground(final Drawable drawable) {
+        ApplicationUtils.runOnUiThread(() -> {
+            if (validate()) {
+                ViewUtils.setBackground(mToolbar.get(), drawable);
+            }
+        });
+    }
+
+    @Override
     public void setMenu(final int menuId, final boolean isVisible) {
         ApplicationUtils.runOnUiThread(() -> {
             if (validate()) {
@@ -404,12 +428,30 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
-    public void onToolbarOnClickEvent(final OnToolbarClickEvent event) {
+    public void onToolbarOnClickEvent(OnToolbarClickEvent event) {
         final AbstractContentFragment fragment = Controllers.getInstance().getNavigationController().getContentFragment(AbstractContentFragment.class);
         if (fragment != null) {
             ApplicationUtils.runOnUiThread(() -> fragment.onClick(event.getView()));
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onToolbarSetBackgroundEvent(ToolbarSetBackgroundEvent event) {
+        setBackground(event.getDrawable());
+    }
+
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onNetworkConnectedEvent(OnNetworkConnectedEvent event) {
+        if (validate()) {
+            setBackground(ViewUtils.getDrawable(mContext.get(), R.color.blue));
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onNetworkDisconnectedEvent(OnNetworkDisconnectedEvent event) {
+        if (validate()) {
+            setBackground(ViewUtils.getDrawable(mContext.get(), R.color.orange));
+        }
+    }
 
 }
