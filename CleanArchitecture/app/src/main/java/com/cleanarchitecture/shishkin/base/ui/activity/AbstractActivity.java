@@ -200,7 +200,7 @@ public abstract class AbstractActivity extends AppCompatActivity
         //EventController.getInstance().post(new OnUserIteractionEvent());
 
         for (int i = 0; i < permissions.length; i++) {
-            AppPreferences.getInstance().putInt(this, permissions[i], grantResults[i]);
+            AppPreferences.putInt(this, permissions[i], grantResults[i]);
             if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                 postEvent(new OnPermisionGrantedEvent(permissions[i]));
             } else if (grantResults[i] == PackageManager.PERMISSION_DENIED) {

@@ -148,9 +148,9 @@ public class Repository implements IRepository, IEventVendor {
         // раз в сутки очищаем дисковый кэш
         final SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
         final int currentDay = StringUtils.toInt(formatter.format(new Date()));
-        final int day = StringUtils.toInt(AppPreferences.getInstance().getLastDayStart(context));
+        final int day = StringUtils.toInt(AppPreferences.getLastDayStart(context));
         if (currentDay > day) {
-            AppPreferences.getInstance().setLastDayStart(context, String.valueOf(currentDay));
+            AppPreferences.setLastDayStart(context, String.valueOf(currentDay));
             DiskCache.getInstance(context).clearAll();
         }
     }
