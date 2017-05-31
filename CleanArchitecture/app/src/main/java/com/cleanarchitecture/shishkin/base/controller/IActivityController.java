@@ -1,7 +1,5 @@
 package com.cleanarchitecture.shishkin.base.controller;
 
-import android.content.Context;
-
 import com.cleanarchitecture.shishkin.base.ui.activity.IActivity;
 
 /**

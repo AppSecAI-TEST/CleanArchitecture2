@@ -85,9 +85,7 @@ public class ApplicationController extends Application {
         registerScreenOnOffBroadcastReceiver();
 
         // создаем БД
-        new CreateDbTask().execute();
-
-        Log.i(LOG_TAG, "Application inited");
+        //new CreateDbTask().execute();
     }
 
     private void checkLogSize() {

@@ -1,6 +1,5 @@
 package com.cleanarchitecture.shishkin.base.controller;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.cleanarchitecture.shishkin.base.event.ui.HideKeyboardEvent;

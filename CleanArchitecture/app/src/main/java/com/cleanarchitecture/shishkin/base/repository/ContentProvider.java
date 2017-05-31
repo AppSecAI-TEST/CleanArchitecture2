@@ -5,11 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
-import com.cleanarchitecture.shishkin.application.data.cursor.ContactCursor;
-import com.cleanarchitecture.shishkin.application.data.dao.PhoneContactDAO;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
-import com.cleanarchitecture.shishkin.base.database.dao.AbstractReadOnlyDAO;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.CloseUtils;
@@ -38,6 +35,7 @@ public class ContentProvider {
         Cursor cursor = null;
         try {
             final LinkedList<PhoneContactItem> list = new LinkedList<>();
+            /*
             final PhoneContactDAO phoneContactDAO = new PhoneContactDAO(context);
             cursor = ContactCursor.getCursor(context);
             if (AbstractReadOnlyDAO.isCursorValid(cursor)) {
@@ -49,6 +47,8 @@ public class ContentProvider {
                 }
                 return list;
             }
+            */
+            return list;
         } catch (Exception e) {
             Log.e(NAME, e.getMessage());
         } finally {
