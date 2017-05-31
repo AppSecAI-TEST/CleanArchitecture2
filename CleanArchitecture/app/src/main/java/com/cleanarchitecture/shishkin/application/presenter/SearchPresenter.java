@@ -113,7 +113,7 @@ public class SearchPresenter extends AbstractContentProviderPresenter<List<Phone
     @Override
     public void onDestroyLifecycle() {
         mSearchView = null;
-        //mRecyclerView = null;
+        mRecyclerView = null;
         if (!mDisposableSearchView.isDisposed()) {
             mDisposableSearchView.dispose();
         }
@@ -157,10 +157,6 @@ public class SearchPresenter extends AbstractContentProviderPresenter<List<Phone
 
     @Override
     public void accept(@io.reactivex.annotations.NonNull TextViewAfterTextChangeEvent event) {
-        onTextViewAfterTextChangeEvent(event);
-    }
-
-    private void onTextViewAfterTextChangeEvent(TextViewAfterTextChangeEvent event) {
         if (validate()) {
             mCurrentFilter = event.view().getText().toString();
             if (getModel() != null && !getModel().isEmpty()) {

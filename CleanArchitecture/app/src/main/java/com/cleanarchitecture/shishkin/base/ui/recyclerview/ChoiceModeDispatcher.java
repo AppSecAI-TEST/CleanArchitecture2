@@ -9,6 +9,8 @@ import android.view.View;
 
 import com.cleanarchitecture.shishkin.base.ui.recyclerview.choice.NoneChoiceMode;
 
+import java.lang.ref.WeakReference;
+
 /**
  * Choice mode lifecycle events dispatcher.
  */
@@ -20,7 +22,7 @@ import com.cleanarchitecture.shishkin.base.ui.recyclerview.choice.NoneChoiceMode
     private final RecyclerView.Adapter<?> mAdapter;
 
     @Nullable
-    private RecyclerView mRecyclerView;
+    private WeakReference<RecyclerView> mRecyclerView;
 
     @NonNull
     private ChoiceMode mChoiceMode = DEFAULT_CHOICE_MODE;
@@ -30,13 +32,13 @@ import com.cleanarchitecture.shishkin.base.ui.recyclerview.choice.NoneChoiceMode
     }
 
     /* package */ void setChoiceMode(@Nullable final ChoiceMode choiceMode) {
-        if (mRecyclerView != null) {
-            mChoiceMode.onDetached(mRecyclerView, mAdapter);
+        if (mRecyclerView != null && mRecyclerView.get() != null) {
+            mChoiceMode.onDetached(mRecyclerView.get(), mAdapter);
         }
 
         mChoiceMode = (choiceMode != null ? choiceMode : DEFAULT_CHOICE_MODE);
         if (mRecyclerView != null) {
-            mChoiceMode.onAttached(mRecyclerView, mAdapter);
+            mChoiceMode.onAttached(mRecyclerView.get(), mAdapter);
         }
     }
 
@@ -51,8 +53,8 @@ import com.cleanarchitecture.shishkin.base.ui.recyclerview.choice.NoneChoiceMode
 
     /* package */ void dispatchAttachedToRecyclerView(@NonNull final RecyclerView recyclerView) {
         if (mRecyclerView == null) {
-            mRecyclerView = recyclerView;
-            mChoiceMode.onAttached(mRecyclerView, mAdapter);
+            mRecyclerView = new WeakReference<RecyclerView>(recyclerView);
+            mChoiceMode.onAttached(mRecyclerView.get(), mAdapter);
         } else {
             throw new IllegalStateException("Did you try to use the same adapter " +
                     "instance in two different RecyclerViews?");
@@ -84,8 +86,8 @@ import com.cleanarchitecture.shishkin.base.ui.recyclerview.choice.NoneChoiceMode
     }
 
     /* package */ void dispatchDetachedFromRecyclerView(@NonNull final RecyclerView recyclerView) {
-        if (mRecyclerView != null && mRecyclerView == recyclerView) {
-            mChoiceMode.onDetached(mRecyclerView, mAdapter);
+        if (mRecyclerView != null && mRecyclerView.get() != null && mRecyclerView.get() == recyclerView) {
+            mChoiceMode.onDetached(mRecyclerView.get(), mAdapter);
         }
     }
 
