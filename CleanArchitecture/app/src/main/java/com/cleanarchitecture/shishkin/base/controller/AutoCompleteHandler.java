@@ -51,6 +51,7 @@ public class AutoCompleteHandler<E> {
 
     /**
      * Constructs an AsyncAutoCompleteHandler.
+     *
      * @param name The thread name that can be used to trace thread.
      */
     public AutoCompleteHandler(final String name) {

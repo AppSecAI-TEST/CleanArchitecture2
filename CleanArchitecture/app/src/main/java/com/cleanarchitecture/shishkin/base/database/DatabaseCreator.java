@@ -11,7 +11,7 @@ import com.cleanarchitecture.shishkin.base.content.ContentProviderUtils;
  * A helper class to manage database lifecycle events like creation and upgrade.
  */
 public abstract class DatabaseCreator {
-    private static final String[] COUNT_1_PROJECTION = new String[] { "count(1) as " + IBaseColumns._COUNT };
+    private static final String[] COUNT_1_PROJECTION = new String[]{"count(1) as " + IBaseColumns._COUNT};
 
     public DatabaseCreator() {
     }
@@ -40,7 +40,7 @@ public abstract class DatabaseCreator {
     public boolean onUpgrade(final IDatabase db, final int oldVersion, final int newVersion) {
         int toVersion = oldVersion + 1;
         while (toVersion <= newVersion) {
-            if(onUpgrade(ApplicationController.getInstance(), db, toVersion)) {
+            if (onUpgrade(ApplicationController.getInstance(), db, toVersion)) {
                 toVersion++;
             } else {
                 return false;
@@ -77,7 +77,7 @@ public abstract class DatabaseCreator {
      *
      * @return true if the table is exists.
      */
-    public static boolean isTableExists(final Context context, final Uri tableUri){
+    public static boolean isTableExists(final Context context, final Uri tableUri) {
         try {
             final Cursor cursor = context.getContentResolver().query(tableUri, COUNT_1_PROJECTION,
                     null, null, null);
@@ -90,7 +90,7 @@ public abstract class DatabaseCreator {
         return false;
     }
 
-    public static boolean isViewExists(final Context context, final Uri viewUri){
+    public static boolean isViewExists(final Context context, final Uri viewUri) {
         try {
             final Cursor cursor = context.getContentResolver().query(viewUri, COUNT_1_PROJECTION,
                     null, null, null);

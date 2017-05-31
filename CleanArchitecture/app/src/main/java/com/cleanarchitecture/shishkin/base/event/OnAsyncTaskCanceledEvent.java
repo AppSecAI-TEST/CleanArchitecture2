@@ -6,7 +6,7 @@ package com.cleanarchitecture.shishkin.base.event;
 public class OnAsyncTaskCanceledEvent extends AbstractEvent {
     private String mId;
 
-    public OnAsyncTaskCanceledEvent(final String id){
+    public OnAsyncTaskCanceledEvent(final String id) {
         mId = id;
     }
 

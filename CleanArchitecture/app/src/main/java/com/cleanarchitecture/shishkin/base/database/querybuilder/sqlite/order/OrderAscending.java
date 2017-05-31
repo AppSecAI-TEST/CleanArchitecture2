@@ -7,25 +7,25 @@ import java.util.List;
 
 public class OrderAscending extends Order {
 
-	public OrderAscending(Projection projection) {
-		super(projection);
-	}
+    public OrderAscending(Projection projection) {
+        super(projection);
+    }
 
-	@Override
-	public String build() {
-		String ret = " ASC";
-		
-		if(projection != null)
-			ret = projection.build() + ret;
-		
-		return ret;
-	}
+    @Override
+    public String build() {
+        String ret = " ASC";
 
-	@Override
-	public List<Object> buildParameters() {
-		if(projection != null)
-			return projection.buildParameters();
-		else
-			return QueryBuilderUtils.EMPTY_LIST;
-	}
+        if (projection != null)
+            ret = projection.build() + ret;
+
+        return ret;
+    }
+
+    @Override
+    public List<Object> buildParameters() {
+        if (projection != null)
+            return projection.buildParameters();
+        else
+            return QueryBuilderUtils.EMPTY_LIST;
+    }
 }

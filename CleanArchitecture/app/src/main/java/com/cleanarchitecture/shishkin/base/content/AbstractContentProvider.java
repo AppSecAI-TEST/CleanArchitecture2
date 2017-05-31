@@ -157,7 +157,7 @@ public abstract class AbstractContentProvider extends ContentProvider {
     @NonNull
     private Cursor queryById(final String table, final String[] projection, final String id) {
         return mDatabaseHelper.getReadableDatabase()
-                .query(table, projection, WHERE_ID, new String[] { id },
+                .query(table, projection, WHERE_ID, new String[]{id},
                         null, null, null);
     }
 
@@ -250,7 +250,7 @@ public abstract class AbstractContentProvider extends ContentProvider {
 
     private int updateById(final String table, final String id, final ContentValues values) {
         final IDatabase db = mDatabaseHelper.getWritableDatabase();
-        int affectedRows = db.update(table, values, WHERE_ID, new String[] { id });
+        int affectedRows = db.update(table, values, WHERE_ID, new String[]{id});
         if (affectedRows < 1) {
             if (db.insert(table, null, values) > 0) {
                 ++affectedRows;
@@ -283,7 +283,7 @@ public abstract class AbstractContentProvider extends ContentProvider {
 
     private int deleteById(final String table, final String id) {
         return mDatabaseHelper.getWritableDatabase()
-                .delete(table, WHERE_ID, new String[] { id });
+                .delete(table, WHERE_ID, new String[]{id});
     }
 
     @SuppressWarnings("all")

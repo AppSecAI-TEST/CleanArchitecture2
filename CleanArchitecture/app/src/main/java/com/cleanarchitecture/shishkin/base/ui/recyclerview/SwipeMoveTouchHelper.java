@@ -6,7 +6,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 public class SwipeMoveTouchHelper extends ItemTouchHelper.SimpleCallback {
     private AbstractRecyclerViewAdapter mMovieAdapter;
 
-    public SwipeMoveTouchHelper(AbstractRecyclerViewAdapter movieAdapter){
+    public SwipeMoveTouchHelper(AbstractRecyclerViewAdapter movieAdapter) {
         super(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
 
         mMovieAdapter = movieAdapter;

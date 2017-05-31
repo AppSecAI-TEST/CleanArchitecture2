@@ -188,21 +188,21 @@ public interface IDatabase {
     /**
      * Backup database.
      *
-     * @param backupPath      the path where copy database will be created.
+     * @param backupPath the path where copy database will be created.
      */
     void backup(String backupPath);
 
     /**
      * Restore database.
      *
-     * @param backupPath      the path where copy database exists.
+     * @param backupPath the path where copy database exists.
      */
     void restore(String backupPath);
 
     /**
      * Return database name.
      *
-     * @return  database name.
+     * @return database name.
      */
     String getName();
 

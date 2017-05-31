@@ -11,7 +11,7 @@ import android.os.Process;
 import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 
-public abstract class BackgroundIntentService extends Service{
+public abstract class BackgroundIntentService extends Service {
 
     private String mName;
     private HandlerThread mWorkerThread;
@@ -24,7 +24,7 @@ public abstract class BackgroundIntentService extends Service{
 
         @Override
         public void handleMessage(Message msg) {
-            onHandleIntent((Intent)msg.obj);
+            onHandleIntent((Intent) msg.obj);
         }
     }
 
@@ -52,6 +52,7 @@ public abstract class BackgroundIntentService extends Service{
      * You should not override this method for your BackgroundService. Instead,
      * override {@link #onHandleIntent(Intent)}, which the system calls when the BackgroundService
      * receives a start request.
+     *
      * @see android.app.Service#onStartCommand
      */
     @Override
@@ -79,6 +80,7 @@ public abstract class BackgroundIntentService extends Service{
      * This is the method that will receive intent messages from
      * {@link android.content.Context#startService(Intent)}.
      * Logic is similar to the one implemented by {@link android.app.IntentService}
+     *
      * @see android.app.IntentService#onHandleIntent(Intent)
      */
     @WorkerThread

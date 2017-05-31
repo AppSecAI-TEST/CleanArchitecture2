@@ -5,7 +5,7 @@ import com.cleanarchitecture.shishkin.base.controller.ISubscriber;
 /**
  * The interface Use cases controller.
  */
-public interface IUseCasesController  extends ISubscriber {
+public interface IUseCasesController extends ISubscriber {
 
     /**
      * Установить флаг - выводиться системный диалог

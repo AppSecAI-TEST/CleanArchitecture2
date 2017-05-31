@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 
-import com.cleanarchitecture.shishkin.R;
-
 import java.util.Map;
 
 /**
@@ -213,7 +211,7 @@ public class AppPreferences {
      * @param permission право приложения
      * @return если true разрешение установлено, false - разрешение не установлено
      */
-    public synchronized boolean checkPermission(final Context context, final String permission){
+    public synchronized boolean checkPermission(final Context context, final String permission) {
         return getInt(context, permission, -100) == PackageManager.PERMISSION_GRANTED;
     }
 }

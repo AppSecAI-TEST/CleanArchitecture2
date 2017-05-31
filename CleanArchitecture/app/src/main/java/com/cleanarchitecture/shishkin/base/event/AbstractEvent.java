@@ -4,7 +4,7 @@ import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 
 import java.lang.ref.WeakReference;
 
-public abstract class AbstractEvent implements IEvent{
+public abstract class AbstractEvent implements IEvent {
 
     private String mErrorText = null;
     private int mErrorCode = 0;

@@ -382,9 +382,9 @@ public abstract class AbstractRecyclerViewAdapter<E, VH extends AbstractViewHold
      * on (e.g. in a click listener), use {@link RecyclerView.ViewHolder#getAdapterPosition()} which will
      * have the updated adapter position.
      *
-     * @param holder The ViewHolder which should be updated to represent the contents of the
-     *        item at the given position in the data set.
-     * @param item The item at the given position in the data set.
+     * @param holder   The ViewHolder which should be updated to represent the contents of the
+     *                 item at the given position in the data set.
+     * @param item     The item at the given position in the data set.
      * @param position The position of the item within the adapter's data set.
      */
     public abstract void onBindViewHolder(@NonNull final VH holder, final E item, final int position);

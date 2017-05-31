@@ -36,7 +36,7 @@ public class ContactCursor {
             if (cr != null) {
                 String selection = PhoneContactDAO.Columns.HAS_PHONE_NUMBER + " > 0";
                 if (!StringUtils.isNullOrEmpty(search)) {
-                    selection += " and " + PhoneContactDAO.Columns.DISPLAY_NAME + " like '%"+search+"%'";
+                    selection += " and " + PhoneContactDAO.Columns.DISPLAY_NAME + " like '%" + search + "%'";
                 }
                 cur = cr.query(PhoneContactDAO.CONTENT_URI, PhoneContactDAO.PROJECTION, selection, null, "upper(" + PhoneContactDAO.Columns.DISPLAY_NAME + ") asc");
             }

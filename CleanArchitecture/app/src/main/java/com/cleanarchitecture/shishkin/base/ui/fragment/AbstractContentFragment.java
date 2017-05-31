@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 
-import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarInitEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarPrepareEvent;
@@ -22,7 +21,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.List;
 
 @SuppressWarnings("unused")
-public abstract class AbstractContentFragment extends AbstractFragment  implements
+public abstract class AbstractContentFragment extends AbstractFragment implements
         IContentFragment,
         OnBackPressListener {
 

@@ -28,7 +28,7 @@ public abstract class AbstractViewHolder extends RecyclerView.ViewHolder {
     public static final int DEFAULT_CLICKABLE_VIEW_ID = View.NO_ID;
 
     @IdRes
-    public static final int[] DEFAULT_CLICKABLE_VIEW_IDS = new int[] {};
+    public static final int[] DEFAULT_CLICKABLE_VIEW_IDS = new int[]{};
 
     @Nullable
     private OnViewHolderClickListener mOnViewHolderClickListener;
@@ -70,7 +70,8 @@ public abstract class AbstractViewHolder extends RecyclerView.ViewHolder {
     /**
      * Called by {@link AbstractRecyclerViewAdapter} to enable view and set click listener.
      */
-    /* package */ final void setEnabled(final boolean enabled, final boolean isLongClickable,
+    /* package */
+    final void setEnabled(final boolean enabled, final boolean isLongClickable,
                           @IdRes final int defaultClickableViewId,
                           @IdRes final int[] clickableViewIds) {
         setClickable(enabled, isLongClickable, defaultClickableViewId);
@@ -102,7 +103,8 @@ public abstract class AbstractViewHolder extends RecyclerView.ViewHolder {
      * Called by {@link AbstractRecyclerViewAdapter} to notify
      * that view can be selected by choice mode.
      */
-    /* package */ final void setInChoiceMode(final boolean isInChoiceMode) {
+    /* package */
+    final void setInChoiceMode(final boolean isInChoiceMode) {
         mInChoiceMode = isInChoiceMode;
     }
 
@@ -116,7 +118,8 @@ public abstract class AbstractViewHolder extends RecyclerView.ViewHolder {
     /**
      * Called by {@link AbstractRecyclerViewAdapter} to check or activate view.
      */
-    /* package */ final void setChecked(final boolean activated) {
+    /* package */
+    final void setChecked(final boolean activated) {
         if (itemView instanceof Checkable) {
             ((Checkable) itemView).setChecked(activated);
         } else if (shouldUseActivated()) {
@@ -143,7 +146,8 @@ public abstract class AbstractViewHolder extends RecyclerView.ViewHolder {
     /**
      * Called by {@link AbstractRecyclerViewAdapter} to register on click callback.
      */
-    /* package */ final void setOnViewHolderClickListener(@Nullable final OnViewHolderClickListener l) {
+    /* package */
+    final void setOnViewHolderClickListener(@Nullable final OnViewHolderClickListener l) {
         mOnViewHolderClickListener = l;
     }
 

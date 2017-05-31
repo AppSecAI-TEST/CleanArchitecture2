@@ -9,7 +9,7 @@ import com.cleanarchitecture.shishkin.base.ui.activity.IActivity;
 /**
  * Команда - выход из приложения
  */
-public class FinishApplicationUseCase  extends AbstractUseCase{
+public class FinishApplicationUseCase extends AbstractUseCase {
     public static final String NAME = "FinishApplicationUseCase";
 
     public static synchronized void onFinishApplication() {

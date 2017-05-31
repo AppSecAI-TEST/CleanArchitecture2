@@ -5,29 +5,29 @@ import com.cleanarchitecture.shishkin.base.database.querybuilder.QueryBuilderUti
 import java.util.List;
 
 public class ColumnProjection extends Projection {
-	private String table;
-	private String column;
-	
-	public ColumnProjection(String table, String column) {
-		this.table = table;
-		this.column = column;
-	}
+    private String table;
+    private String column;
 
-	@Override
-	public String build() {
-		String ret = "";
-		
-		if(!QueryBuilderUtils.isNullOrWhiteSpace(table))
-			ret = ret + table + ".";
-		
-		if(!QueryBuilderUtils.isNullOrWhiteSpace(column))
-			ret = ret + column;
-		
-		return ret;
-	}
+    public ColumnProjection(String table, String column) {
+        this.table = table;
+        this.column = column;
+    }
 
-	@Override
-	public List<Object> buildParameters() {
-		return QueryBuilderUtils.EMPTY_LIST;
-	}
+    @Override
+    public String build() {
+        String ret = "";
+
+        if (!QueryBuilderUtils.isNullOrWhiteSpace(table))
+            ret = ret + table + ".";
+
+        if (!QueryBuilderUtils.isNullOrWhiteSpace(column))
+            ret = ret + column;
+
+        return ret;
+    }
+
+    @Override
+    public List<Object> buildParameters() {
+        return QueryBuilderUtils.EMPTY_LIST;
+    }
 }

@@ -2,7 +2,6 @@ package com.cleanarchitecture.shishkin.base.mail;
 
 import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
-import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 
 public class UpdateViewPresenterMail extends AbstractMail {
 

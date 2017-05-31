@@ -19,6 +19,7 @@ public final class Connectivity {
      * Indicates whether network connectivity exists and it is possible to establish
      * connections and pass data.
      * <p>Always call this before attempting to perform data transactions.
+     *
      * @return {@code true} if network connectivity exists, {@code false} otherwise.
      */
     public static boolean isNetworkConnected(final Context context) {
@@ -34,6 +35,7 @@ public final class Connectivity {
      * Indicates whether network connectivity exists and it is possible to establish
      * connections and pass data.
      * <p>Always call this before attempting to perform data transactions.
+     *
      * @return {@code true} if network connectivity exists, {@code false} otherwise.
      */
     public static boolean isNetworkConnected(@Nullable final NetworkInfo activeNetwork) {
@@ -44,6 +46,7 @@ public final class Connectivity {
      * Indicates whether network connectivity exists or is in the process
      * of being established. This is good for applications that need to
      * do anything related to the network other than read or write data.
+     *
      * @return {@code true} if network connectivity exists or is in the process
      * of being established, {@code false} otherwise.
      */
@@ -60,6 +63,7 @@ public final class Connectivity {
      * Indicates whether network connectivity exists or is in the process
      * of being established. This is good for applications that need to
      * do anything related to the network other than read or write data.
+     *
      * @return {@code true} if network connectivity exists or is in the process
      * of being established, {@code false} otherwise.
      */
@@ -77,7 +81,7 @@ public final class Connectivity {
      * {@link android.Manifest.permission#ACCESS_NETWORK_STATE}.
      *
      * @return a {@link NetworkInfo} object for the current default network
-     *        or {@code null} if no default network is currently active
+     * or {@code null} if no default network is currently active
      */
     @Nullable
     public static NetworkInfo getActiveNetworkInfo(@NonNull final Context context) {

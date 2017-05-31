@@ -1,7 +1,6 @@
 package com.cleanarchitecture.shishkin.base.ui.widget;
 
 import android.content.Context;
-import android.os.Build;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;

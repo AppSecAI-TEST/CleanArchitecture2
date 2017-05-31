@@ -8,7 +8,7 @@ import com.cleanarchitecture.shishkin.base.event.AbstractEvent;
 public class UseCaseRequestPermissionEvent extends AbstractEvent {
     private String mName;
 
-    public UseCaseRequestPermissionEvent(final String name){
+    public UseCaseRequestPermissionEvent(final String name) {
         mName = name;
     }
 

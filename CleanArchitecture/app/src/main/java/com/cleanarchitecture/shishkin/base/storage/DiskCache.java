@@ -43,7 +43,7 @@ public class DiskCache implements IStorage {
 
     @Override
     public void put(final String key, final Serializable value) {
-        if(StringUtils.isNullOrEmpty(key)) {
+        if (StringUtils.isNullOrEmpty(key)) {
             return;
         }
 
@@ -64,7 +64,7 @@ public class DiskCache implements IStorage {
 
     @Override
     public Serializable get(final String key) {
-        if(StringUtils.isNullOrEmpty(key)) {
+        if (StringUtils.isNullOrEmpty(key)) {
             return null;
         }
 
@@ -84,7 +84,7 @@ public class DiskCache implements IStorage {
 
     @Override
     public Serializable get(final String key, final Serializable defaultValue) {
-        if(StringUtils.isNullOrEmpty(key)) {
+        if (StringUtils.isNullOrEmpty(key)) {
             return defaultValue;
         }
 
@@ -102,7 +102,7 @@ public class DiskCache implements IStorage {
 
     @Override
     public void clear(final String key) {
-        if(StringUtils.isNullOrEmpty(key)) {
+        if (StringUtils.isNullOrEmpty(key)) {
             return;
         }
 

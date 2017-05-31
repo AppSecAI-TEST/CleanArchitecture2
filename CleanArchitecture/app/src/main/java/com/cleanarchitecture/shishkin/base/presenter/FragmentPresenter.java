@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.view.View;
 
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
-import com.cleanarchitecture.shishkin.base.controller.ActivityController;
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.ui.activity.IActivity;
 import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractFragment;
