@@ -17,4 +17,15 @@ public interface IContentFragment extends IFragment {
      * @param view the view
      */
     void onClick(View view);
+
+    /**
+     * Обновить данные во фрагменте
+     */
+    void refreshData();
+
+    /**
+     * Обновить views во фрагменте
+     */
+    void refreshViews();
+
 }

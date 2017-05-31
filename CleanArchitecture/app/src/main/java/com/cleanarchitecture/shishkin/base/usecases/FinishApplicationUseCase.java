@@ -1,11 +1,9 @@
 package com.cleanarchitecture.shishkin.base.usecases;
 
-import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.HideKeyboardEvent;
 import com.cleanarchitecture.shishkin.base.storage.MemoryCache;
-import com.cleanarchitecture.shishkin.base.ui.activity.IActivity;
 
 /**
  * Команда - выход из приложения

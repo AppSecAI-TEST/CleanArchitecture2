@@ -1,7 +1,6 @@
 package com.cleanarchitecture.shishkin.base.ui.fragment;
 
 import android.support.annotation.IdRes;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -53,16 +52,6 @@ public interface IFragment extends ISubscriber {
      * @return the AppCompatActivity activity
      */
     AppCompatActivity getAppCompatActivity();
-
-    /**
-     * Обновить данные во фрагменте
-     */
-    void refreshData();
-
-    /**
-     * Обновить views во фрагменте
-     */
-    void refreshViews();
 
     /**
      * Получить Butter Knife Unbinder

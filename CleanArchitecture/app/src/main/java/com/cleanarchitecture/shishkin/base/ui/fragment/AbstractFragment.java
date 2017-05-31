@@ -113,7 +113,6 @@ public abstract class AbstractFragment extends Fragment implements IFragment
         super.onDestroy();
     }
 
-
     @Override
     public abstract String getName();
 
@@ -187,14 +186,6 @@ public abstract class AbstractFragment extends Fragment implements IFragment
     }
 
     @Override
-    public void refreshData() {
-    }
-
-    @Override
-    public void refreshViews() {
-    }
-
-    @Override
     public Unbinder getUnbinder() {
         return mUnbinder;
     }
@@ -250,7 +241,6 @@ public abstract class AbstractFragment extends Fragment implements IFragment
             }
         }
     }
-
 
 
 }

@@ -110,6 +110,14 @@ public abstract class AbstractContentFragment extends AbstractFragment implement
         }
     }
 
+    @Override
+    public void refreshData() {
+    }
+
+    @Override
+    public void refreshViews() {
+    }
+
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public synchronized void onToolbarPrepareEvent(ToolbarPrepareEvent event) {
         prepareToolbar();
