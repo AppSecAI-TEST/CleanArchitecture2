@@ -24,13 +24,6 @@ public interface IActivityController extends ISubscriber {
     void unregister(IActivity subscriber);
 
     /**
-     * Получить context.
-     *
-     * @return the context
-     */
-    Context getContext();
-
-    /**
      * Получить подписчика
      *
      * @return подписчик

@@ -1,10 +1,10 @@
 package com.cleanarchitecture.shishkin.base.database.querybuilder;
 
-import com.cleanarchitecture.shishkin.base.database.querybuilder.sqlite.QueryBuildConfiguration;
 import com.cleanarchitecture.shishkin.base.database.querybuilder.sqlite.projection.Projection;
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.math.BigDecimal;
@@ -13,6 +13,8 @@ import java.util.List;
 
 public class QueryBuilderUtils {
     public static final List<Object> EMPTY_LIST = new ArrayList<Object>();
+    public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
+    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
 
     public static String toString(Object value) {
         if (value == null)
@@ -33,7 +35,7 @@ public class QueryBuilderUtils {
             return null;
 
         if (format == null)
-            format = QueryBuildConfiguration.getInstance().getDateFormat();
+            format = DATE_FORMATTER;
 
         try {
             return date.toString(format);
@@ -47,7 +49,7 @@ public class QueryBuilderUtils {
             return null;
 
         if (format == null)
-            format = QueryBuildConfiguration.getInstance().getDateTimeFormat();
+            format = DATE_TIME_FORMATTER;
 
         try {
             return date.toString(format);
