@@ -33,7 +33,7 @@ public class SqliteQueryBuilder implements QueryBuilder {
     private DateTimeFormatter dateTimeFormat;
 
     public SqliteQueryBuilder() {
-        this(QueryBuildConfiguration.getInstance().getDateFormat(), QueryBuildConfiguration.getInstance().getDateTimeFormat());
+        this(QueryBuilderUtils.DATE_FORMATTER, QueryBuilderUtils.DATE_TIME_FORMATTER);
     }
 
     public SqliteQueryBuilder(String dateFormat, String dateTimeFormat) {
