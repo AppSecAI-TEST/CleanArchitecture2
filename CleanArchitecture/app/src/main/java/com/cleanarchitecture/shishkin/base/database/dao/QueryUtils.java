@@ -7,7 +7,7 @@ public class QueryUtils {
     /**
      * Prepare SQL ? placeholders for IN selection.
      *
-     * @param column The name of column.
+     * @param column     The name of column.
      * @param argsNumber The number of ? placeholders.
      * @return The formatted SQL selection for IN queries.
      */
@@ -19,7 +19,7 @@ public class QueryUtils {
     /**
      * Prepare SQL ? placeholders for NOT IN selection.
      *
-     * @param column The name of column.
+     * @param column     The name of column.
      * @param argsNumber The number of ? placeholders.
      * @return The formatted SQL selection for NOT IN queries.
      */
@@ -29,7 +29,7 @@ public class QueryUtils {
     }
 
     @NonNull
-    /* package */public static String in(@NonNull final String column, final int argsNumber, final boolean in) {
+    /* package */ public static String in(@NonNull final String column, final int argsNumber, final boolean in) {
         final StringBuilder inClause = new StringBuilder();
 
         if (argsNumber > 0) {

@@ -130,7 +130,7 @@ public class ViewUtils {
         return diagonalInches >= 9;
     }
 
-    public static String getLanguage () {
+    public static String getLanguage() {
         return Locale.getDefault().getLanguage();
     }
 
@@ -247,7 +247,6 @@ public class ViewUtils {
                                                     @Nullable final Drawable bottom) {
         EXT_IMPL.setCompoundDrawablesVertical(v, top, bottom);
     }
-
 
 
     interface ViewCompatExtImpl {

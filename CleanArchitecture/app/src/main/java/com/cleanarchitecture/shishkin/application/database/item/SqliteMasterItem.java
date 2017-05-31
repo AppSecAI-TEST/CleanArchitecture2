@@ -4,7 +4,7 @@ import android.os.Parcel;
 
 import java.io.Serializable;
 
-public class SqliteMasterItem implements Serializable{
+public class SqliteMasterItem implements Serializable {
 
     private String mType;
     private String mName;

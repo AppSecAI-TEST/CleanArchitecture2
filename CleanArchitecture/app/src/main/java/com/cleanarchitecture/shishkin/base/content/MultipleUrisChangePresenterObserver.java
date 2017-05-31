@@ -39,7 +39,7 @@ public class MultipleUrisChangePresenterObserver extends ContentObserver impleme
      * Adds content {@link Uri} to be notified on data change.
      *
      * @param contentUri The URI to watch for changes. This can be a specific row URI, or a base URI
-     * for a whole class of content.
+     *                   for a whole class of content.
      */
     public void add(final Uri contentUri) {
         if (contentUri != null) {

@@ -6,7 +6,6 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
 
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.event.OnScreenOffEvent;
 
@@ -97,7 +96,7 @@ public abstract class LiveLongBackgroundIntentService extends Service
      * @see #setLiveLong(boolean)
      */
     public void setShutdownTimeout(final long shutdownTimeout) {
-        if (shutdownTimeout > 0){
+        if (shutdownTimeout > 0) {
             setLiveLong(false);
             mServiceHandler.setShutdownTimeout(shutdownTimeout);
         }

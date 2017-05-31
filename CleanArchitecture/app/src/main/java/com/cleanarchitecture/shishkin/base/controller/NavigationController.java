@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Контроллер, отвечающий за навигацию в приложении
  */
-public class NavigationController extends AbstractController implements INavigationController{
+public class NavigationController extends AbstractController implements INavigationController {
 
     public static final String NAME = "NavigationController";
     private Map<String, WeakReference<INavigationSubscriber>> mSubscribers = Collections.synchronizedMap(new HashMap<String, WeakReference<INavigationSubscriber>>());
@@ -27,7 +27,7 @@ public class NavigationController extends AbstractController implements INavigat
     }
 
     private synchronized void checkNullSubscriber() {
-        for (Map.Entry<String, WeakReference<INavigationSubscriber>> entry: mSubscribers.entrySet()) {
+        for (Map.Entry<String, WeakReference<INavigationSubscriber>> entry : mSubscribers.entrySet()) {
             if (entry.getValue().get() == null) {
                 mSubscribers.remove(entry.getKey());
             }
@@ -41,7 +41,7 @@ public class NavigationController extends AbstractController implements INavigat
      */
     @Override
     public synchronized void register(final INavigationSubscriber subscriber) {
-        if (subscriber != null){
+        if (subscriber != null) {
             checkNullSubscriber();
 
             mSubscribers.put(subscriber.getName(), new WeakReference<>(subscriber));

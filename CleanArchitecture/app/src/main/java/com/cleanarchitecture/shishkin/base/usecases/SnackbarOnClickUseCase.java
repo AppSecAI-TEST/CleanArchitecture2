@@ -9,7 +9,7 @@ import com.cleanarchitecture.shishkin.base.event.ui.OnSnackBarClickEvent;
 /**
  * Команда - нажатие на кнопку в панели Snackbar
  */
-public class SnackbarOnClickUseCase extends AbstractUseCase{
+public class SnackbarOnClickUseCase extends AbstractUseCase {
 
     public static final String NAME = "SnackbarOnClickUseCase";
 

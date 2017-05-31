@@ -3,12 +3,12 @@ package com.cleanarchitecture.shishkin.base.database.querybuilder.sqlite.criteri
 import com.cleanarchitecture.shishkin.base.database.querybuilder.sqlite.SqliteQueryBuilder;
 
 public class NotExistsCriteria extends ExistsCriteria {
-	public NotExistsCriteria(SqliteQueryBuilder subQuery) {
-		super(subQuery);
-	}
-	
-	@Override
-	public String build() {
-		return "NOT " + super.build();
-	}
+    public NotExistsCriteria(SqliteQueryBuilder subQuery) {
+        super(subQuery);
+    }
+
+    @Override
+    public String build() {
+        return "NOT " + super.build();
+    }
 }

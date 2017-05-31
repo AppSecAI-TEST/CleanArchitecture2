@@ -2,7 +2,7 @@ package com.cleanarchitecture.shishkin.base.task;
 
 import android.os.AsyncTask;
 
-public abstract class AbstractAsyncTask extends AsyncTask<Void, Void, Void> implements Runnable  {
+public abstract class AbstractAsyncTask extends AsyncTask<Void, Void, Void> implements Runnable {
 
     @Override
     protected void onPreExecute() {

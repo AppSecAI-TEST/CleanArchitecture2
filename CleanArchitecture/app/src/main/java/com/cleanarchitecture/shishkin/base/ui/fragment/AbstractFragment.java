@@ -80,7 +80,7 @@ public abstract class AbstractFragment extends Fragment implements IFragment
 
         final FragmentActivity activity = getActivity();
         if (activity != null && activity instanceof AbstractActivity) {
-            mActivityPresenter = ((AbstractActivity)activity).getActivityPresenter();
+            mActivityPresenter = ((AbstractActivity) activity).getActivityPresenter();
         }
     }
 
@@ -112,7 +112,7 @@ public abstract class AbstractFragment extends Fragment implements IFragment
         setLifecycleStatus(Lifecycle.STATE_DESTROY);
         mLifecycleList.clear();
 
-        for (IPresenter presenter: mPresenters.values()) {
+        for (IPresenter presenter : mPresenters.values()) {
             Controllers.getInstance().getPresenterController().unregister(presenter);
         }
         mPresenters.clear();
@@ -148,7 +148,7 @@ public abstract class AbstractFragment extends Fragment implements IFragment
         } else {
             final IActivity subscriber = Controllers.getInstance().getActivityController().getSubscriber();
             if (subscriber != null && subscriber instanceof AppCompatActivity) {
-                return (AppCompatActivity)subscriber;
+                return (AppCompatActivity) subscriber;
             }
         }
         return null;
@@ -176,14 +176,14 @@ public abstract class AbstractFragment extends Fragment implements IFragment
     }
 
     public synchronized void registerLifecycleObject(final IStateable object) {
-        for (WeakReference<IStateable> reference: mLifecycleList) {
+        for (WeakReference<IStateable> reference : mLifecycleList) {
             if (reference.get() == null) {
                 mLifecycleList.remove(reference);
             }
         }
 
         boolean found = false;
-        for (WeakReference<IStateable> reference: mLifecycleList) {
+        for (WeakReference<IStateable> reference : mLifecycleList) {
             if (reference.get() != null && reference.get() == object) {
                 found = true;
                 break;
@@ -253,7 +253,7 @@ public abstract class AbstractFragment extends Fragment implements IFragment
     }
 
     @Override
-    public void setState(int state){
+    public void setState(int state) {
     }
 
 }

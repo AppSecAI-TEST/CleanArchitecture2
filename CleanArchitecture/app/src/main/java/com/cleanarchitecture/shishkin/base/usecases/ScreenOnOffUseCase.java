@@ -1,13 +1,12 @@
 package com.cleanarchitecture.shishkin.base.usecases;
 
-import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.OnScreenOffEvent;
 
 /**
  * Команда - блокировка/разблокировка экрана
  */
-public class ScreenOnOffUseCase extends AbstractUseCase{
+public class ScreenOnOffUseCase extends AbstractUseCase {
 
     public static final String NAME = "ScreenOnOffUseCase";
 

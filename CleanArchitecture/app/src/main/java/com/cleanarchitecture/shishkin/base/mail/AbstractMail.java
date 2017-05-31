@@ -1,6 +1,5 @@
 package com.cleanarchitecture.shishkin.base.mail;
 
-import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
 import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;

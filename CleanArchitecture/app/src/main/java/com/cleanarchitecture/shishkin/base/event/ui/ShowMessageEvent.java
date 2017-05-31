@@ -1,6 +1,5 @@
 package com.cleanarchitecture.shishkin.base.event.ui;
 
-import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 
 import com.cleanarchitecture.shishkin.base.event.AbstractEvent;

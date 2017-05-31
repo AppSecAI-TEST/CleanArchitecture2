@@ -9,11 +9,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.INavigationSubscriber;
 import com.cleanarchitecture.shishkin.base.controller.ISubscriber;
-import com.cleanarchitecture.shishkin.base.controller.NavigationController;
 import com.cleanarchitecture.shishkin.base.event.ui.HideKeyboardEvent;
 import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractFragment;

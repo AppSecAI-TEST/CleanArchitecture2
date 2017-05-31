@@ -183,7 +183,6 @@ public interface IActivityPresenter extends ISubscriber {
 
     /**
      * Контролировать наличие и текущую версию Google Play Services
-     *
      */
     boolean checkGooglePlayServices();
 

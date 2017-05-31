@@ -11,6 +11,7 @@ import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOffEvent
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOnEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
 import com.github.snowdream.android.util.Log;
+
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 

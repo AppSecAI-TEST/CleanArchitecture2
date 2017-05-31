@@ -23,7 +23,7 @@ import java.util.List;
  */
 public abstract class AbstractIdentifyDAO<K, E extends IIdentify<K>> extends AbstractReadOnlyDAO<E> {
 
-    private static final String[] COUNT_1_PROJECTION = new String[] { "count(1) as " + IBaseColumns._COUNT };
+    private static final String[] COUNT_1_PROJECTION = new String[]{"count(1) as " + IBaseColumns._COUNT};
     private static final String WHERE_BASE_COLUMNS_ID = IBaseColumns._ID + "=?";
 
     /**
@@ -107,7 +107,7 @@ public abstract class AbstractIdentifyDAO<K, E extends IIdentify<K>> extends Abs
      */
     public int update(@NonNull final K id, @NonNull final ContentValues values) {
         final String normalizedId = normalizeId(String.valueOf(id));
-        return update(getTableUri(), values, WHERE_BASE_COLUMNS_ID, new String[] { normalizedId });
+        return update(getTableUri(), values, WHERE_BASE_COLUMNS_ID, new String[]{normalizedId});
     }
 
     private int update(@NonNull final Uri uri, @NonNull ContentValues values,

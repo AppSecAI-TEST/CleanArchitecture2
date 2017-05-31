@@ -9,7 +9,7 @@ public class DbCreatedEvent extends AbstractEvent {
 
     private String mDbName = null;
 
-    public DbCreatedEvent (final String name) {
+    public DbCreatedEvent(final String name) {
         mDbName = name;
     }
 

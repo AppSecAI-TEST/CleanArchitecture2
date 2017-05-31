@@ -15,7 +15,7 @@ public class LifecycleCallbacksDispatcher {
     private static final int STARTED = 1;
     private static final int RESUMED = 1 << 1;
 
-    @IntDef(value = { NONE, STARTED, RESUMED }, flag = true)
+    @IntDef(value = {NONE, STARTED, RESUMED}, flag = true)
     private @interface LifecycleState {
     }
 

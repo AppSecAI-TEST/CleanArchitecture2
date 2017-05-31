@@ -3,38 +3,38 @@ package com.cleanarchitecture.shishkin.base.repository.requests;
 import com.cleanarchitecture.shishkin.base.repository.Repository;
 
 public abstract class AbstractRequest implements Runnable, IRequest {
-	public static final int MAX_RANK = 10;
-	public static final int HIGH_RANK = 8;
-	public static final int MIDDLE_RANK = 5;
-	public static final int LOW_RANK = 2;
-	public static final int MIN_RANK = 0;
+    public static final int MAX_RANK = 10;
+    public static final int HIGH_RANK = 8;
+    public static final int MIDDLE_RANK = 5;
+    public static final int LOW_RANK = 2;
+    public static final int MIN_RANK = 0;
 
-	private int mRank = MIN_RANK;
-	private int mCacheType = Repository.USE_ONLY_MEMORY_CACHE;
+    private int mRank = MIN_RANK;
+    private int mCacheType = Repository.USE_ONLY_MEMORY_CACHE;
 
-	public AbstractRequest(final int rank) {
-		mRank = rank;
-	}
+    public AbstractRequest(final int rank) {
+        mRank = rank;
+    }
 
-	@Override
-	public int getRank() {
-		return mRank;
-	}
+    @Override
+    public int getRank() {
+        return mRank;
+    }
 
-	@Override
-	public IRequest setRank(int rank) {
-		this.mRank = rank;
-		return this;
-	}
+    @Override
+    public IRequest setRank(int rank) {
+        this.mRank = rank;
+        return this;
+    }
 
-	@Override
-	public int getCacheType() {
-		return mCacheType;
-	}
+    @Override
+    public int getCacheType() {
+        return mCacheType;
+    }
 
-	@Override
-	public IRequest setCacheType(final int cacheType) {
-		mCacheType = cacheType;
-		return this;
-	}
+    @Override
+    public IRequest setCacheType(final int cacheType) {
+        mCacheType = cacheType;
+        return this;
+    }
 }

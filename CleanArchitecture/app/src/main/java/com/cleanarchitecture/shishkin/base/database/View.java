@@ -29,7 +29,7 @@ public final class View {
         String toSql() {
             final StringBuilder sb = new StringBuilder();
             sb.append("CREATE VIEW " + mName);
-            sb.append(" AS " + mSelect+";");
+            sb.append(" AS " + mSelect + ";");
             return sb.toString();
         }
 
@@ -86,7 +86,7 @@ public final class View {
         }
 
         @NonNull
-        public View.Builder groupBy(@NonNull Projection... projections){
+        public View.Builder groupBy(@NonNull Projection... projections) {
             mQueryBuilder.groupBy(projections);
             return this;
         }
@@ -98,7 +98,7 @@ public final class View {
         }
 
         @NonNull
-        public View.Builder orderByAscending(@NonNull String... columns){
+        public View.Builder orderByAscending(@NonNull String... columns) {
             mQueryBuilder.orderByAscending(columns);
             return this;
         }
@@ -122,13 +122,13 @@ public final class View {
         }
 
         @NonNull
-        public View.Builder union(@NonNull QueryBuilder query){
+        public View.Builder union(@NonNull QueryBuilder query) {
             mQueryBuilder.union(query);
             return this;
         }
 
         @NonNull
-        public View.Builder unionAll(@NonNull QueryBuilder query){
+        public View.Builder unionAll(@NonNull QueryBuilder query) {
             mQueryBuilder.unionAll(query);
             return this;
         }
@@ -140,13 +140,13 @@ public final class View {
         }
 
         @NonNull
-        public View.Builder select(@NonNull Projection... projections){
+        public View.Builder select(@NonNull Projection... projections) {
             mQueryBuilder.select(projections);
             return this;
         }
 
         @NonNull
-        public View.Builder whereAnd(@NonNull Criteria criteria){
+        public View.Builder whereAnd(@NonNull Criteria criteria) {
             mQueryBuilder.whereAnd(criteria);
             return this;
         }
@@ -174,7 +174,7 @@ public final class View {
             final String select = mQueryBuilder.build();
             final StringBuilder sb = new StringBuilder();
             sb.append("CREATE VIEW " + mName);
-            sb.append(" AS " + select+";");
+            sb.append(" AS " + select + ";");
             return sb.toString();
         }
 
@@ -187,7 +187,7 @@ public final class View {
     /**
      * Drops the existing view.
      *
-     * @param db    the database.
+     * @param db   the database.
      * @param view the name of view to be dropped.
      */
     public static void drop(@NonNull final IDatabase db, @NonNull final String view) {

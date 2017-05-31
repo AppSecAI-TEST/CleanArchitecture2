@@ -4,7 +4,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.ui.recyclerview.event.OnRecyclerViewIdleEvent;
 import com.cleanarchitecture.shishkin.base.ui.recyclerview.event.OnRecyclerViewScrolledEvent;

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
@@ -47,7 +46,7 @@ public class MaterialDialogExt {
         if (title != NO_TITLE) {
             builder.title(title);
         }
-        if (!StringUtils.isNullOrEmpty(message)){
+        if (!StringUtils.isNullOrEmpty(message)) {
             builder.content(message);
         }
         builder.positiveText(positiveButton);
@@ -58,7 +57,7 @@ public class MaterialDialogExt {
             builder.neutralText(neutralButton);
         }
         builder.onPositive((dialog, which) -> {
-            if (mId > -1){
+            if (mId > -1) {
                 final Bundle bundle = new Bundle();
                 bundle.putInt(ID, mId);
                 bundle.putString(BUTTON, POSITIVE);
@@ -66,7 +65,7 @@ public class MaterialDialogExt {
             }
         });
         builder.onNegative((dialog, which) -> {
-            if (mId > -1){
+            if (mId > -1) {
                 final Bundle bundle = new Bundle();
                 bundle.putInt(ID, mId);
                 bundle.putString(BUTTON, NEGATIVE);
@@ -74,7 +73,7 @@ public class MaterialDialogExt {
             }
         });
         builder.onNeutral((dialog, which) -> {
-            if (mId > -1){
+            if (mId > -1) {
                 final Bundle bundle = new Bundle();
                 bundle.putInt(ID, mId);
                 bundle.putString(BUTTON, NEUTRAL);
@@ -96,7 +95,7 @@ public class MaterialDialogExt {
         if (title > 0) {
             builder.title(title);
         }
-        if (!StringUtils.isNullOrEmpty(message)){
+        if (!StringUtils.isNullOrEmpty(message)) {
             builder.content(message);
         }
         builder.items(items);
@@ -144,7 +143,7 @@ public class MaterialDialogExt {
             });
         }
         builder.onNegative((dialog, which) -> {
-            if (mId > -1){
+            if (mId > -1) {
                 final Bundle bundle = new Bundle();
                 bundle.putInt(ID, mId);
                 bundle.putString(BUTTON, NEGATIVE);
@@ -171,7 +170,7 @@ public class MaterialDialogExt {
         if (title > 0) {
             builder.title(title);
         }
-        if (!StringUtils.isNullOrEmpty(message)){
+        if (!StringUtils.isNullOrEmpty(message)) {
             builder.content(message);
         }
         builder.positiveText(positiveButton);
@@ -182,7 +181,7 @@ public class MaterialDialogExt {
         builder.input(hint, edittext, (dialog, input) -> {
         });
         builder.onPositive((dialog, which) -> {
-            if (mId > -1){
+            if (mId > -1) {
                 final Bundle bundle = new Bundle();
                 bundle.putInt(ID, mId);
                 bundle.putString(BUTTON, POSITIVE);
@@ -191,7 +190,7 @@ public class MaterialDialogExt {
             }
         });
         builder.onNegative((dialog, which) -> {
-            if (mId > -1){
+            if (mId > -1) {
                 final Bundle bundle = new Bundle();
                 bundle.putInt(ID, mId);
                 bundle.putString(BUTTON, NEGATIVE);

@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 
 import com.cleanarchitecture.shishkin.application.database.dao.ConfigDAO;
 import com.cleanarchitecture.shishkin.application.database.item.ConfigItem;
-import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.database.Column;
 import com.cleanarchitecture.shishkin.base.database.ConflictResolution;

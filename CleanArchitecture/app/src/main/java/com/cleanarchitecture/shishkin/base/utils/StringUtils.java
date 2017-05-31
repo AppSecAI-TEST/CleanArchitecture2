@@ -8,7 +8,6 @@ import android.util.SparseArray;
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -638,7 +637,7 @@ public class StringUtils {
      * @return
      */
     public static List<String> toList(final String s,
-                                                final String delimiter) {
+                                      final String delimiter) {
         if (isNullOrEmpty(s)) {
             return new ArrayList<>(0);
         }

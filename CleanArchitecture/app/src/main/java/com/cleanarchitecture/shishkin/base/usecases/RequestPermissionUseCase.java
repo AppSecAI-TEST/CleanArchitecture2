@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
-import com.cleanarchitecture.shishkin.base.controller.ActivityController;
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionDeniedEvent;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionGrantedEvent;

@@ -5,16 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.webkit.MimeTypeMap;
 
 import com.github.snowdream.android.util.Log;
-
-import java.io.File;
 
 /**
  * {@code IntentUtils} contains static methods which operate with {@code Intent}.
@@ -43,7 +39,7 @@ public class IntentUtils {
      * Return true if activity that can handle a given intent action is found.
      *
      * @param context The context.
-     * @param action An intent action.
+     * @param action  An intent action.
      * @return true if activity that can handle a given action is found, false otherwise.
      */
     public static boolean canStartActivity(@NonNull final Context context, @NonNull final String action) {
@@ -54,8 +50,8 @@ public class IntentUtils {
      * Return true if activity that can handle a given intent is found.
      *
      * @param context The context.
-     * @param intent An intent containing all of the desired specification
-     *               (action, data, type, category, and/or component).
+     * @param intent  An intent containing all of the desired specification
+     *                (action, data, type, category, and/or component).
      * @return true if activity that can handle a given intent is found, false otherwise.
      */
     public static boolean canStartActivity(@NonNull final Context context, @NonNull final Intent intent) {

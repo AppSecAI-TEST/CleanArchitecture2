@@ -16,31 +16,31 @@ public interface IDatabaseOpenHelper {
      * to {@link #getWritableDatabase} may succeed, in which case the read-only
      * database object will be closed and the read/write object will be returned
      * in the future.
-     *
+     * <p>
      * <p class="caution">Like {@link #getWritableDatabase}, this method may
      * take a long time to return, so you should not call it from the
      * application main thread, including from
      * {@link android.content.ContentProvider#onCreate ContentProvider.onCreate()}.
      *
-     * @throws SQLiteException if the database cannot be opened
      * @return a database object.
+     * @throws SQLiteException if the database cannot be opened
      */
     IDatabase getReadableDatabase();
 
     /**
      * Create and/or open a database that will be used for reading and writing.
-     *
+     * <p>
      * <p>Once opened successfully, the database is cached, so you can
      * call this method every time you need to write to the database.
      * Errors such as bad permissions or a full disk may cause this method
      * to fail, but future attempts may succeed if the problem is fixed.</p>
-     *
+     * <p>
      * <p class="caution">Database upgrade may take a long time, you
      * should not call this method from the application main thread, including
      * from {@link android.content.ContentProvider#onCreate ContentProvider.onCreate()}.
      *
-     * @throws SQLiteException if the database cannot be opened for writing
      * @return a read/write database object
+     * @throws SQLiteException if the database cannot be opened for writing
      */
     IDatabase getWritableDatabase();
 

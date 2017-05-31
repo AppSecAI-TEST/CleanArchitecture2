@@ -25,7 +25,7 @@ public interface IStorage extends ISubscriber {
     /**
      * Get value from storage.
      *
-     * @param key the key
+     * @param key          the key
      * @param defaultValue the default value
      * @return the serializable
      */

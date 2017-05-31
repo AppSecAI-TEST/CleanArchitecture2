@@ -80,7 +80,7 @@ public class MailController extends AbstractController implements IMailControlle
             final long currentTime = System.currentTimeMillis();
             final List<IMail> list = Stream.of(mMail.values()).filter(mail -> (mail.contains(name) && mail.getEndTime() != -1 && mail.getEndTime() < currentTime)).toList();
             if (!list.isEmpty()) {
-                for (IMail mail: list) {
+                for (IMail mail : list) {
                     mMail.remove(mail.getId());
                 }
             }

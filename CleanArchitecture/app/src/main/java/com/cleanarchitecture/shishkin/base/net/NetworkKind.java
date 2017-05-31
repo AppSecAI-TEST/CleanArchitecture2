@@ -41,14 +41,12 @@ public enum NetworkKind {
                     case TelephonyManager.NETWORK_TYPE_HSPAP:
                     case TelephonyManager.NETWORK_TYPE_HSPA:
                     case TelephonyManager.NETWORK_TYPE_EHRPD:
-                    //case TelephonyManager.NETWORK_TYPE_IWLAN:
                         return MOBILE_4G;
 
                     case TelephonyManager.NETWORK_TYPE_UMTS: // 3G
                     case TelephonyManager.NETWORK_TYPE_EVDO_0:
                     case TelephonyManager.NETWORK_TYPE_EVDO_A:
                     case TelephonyManager.NETWORK_TYPE_EVDO_B:
-                    //case TelephonyManager.NETWORK_TYPE_TD_SCDMA:
                     case TelephonyManager.NETWORK_TYPE_HSDPA:
                         return MOBILE_3G;
 
@@ -57,7 +55,6 @@ public enum NetworkKind {
                     case TelephonyManager.NETWORK_TYPE_CDMA:
                     case TelephonyManager.NETWORK_TYPE_1xRTT:
                     case TelephonyManager.NETWORK_TYPE_IDEN:
-                    //case TelephonyManager.NETWORK_TYPE_GSM:
                         return MOBILE;
 
                     default:

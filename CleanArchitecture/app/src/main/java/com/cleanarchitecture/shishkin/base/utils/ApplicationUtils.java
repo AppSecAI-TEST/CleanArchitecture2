@@ -16,10 +16,8 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
-import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
-import com.cleanarchitecture.shishkin.base.usecases.UseCasesController;
 import com.github.snowdream.android.util.Log;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;

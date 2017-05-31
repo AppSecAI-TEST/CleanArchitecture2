@@ -16,7 +16,7 @@ import butterknife.Unbinder;
  * Интерфейс фрагмента
  */
 @SuppressWarnings("unused")
-public interface IFragment extends ISubscriber{
+public interface IFragment extends ISubscriber {
     /**
      * Найти view во фрагменте
      *

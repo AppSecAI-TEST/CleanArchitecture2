@@ -5,7 +5,7 @@ import com.cleanarchitecture.shishkin.base.storage.MemoryCache;
 /**
  * Команда - мало памяти у приложения
  */
-public class LowMemoryUseCase extends AbstractUseCase{
+public class LowMemoryUseCase extends AbstractUseCase {
 
     public static final String NAME = "LowMemoryUseCase";
 

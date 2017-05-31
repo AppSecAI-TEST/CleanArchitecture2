@@ -159,7 +159,7 @@ public class Repository implements IRepository, IEventVendor {
     public void onDbCreatedEvent(final DbCreatedEvent event) {
         final Context context = ApplicationController.getInstance();
         if (context != null) {
-            Controllers.getInstance().getMailController().addMail(new ShowToastMail(MainActivity.NAME, context.getString(R.string.db_created, event.getName()) ));
+            Controllers.getInstance().getMailController().addMail(new ShowToastMail(MainActivity.NAME, context.getString(R.string.db_created, event.getName())));
         }
     }
 

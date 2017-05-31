@@ -230,7 +230,7 @@ public class NotificationService extends LiveLongBackgroundIntentService {
         }
 
         mMessages.add(0, message);
-        while(mMessages.size() > mMessagesCount) {
+        while (mMessages.size() > mMessagesCount) {
             mMessages.remove(mMessages.get(mMessages.size() - 1));
         }
         DiskStorage.getInstance(getApplicationContext()).put(NAME, SerializableUtil.toSerializable(mMessages));
@@ -247,7 +247,7 @@ public class NotificationService extends LiveLongBackgroundIntentService {
 
         if (!mMessages.contains(message)) {
             mMessages.add(0, message);
-            while(mMessages.size() > mMessagesCount) {
+            while (mMessages.size() > mMessagesCount) {
                 mMessages.remove(mMessages.get(mMessages.size() - 1));
             }
             DiskStorage.getInstance(getApplicationContext()).put(NAME, SerializableUtil.toSerializable(mMessages));

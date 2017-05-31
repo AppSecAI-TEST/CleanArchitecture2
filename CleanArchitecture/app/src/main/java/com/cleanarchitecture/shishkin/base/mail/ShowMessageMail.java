@@ -5,7 +5,7 @@ import android.support.design.widget.Snackbar;
 import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowMessageEvent;
 
-public class ShowMessageMail extends AbstractMail{
+public class ShowMessageMail extends AbstractMail {
 
     private static final String NAME = "ShowMessageMail";
 

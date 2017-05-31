@@ -19,7 +19,7 @@ import java.util.List;
  * @param <E> The class that used as data entity for this data access object.
  */
 public abstract class AbstractReadOnlyDAO<E> {
-    private static final String[] COUNT_1_PROJECTION = new String[] { "count(1) as " + IBaseColumns._COUNT };
+    private static final String[] COUNT_1_PROJECTION = new String[]{"count(1) as " + IBaseColumns._COUNT};
 
     /**
      * Checks if the cursor valid
@@ -37,7 +37,7 @@ public abstract class AbstractReadOnlyDAO<E> {
      */
     @NonNull
     public static String[] prepareArguments(@Nullable final Object... args) {
-        String[] params = { };
+        String[] params = {};
         if (args != null) {
             params = new String[args.length];
             for (int i = 0; i < args.length; i++) {
@@ -292,7 +292,7 @@ public abstract class AbstractReadOnlyDAO<E> {
      *
      * @return true if the table column is exists.
      */
-    public boolean isColumnExists(String column){
+    public boolean isColumnExists(String column) {
         String[] columns = {column};
         try {
             final Cursor cursor = getContentResolver().query(getTableUri(), columns,

@@ -5,7 +5,7 @@ import com.cleanarchitecture.shishkin.base.lifecycle.ILifecycle;
 /**
  * Интерфейс Lifecycle подписчика.
  */
-public interface ILifecycleSubscriber extends ISubscriber{
+public interface ILifecycleSubscriber extends ISubscriber {
 
     /**
      * закрыть activity

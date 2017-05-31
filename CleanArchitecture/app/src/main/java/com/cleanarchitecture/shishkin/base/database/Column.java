@@ -17,7 +17,7 @@ public final class Column {
     private static final String COLUMN_TYPE_BLOB = "BLOB";
     private static final String COLUMN_TYPE_TEXT = "TEXT";
 
-    @StringDef({ COLUMN_TYPE_REAL, COLUMN_TYPE_INTEGER, COLUMN_TYPE_BLOB, COLUMN_TYPE_TEXT })
+    @StringDef({COLUMN_TYPE_REAL, COLUMN_TYPE_INTEGER, COLUMN_TYPE_BLOB, COLUMN_TYPE_TEXT})
     private @interface ColumnType {
     }
 
