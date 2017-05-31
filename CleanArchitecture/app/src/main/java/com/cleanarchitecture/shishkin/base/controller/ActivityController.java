@@ -40,16 +40,6 @@ public class ActivityController extends AbstractController implements IActivityC
         EventBusController.getInstance().register(this);
     }
 
-    /**
-     * Получить context.
-     *
-     * @return the context
-     */
-    @Override
-    public synchronized Context getContext() {
-        return (Context) getSubscriber();
-    }
-
     private synchronized void checkNullSubscriber() {
         for (Map.Entry<String, WeakReference<IActivity>> entry : mSubscribers.entrySet()) {
             if (entry.getValue().get() == null) {
