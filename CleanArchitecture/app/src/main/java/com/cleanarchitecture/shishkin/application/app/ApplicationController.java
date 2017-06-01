@@ -30,8 +30,6 @@ public class ApplicationController extends Application {
     private static final long MAX_LOG_LENGTH = 2000000;//2Mb
     public static final String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CALL_PHONE, Manifest.permission.READ_CONTACTS};
 
-    private CleanArchitectureDb mCleanArchitectureDb;
-
     @Override
     public void onCreate() {
         sInstance = this;
@@ -142,14 +140,5 @@ public class ApplicationController extends Application {
         Log.e(LOG_TAG, "Low memory");
         EventBusController.getInstance().post(new UseCaseOnLowMemoryEvent());
     }
-
-    public CleanArchitectureDb getDb() {
-        return mCleanArchitectureDb;
-    }
-
-    public void setDb(CleanArchitectureDb mCleanArchitectureDb) {
-        this.mCleanArchitectureDb = mCleanArchitectureDb;
-    }
-
 
 }

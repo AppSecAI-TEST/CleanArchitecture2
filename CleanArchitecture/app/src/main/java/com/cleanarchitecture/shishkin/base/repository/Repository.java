@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
+import com.cleanarchitecture.shishkin.application.database.CleanArchitectureDb;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.ui.activity.MainActivity;
 import com.cleanarchitecture.shishkin.base.controller.AppPreferences;
@@ -51,11 +52,14 @@ public class Repository implements IRepository, IEventVendor {
     private NetProvider mNetProvider;
     private ContentProvider mContentProvider;
 
+    private DbProvider mDbProvider;
+
     public Repository() {
         EventBusController.getInstance().register(this);
 
         mNetProvider = new NetProvider();
         mContentProvider = new ContentProvider();
+        mDbProvider = new DbProvider();
     }
 
     @Override
@@ -136,6 +140,10 @@ public class Repository implements IRepository, IEventVendor {
 
     public ContentProvider getContentProvider() {
         return mContentProvider;
+    }
+
+    public DbProvider getDbProvider() {
+        return mDbProvider;
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
