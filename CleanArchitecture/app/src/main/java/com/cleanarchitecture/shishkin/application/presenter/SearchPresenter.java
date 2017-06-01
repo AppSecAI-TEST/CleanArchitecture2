@@ -24,6 +24,7 @@ import com.cleanarchitecture.shishkin.base.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.HideHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.HideKeyboardEvent;
+import com.cleanarchitecture.shishkin.base.event.ui.ShowErrorMessageEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowListDialogEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowToastEvent;
@@ -180,11 +181,15 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>> i
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public synchronized void onResponseGetContactsEvent(RepositoryResponseGetContactsEvent event) {
         EventBusController.getInstance().post(new HideHorizontalProgressBarEvent());
-        List<PhoneContactItem> list = event.getContacts();
-        if (list == null) {
-            list = new ArrayList<>();
+        if (!event.hasError()) {
+            List<PhoneContactItem> list = event.getResponse();
+            if (list == null) {
+                list = new ArrayList<>();
+            }
+            setModel(list);
+        } else {
+            EventBusController.getInstance().post(new ShowErrorMessageEvent(event));
         }
-        setModel(list);
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)

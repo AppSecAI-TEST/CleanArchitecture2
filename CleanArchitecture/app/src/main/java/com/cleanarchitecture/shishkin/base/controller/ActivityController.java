@@ -18,6 +18,7 @@ import com.cleanarchitecture.shishkin.base.event.ui.HideProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.OnSnackBarClickEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowDialogEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowEditDialogEvent;
+import com.cleanarchitecture.shishkin.base.event.ui.ShowErrorMessageEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowKeyboardEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowListDialogEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowMessageEvent;
@@ -231,6 +232,14 @@ public class ActivityController extends AbstractController implements IActivityC
                         .setAction(action, this::onSnackbarClick)
                         .show());
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onShowErrorMessageEvent(ShowErrorMessageEvent event) {
+        final IActivity subscriber = getSubscriber();
+        if (subscriber != null && subscriber.validate()) {
+            subscriber.getActivity().runOnUiThread(() -> new MaterialDialogExt(subscriber.getActivity(), event.getId(), R.string.error, event.getMessage(), R.string.ok_upper, MaterialDialogExt.NO_BUTTON, false).show());
         }
     }
 
