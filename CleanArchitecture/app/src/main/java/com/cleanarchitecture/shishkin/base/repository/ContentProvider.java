@@ -15,14 +15,12 @@ import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRes
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.database.dao.AbstractReadOnlyDAO;
-import com.cleanarchitecture.shishkin.base.event.IEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.CloseUtils;
 import com.github.snowdream.android.util.Log;
 
 import java.util.LinkedList;
-import java.util.List;
 
 public class ContentProvider {
     public static final String NAME = "ContentProvider";
@@ -43,11 +41,12 @@ public class ContentProvider {
             return (RepositoryResponseGetContactsEvent)event.setErrorText(context.getString(R.string.permission_read_contacts));
         }
 
-        final CleanArchitectureDb db = (CleanArchitectureDb) Controllers.getInstance().getRepository().getDbProvider().getDb(CleanArchitectureDb.class, CleanArchitectureDb.NAME);
+        final CleanArchitectureDb db = Controllers.getInstance().getRepository().getDbProvider().getDb(CleanArchitectureDb.class, CleanArchitectureDb.NAME);
         if (db == null) {
             return (RepositoryResponseGetContactsEvent)event.setErrorText(context.getString(R.string.error_db_not_connected));
         }
 
+        db.contactDao().delete();
         final LinkedList<PhoneContactItem> list = new LinkedList<>();
         Cursor cursor = null;
         try {

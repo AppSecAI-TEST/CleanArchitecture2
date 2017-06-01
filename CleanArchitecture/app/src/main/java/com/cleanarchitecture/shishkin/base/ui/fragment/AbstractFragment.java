@@ -1,10 +1,10 @@
 package com.cleanarchitecture.shishkin.base.ui.fragment;
 
 import android.app.Activity;
+import android.arch.lifecycle.LifecycleFragment;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -33,7 +33,7 @@ import java.util.Map;
 import butterknife.Unbinder;
 
 @SuppressWarnings("unused")
-public abstract class AbstractFragment extends Fragment implements IFragment
+public abstract class AbstractFragment extends LifecycleFragment implements IFragment
         , IEventVendor, IMailSubscriber {
 
     private Map<String, IPresenter> mPresenters = Collections.synchronizedMap(new HashMap<String, IPresenter>());

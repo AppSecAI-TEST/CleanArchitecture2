@@ -1,6 +1,8 @@
 package com.cleanarchitecture.shishkin.application.presenter;
 
 import android.Manifest;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,6 +16,8 @@ import com.annimon.stream.Stream;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
+import com.cleanarchitecture.shishkin.application.database.item.Contact;
+import com.cleanarchitecture.shishkin.application.database.viewmodel.ContactViewModel;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryResponseGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.event.searchpresenter.OnSearchPresenterItemClick;
@@ -29,6 +33,7 @@ import com.cleanarchitecture.shishkin.base.event.ui.ShowHorizontalProgressBarEve
 import com.cleanarchitecture.shishkin.base.event.ui.ShowListDialogEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowToastEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
+import com.cleanarchitecture.shishkin.base.observer.Debounce;
 import com.cleanarchitecture.shishkin.base.presenter.AbstractPresenter;
 import com.cleanarchitecture.shishkin.base.repository.Repository;
 import com.cleanarchitecture.shishkin.base.ui.dialog.MaterialDialogExt;
@@ -66,6 +71,8 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>> i
     private ContactRecyclerViewAdapter mContactAdapter;
     private String mCurrentFilter = null;
     private Disposable mDisposableSearchView;
+    private ContactViewModel mContactViewModel;
+    private Debounce mDebounce;
 
     public SearchPresenter() {
         super();
@@ -74,6 +81,19 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>> i
     public void bindView(@NonNull final View root, final AbstractContentFragment fragment) {
 
         EventBusController.getInstance().register(this);
+
+        mDebounce = new Debounce(5000, 1) {
+            @Override
+            public void run() {
+                EventBusController.getInstance().post(new ShowToastEvent("Контактов: " + mContactViewModel.getLiveData().getValue().size()));
+            }
+        };
+
+        mContactViewModel = ViewModelProviders.of(fragment).get(ContactViewModel.class);
+        mContactViewModel.getLiveData().observe(fragment, (Observer<List<Contact>>) contacts -> {
+            onChangeData(contacts);
+        });
+
 
         final EditText searchView = ViewUtils.findView(root, R.id.search);
         if (searchView != null) {
@@ -104,8 +124,14 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>> i
         }
     }
 
+    private void onChangeData(final List<Contact> list) {
+        mDebounce.onEvent();
+    }
+
     @Override
     public void onDestroyLifecycle() {
+        mDebounce.finish();
+        mContactViewModel = null;
         mSearchView = null;
         mRecyclerView = null;
         if (!mDisposableSearchView.isDisposed()) {
