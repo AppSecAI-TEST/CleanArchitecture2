@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.application.data.dao.PhoneContactDAO;
 import com.cleanarchitecture.shishkin.application.presenter.SearchPresenter;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
@@ -17,6 +16,7 @@ import com.cleanarchitecture.shishkin.base.event.toolbar.OnToolbarMenuItemClickE
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetBackNavigationEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetMenuEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetTitleEvent;
+import com.cleanarchitecture.shishkin.base.event.ui.ShowProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseFinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
 import com.cleanarchitecture.shishkin.base.presenter.OnBackPressedPresenter;
@@ -43,7 +43,7 @@ public class HomeFragment extends AbstractContentFragment {
     }
 
     private OnBackPressedPresenter mOnBackPressedPresenter = new OnBackPressedPresenter();
-    private SearchPresenter mSearchPresenter = new SearchPresenter(PhoneContactDAO.CONTENT_URI);
+    private SearchPresenter mSearchPresenter = new SearchPresenter();
 
     @BindView(R.id.fab_menu)
     FloatingActionMenu mFloatingActionMenu;

@@ -2,9 +2,9 @@ package com.cleanarchitecture.shishkin.base.mail;
 
 import android.widget.Toast;
 
+import com.cleanarchitecture.shishkin.base.controller.ActivityController;
 import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowToastEvent;
-import com.cleanarchitecture.shishkin.base.presenter.ActivityPresenter;
 
 public class ShowToastMail extends AbstractMail {
 
@@ -12,7 +12,7 @@ public class ShowToastMail extends AbstractMail {
 
     private String mMessage;
     private int mDuration = Toast.LENGTH_LONG;
-    private int mType = ActivityPresenter.TOAST_TYPE_INFO;
+    private int mType = ActivityController.TOAST_TYPE_INFO;
 
     public ShowToastMail(final String address, final String message) {
         super(address);

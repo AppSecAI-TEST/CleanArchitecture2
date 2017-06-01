@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
@@ -17,11 +18,9 @@ import com.cleanarchitecture.shishkin.base.event.IEvent;
 import com.cleanarchitecture.shishkin.base.lifecycle.IStateable;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.mail.IMail;
-import com.cleanarchitecture.shishkin.base.presenter.ActivityPresenter;
-import com.cleanarchitecture.shishkin.base.presenter.FragmentPresenter;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
-import com.cleanarchitecture.shishkin.base.ui.activity.AbstractActivity;
 import com.cleanarchitecture.shishkin.base.ui.activity.IActivity;
+import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.ViewUtils;
 
 import java.lang.ref.WeakReference;
@@ -40,9 +39,7 @@ public abstract class AbstractFragment extends Fragment implements IFragment
     private Map<String, IPresenter> mPresenters = Collections.synchronizedMap(new HashMap<String, IPresenter>());
     private List<WeakReference<IStateable>> mLifecycleList = Collections.synchronizedList(new ArrayList<WeakReference<IStateable>>());
     private int mLifecycleState = Lifecycle.STATE_CREATE;
-    private FragmentPresenter mFragmentPresenter = new FragmentPresenter();
     private Unbinder mUnbinder = null;
-    private ActivityPresenter mActivityPresenter;
 
     @Override
     public <V extends View> V findView(@IdRes final int id) {
@@ -68,20 +65,7 @@ public abstract class AbstractFragment extends Fragment implements IFragment
 
         setLifecycleStatus(Lifecycle.STATE_VIEW_CREATED);
 
-        mFragmentPresenter.bindView(this);
-        registerPresenter(mFragmentPresenter);
-
         Controllers.getInstance().getMailController().register(this);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        final FragmentActivity activity = getActivity();
-        if (activity != null && activity instanceof AbstractActivity) {
-            mActivityPresenter = ((AbstractActivity) activity).getActivityPresenter();
-        }
     }
 
     /**
@@ -128,7 +112,6 @@ public abstract class AbstractFragment extends Fragment implements IFragment
 
         super.onDestroy();
     }
-
 
     @Override
     public abstract String getName();
@@ -203,32 +186,6 @@ public abstract class AbstractFragment extends Fragment implements IFragment
     }
 
     @Override
-    public FragmentPresenter getFragmentPresenter() {
-        return mFragmentPresenter;
-    }
-
-    @Override
-    public ActivityPresenter getActivityPresenter() {
-        if (mActivityPresenter != null) {
-            return mActivityPresenter;
-        } else {
-            final IActivity subscriber = Controllers.getInstance().getActivityController().getSubscriber();
-            if (subscriber != null && subscriber instanceof AbstractActivity) {
-                return subscriber.getActivityPresenter();
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public void refreshData() {
-    }
-
-    @Override
-    public void refreshViews() {
-    }
-
-    @Override
     public Unbinder getUnbinder() {
         return mUnbinder;
     }
@@ -255,5 +212,35 @@ public abstract class AbstractFragment extends Fragment implements IFragment
     @Override
     public void setState(int state) {
     }
+
+    @Override
+    public boolean validate() {
+        return (getState() != Lifecycle.STATE_DESTROY);
+    }
+
+    @Override
+    public void showProgressBar() {
+        if (validate()) {
+            final View progressBar = findView(R.id.presenterProgressBar);
+            if (progressBar != null) {
+                ApplicationUtils.runOnUiThread(() -> {
+                    progressBar.setVisibility(View.VISIBLE);
+                });
+            }
+        }
+    }
+
+    @Override
+    public void hideProgressBar() {
+        if (validate()) {
+            final View progressBar = findView(R.id.presenterProgressBar);
+            if (progressBar != null) {
+                ApplicationUtils.runOnUiThread(() -> {
+                    progressBar.setVisibility(View.INVISIBLE);
+                });
+            }
+        }
+    }
+
 
 }

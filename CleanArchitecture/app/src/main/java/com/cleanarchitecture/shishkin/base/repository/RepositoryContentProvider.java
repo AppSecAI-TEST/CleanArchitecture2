@@ -15,16 +15,19 @@ public class RepositoryContentProvider {
     }
 
     public static synchronized void requestContacts(final RepositoryRequestGetContactsEvent event) {
-        List<PhoneContactItem> list = SerializableUtil.serializableToList(Controllers.getInstance().getRepository().getFromCache(String.valueOf(event.getId()), event.getCacheType()));
+        final List<PhoneContactItem> list = SerializableUtil.serializableToList(Controllers.getInstance().getRepository().getFromCache(String.valueOf(event.getId()), event.getCacheType()));
         if (list != null) {
-            EventBusController.getInstance().post(new RepositoryResponseGetContactsEvent(list, Repository.FROM_CACHE));
+            EventBusController.getInstance().post(new RepositoryResponseGetContactsEvent()
+                            .setResponse(list)
+                            .setFrom(Repository.FROM_CACHE));
         } else {
-            list = Controllers.getInstance().getRepository().getContentProvider().getContacts();
+            final RepositoryResponseGetContactsEvent responseEvent = (RepositoryResponseGetContactsEvent)Controllers.getInstance().getRepository().getContentProvider().getContacts();
+            responseEvent.setFrom(Repository.FROM_CONTENT_PROVIDER);
 
-            if (list != null) {
-                Controllers.getInstance().getRepository().putToCache(String.valueOf(event.getId()), event.getCacheType(), (Serializable) list);
+            if (responseEvent.getResponse() != null && !responseEvent.hasError()) {
+                Controllers.getInstance().getRepository().putToCache(String.valueOf(event.getId()), event.getCacheType(), (Serializable) responseEvent.getResponse());
             }
-            EventBusController.getInstance().post(new RepositoryResponseGetContactsEvent(list, Repository.FROM_CONTENT_PROVIDER));
+            EventBusController.getInstance().post(responseEvent);
         }
     }
 

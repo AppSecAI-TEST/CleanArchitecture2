@@ -1,7 +1,31 @@
 package com.cleanarchitecture.shishkin.base.ui.fragment;
 
-import com.cleanarchitecture.shishkin.base.presenter.ContentFragmentPresenter;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.View;
 
 public interface IContentFragment extends IFragment {
-    ContentFragmentPresenter getContentFragmentPresenter();
+    /**
+     * Получить SwipeRefreshLayout презентера
+     *
+     * @return the swipe refresh layout
+     */
+    SwipeRefreshLayout getSwipeRefreshLayout();
+
+    /**
+     * Событие - onClick
+     *
+     * @param view the view
+     */
+    void onClick(View view);
+
+    /**
+     * Обновить данные во фрагменте
+     */
+    void refreshData();
+
+    /**
+     * Обновить views во фрагменте
+     */
+    void refreshViews();
+
 }
