@@ -1,10 +1,8 @@
 package com.cleanarchitecture.shishkin.application.presenter;
 
 import android.Manifest;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -26,11 +24,12 @@ import com.cleanarchitecture.shishkin.base.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.HideHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.HideKeyboardEvent;
+import com.cleanarchitecture.shishkin.base.event.ui.ShowErrorMessageEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowListDialogEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowToastEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
-import com.cleanarchitecture.shishkin.base.presenter.AbstractContentProviderPresenter;
+import com.cleanarchitecture.shishkin.base.presenter.AbstractPresenter;
 import com.cleanarchitecture.shishkin.base.repository.Repository;
 import com.cleanarchitecture.shishkin.base.ui.dialog.MaterialDialogExt;
 import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractContentFragment;
@@ -59,7 +58,7 @@ import io.reactivex.functions.Consumer;
 
 
 @SuppressWarnings("unused")
-public class SearchPresenter extends AbstractContentProviderPresenter<List<PhoneContactItem>> implements Consumer<TextViewAfterTextChangeEvent> {
+public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>> implements Consumer<TextViewAfterTextChangeEvent> {
     public static final String NAME = "SearchPresenter";
 
     private WeakReference<EditText> mSearchView;
@@ -67,10 +66,9 @@ public class SearchPresenter extends AbstractContentProviderPresenter<List<Phone
     private ContactRecyclerViewAdapter mContactAdapter;
     private String mCurrentFilter = null;
     private Disposable mDisposableSearchView;
-    private LinearLayoutManager mLinearLayoutManager;
 
-    public SearchPresenter(@NonNull final Uri uri) {
-        super(uri);
+    public SearchPresenter() {
+        super();
     }
 
     public void bindView(@NonNull final View root, final AbstractContentFragment fragment) {
@@ -90,8 +88,8 @@ public class SearchPresenter extends AbstractContentProviderPresenter<List<Phone
 
         final FastScrollRecyclerView recyclerView = ViewUtils.findView(root, R.id.list);
         if (recyclerView != null) {
-            mLinearLayoutManager = new LinearLayoutManager(Controllers.getInstance().getLifecycleController().getActivity());
-            recyclerView.setLayoutManager(mLinearLayoutManager);
+            final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Controllers.getInstance().getLifecycleController().getActivity());
+            recyclerView.setLayoutManager(linearLayoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             mContactAdapter = new ContactRecyclerViewAdapter(root.getContext());
             recyclerView.setAdapter(mContactAdapter);
@@ -100,11 +98,7 @@ public class SearchPresenter extends AbstractContentProviderPresenter<List<Phone
             final ItemTouchHelper helper = new ItemTouchHelper(callback);
             helper.attachToRecyclerView(recyclerView);
 
-            final SwipeRefreshLayout swipeRefreshLayout = ViewUtils.findView(root, R.id.swipeRefreshLayout);
-            if (fragment != null && fragment.getContentFragmentPresenter() != null) {
-                fragment.getContentFragmentPresenter().setSwipeRefreshLayout(swipeRefreshLayout);
-            }
-            recyclerView.addOnScrollListener(new OnScrollListener(recyclerView, swipeRefreshLayout));
+            recyclerView.addOnScrollListener(new OnScrollListener(recyclerView, fragment.getSwipeRefreshLayout()));
 
             mRecyclerView = new WeakReference<>(recyclerView);
         }
@@ -141,18 +135,13 @@ public class SearchPresenter extends AbstractContentProviderPresenter<List<Phone
         );
     }
 
-    @Override
-    public void onContentChanged() {
-        EventBusController.getInstance().post(new ShowHorizontalProgressBarEvent());
-        EventBusController.getInstance().post(new RepositoryRequestGetContactsEvent(Repository.USE_SAVE_CACHE));
-    }
-
     private List<PhoneContactItem> filter(final String pattern) {
         return Stream.of(getModel()).filter(item -> StringUtils.containsIgnoreCase(item.getName(), pattern)).toList();
     }
 
     public void refreshData() {
-        onContentChanged();
+        EventBusController.getInstance().post(new ShowHorizontalProgressBarEvent());
+        EventBusController.getInstance().post(new RepositoryRequestGetContactsEvent(Repository.USE_SAVE_CACHE));
     }
 
     @Override
@@ -191,11 +180,15 @@ public class SearchPresenter extends AbstractContentProviderPresenter<List<Phone
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public synchronized void onResponseGetContactsEvent(RepositoryResponseGetContactsEvent event) {
         EventBusController.getInstance().post(new HideHorizontalProgressBarEvent());
-        List<PhoneContactItem> list = event.getContacts();
-        if (list == null) {
-            list = new ArrayList<>();
+        if (!event.hasError()) {
+            List<PhoneContactItem> list = event.getResponse();
+            if (list == null) {
+                list = new ArrayList<>();
+            }
+            setModel(list);
+        } else {
+            EventBusController.getInstance().post(new ShowErrorMessageEvent(event));
         }
-        setModel(list);
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
@@ -224,7 +217,7 @@ public class SearchPresenter extends AbstractContentProviderPresenter<List<Phone
         if (ApplicationUtils.checkPermission(Manifest.permission.CALL_PHONE)) {
             final Bundle bundle = event.getResult();
             if (bundle.getInt("id") == R.id.dialog_call_phone) {
-                if (bundle.getString(MaterialDialogExt.BUTTON).equals(MaterialDialogExt.POSITIVE)) {
+                if (MaterialDialogExt.POSITIVE.equals(bundle.getString(MaterialDialogExt.BUTTON))) {
                     final ArrayList<String> list = bundle.getStringArrayList("list");
                     if (list != null && list.size() == 1) {
                         PhoneUtils.call(Controllers.getInstance().getLifecycleController().getActivity(), list.get(0));

@@ -34,7 +34,8 @@ public class MainActivity extends AbstractContentActivity {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             }
         }
-        getActivityPresenter().lockOrientation();
+
+        lockOrientation();
 
         onNewIntent(getIntent());
     }

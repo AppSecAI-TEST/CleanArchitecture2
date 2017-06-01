@@ -42,12 +42,6 @@
         <service android:name=".base.storage.DiskCacheService"/>
         <service android:name=".base.storage.MemoryCacheService"/>
 
-        <provider
-            android:name=".application.database.content.CleanArchitectureContentProvider"
-            android:authorities="${applicationId}.sqlite.contentprovider"
-            android:enabled="true"
-            android:exported="false"/>
-
     </application>
 
 </manifest>

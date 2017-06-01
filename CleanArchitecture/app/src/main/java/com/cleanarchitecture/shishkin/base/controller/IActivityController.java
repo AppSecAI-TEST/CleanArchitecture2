@@ -1,7 +1,5 @@
 package com.cleanarchitecture.shishkin.base.controller;
 
-import android.content.Context;
-
 import com.cleanarchitecture.shishkin.base.ui.activity.IActivity;
 
 /**
@@ -59,6 +57,11 @@ public interface IActivityController extends ISubscriber {
      * @param helpMessage сообщение, выводимое в диалоге предоставления права
      */
     void grantPermission(String permission, String helpMessage);
+
+    /**
+     * Контролировать наличие и текущую версию Google Play Services
+     */
+    boolean checkGooglePlayServices();
 
 
 }

@@ -4,7 +4,6 @@ import android.support.annotation.IdRes;
 import android.view.View;
 
 import com.cleanarchitecture.shishkin.base.controller.ISubscriber;
-import com.cleanarchitecture.shishkin.base.presenter.ActivityPresenter;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
 
 import butterknife.Unbinder;
@@ -39,13 +38,6 @@ public interface IActivity extends ISubscriber {
     IPresenter getPresenter(final String name);
 
     /**
-     * Получить ActivityPresenter activity.
-     *
-     * @return ActivityPresenter activity
-     */
-    ActivityPresenter getActivityPresenter();
-
-    /**
      * Получить Butter Knife Unbinder
      *
      * @return Unbinder the unbinder
@@ -58,5 +50,36 @@ public interface IActivity extends ISubscriber {
      * @param unbinder the unbinder
      */
     void setUnbinder(Unbinder unbinder);
+
+    /**
+     * Получить Activity
+     *
+     * @return Activity
+     */
+    AbstractActivity getActivity();
+
+    /**
+     * Установить цвет status bar телефона
+     *
+     * @param color цвет Status Bar
+     */
+    void setStatusBarColor(final int color);
+
+    /**
+     * Lock orientation.
+     */
+    void lockOrientation();
+
+    /**
+     * Unlock orientation.
+     */
+    void unlockOrientation();
+
+    /**
+     * Проверить Activity
+     *
+     * @return true - если Activity находиться в рабочем состоянии
+     */
+    boolean validate();
 
 }

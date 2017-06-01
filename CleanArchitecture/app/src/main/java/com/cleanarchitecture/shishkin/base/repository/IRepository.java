@@ -41,4 +41,11 @@ public interface IRepository extends ISubscriber {
      */
     ContentProvider getContentProvider();
 
+    /**
+     * Получить db provider.
+     *
+     * @return db provider
+     */
+    DbProvider getDbProvider();
+
 }

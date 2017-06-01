@@ -1,8 +1,12 @@
 package com.cleanarchitecture.shishkin.base.ui.activity;
 
+import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -11,7 +15,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
+import android.view.Surface;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.base.controller.AppPreferences;
@@ -32,7 +38,6 @@ import com.cleanarchitecture.shishkin.base.lifecycle.ILifecycle;
 import com.cleanarchitecture.shishkin.base.lifecycle.IStateable;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.mail.IMail;
-import com.cleanarchitecture.shishkin.base.presenter.ActivityPresenter;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.base.ui.dialog.MaterialDialogExt;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
@@ -58,7 +63,6 @@ public abstract class AbstractActivity extends AppCompatActivity
     private Map<String, IPresenter> mPresenters = Collections.synchronizedMap(new HashMap<String, IPresenter>());
     private List<WeakReference<IStateable>> mLifecycleList = Collections.synchronizedList(new ArrayList<WeakReference<IStateable>>());
     private int mLifecycleState = Lifecycle.STATE_CREATE;
-    private ActivityPresenter mActivityPresenter = new ActivityPresenter();
     private Unbinder mUnbinder = null;
 
     @Override
@@ -71,9 +75,6 @@ public abstract class AbstractActivity extends AppCompatActivity
         Controllers.getInstance().getMailController().register(this);
 
         setLifecycleStatus(Lifecycle.STATE_CREATE);
-
-        mActivityPresenter.bindView(this);
-        registerPresenter(mActivityPresenter);
     }
 
     private void setLifecycleStatus(final int status) {
@@ -106,8 +107,6 @@ public abstract class AbstractActivity extends AppCompatActivity
         super.onStart();
 
         setLifecycleStatus(Lifecycle.STATE_VIEW_CREATED);
-
-        mActivityPresenter.bindView(this);
 
         //EventController.getInstance().post(new OnUserIteractionEvent());
     }
@@ -260,11 +259,6 @@ public abstract class AbstractActivity extends AppCompatActivity
     }
 
     @Override
-    public synchronized ActivityPresenter getActivityPresenter() {
-        return mActivityPresenter;
-    }
-
-    @Override
     public Unbinder getUnbinder() {
         return mUnbinder;
     }
@@ -289,6 +283,64 @@ public abstract class AbstractActivity extends AppCompatActivity
         for (IMail mail : list) {
             mail.read(this);
             Controllers.getInstance().getMailController().removeMail(mail);
+        }
+    }
+
+    @Override
+    public AbstractActivity getActivity() {
+        return this;
+    }
+
+    @Override
+    public void lockOrientation() {
+        switch (((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation()) {
+            // Portrait
+            case Surface.ROTATION_0:
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                break;
+
+            //Landscape
+            case Surface.ROTATION_90:
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                break;
+
+            // Reversed landscape
+            case Surface.ROTATION_270:
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+                break;
+        }
+    }
+
+    @Override
+    public void unlockOrientation() {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+    }
+
+    @Override
+    public boolean validate() {
+        return (getState() != Lifecycle.STATE_DESTROY);
+    }
+
+    /**
+     * Sets the color of the status bar to {@code color}.
+     * <p>
+     * For this to take effect,
+     * the window must be drawing the system bar backgrounds with
+     * {@link android.view.WindowManager.LayoutParams#FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS} and
+     * {@link android.view.WindowManager.LayoutParams#FLAG_TRANSLUCENT_STATUS} must not be set.
+     * <p>
+     * If {@code color} is not opaque, consider setting
+     * {@link android.view.View#SYSTEM_UI_FLAG_LAYOUT_STABLE} and
+     * {@link android.view.View#SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN}.
+     * <p>
+     * The transitionName for the view background will be "android:status:background".
+     * </p>
+     */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public void setStatusBarColor(final int color) {
+        if (ApplicationUtils.hasLollipop()) {
+            getWindow().setStatusBarColor(color);
         }
     }
 

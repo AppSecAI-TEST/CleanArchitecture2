@@ -35,4 +35,9 @@
 
     <string name="db_created">БД %s создана</string>
     <string name="db_updated">БД %s обновлена</string>
+
+    <string name="error_db_not_connected">Отсутствует соединение с БД</string>
+    <string name="error_db_app_not_loaded">Приложение не запущено</string>
+    <string name="error">Ошибка</string>
+
 </resources>

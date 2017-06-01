@@ -3,10 +3,9 @@ package com.cleanarchitecture.shishkin.application.data.item;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.cleanarchitecture.shishkin.base.database.dao.IIdentify;
 import com.google.gson.annotations.SerializedName;
 
-public class PhoneContactItem implements IIdentify<String>, Parcelable {
+public class PhoneContactItem implements Parcelable {
 
     @SerializedName("RowId")
     private String mRowId;
@@ -30,7 +29,6 @@ public class PhoneContactItem implements IIdentify<String>, Parcelable {
         mPhoto = (String) src.readValue(String.class.getClassLoader());
     }
 
-    @Override
     public String getId() {
         return mRowId;
     }

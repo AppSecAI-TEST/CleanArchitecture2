@@ -1,5 +1,7 @@
 package com.cleanarchitecture.shishkin.base.presenter;
 
+import android.graphics.drawable.Drawable;
+
 public interface IToolbarPresenter {
 
     /**
@@ -76,4 +78,11 @@ public interface IToolbarPresenter {
      * @param title  the title
      */
     void setTitle(int iconId, String title);
+
+    /**
+     * Установить фон Toolbar
+     *
+     * @param drawable фон
+     */
+    void setBackground(final Drawable drawable);
 }
