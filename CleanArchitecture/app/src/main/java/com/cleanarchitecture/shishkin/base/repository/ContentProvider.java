@@ -31,7 +31,7 @@ public class ContentProvider {
     }
 
     public synchronized IEvent getContacts() {
-        final RepositoryResponseGetContactsEvent event  = new RepositoryResponseGetContactsEvent();
+        final RepositoryResponseGetContactsEvent event = new RepositoryResponseGetContactsEvent();
 
         final Context context = ApplicationController.getInstance();
         if (context == null) {
@@ -43,7 +43,7 @@ public class ContentProvider {
             return event.setErrorText(context.getString(R.string.permission_read_contacts));
         }
 
-        final CleanArchitectureDb db = (CleanArchitectureDb)Controllers.getInstance().getRepository().getDbProvider().getDb();
+        final CleanArchitectureDb db = (CleanArchitectureDb) Controllers.getInstance().getRepository().getDbProvider().getDb();
         if (db == null) {
             return event.setErrorText(context.getString(R.string.error_db_not_connected));
         }
@@ -56,23 +56,20 @@ public class ContentProvider {
             if (AbstractReadOnlyDAO.isCursorValid(cursor)) {
                 while (cursor.moveToNext()) {
                     final PhoneContactItem phoneContactItem = phoneContactDAO.getItemFromCursor(cursor);
-                    if (phoneContactItem != null) {
-                        list.add(phoneContactItem);
-                        if (db.contactDao().getCount(phoneContactItem.getId()) == 0) {
-                            db.contactDao().insert(new Contact()
-                                    .setRowId(phoneContactItem.getId())
-                                    .setName(phoneContactItem.getName())
-                                    .setPhones(phoneContactItem.getPhones())
-                                    .setPhoto(phoneContactItem.getPhoto())
-                            );
-                        }
+                    list.add(phoneContactItem);
+                    if (db.contactDao().getCount(phoneContactItem.getId()) == 0) {
+                        db.contactDao().insert(new Contact()
+                                .setRowId(phoneContactItem.getId())
+                                .setName(phoneContactItem.getName())
+                                .setPhones(phoneContactItem.getPhones())
+                                .setPhoto(phoneContactItem.getPhoto())
+                        );
                     }
                 }
             }
             event.setResponse(list);
         } catch (Exception e) {
             Log.e(NAME, e.getMessage());
-            event.setErrorText(e.getMessage());
         } finally {
             if (cursor != null) {
                 CloseUtils.close(cursor);
