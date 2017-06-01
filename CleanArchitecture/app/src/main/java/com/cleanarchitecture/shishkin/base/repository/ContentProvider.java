@@ -43,7 +43,7 @@ public class ContentProvider {
             return (RepositoryResponseGetContactsEvent)event.setErrorText(context.getString(R.string.permission_read_contacts));
         }
 
-        final CleanArchitectureDb db = (CleanArchitectureDb) Controllers.getInstance().getRepository().getDbProvider().getDb();
+        final CleanArchitectureDb db = (CleanArchitectureDb) Controllers.getInstance().getRepository().getDbProvider().getDb(CleanArchitectureDb.class, CleanArchitectureDb.NAME);
         if (db == null) {
             return (RepositoryResponseGetContactsEvent)event.setErrorText(context.getString(R.string.error_db_not_connected));
         }
