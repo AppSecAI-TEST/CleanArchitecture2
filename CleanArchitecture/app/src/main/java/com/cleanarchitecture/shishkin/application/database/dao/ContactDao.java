@@ -16,9 +16,11 @@ public interface ContactDao {
     List<Contact> getAll();
 
     @Query("SELECT * FROM Contact WHERE RowId = :id")
-    Contact get(int id);
+    Contact get(String id);
 
     @Insert(onConflict = IGNORE)
     void insert(Contact contact);
 
+    @Query("SELECT count(1) FROM Contact WHERE RowId = :id")
+    int countContact(String id);
 }

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.application.presenter.SearchPresenter;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.OnToolbarMenuItemClickEvent;
@@ -42,6 +43,7 @@ public class HomeFragment extends AbstractContentFragment {
     }
 
     private OnBackPressedPresenter mOnBackPressedPresenter = new OnBackPressedPresenter();
+    private SearchPresenter mSearchPresenter = new SearchPresenter();
 
     @BindView(R.id.fab_menu)
     FloatingActionMenu mFloatingActionMenu;
@@ -66,6 +68,9 @@ public class HomeFragment extends AbstractContentFragment {
 
         registerPresenter(mOnBackPressedPresenter);
 
+        mSearchPresenter.bindView(view, this);
+        registerPresenter(mSearchPresenter);
+
         if (!ApplicationUtils.checkPermission(Manifest.permission.READ_CONTACTS)) {
             postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.READ_CONTACTS));
         } else if (!ApplicationUtils.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -79,6 +84,7 @@ public class HomeFragment extends AbstractContentFragment {
 
     @Override
     public void refreshData() {
+        mSearchPresenter.refreshData();
     }
 
     @Override

@@ -20,7 +20,6 @@ public class DbProvider<T extends RoomDatabase> implements ISubscriber {
     private T mDb;
 
     public DbProvider() {
-        connect(CleanArchitectureDb.class, CleanArchitectureDb.NAME);
     }
 
     public synchronized <T extends RoomDatabase> boolean connect(final Class<T> klass, final String databaseName) {
@@ -85,6 +84,8 @@ public class DbProvider<T extends RoomDatabase> implements ISubscriber {
 
 
     public synchronized void backup(final String dirBackup) {
+        getDb();
+
         if (!isConnected()) {
             return;
         }
@@ -187,6 +188,12 @@ public class DbProvider<T extends RoomDatabase> implements ISubscriber {
         connect(klass, nameDb);
     }
 
+    public T getDb() {
+        if (!isConnected()) {
+            connect(CleanArchitectureDb.class, CleanArchitectureDb.NAME);
+        }
+        return mDb;
+    }
 
     @Override
     public String getName() {
