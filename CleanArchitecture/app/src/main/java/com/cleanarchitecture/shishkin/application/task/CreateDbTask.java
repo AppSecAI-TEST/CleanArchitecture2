@@ -15,6 +15,6 @@ import com.github.snowdream.android.util.Log;
 public class CreateDbTask extends AbstractAsyncTask {
     @Override
     public void run() {
-        Controllers.getInstance().getRepository().getDbProvider().connect(CleanArchitectureDb.class, CleanArchitectureDb.NAME);
+        //Controllers.getInstance().getRepository().getDbProvider().connect(CleanArchitectureDb.class, CleanArchitectureDb.NAME);
     }
 }

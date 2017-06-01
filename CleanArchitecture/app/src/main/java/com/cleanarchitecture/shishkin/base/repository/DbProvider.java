@@ -3,7 +3,9 @@ package com.cleanarchitecture.shishkin.base.repository;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
+import android.os.Environment;
 
+import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.application.database.CleanArchitectureDb;
 import com.cleanarchitecture.shishkin.base.controller.ISubscriber;
@@ -21,6 +23,8 @@ public class DbProvider<T extends RoomDatabase> implements ISubscriber {
 
     public DbProvider() {
         connect(CleanArchitectureDb.class, CleanArchitectureDb.NAME);
+        backup(Environment.getExternalStorageDirectory().getAbsolutePath() +
+                File.separator + BuildConfig.APPLICATION_ID + File.separator);
     }
 
     public synchronized <T extends RoomDatabase> boolean connect(final Class<T> klass, final String databaseName) {
@@ -84,15 +88,19 @@ public class DbProvider<T extends RoomDatabase> implements ISubscriber {
     }
 
 
-    public synchronized boolean backup(final String dirBackup) {
+    public synchronized void backup(final String dirBackup) {
         if (!isConnected()) {
-            return false;
+            return;
         }
+
+        final Class<T> klass = SafeUtils.cast(mDb.getClass().getSuperclass());
 
         final String pathDb = mDb.getOpenHelper().getReadableDatabase().getPath();
         if (StringUtils.isNullOrEmpty(pathDb)) {
-            return false;
+            return;
         }
+
+        disconnect();
 
         final File fileDb = new File(pathDb);
         final String nameDb = fileDb.getName();
@@ -121,7 +129,6 @@ public class DbProvider<T extends RoomDatabase> implements ISubscriber {
                                     } else {
                                         Files.copy(fileBackupOld, fileBackup);
                                     }
-                                    return true;
                                 }
                             }
                         }
@@ -133,31 +140,29 @@ public class DbProvider<T extends RoomDatabase> implements ISubscriber {
                     }
                     if (dir.exists()) {
                         Files.copy(fileDb, fileBackup);
-                        if (fileBackup.exists()) {
-                            return true;
-                        }
                     }
                 }
             }
         } catch (Exception e) {
             Log.e(NAME, e.getMessage());
         }
-        return false;
+
+        connect(SafeUtils.cast(klass), nameDb);
     }
 
-    public boolean restore(String dirBackup) {
+    public void restore(String dirBackup) {
         if (!isConnected()) {
-            return false;
+            return;
         }
+
+        final Class<T> klass = SafeUtils.cast(mDb.getClass().getSuperclass());
 
         final String pathDb = mDb.getOpenHelper().getReadableDatabase().getPath();
         if (StringUtils.isNullOrEmpty(pathDb)) {
-            return false;
+            return;
         }
 
-        if (!disconnect()) {
-            return false;
-        }
+        disconnect();
 
         final File fileDb = new File(pathDb);
         final String nameDb = fileDb.getName();
@@ -183,8 +188,8 @@ public class DbProvider<T extends RoomDatabase> implements ISubscriber {
             }
         }
 
-        connect(SafeUtils.cast(mDb.getClass()), nameDb);
-        return isConnected();
+        connect(SafeUtils.cast(klass), nameDb);
+        return;
     }
 
 
