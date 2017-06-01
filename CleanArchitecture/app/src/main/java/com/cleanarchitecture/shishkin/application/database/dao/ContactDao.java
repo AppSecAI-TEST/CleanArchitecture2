@@ -22,5 +22,5 @@ public interface ContactDao {
     void insert(Contact contact);
 
     @Query("SELECT count(1) FROM Contact WHERE RowId = :id")
-    int countContact(String id);
+    int count(String id);
 }

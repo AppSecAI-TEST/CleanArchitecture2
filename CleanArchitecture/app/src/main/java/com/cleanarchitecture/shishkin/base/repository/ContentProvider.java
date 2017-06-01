@@ -53,7 +53,7 @@ public class ContentProvider {
                     final PhoneContactItem phoneContactItem = phoneContactDAO.getItemFromCursor(cursor);
                     if (phoneContactItem != null) {
                         list.add(phoneContactItem);
-                        if (db.contactDao().countContact(phoneContactItem.getId()) == 0) {
+                        if (db.contactDao().count(phoneContactItem.getId()) == 0) {
                             db.contactDao().insert(new Contact()
                                     .setRowId(phoneContactItem.getId())
                                     .setName(phoneContactItem.getName())
