@@ -21,12 +21,13 @@ public class RepositoryContentProvider {
                             .setResponse(list)
                             .setFrom(Repository.FROM_CACHE));
         } else {
-            final RepositoryResponseGetContactsEvent responseEvent = (RepositoryResponseGetContactsEvent)Controllers.getInstance().getRepository().getContentProvider().getContacts();
+            final RepositoryResponseGetContactsEvent responseEvent = Controllers.getInstance().getRepository().getContentProvider().getContacts();
             responseEvent.setFrom(Repository.FROM_CONTENT_PROVIDER);
 
             if (responseEvent.getResponse() != null && !responseEvent.hasError()) {
                 Controllers.getInstance().getRepository().putToCache(String.valueOf(event.getId()), event.getCacheType(), (Serializable) responseEvent.getResponse());
             }
+
             EventBusController.getInstance().post(responseEvent);
         }
     }

@@ -30,22 +30,22 @@ public class ContentProvider {
     public ContentProvider() {
     }
 
-    public synchronized IEvent getContacts() {
+    public synchronized RepositoryResponseGetContactsEvent getContacts() {
         final RepositoryResponseGetContactsEvent event = new RepositoryResponseGetContactsEvent();
 
         final Context context = ApplicationController.getInstance();
         if (context == null) {
-            return event.setErrorCode(1);
+            return (RepositoryResponseGetContactsEvent)event.setErrorCode(1);
         }
 
         if (!ApplicationUtils.checkPermission(Manifest.permission.READ_CONTACTS)) {
             EventBusController.getInstance().post(new UseCaseRequestPermissionEvent(Manifest.permission.READ_CONTACTS));
-            return event.setErrorText(context.getString(R.string.permission_read_contacts));
+            return (RepositoryResponseGetContactsEvent)event.setErrorText(context.getString(R.string.permission_read_contacts));
         }
 
         final CleanArchitectureDb db = (CleanArchitectureDb) Controllers.getInstance().getRepository().getDbProvider().getDb();
         if (db == null) {
-            return event.setErrorText(context.getString(R.string.error_db_not_connected));
+            return (RepositoryResponseGetContactsEvent)event.setErrorText(context.getString(R.string.error_db_not_connected));
         }
 
         final LinkedList<PhoneContactItem> list = new LinkedList<>();
