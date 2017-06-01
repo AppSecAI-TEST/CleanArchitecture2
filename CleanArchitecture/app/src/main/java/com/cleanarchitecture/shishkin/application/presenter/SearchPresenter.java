@@ -66,7 +66,6 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>> i
     private ContactRecyclerViewAdapter mContactAdapter;
     private String mCurrentFilter = null;
     private Disposable mDisposableSearchView;
-    private LinearLayoutManager mLinearLayoutManager;
 
     public SearchPresenter() {
         super();
@@ -89,8 +88,8 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>> i
 
         final FastScrollRecyclerView recyclerView = ViewUtils.findView(root, R.id.list);
         if (recyclerView != null) {
-            mLinearLayoutManager = new LinearLayoutManager(Controllers.getInstance().getLifecycleController().getActivity());
-            recyclerView.setLayoutManager(mLinearLayoutManager);
+            final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Controllers.getInstance().getLifecycleController().getActivity());
+            recyclerView.setLayoutManager(linearLayoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             mContactAdapter = new ContactRecyclerViewAdapter(root.getContext());
             recyclerView.setAdapter(mContactAdapter);
@@ -218,7 +217,7 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>> i
         if (ApplicationUtils.checkPermission(Manifest.permission.CALL_PHONE)) {
             final Bundle bundle = event.getResult();
             if (bundle.getInt("id") == R.id.dialog_call_phone) {
-                if (bundle.getString(MaterialDialogExt.BUTTON).equals(MaterialDialogExt.POSITIVE)) {
+                if (MaterialDialogExt.POSITIVE.equals(bundle.getString(MaterialDialogExt.BUTTON))) {
                     final ArrayList<String> list = bundle.getStringArrayList("list");
                     if (list != null && list.size() == 1) {
                         PhoneUtils.call(Controllers.getInstance().getLifecycleController().getActivity(), list.get(0));
