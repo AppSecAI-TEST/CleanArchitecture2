@@ -1,7 +1,7 @@
 package com.cleanarchitecture.shishkin.base.ui.fragment;
 
+import android.arch.lifecycle.LifecycleActivity;
 import android.support.annotation.IdRes;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.cleanarchitecture.shishkin.base.controller.ISubscriber;
@@ -47,11 +47,11 @@ public interface IFragment extends ISubscriber {
     IPresenter getPresenter(final String name);
 
     /**
-     * Получить AppCompatActivity activity фрагмента.
+     * Получить LifecycleActivity activity фрагмента.
      *
-     * @return the AppCompatActivity activity
+     * @return the LifecycleActivity activity
      */
-    AppCompatActivity getAppCompatActivity();
+    LifecycleActivity getLifecycleActivity();
 
     /**
      * Получить Butter Knife Unbinder

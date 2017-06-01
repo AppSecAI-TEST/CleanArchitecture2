@@ -10,7 +10,6 @@ import android.os.Environment;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.application.task.BackupDbTask;
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnLowMemoryEvent;
@@ -29,7 +28,7 @@ public class ApplicationController extends Application {
     private static final long MAX_LOG_LENGTH = 2000000;//2Mb
     public static final String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CALL_PHONE, Manifest.permission.READ_CONTACTS};
     public static final String APPLICATION_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() +
-            File.separator + BuildConfig.APPLICATION_ID  + File.separator;
+            File.separator + BuildConfig.APPLICATION_ID + File.separator;
 
     @Override
     public void onCreate() {

@@ -5,99 +5,87 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
-import com.cleanarchitecture.shishkin.application.database.CleanArchitectureDb;
+import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.controller.ISubscriber;
+import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.utils.SafeUtils;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 import com.github.snowdream.android.util.Log;
 import com.google.common.io.Files;
 
-import java.io.File;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
-public class DbProvider<T extends RoomDatabase> implements ISubscriber {
+import java.io.File;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+public class DbProvider implements ISubscriber {
     public static final String NAME = "DbProvider";
 
-    private T mDb;
+    private Map<String, Object> mDb;
 
     public DbProvider() {
+        mDb = Collections.synchronizedMap(new HashMap<String, Object>());
+
+        EventBusController.getInstance().register(this);
     }
 
-    public synchronized <T extends RoomDatabase> boolean connect(final Class<T> klass, final String databaseName) {
-        if (isConnected()) {
-            disconnect();
-        }
-
+    private synchronized <T extends RoomDatabase> boolean connect(final Class<T> klass, final String databaseName) {
         final Context context = ApplicationController.getInstance();
         if (context == null) {
             return false;
         }
 
+        if (isConnected(databaseName)) {
+            disconnect(databaseName);
+        }
+
         try {
-            mDb = SafeUtils.cast(Room.databaseBuilder(context, klass, databaseName)
-                    .build());
+            final T db = Room.databaseBuilder(context, klass, databaseName)
+                    .build();
+            mDb.put(databaseName, db);
         } catch (Exception e) {
             Log.e(NAME, e.getMessage());
         }
-        return isConnected();
+        return isConnected(databaseName);
     }
 
-    public synchronized boolean isConnected() {
-        return (mDb != null);
-    }
-
-    public synchronized boolean disconnect() {
-        if (isConnected()) {
-            try {
-                mDb.close();
-                mDb = null;
-            } catch (Exception e) {
-                Log.e(NAME, e.getMessage());
-            }
-        }
-        return !isConnected();
-    }
-
-    public synchronized boolean exists(final String databaseName) {
+    private synchronized boolean isConnected(final String databaseName) {
         if (StringUtils.isNullOrEmpty(databaseName)) {
             return false;
         }
 
-        final Context context = ApplicationController.getInstance();
-        if (context == null) {
-            return false;
-        }
-
-        try {
-            final String pathDb = context.getDatabasePath(databaseName).getAbsolutePath();
-            if (StringUtils.isNullOrEmpty(pathDb)) {
-                return false;
-            }
-
-            final File file = new File(pathDb);
-            if (file.exists() && file.length() > 0) {
-                return true;
-            }
-        } catch (Exception e) {
-        }
-        return false;
+        return mDb.containsKey(databaseName);
     }
 
+    private synchronized <T extends RoomDatabase> boolean disconnect(final String databaseName) {
+        if (isConnected(databaseName)) {
+            final T db = SafeUtils.cast(mDb.get(databaseName));
+            try {
+                db.close();
+                mDb.remove(databaseName);
+            } catch (Exception e) {
+                Log.e(NAME, e.getMessage());
+            }
+        }
+        return !isConnected(databaseName);
+    }
 
-    public synchronized void backup(final String dirBackup) {
-        getDb();
-
-        if (!isConnected()) {
+    public synchronized <T extends RoomDatabase> void backup(final String databaseName, final String dirBackup) {
+        final T db = SafeUtils.cast(mDb.get(databaseName));
+        if (db == null) {
             return;
         }
 
-        final Class<T> klass = SafeUtils.cast(mDb.getClass().getSuperclass());
-
-        final String pathDb = mDb.getOpenHelper().getReadableDatabase().getPath();
+        final Class<T> klass = SafeUtils.cast(db.getClass().getSuperclass());
+        final String pathDb = db.getOpenHelper().getReadableDatabase().getPath();
         if (StringUtils.isNullOrEmpty(pathDb)) {
             return;
         }
 
-        disconnect();
+        disconnect(databaseName);
 
         final File fileDb = new File(pathDb);
         final String nameDb = fileDb.getName();
@@ -147,19 +135,19 @@ public class DbProvider<T extends RoomDatabase> implements ISubscriber {
         connect(klass, nameDb);
     }
 
-    public void restore(String dirBackup) {
-        if (!isConnected()) {
+    public synchronized <T extends RoomDatabase> void restore(final String databaseName, final String dirBackup) {
+        final T db = SafeUtils.cast(mDb.get(databaseName));
+        if (db == null) {
             return;
         }
 
-        final Class<T> klass = SafeUtils.cast(mDb.getClass().getSuperclass());
-
-        final String pathDb = mDb.getOpenHelper().getReadableDatabase().getPath();
+        final Class<T> klass = SafeUtils.cast(db.getClass().getSuperclass());
+        final String pathDb = db.getOpenHelper().getReadableDatabase().getPath();
         if (StringUtils.isNullOrEmpty(pathDb)) {
             return;
         }
 
-        disconnect();
+        disconnect(databaseName);
 
         final File fileDb = new File(pathDb);
         final String nameDb = fileDb.getName();
@@ -188,15 +176,26 @@ public class DbProvider<T extends RoomDatabase> implements ISubscriber {
         connect(klass, nameDb);
     }
 
-    public T getDb() {
-        if (!isConnected()) {
-            connect(CleanArchitectureDb.class, CleanArchitectureDb.NAME);
+    public <T extends RoomDatabase> T getDb(final Class<T> klass, final String databaseName) {
+        if (!isConnected(databaseName)) {
+            connect(klass, databaseName);
         }
-        return mDb;
+        return SafeUtils.cast(mDb.get(databaseName));
     }
 
     @Override
     public String getName() {
         return NAME;
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onFinishApplicationEvent(final FinishApplicationEvent event) {
+        while (!mDb.isEmpty()) {
+            for (String databaseName : mDb.keySet()) {
+                disconnect(databaseName);
+                break;
+            }
+        }
     }
 }

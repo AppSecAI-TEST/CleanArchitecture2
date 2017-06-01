@@ -10,6 +10,7 @@ import android.support.v7.widget.AppCompatButton;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
@@ -244,8 +245,15 @@ public class ActivityController extends AbstractController implements IActivityC
     }
 
     private void onSnackbarClick(final View view) {
-        final String action = ((AppCompatButton) view).getText().toString();
-        EventBusController.getInstance().post(new OnSnackBarClickEvent(action));
+        String action = null;
+        if (view instanceof AppCompatButton) {
+            action = ((AppCompatButton) view).getText().toString();
+        } else if (view instanceof Button) {
+            action = ((Button) view).getText().toString();
+        }
+        if (!StringUtils.isNullOrEmpty(action)) {
+            EventBusController.getInstance().post(new OnSnackBarClickEvent(action));
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)

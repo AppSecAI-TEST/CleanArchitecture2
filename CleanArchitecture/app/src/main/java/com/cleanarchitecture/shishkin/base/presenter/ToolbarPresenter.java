@@ -12,7 +12,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.OnNetworkConnectedEvent;
@@ -29,7 +28,6 @@ import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetMenuEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetTitleEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.HideHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowHorizontalProgressBarEvent;
-import com.cleanarchitecture.shishkin.base.event.ui.ShowMessageEvent;
 import com.cleanarchitecture.shishkin.base.ui.activity.AbstractContentActivity;
 import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
