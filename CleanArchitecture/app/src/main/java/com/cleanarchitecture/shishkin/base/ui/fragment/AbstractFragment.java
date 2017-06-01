@@ -1,12 +1,12 @@
 package com.cleanarchitecture.shishkin.base.ui.fragment;
 
 import android.app.Activity;
+import android.arch.lifecycle.LifecycleActivity;
 import android.arch.lifecycle.LifecycleFragment;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.cleanarchitecture.shishkin.R;
@@ -122,16 +122,16 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
     }
 
     @Override
-    public AppCompatActivity getAppCompatActivity() {
+    public LifecycleActivity getLifecycleActivity() {
         final FragmentActivity activity = getActivity();
         if (activity != null) {
-            if (activity instanceof AppCompatActivity) {
-                return (AppCompatActivity) activity;
+            if (activity instanceof LifecycleActivity) {
+                return (LifecycleActivity) activity;
             }
         } else {
             final IActivity subscriber = Controllers.getInstance().getActivityController().getSubscriber();
-            if (subscriber != null && subscriber instanceof AppCompatActivity) {
-                return (AppCompatActivity) subscriber;
+            if (subscriber != null && subscriber instanceof LifecycleActivity) {
+                return (LifecycleActivity) subscriber;
             }
         }
         return null;

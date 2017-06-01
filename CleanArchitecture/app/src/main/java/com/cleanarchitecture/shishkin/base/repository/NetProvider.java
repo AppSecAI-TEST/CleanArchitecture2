@@ -7,7 +7,6 @@ import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.OnNetworkConnectedEvent;
 import com.cleanarchitecture.shishkin.base.event.OnNetworkDisconnectedEvent;
-import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetBackgroundEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowMessageEvent;
 import com.cleanarchitecture.shishkin.base.net.Connectivity;
 import com.cleanarchitecture.shishkin.base.net.ConnectivityMonitor;

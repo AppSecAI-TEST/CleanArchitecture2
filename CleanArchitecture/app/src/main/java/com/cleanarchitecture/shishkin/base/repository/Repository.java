@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
-import com.cleanarchitecture.shishkin.application.database.CleanArchitectureDb;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.ui.activity.MainActivity;
 import com.cleanarchitecture.shishkin.base.controller.AppPreferences;

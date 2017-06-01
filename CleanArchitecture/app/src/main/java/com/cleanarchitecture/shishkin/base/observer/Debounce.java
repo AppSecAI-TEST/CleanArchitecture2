@@ -35,7 +35,6 @@ public class Debounce implements Runnable {
 
     public void finish() {
         mHandler.removeCallbacks(this);
-        mHandler.getLooper().quit();
         mHandler = null;
     }
 }
