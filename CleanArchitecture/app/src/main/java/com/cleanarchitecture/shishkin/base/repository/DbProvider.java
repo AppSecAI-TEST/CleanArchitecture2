@@ -3,9 +3,7 @@ package com.cleanarchitecture.shishkin.base.repository;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
-import android.os.Environment;
 
-import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.application.database.CleanArchitectureDb;
 import com.cleanarchitecture.shishkin.base.controller.ISubscriber;
@@ -23,8 +21,6 @@ public class DbProvider<T extends RoomDatabase> implements ISubscriber {
 
     public DbProvider() {
         connect(CleanArchitectureDb.class, CleanArchitectureDb.NAME);
-        backup(Environment.getExternalStorageDirectory().getAbsolutePath() +
-                File.separator + BuildConfig.APPLICATION_ID + File.separator);
     }
 
     public synchronized <T extends RoomDatabase> boolean connect(final Class<T> klass, final String databaseName) {
@@ -147,7 +143,7 @@ public class DbProvider<T extends RoomDatabase> implements ISubscriber {
             Log.e(NAME, e.getMessage());
         }
 
-        connect(SafeUtils.cast(klass), nameDb);
+        connect(klass, nameDb);
     }
 
     public void restore(String dirBackup) {
@@ -188,8 +184,7 @@ public class DbProvider<T extends RoomDatabase> implements ISubscriber {
             }
         }
 
-        connect(SafeUtils.cast(klass), nameDb);
-        return;
+        connect(klass, nameDb);
     }
 
 
