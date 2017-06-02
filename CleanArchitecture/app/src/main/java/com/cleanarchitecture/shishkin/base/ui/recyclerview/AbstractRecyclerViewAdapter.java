@@ -46,7 +46,7 @@ public abstract class AbstractRecyclerViewAdapter<E, VH extends AbstractViewHold
 
     public AbstractRecyclerViewAdapter(@NonNull final Context context) {
         super();
-        mContext = new WeakReference<Context>(context);
+        mContext = new WeakReference<>(context);
         mLayoutInflater = LayoutInflater.from(context);
         mChoiceModeDispatcher = new ChoiceModeDispatcher(this);
     }
