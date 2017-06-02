@@ -15,6 +15,7 @@ import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRes
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.database.dao.AbstractReadOnlyDAO;
+import com.cleanarchitecture.shishkin.base.event.IEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.CloseUtils;
@@ -28,22 +29,22 @@ public class ContentProvider implements IContentProvider {
     public ContentProvider() {
     }
 
-    public synchronized RepositoryResponseGetContactsEvent getContacts() {
+    public synchronized IEvent getContacts() {
         final RepositoryResponseGetContactsEvent event = new RepositoryResponseGetContactsEvent();
 
         final Context context = ApplicationController.getInstance();
         if (context == null) {
-            return (RepositoryResponseGetContactsEvent) event.setErrorCode(1);
+            return event.setErrorCode(1);
         }
 
         if (!ApplicationUtils.checkPermission(Manifest.permission.READ_CONTACTS)) {
             EventBusController.getInstance().post(new UseCaseRequestPermissionEvent(Manifest.permission.READ_CONTACTS));
-            return (RepositoryResponseGetContactsEvent) event.setErrorText(context.getString(R.string.permission_read_contacts));
+            return event.setErrorText(context.getString(R.string.permission_read_contacts));
         }
 
         final CleanArchitectureDb db = Controllers.getInstance().getRepository().getDbProvider().getDb(CleanArchitectureDb.class, CleanArchitectureDb.NAME);
         if (db == null) {
-            return (RepositoryResponseGetContactsEvent) event.setErrorText(context.getString(R.string.error_db_not_connected));
+            return event.setErrorText(context.getString(R.string.error_db_not_connected));
         }
 
         db.contactDao().delete();
