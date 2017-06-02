@@ -6,7 +6,6 @@ import android.content.Context;
 
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
-import com.cleanarchitecture.shishkin.base.controller.ISubscriber;
 import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.utils.SafeUtils;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
@@ -21,7 +20,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DbProvider implements ISubscriber {
+public class DbProvider implements IDbProvider {
     public static final String NAME = "DbProvider";
 
     private Map<String, Object> mDb;
@@ -176,7 +175,7 @@ public class DbProvider implements ISubscriber {
         connect(klass, nameDb);
     }
 
-    public <T extends RoomDatabase> T getDb(final Class<T> klass, final String databaseName) {
+    public synchronized <T extends RoomDatabase> T getDb(final Class<T> klass, final String databaseName) {
         if (!isConnected(databaseName)) {
             connect(klass, databaseName);
         }
@@ -198,4 +197,5 @@ public class DbProvider implements ISubscriber {
             }
         }
     }
+
 }

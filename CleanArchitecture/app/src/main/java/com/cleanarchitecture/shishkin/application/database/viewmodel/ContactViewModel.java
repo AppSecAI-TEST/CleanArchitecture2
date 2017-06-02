@@ -22,8 +22,10 @@ public class ContactViewModel extends AndroidViewModel {
     }
 
     private void subscribe() {
-        final CleanArchitectureDb db = Controllers.getInstance().getRepository().getDbProvider().getDb(CleanArchitectureDb.class, CleanArchitectureDb.NAME);
-        mList = db.contactDao().get();
+        final CleanArchitectureDb db = Controllers.getInstance().getDb(CleanArchitectureDb.class, CleanArchitectureDb.NAME);
+        if (db != null) {
+            mList = db.contactDao().get();
+        }
     }
 
     public LiveData<List<Contact>> getLiveData() {

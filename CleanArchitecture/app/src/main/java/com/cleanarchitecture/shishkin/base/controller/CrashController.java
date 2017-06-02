@@ -5,7 +5,7 @@ import com.github.snowdream.android.util.Log;
 /**
  * Контроллер, протоколирующий Uncaught Exception
  */
-public class CrashController implements Thread.UncaughtExceptionHandler {
+public class CrashController implements Thread.UncaughtExceptionHandler, ISubscriber {
 
     public static final String NAME = "CrashController";
     private static Thread.UncaughtExceptionHandler mHandler = Thread.getDefaultUncaughtExceptionHandler();
@@ -21,6 +21,11 @@ public class CrashController implements Thread.UncaughtExceptionHandler {
         if (mHandler != null) {
             mHandler.uncaughtException(thread, throwable);
         }
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
     }
 }
 
