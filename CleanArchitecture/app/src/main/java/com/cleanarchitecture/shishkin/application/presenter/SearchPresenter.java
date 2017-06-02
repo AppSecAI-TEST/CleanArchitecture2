@@ -94,7 +94,6 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>> i
             onChangeData(contacts);
         });
 
-
         final EditText searchView = ViewUtils.findView(root, R.id.search);
         if (searchView != null) {
             mDisposableSearchView = RxTextView.afterTextChangeEvents(searchView)
