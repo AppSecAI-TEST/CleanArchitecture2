@@ -48,10 +48,9 @@ public class Repository implements IRepository, IEventVendor {
     public static final int USE_SAVE_DISK_CACHE = 8; // сохранять только в кеше на диске после получения данных. Не использовать кеш для чтения
     public static final int USE_SAVE_CACHE = 9; // сохранять в кеш в памяти и на диске после получения данных. Не использовать кеш для чтения
 
-    private NetProvider mNetProvider;
-    private ContentProvider mContentProvider;
-
-    private DbProvider mDbProvider;
+    private INetProvider mNetProvider;
+    private IContentProvider mContentProvider;
+    private IDbProvider mDbProvider;
 
     public Repository() {
         EventBusController.getInstance().register(this);
@@ -133,15 +132,18 @@ public class Repository implements IRepository, IEventVendor {
         EventBusController.getInstance().post(event);
     }
 
-    public NetProvider getNetProvider() {
+    @Override
+    public INetProvider getNetProvider() {
         return mNetProvider;
     }
 
-    public ContentProvider getContentProvider() {
+    @Override
+    public IContentProvider getContentProvider() {
         return mContentProvider;
     }
 
-    public DbProvider getDbProvider() {
+    @Override
+    public IDbProvider getDbProvider() {
         return mDbProvider;
     }
 

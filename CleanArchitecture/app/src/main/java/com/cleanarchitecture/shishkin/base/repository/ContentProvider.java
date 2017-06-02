@@ -22,7 +22,7 @@ import com.github.snowdream.android.util.Log;
 
 import java.util.LinkedList;
 
-public class ContentProvider {
+public class ContentProvider implements IContentProvider {
     public static final String NAME = "ContentProvider";
 
     public ContentProvider() {
@@ -77,4 +77,8 @@ public class ContentProvider {
         return event;
     }
 
+    @Override
+    public String getName() {
+        return NAME;
+    }
 }

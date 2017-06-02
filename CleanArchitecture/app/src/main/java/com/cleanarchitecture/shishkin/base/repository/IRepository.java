@@ -32,20 +32,20 @@ public interface IRepository extends ISubscriber {
      *
      * @return net provider
      */
-    NetProvider getNetProvider();
+    INetProvider getNetProvider();
 
     /**
      * Получить content provider.
      *
      * @return content provider
      */
-    ContentProvider getContentProvider();
+    IContentProvider getContentProvider();
 
     /**
      * Получить db provider.
      *
      * @return db provider
      */
-    DbProvider getDbProvider();
+    IDbProvider getDbProvider();
 
 }

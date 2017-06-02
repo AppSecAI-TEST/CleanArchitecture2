@@ -56,6 +56,11 @@ public class NetProvider implements INetProvider {
         }
     }
 
+    @Override
+    public String getName() {
+        return NAME;
+    }
+
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onNetworkConnectedEvent(OnNetworkConnectedEvent event) {
         setPaused(false);
@@ -70,7 +75,6 @@ public class NetProvider implements INetProvider {
             EventBusController.getInstance().post(new ShowMessageEvent(context.getString(R.string.network_disconnected)));
         }
     }
-
 
 }
 
