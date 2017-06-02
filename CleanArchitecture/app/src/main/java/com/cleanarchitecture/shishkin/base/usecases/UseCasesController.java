@@ -22,11 +22,8 @@ import java.util.concurrent.locks.ReentrantLock;
 @SuppressWarnings("unused")
 public class UseCasesController extends AbstractController implements IUseCasesController {
     public static final String NAME = "UseCasesController";
-    private ReentrantLock mLock;
 
     public UseCasesController() {
-        mLock = new ReentrantLock();
-
         EventBusController.getInstance().register(this);
     }
 

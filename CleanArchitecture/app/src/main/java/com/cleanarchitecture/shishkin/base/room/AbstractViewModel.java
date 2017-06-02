@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.application.database.viewmodel;
+package com.cleanarchitecture.shishkin.base.room;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;

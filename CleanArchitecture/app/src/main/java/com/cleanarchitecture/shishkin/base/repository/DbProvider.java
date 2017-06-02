@@ -11,7 +11,7 @@ import android.content.Context;
 
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.application.database.CleanArchitectureDb;
-import com.cleanarchitecture.shishkin.application.database.viewmodel.AbstractViewModel;
+import com.cleanarchitecture.shishkin.base.room.AbstractViewModel;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.observer.ViewModelDebounce;
@@ -264,6 +264,10 @@ public class DbProvider<H extends AbstractViewModel> implements IDbProvider, Lif
         return NAME;
     }
 
+    @Override
+    public Lifecycle getLifecycle() {
+        return mLifecycleRegistry;
+    }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onFinishApplicationEvent(final FinishApplicationEvent event) {
@@ -282,8 +286,4 @@ public class DbProvider<H extends AbstractViewModel> implements IDbProvider, Lif
         });
     }
 
-    @Override
-    public Lifecycle getLifecycle() {
-        return mLifecycleRegistry;
-    }
 }
