@@ -28,6 +28,7 @@ import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetMenuEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetTitleEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.HideHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowHorizontalProgressBarEvent;
+import com.cleanarchitecture.shishkin.base.net.Connectivity;
 import com.cleanarchitecture.shishkin.base.ui.activity.AbstractContentActivity;
 import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
@@ -56,7 +57,6 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     private WeakReference<ImageView> mMenu;
     private WeakReference<ImageView> mItem;
     private WeakReference<AVLoadingIndicatorView> mPogressBar;
-
 
     private PopupMenu mPopupMenu;
     private boolean mPopupMenuShow = false;
@@ -110,6 +110,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
             mPogressBar = new WeakReference<>(progresBar);
         }
 
+        checkNetStatus(context);
     }
 
     @Override
@@ -390,6 +391,32 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         });
     }
 
+    private void checkNetStatus(final Context context) {
+        if (context != null) {
+            if (Connectivity.isNetworkConnected(context)) {
+                onNetworkConnected();
+            } else {
+                onNetworkDisconnected();
+            }
+        }
+    }
+
+    private void onNetworkConnected() {
+        if (validate()) {
+            ApplicationUtils.runOnUiThread(() -> {
+                setBackground(ViewUtils.getDrawable(mContext.get(), R.color.blue));
+            });
+        }
+    }
+
+    private void onNetworkDisconnected() {
+        if (validate()) {
+            ApplicationUtils.runOnUiThread(() -> {
+                setBackground(ViewUtils.getDrawable(mContext.get(), R.color.orange));
+            });
+        }
+    }
+
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onSetToolbarBackNavigationEvent(ToolbarSetBackNavigationEvent event) {
         setBackNavigation(event.getBackNavigation());
@@ -440,16 +467,12 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onNetworkConnectedEvent(OnNetworkConnectedEvent event) {
-        if (validate()) {
-            setBackground(ViewUtils.getDrawable(mContext.get(), R.color.blue));
-        }
+        onNetworkConnected();
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onNetworkDisconnectedEvent(OnNetworkDisconnectedEvent event) {
-        if (validate()) {
-            setBackground(ViewUtils.getDrawable(mContext.get(), R.color.orange));
-        }
+        onNetworkDisconnected();
     }
 
 }
