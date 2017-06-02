@@ -1,8 +1,9 @@
 package com.cleanarchitecture.shishkin.base.presenter;
 
 import com.cleanarchitecture.shishkin.base.lifecycle.ILifecycle;
+import com.cleanarchitecture.shishkin.base.ui.IView;
 
-public interface IPresenter<M> extends ILifecycle {
+public interface IPresenter<M> extends ILifecycle, IView {
 
     /**
      * Получить имя презентера
@@ -43,16 +44,5 @@ public interface IPresenter<M> extends ILifecycle {
      * @return the boolean
      */
     boolean validate();
-
-    /**
-     * Показать progress bar.
-     */
-    void showProgressBar();
-
-    /**
-     * Скрыть progress bar.
-     */
-    void hideProgressBar();
-
 
 }

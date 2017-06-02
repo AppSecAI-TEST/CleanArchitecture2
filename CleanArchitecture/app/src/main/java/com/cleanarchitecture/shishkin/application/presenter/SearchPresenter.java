@@ -85,7 +85,7 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
         mDebounce = new Debounce(TimeUnit.SECONDS.toMillis(2), 1) {
             @Override
             public void run() {
-                EventBusController.getInstance().post(new ShowToastEvent("Контактов: " + ((List<Contact>)this.getObject()).size()));
+                EventBusController.getInstance().post(new ShowToastEvent("Контактов: " + this.getObject().toString()));
             }
         };
 
@@ -121,7 +121,7 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
     }
 
     private void onChangeData(final List<Contact> list) {
-        mDebounce.onEvent(list);
+        mDebounce.onEvent(String.valueOf(list.size()));
     }
 
     @Override

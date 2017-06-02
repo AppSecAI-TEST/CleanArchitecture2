@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.cleanarchitecture.shishkin.base.controller.ISubscriber;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
+import com.cleanarchitecture.shishkin.base.ui.IView;
 import com.cleanarchitecture.shishkin.base.ui.activity.IActivity;
 
 import butterknife.Unbinder;
@@ -14,7 +15,7 @@ import butterknife.Unbinder;
  * Интерфейс фрагмента
  */
 @SuppressWarnings("unused")
-public interface IFragment extends ISubscriber {
+public interface IFragment extends ISubscriber, IView {
     /**
      * Найти view во фрагменте
      *
@@ -73,15 +74,5 @@ public interface IFragment extends ISubscriber {
      * @return true - если Fragment находиться в рабочем состоянии
      */
     boolean validate();
-
-    /**
-     * Показать progress bar.
-     */
-    void showProgressBar();
-
-    /**
-     * Скрыть progress bar.
-     */
-    void hideProgressBar();
 
 }

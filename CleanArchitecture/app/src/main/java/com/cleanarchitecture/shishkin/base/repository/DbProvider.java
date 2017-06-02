@@ -264,6 +264,10 @@ public class DbProvider<H extends AbstractViewModel> implements IDbProvider, Lif
         return NAME;
     }
 
+    @Override
+    public Lifecycle getLifecycle() {
+        return mLifecycleRegistry;
+    }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onFinishApplicationEvent(final FinishApplicationEvent event) {
@@ -282,8 +286,4 @@ public class DbProvider<H extends AbstractViewModel> implements IDbProvider, Lif
         });
     }
 
-    @Override
-    public Lifecycle getLifecycle() {
-        return mLifecycleRegistry;
-    }
 }
