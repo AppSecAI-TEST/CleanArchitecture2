@@ -21,7 +21,7 @@ public class RepositoryContentProvider {
                     .setResponse(list)
                     .setFrom(Repository.FROM_CACHE));
         } else {
-            final RepositoryResponseGetContactsEvent responseEvent = (RepositoryResponseGetContactsEvent)Controllers.getInstance().getContentProvider().getContacts();
+            final RepositoryResponseGetContactsEvent responseEvent = (RepositoryResponseGetContactsEvent) Controllers.getInstance().getContentProvider().getContacts();
             responseEvent.setFrom(Repository.FROM_CONTENT_PROVIDER);
 
             if (responseEvent.getResponse() != null && !responseEvent.hasError()) {

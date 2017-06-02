@@ -1,8 +1,6 @@
 package com.cleanarchitecture.shishkin.application.presenter;
 
 import android.Manifest;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -74,7 +72,6 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
     private ContactRecyclerViewAdapter mContactAdapter;
     private String mCurrentFilter = null;
     private Disposable mDisposableSearchView;
-    private ContactViewModel mContactViewModel;
     private Debounce mDebounce;
 
     public SearchPresenter() {
@@ -85,15 +82,14 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
 
         EventBusController.getInstance().register(this);
 
-        mDebounce = new Debounce(5000, 1) {
+        mDebounce = new Debounce(TimeUnit.SECONDS.toMillis(2), 1) {
             @Override
             public void run() {
-                EventBusController.getInstance().post(new ShowToastEvent("Контактов: " + mContactViewModel.getLiveData().getValue().size()));
+                EventBusController.getInstance().post(new ShowToastEvent("Контактов: " + ((List<Contact>)this.getObject()).size()));
             }
         };
 
         Controllers.getInstance().getDbProvider().observe(fragment.getLifecycleActivity(), ContactViewModel.NAME, ContactViewModel.class, this);
-        mContactViewModel = Controllers.getInstance().getDbProvider().getViewModel(ContactViewModel.NAME);
 
         final EditText searchView = ViewUtils.findView(root, R.id.search);
         if (searchView != null) {
@@ -125,7 +121,7 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
     }
 
     private void onChangeData(final List<Contact> list) {
-        mDebounce.onEvent();
+        mDebounce.onEvent(list);
     }
 
     @Override

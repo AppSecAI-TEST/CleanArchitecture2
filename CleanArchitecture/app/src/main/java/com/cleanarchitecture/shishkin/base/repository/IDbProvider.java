@@ -1,13 +1,10 @@
 package com.cleanarchitecture.shishkin.base.repository;
 
-import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LifecycleActivity;
-import android.arch.lifecycle.Observer;
 import android.arch.persistence.room.RoomDatabase;
 
 import com.cleanarchitecture.shishkin.application.database.viewmodel.AbstractViewModel;
 import com.cleanarchitecture.shishkin.base.controller.ISubscriber;
-import com.cleanarchitecture.shishkin.base.ui.activity.AbstractActivity;
 
 public interface IDbProvider extends ISubscriber {
 
