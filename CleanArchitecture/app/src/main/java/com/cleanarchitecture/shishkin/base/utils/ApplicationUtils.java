@@ -17,7 +17,6 @@ import android.support.v4.app.ActivityCompat;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
-import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.github.snowdream.android.util.Log;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -140,15 +139,11 @@ public class ApplicationUtils {
             final int result = googleAPI.isGooglePlayServicesAvailable(activity);
             if (result != ConnectionResult.SUCCESS) {
                 if (googleAPI.isUserResolvableError(result)) {
-                    if (!Controllers.getInstance().getUseCasesController().isSystemDialogShown()) {
-                        Controllers.getInstance().getUseCasesController().setSystemDialogShown(true);
-                        runOnUiThread(() -> {
-                            final Dialog dialog = googleAPI.getErrorDialog(activity, result, ApplicationUtils.REQUEST_GOOGLE_PLAY_SERVICES);
-                            dialog.setOnCancelListener(dialogInterface -> activity.finish());
-                            dialog.setOnDismissListener(dialog1 -> Controllers.getInstance().getUseCasesController().setSystemDialogShown(false));
-                            dialog.show();
-                        });
-                    }
+                    runOnUiThread(() -> {
+                        final Dialog dialog = googleAPI.getErrorDialog(activity, result, ApplicationUtils.REQUEST_GOOGLE_PLAY_SERVICES);
+                        dialog.setOnCancelListener(dialogInterface -> activity.finish());
+                        dialog.show();
+                    });
                 }
             }
         }
@@ -182,12 +177,9 @@ public class ApplicationUtils {
                     String[] arrayPermissionsNeeded = new String[listPermissionsNeeded.size()];
                     listPermissionsNeeded.toArray(arrayPermissionsNeeded);
                     if (activity != null) {
-                        if (!Controllers.getInstance().getUseCasesController().isSystemDialogShown()) {
-                            Controllers.getInstance().getUseCasesController().setSystemDialogShown(true);
-                            ActivityCompat.requestPermissions(activity,
-                                    arrayPermissionsNeeded,
-                                    REQUEST_PERMISSIONS);
-                        }
+                        ActivityCompat.requestPermissions(activity,
+                                arrayPermissionsNeeded,
+                                REQUEST_PERMISSIONS);
                     }
                     return false;
                 }

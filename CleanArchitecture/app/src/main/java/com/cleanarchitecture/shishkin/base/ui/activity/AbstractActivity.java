@@ -194,8 +194,6 @@ public abstract class AbstractActivity extends LifecycleActivity
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        Controllers.getInstance().getUseCasesController().setSystemDialogShown(false);
-
         //EventController.getInstance().post(new OnUserIteractionEvent());
 
         for (int i = 0; i < permissions.length; i++) {
@@ -380,7 +378,7 @@ public abstract class AbstractActivity extends LifecycleActivity
         //EventController.getInstance().post(new OnUserIteractionEvent());
 
         final Bundle bundle = event.getResult();
-        if (bundle.getInt("id", -1) == R.id.dialog_request_permissions) {
+        if (bundle != null && bundle.getInt("id", -1) == R.id.dialog_request_permissions) {
             final String button = bundle.getString(MaterialDialogExt.BUTTON);
             if (button != null && button.equalsIgnoreCase(MaterialDialogExt.POSITIVE)) {
                 final Intent intent = new Intent();

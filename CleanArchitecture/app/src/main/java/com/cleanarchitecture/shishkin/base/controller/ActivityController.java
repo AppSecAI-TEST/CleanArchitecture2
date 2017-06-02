@@ -182,15 +182,11 @@ public class ActivityController extends AbstractController implements IActivityC
             final int result = googleAPI.isGooglePlayServicesAvailable(subscriber.getActivity());
             if (result != ConnectionResult.SUCCESS) {
                 if (googleAPI.isUserResolvableError(result)) {
-                    if (!Controllers.getInstance().getUseCasesController().isSystemDialogShown()) {
-                        Controllers.getInstance().getUseCasesController().setSystemDialogShown(true);
-                        runOnUiThread(() -> {
-                            final Dialog dialog = googleAPI.getErrorDialog(subscriber.getActivity(), result, ApplicationUtils.REQUEST_GOOGLE_PLAY_SERVICES);
-                            dialog.setOnCancelListener(dialogInterface -> subscriber.getActivity().finish());
-                            dialog.setOnDismissListener(dialog1 -> Controllers.getInstance().getUseCasesController().setSystemDialogShown(false));
-                            dialog.show();
-                        });
-                    }
+                    runOnUiThread(() -> {
+                        final Dialog dialog = googleAPI.getErrorDialog(subscriber.getActivity(), result, ApplicationUtils.REQUEST_GOOGLE_PLAY_SERVICES);
+                        dialog.setOnCancelListener(dialogInterface -> subscriber.getActivity().finish());
+                        dialog.show();
+                    });
                 }
             }
         }
@@ -210,12 +206,9 @@ public class ActivityController extends AbstractController implements IActivityC
             if (ActivityCompat.shouldShowRequestPermissionRationale(subscriber.getActivity(), permission)) {
                 EventBusController.getInstance().post(new ShowDialogEvent(R.id.dialog_request_permissions, -1, helpMessage, R.string.setting, R.string.cancel, false));
             } else {
-                if (!Controllers.getInstance().getUseCasesController().isSystemDialogShown()) {
-                    Controllers.getInstance().getUseCasesController().setSystemDialogShown(true);
-                    subscriber.getActivity().runOnUiThread(() -> {
-                        ActivityCompat.requestPermissions(subscriber.getActivity(), new String[]{permission}, ApplicationUtils.REQUEST_PERMISSIONS);
-                    });
-                }
+                subscriber.getActivity().runOnUiThread(() -> {
+                    ActivityCompat.requestPermissions(subscriber.getActivity(), new String[]{permission}, ApplicationUtils.REQUEST_PERMISSIONS);
+                });
             }
         }
     }

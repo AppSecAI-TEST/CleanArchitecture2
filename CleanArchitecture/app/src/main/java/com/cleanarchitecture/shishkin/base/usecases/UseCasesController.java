@@ -10,7 +10,6 @@ import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnLowMemoryEvent
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOffEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOnEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
-import com.github.snowdream.android.util.Log;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -23,30 +22,12 @@ import java.util.concurrent.locks.ReentrantLock;
 @SuppressWarnings("unused")
 public class UseCasesController extends AbstractController implements IUseCasesController {
     public static final String NAME = "UseCasesController";
-    private boolean mSystemDialogShown = false;
     private ReentrantLock mLock;
 
     public UseCasesController() {
         mLock = new ReentrantLock();
 
         EventBusController.getInstance().register(this);
-    }
-
-    @Override
-    public synchronized boolean isSystemDialogShown() {
-        return mSystemDialogShown;
-    }
-
-    @Override
-    public synchronized void setSystemDialogShown(boolean shown) {
-        mLock.lock();
-        try {
-            mSystemDialogShown = shown;
-        } catch (Exception e) {
-            Log.e(NAME, e.getMessage());
-        } finally {
-            mLock.unlock();
-        }
     }
 
     @Override
@@ -66,9 +47,7 @@ public class UseCasesController extends AbstractController implements IUseCasesC
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onRequestPermissionUseCaseEvent(final UseCaseRequestPermissionEvent event) {
-        if (!isSystemDialogShown()) {
-            RequestPermissionUseCase.request(event);
-        }
+        RequestPermissionUseCase.request(event);
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)

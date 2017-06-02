@@ -240,18 +240,18 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>> i
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public synchronized void onDialogResultEvent(DialogResultEvent event) {
-        if (ApplicationUtils.checkPermission(Manifest.permission.CALL_PHONE)) {
-            final Bundle bundle = event.getResult();
-            if (bundle.getInt("id") == R.id.dialog_call_phone) {
-                if (MaterialDialogExt.POSITIVE.equals(bundle.getString(MaterialDialogExt.BUTTON))) {
-                    final ArrayList<String> list = bundle.getStringArrayList("list");
-                    if (list != null && list.size() == 1) {
-                        PhoneUtils.call(Controllers.getInstance().getLifecycleController().getActivity(), list.get(0));
+        final Bundle bundle = event.getResult();
+        if (bundle != null && bundle.getInt("id", -1) == R.id.dialog_call_phone) {
+            if (ApplicationUtils.checkPermission(Manifest.permission.CALL_PHONE)) {
+                    if (MaterialDialogExt.POSITIVE.equals(bundle.getString(MaterialDialogExt.BUTTON))) {
+                        final ArrayList<String> list = bundle.getStringArrayList("list");
+                        if (list != null && list.size() == 1) {
+                            PhoneUtils.call(Controllers.getInstance().getLifecycleController().getActivity(), list.get(0));
+                        }
                     }
-                }
+            } else {
+                postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.CALL_PHONE));
             }
-        } else {
-            postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.CALL_PHONE));
         }
     }
 
