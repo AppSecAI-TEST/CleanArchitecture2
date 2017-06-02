@@ -1,12 +1,21 @@
 package com.cleanarchitecture.shishkin.base.repository;
 
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleActivity;
+import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.LifecycleRegistry;
+import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
+import com.cleanarchitecture.shishkin.application.database.CleanArchitectureDb;
+import com.cleanarchitecture.shishkin.application.database.viewmodel.AbstractViewModel;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
+import com.cleanarchitecture.shishkin.base.observer.ViewModelDebounce;
+import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.SafeUtils;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 import com.github.snowdream.android.util.Log;
@@ -20,15 +29,25 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DbProvider implements IDbProvider {
+public class DbProvider<H extends AbstractViewModel> implements IDbProvider, LifecycleOwner {
     public static final String NAME = "DbProvider";
 
     private Map<String, Object> mDb;
+    private Map<String, H> mViewModel;
+    private LifecycleRegistry mLifecycleRegistry;
 
     public DbProvider() {
+        mLifecycleRegistry = new LifecycleRegistry(this);
+        mLifecycleRegistry.markState(Lifecycle.State.CREATED);
+
         mDb = Collections.synchronizedMap(new HashMap<String, Object>());
+        mViewModel = Collections.synchronizedMap(new HashMap<String, H>());
 
         EventBusController.getInstance().register(this);
+
+        connect(CleanArchitectureDb.class, CleanArchitectureDb.NAME);
+
+        mLifecycleRegistry.markState(Lifecycle.State.STARTED);
     }
 
     private synchronized <T extends RoomDatabase> boolean connect(final Class<T> klass, final String databaseName) {
@@ -183,6 +202,64 @@ public class DbProvider implements IDbProvider {
     }
 
     @Override
+    public synchronized <T, E extends AbstractViewModel> void observe(final LifecycleActivity activity, final String nameViewModel, final Class<E> klass, final IObserver<T> observer) {
+        if (mDb.size() == 1) {
+            try {
+                E viewModel = null;
+                if (!mViewModel.containsKey(nameViewModel)) {
+                    viewModel = ViewModelProviders.of(activity).get(klass);
+                    viewModel.getLiveData().observe(this, observer);
+                    mViewModel.put(viewModel.getName(), (H) viewModel);
+                } else {
+                    viewModel = (E) mViewModel.get(nameViewModel);
+                    viewModel.getLiveData().observe(this, observer);
+                }
+            } catch (Exception e) {
+                Log.e(NAME, e.getMessage());
+            }
+        }
+    }
+
+    @Override
+    public synchronized <E extends AbstractViewModel, T> void removeObserver(final String nameViewModel, final IObserver<T> observer) {
+        ApplicationUtils.runOnUiThread(() -> {
+            try {
+                if (mViewModel.containsKey(nameViewModel)) {
+                    final E viewModel = (E) mViewModel.get(nameViewModel);
+                    viewModel.getLiveData().removeObserver(observer);
+                    if (!viewModel.getLiveData().hasObservers()) {
+                        new ViewModelDebounce(nameViewModel).onEvent();
+                    }
+                }
+            } catch (Exception e) {
+                Log.e(NAME, e.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public <E extends AbstractViewModel> E getViewModel(final String nameViewModel) {
+        if (mViewModel.containsKey(nameViewModel)) {
+            return (E) mViewModel.get(nameViewModel);
+        }
+        return null;
+    }
+
+    @Override
+    public void removeViewModel(final String nameViewModel) {
+        try {
+            if (mViewModel.containsKey(nameViewModel)) {
+                final H viewModel = mViewModel.get(nameViewModel);
+                if (!viewModel.getLiveData().hasObservers()) {
+                    mViewModel.remove(nameViewModel);
+                }
+            }
+        } catch (Exception e) {
+            Log.e(NAME, e.getMessage());
+        }
+    }
+
+    @Override
     public String getName() {
         return NAME;
     }
@@ -190,12 +267,23 @@ public class DbProvider implements IDbProvider {
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onFinishApplicationEvent(final FinishApplicationEvent event) {
-        while (!mDb.isEmpty()) {
-            for (String databaseName : mDb.keySet()) {
-                disconnect(databaseName);
-                break;
+        ApplicationUtils.runOnUiThread(() -> {
+            for (H viewModel : mViewModel.values()) {
+                viewModel.getLiveData().removeObservers(DbProvider.this);
             }
-        }
+            mViewModel.clear();
+
+            while (!mDb.isEmpty()) {
+                for (String databaseName : mDb.keySet()) {
+                    disconnect(databaseName);
+                    break;
+                }
+            }
+        });
     }
 
+    @Override
+    public Lifecycle getLifecycle() {
+        return mLifecycleRegistry;
+    }
 }

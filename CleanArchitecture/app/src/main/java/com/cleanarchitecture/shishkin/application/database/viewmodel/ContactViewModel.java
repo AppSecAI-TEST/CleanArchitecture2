@@ -11,26 +11,30 @@ import com.cleanarchitecture.shishkin.base.controller.Controllers;
 
 import java.util.List;
 
-public class ContactViewModel extends AndroidViewModel {
+public class ContactViewModel extends AbstractViewModel<List<Contact>> {
 
+    public static final String NAME = "ContactViewModel";
     private LiveData<List<Contact>> mList;
 
     public ContactViewModel(Application application) {
         super(application);
-
-        subscribe();
     }
 
-    private void subscribe() {
+    @Override
+    public void subscribe() {
         final CleanArchitectureDb db = Controllers.getInstance().getDb(CleanArchitectureDb.class, CleanArchitectureDb.NAME);
         if (db != null) {
             mList = db.contactDao().get();
         }
     }
 
+    @Override
     public LiveData<List<Contact>> getLiveData() {
         return mList;
     }
 
-
+    @Override
+    public String getName() {
+        return NAME;
+    }
 }
