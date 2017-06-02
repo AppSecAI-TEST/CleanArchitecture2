@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Environment;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.R;
@@ -22,7 +24,7 @@ import com.squareup.leakcanary.LeakCanary;
 
 import java.io.File;
 
-public class ApplicationController extends Application {
+public class ApplicationController extends MultiDexApplication {
     private static volatile ApplicationController sInstance;
     private static final String LOG_TAG = "ApplicationController";
     private static final long MAX_LOG_LENGTH = 2000000;//2Mb
@@ -43,6 +45,12 @@ public class ApplicationController extends Application {
         Controllers.instantiate();
 
         init();
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     public static ApplicationController getInstance() {
