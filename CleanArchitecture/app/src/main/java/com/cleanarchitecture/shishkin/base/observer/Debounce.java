@@ -7,6 +7,7 @@ public class Debounce implements Runnable {
     private long mDelay = 5000; //5 sec
     private int mSkip = 0;
     private Handler mHandler = null;
+    private Object mObject;
 
     public Debounce(final long delay) {
         this(delay, 0);
@@ -18,7 +19,9 @@ public class Debounce implements Runnable {
         mSkip = skip;
     }
 
-    public void onEvent() {
+    public void onEvent(final Object t) {
+        mObject = t;
+
         if (mSkip >= 0) {
             mSkip--;
         }
@@ -37,4 +40,9 @@ public class Debounce implements Runnable {
         mHandler.removeCallbacks(this);
         mHandler = null;
     }
+
+    public Object getObject() {
+        return mObject;
+    }
+
 }

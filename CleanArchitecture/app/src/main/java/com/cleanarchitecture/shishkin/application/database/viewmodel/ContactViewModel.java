@@ -2,7 +2,6 @@ package com.cleanarchitecture.shishkin.application.database.viewmodel;
 
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 
 import com.cleanarchitecture.shishkin.application.database.CleanArchitectureDb;

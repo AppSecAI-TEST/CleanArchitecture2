@@ -228,7 +228,7 @@ public class DbProvider<H extends AbstractViewModel> implements IDbProvider, Lif
                     final E viewModel = (E) mViewModel.get(nameViewModel);
                     viewModel.getLiveData().removeObserver(observer);
                     if (!viewModel.getLiveData().hasObservers()) {
-                        new ViewModelDebounce(nameViewModel).onEvent();
+                        new ViewModelDebounce(nameViewModel).onEvent(nameViewModel);
                     }
                 }
             } catch (Exception e) {
