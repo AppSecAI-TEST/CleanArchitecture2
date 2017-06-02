@@ -219,22 +219,26 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>> i
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public synchronized void onSearchPresenterItemClick(OnSearchPresenterItemClick event) {
-        if (event.getContactItem() != null) {
-            final PhoneContactItem item = event.getContactItem();
-            final ArrayList<String> list = new ArrayList<>();
-            for (int i = 1; i <= StringUtils.numToken(item.getPhones(), ";"); i++) {
-                String phone = StringUtils.token(item.getPhones(), ";", i);
-                String phone1 = null;
-                if (ApplicationUtils.hasLollipop()) {
-                    phone1 = PhoneNumberUtils.formatNumber(phone, Locale.getDefault().getCountry());
+        if (ApplicationUtils.checkPermission(Manifest.permission.CALL_PHONE)) {
+            if (event.getContactItem() != null) {
+                final PhoneContactItem item = event.getContactItem();
+                final ArrayList<String> list = new ArrayList<>();
+                for (int i = 1; i <= StringUtils.numToken(item.getPhones(), ";"); i++) {
+                    String phone = StringUtils.token(item.getPhones(), ";", i);
+                    String phone1 = null;
+                    if (ApplicationUtils.hasLollipop()) {
+                        phone1 = PhoneNumberUtils.formatNumber(phone, Locale.getDefault().getCountry());
+                    }
+                    if (StringUtils.isNullOrEmpty(phone1)) {
+                        list.add(phone);
+                    } else {
+                        list.add(phone1);
+                    }
                 }
-                if (StringUtils.isNullOrEmpty(phone1)) {
-                    list.add(phone);
-                } else {
-                    list.add(phone1);
-                }
+                EventBusController.getInstance().post(new ShowListDialogEvent(R.id.dialog_call_phone, R.string.phone_call, null, list, -1, R.string.exit, true));
             }
-            EventBusController.getInstance().post(new ShowListDialogEvent(R.id.dialog_call_phone, R.string.phone_call, null, list, -1, R.string.exit, true));
+        } else {
+            postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.CALL_PHONE));
         }
     }
 
@@ -242,7 +246,7 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>> i
     public synchronized void onDialogResultEvent(DialogResultEvent event) {
         if (ApplicationUtils.checkPermission(Manifest.permission.CALL_PHONE)) {
             final Bundle bundle = event.getResult();
-            if (bundle.getInt("id") == R.id.dialog_call_phone) {
+            if (bundle != null && bundle.getInt("id", -1) == R.id.dialog_call_phone) {
                 if (MaterialDialogExt.POSITIVE.equals(bundle.getString(MaterialDialogExt.BUTTON))) {
                     final ArrayList<String> list = bundle.getStringArrayList("list");
                     if (list != null && list.size() == 1) {
@@ -250,8 +254,6 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>> i
                     }
                 }
             }
-        } else {
-            postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.CALL_PHONE));
         }
     }
 

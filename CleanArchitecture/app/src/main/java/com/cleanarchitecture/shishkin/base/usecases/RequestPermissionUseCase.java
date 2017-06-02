@@ -37,9 +37,7 @@ public class RequestPermissionUseCase extends AbstractUseCase {
 
                     case PackageManager.PERMISSION_DENIED:
                         disabledLog();
-                        if (!Controllers.getInstance().getUseCasesController().isSystemDialogShown()) {
-                            Controllers.getInstance().getActivityController().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_write_external_storage));
-                        }
+                        Controllers.getInstance().getActivityController().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_write_external_storage));
                         break;
 
                 }
@@ -51,9 +49,7 @@ public class RequestPermissionUseCase extends AbstractUseCase {
                         break;
 
                     case PackageManager.PERMISSION_DENIED:
-                        if (!Controllers.getInstance().getUseCasesController().isSystemDialogShown()) {
-                            Controllers.getInstance().getActivityController().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_read_contacts));
-                        }
+                        Controllers.getInstance().getActivityController().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_read_contacts));
                         break;
 
                 }
@@ -65,9 +61,7 @@ public class RequestPermissionUseCase extends AbstractUseCase {
                         break;
 
                     case PackageManager.PERMISSION_DENIED:
-                        if (!Controllers.getInstance().getUseCasesController().isSystemDialogShown()) {
-                            Controllers.getInstance().getActivityController().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_call_phone));
-                        }
+                        Controllers.getInstance().getActivityController().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_call_phone));
                         break;
 
                 }
