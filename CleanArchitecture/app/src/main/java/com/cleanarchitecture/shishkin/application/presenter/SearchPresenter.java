@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -35,6 +36,7 @@ import com.cleanarchitecture.shishkin.base.event.ui.ShowToastEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
 import com.cleanarchitecture.shishkin.base.observer.Debounce;
 import com.cleanarchitecture.shishkin.base.presenter.AbstractPresenter;
+import com.cleanarchitecture.shishkin.base.repository.IObserver;
 import com.cleanarchitecture.shishkin.base.repository.Repository;
 import com.cleanarchitecture.shishkin.base.ui.dialog.MaterialDialogExt;
 import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractContentFragment;
@@ -63,7 +65,8 @@ import io.reactivex.functions.Consumer;
 
 
 @SuppressWarnings("unused")
-public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>> implements Consumer<TextViewAfterTextChangeEvent> {
+public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
+        implements Consumer<TextViewAfterTextChangeEvent>, IObserver<List<Contact>> {
     public static final String NAME = "SearchPresenter";
 
     private WeakReference<EditText> mSearchView;
@@ -89,11 +92,8 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>> i
             }
         };
 
-        mContactViewModel = ViewModelProviders.of(fragment).get(ContactViewModel.class);
-        mContactViewModel.getLiveData().observe(fragment, (Observer<List<Contact>>) contacts -> {
-            onChangeData(contacts);
-        });
-
+        Controllers.getInstance().getDbProvider().observe(fragment.getLifecycleActivity(), ContactViewModel.NAME, ContactViewModel.class, this);
+        mContactViewModel = Controllers.getInstance().getDbProvider().getViewModel(ContactViewModel.NAME);
 
         final EditText searchView = ViewUtils.findView(root, R.id.search);
         if (searchView != null) {
@@ -130,8 +130,8 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>> i
 
     @Override
     public void onDestroyLifecycle() {
+        Controllers.getInstance().getDbProvider().removeObserver(ContactViewModel.NAME, this);
         mDebounce.finish();
-        mContactViewModel = null;
         mSearchView = null;
         mRecyclerView = null;
         if (!mDisposableSearchView.isDisposed()) {
@@ -262,5 +262,10 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>> i
         if (event.getPermission().equals(Manifest.permission.READ_CONTACTS)) {
             refreshData();
         }
+    }
+
+    @Override
+    public void onChanged(@Nullable List<Contact> contacts) {
+        onChangeData(contacts);
     }
 }
