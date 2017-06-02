@@ -1,6 +1,5 @@
 package com.cleanarchitecture.shishkin.base.observer;
 
-import com.cleanarchitecture.shishkin.application.database.viewmodel.AbstractViewModel;
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
 
 import java.util.concurrent.TimeUnit;

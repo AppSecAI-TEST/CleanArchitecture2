@@ -11,7 +11,7 @@ import android.content.Context;
 
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.application.database.CleanArchitectureDb;
-import com.cleanarchitecture.shishkin.application.database.viewmodel.AbstractViewModel;
+import com.cleanarchitecture.shishkin.base.room.AbstractViewModel;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.observer.ViewModelDebounce;

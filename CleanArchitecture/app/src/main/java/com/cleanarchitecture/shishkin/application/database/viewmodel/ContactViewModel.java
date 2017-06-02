@@ -7,6 +7,7 @@ import android.arch.lifecycle.LiveData;
 import com.cleanarchitecture.shishkin.application.database.CleanArchitectureDb;
 import com.cleanarchitecture.shishkin.application.database.item.Contact;
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
+import com.cleanarchitecture.shishkin.base.room.AbstractViewModel;
 
 import java.util.List;
 
