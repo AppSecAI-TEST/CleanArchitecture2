@@ -3,7 +3,6 @@ package com.cleanarchitecture.shishkin.base.storage;
 import com.cleanarchitecture.shishkin.base.controller.ErrorController;
 import com.cleanarchitecture.shishkin.base.controller.ISubscriber;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
-import com.github.snowdream.android.util.Log;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;

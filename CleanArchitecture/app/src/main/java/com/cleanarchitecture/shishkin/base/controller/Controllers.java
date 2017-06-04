@@ -10,7 +10,6 @@ import com.cleanarchitecture.shishkin.base.repository.Repository;
 import com.cleanarchitecture.shishkin.base.usecases.IUseCasesController;
 import com.cleanarchitecture.shishkin.base.usecases.UseCasesController;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
-import com.github.snowdream.android.util.Log;
 
 import java.util.Collections;
 import java.util.HashMap;

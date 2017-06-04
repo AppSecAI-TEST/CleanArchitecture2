@@ -21,7 +21,6 @@ import com.cleanarchitecture.shishkin.base.event.IEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.CloseUtils;
-import com.github.snowdream.android.util.Log;
 
 import java.util.LinkedList;
 

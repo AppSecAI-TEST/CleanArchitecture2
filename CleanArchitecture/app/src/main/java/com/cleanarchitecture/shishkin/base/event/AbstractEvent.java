@@ -3,8 +3,6 @@ package com.cleanarchitecture.shishkin.base.event;
 import com.cleanarchitecture.shishkin.base.controller.ErrorController;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 
-import java.lang.ref.WeakReference;
-
 public abstract class AbstractEvent implements IEvent {
 
     private String mErrorText = null;

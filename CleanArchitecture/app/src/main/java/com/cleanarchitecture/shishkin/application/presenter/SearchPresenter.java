@@ -27,7 +27,6 @@ import com.cleanarchitecture.shishkin.base.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.HideHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.HideKeyboardEvent;
-import com.cleanarchitecture.shishkin.base.event.ui.ShowErrorMessageEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowListDialogEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowToastEvent;

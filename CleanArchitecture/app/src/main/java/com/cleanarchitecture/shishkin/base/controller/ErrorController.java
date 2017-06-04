@@ -1,13 +1,24 @@
 package com.cleanarchitecture.shishkin.base.controller;
 
+import android.Manifest;
+import android.os.Environment;
+
+import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowErrorMessageEvent;
+import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
+import com.cleanarchitecture.shishkin.base.utils.StringUtils;
+import com.github.snowdream.android.util.FilePathGenerator;
 import com.github.snowdream.android.util.Log;
+
+import java.io.File;
 
 /**
  * Контроллер ошибок
  */
-public class ErrorController extends AbstractController implements IErrorController{
+public class ErrorController extends AbstractController implements IErrorController {
     public static final String NAME = "ErrorController";
+    private static final long MAX_LOG_LENGTH = 2000000;//2Mb
+
     private static volatile ErrorController sInstance;
 
     public static final int ERROR_LOST_AAPLICATION_CONTEXT = 1;
@@ -27,7 +38,59 @@ public class ErrorController extends AbstractController implements IErrorControl
     }
 
     private ErrorController() {
+        boolean isGrant = true;
+        if (!ApplicationUtils.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            isGrant = false;
+        }
+
+        if (isGrant) {
+            try {
+                Log.setEnabled(true);
+                Log.setLog2FileEnabled(true);
+                final String path = Environment.getExternalStorageDirectory().getAbsolutePath() +
+                        File.separator + BuildConfig.APPLICATION_ID;
+                final File file = new File(path + File.separator);
+                if (!file.exists()) {
+                    file.mkdirs();
+                }
+                if (file.exists()) {
+                    Log.setFilePathGenerator(new FilePathGenerator.DefaultFilePathGenerator(path,
+                            StringUtils.replace(BuildConfig.APPLICATION_ID, ".", "_"), ".log"));
+                    checkLogSize();
+                } else {
+                    Log.setEnabled(false);
+                }
+            } catch (Exception e) {
+                Log.setEnabled(false);
+            }
+        } else {
+            Log.setEnabled(false);
+        }
     }
+
+    private void checkLogSize() {
+        final String path = Log.getPath();
+
+        try {
+            final File file = new File(path);
+            if (file.exists()) {
+                if (file.length() == 0) {
+                    Log.i(ApplicationUtils.getPhoneInfo());
+                }
+                if (file.length() > MAX_LOG_LENGTH) {
+                    final String new_path = path + ".1";
+                    final File new_file = new File(new_path);
+                    if (new_file.exists()) {
+                        new_file.delete();
+                    }
+                    file.renameTo(new_file);
+                }
+            }
+        } catch (Exception e) {
+            android.util.Log.e(NAME, e.getMessage());
+        }
+    }
+
 
     @Override
     public synchronized void onError(final String source, final Exception e) {
