@@ -18,12 +18,13 @@ public class PresenterController extends AbstractController<IPresenter>
         super();
     }
 
-    /**
-     * Получить presenter
-     *
-     * @param name presenter name
-     * @return presenter
-     */
+    @Override
+    public synchronized void register(final IPresenter subscriber) {
+        if(subscriber != null && subscriber.isRegister()) {
+            super.register(subscriber);
+        }
+    }
+
     @Override
     public synchronized IPresenter getPresenter(final String name) {
         if (getSubscribers().containsKey(name)) {
