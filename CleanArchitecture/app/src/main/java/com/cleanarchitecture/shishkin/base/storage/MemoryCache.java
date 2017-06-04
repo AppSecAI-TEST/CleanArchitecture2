@@ -14,8 +14,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class MemoryCache implements ISubscriber, IStorage {
     public static final String NAME = "MemoryCache";
-    private static final long MAX_SIZE = 100L;
-    private static final long DURATION = 10L;
+    private static final long MAX_SIZE = 1000L;
+    private static final long DURATION = 5;
     private static final TimeUnit DURATION_TIMEUNIT = TimeUnit.MINUTES;
 
     private static volatile MemoryCache sInstance;
@@ -62,8 +62,10 @@ public class MemoryCache implements ISubscriber, IStorage {
         mLock.lock();
 
         try {
-            mValue = value;
-            mCache.put(key, value);
+            if (validate()) {
+                mValue = value;
+                mCache.put(key, value);
+            }
         } catch (Exception e) {
             ErrorController.getInstance().onError(NAME, e);
         } finally {
@@ -139,5 +141,14 @@ public class MemoryCache implements ISubscriber, IStorage {
         } finally {
             mLock.unlock();
         }
+    }
+
+    private boolean validate() {
+        final Runtime runtime = Runtime.getRuntime();
+        final long procent = 100 - (runtime.totalMemory() * 100 / runtime.maxMemory());
+        if (procent < 15) {
+            return false;
+        }
+        return true;
     }
 }
