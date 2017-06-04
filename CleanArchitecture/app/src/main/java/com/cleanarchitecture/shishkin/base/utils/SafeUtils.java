@@ -1,5 +1,6 @@
 package com.cleanarchitecture.shishkin.base.utils;
 
+import com.cleanarchitecture.shishkin.base.controller.ErrorController;
 import com.github.snowdream.android.util.Log;
 
 /**
@@ -17,10 +18,10 @@ public class SafeUtils {
         try {
             return (C) o;
         } catch (final ClassCastException cce) {
-            Log.e(LOG_TAG, "Failed to cast " + o + ".", cce);
+            ErrorController.getInstance().onError(LOG_TAG, cce);
             return null;
         } catch (final Exception e) {
-            Log.e(LOG_TAG, "Failed to cast " + o + ".", e);
+            ErrorController.getInstance().onError(LOG_TAG, e);
             return null;
         }
     }

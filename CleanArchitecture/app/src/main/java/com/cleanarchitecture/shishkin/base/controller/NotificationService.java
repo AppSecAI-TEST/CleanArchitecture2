@@ -218,7 +218,7 @@ public class NotificationService extends LiveLongBackgroundIntentService {
                 nm.notify(R.id.notification_service, notification);
             }
         } catch (Exception e) {
-            Log.e(NAME, e.getMessage());
+            ErrorController.getInstance().onError(NAME, e);
         }
     }
 

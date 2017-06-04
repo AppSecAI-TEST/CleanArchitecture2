@@ -12,6 +12,7 @@ import android.support.multidex.MultiDexApplication;
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
+import com.cleanarchitecture.shishkin.base.controller.ErrorController;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnLowMemoryEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOffEvent;

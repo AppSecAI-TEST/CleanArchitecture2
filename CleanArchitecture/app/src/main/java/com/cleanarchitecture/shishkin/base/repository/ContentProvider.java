@@ -3,6 +3,7 @@ package com.cleanarchitecture.shishkin.base.repository;
 import android.Manifest;
 import android.content.Context;
 import android.database.Cursor;
+import android.support.annotation.NonNull;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
@@ -13,6 +14,7 @@ import com.cleanarchitecture.shishkin.application.database.CleanArchitectureDb;
 import com.cleanarchitecture.shishkin.application.database.item.Contact;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryResponseGetContactsEvent;
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
+import com.cleanarchitecture.shishkin.base.controller.ErrorController;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.database.dao.AbstractReadOnlyDAO;
 import com.cleanarchitecture.shishkin.base.event.IEvent;
@@ -29,22 +31,23 @@ public class ContentProvider implements IContentProvider {
     public ContentProvider() {
     }
 
+    @NonNull
     public synchronized IEvent getContacts() {
         final RepositoryResponseGetContactsEvent event = new RepositoryResponseGetContactsEvent();
 
         final Context context = ApplicationController.getInstance();
         if (context == null) {
-            return event.setErrorCode(1);
+            return event.setErrorCode(NAME, ErrorController.ERROR_LOST_AAPLICATION_CONTEXT);
         }
 
         if (!ApplicationUtils.checkPermission(Manifest.permission.READ_CONTACTS)) {
             EventBusController.getInstance().post(new UseCaseRequestPermissionEvent(Manifest.permission.READ_CONTACTS));
-            return event.setErrorText(context.getString(R.string.permission_read_contacts));
+            return event.setErrorText(NAME, context.getString(R.string.permission_read_contacts));
         }
 
         final CleanArchitectureDb db = Controllers.getInstance().getRepository().getDbProvider().getDb(CleanArchitectureDb.class, CleanArchitectureDb.NAME);
         if (db == null) {
-            return event.setErrorText(context.getString(R.string.error_db_not_connected));
+            return event.setErrorText(NAME, context.getString(R.string.error_db_not_connected));
         }
 
         db.contactDao().delete();
@@ -69,7 +72,7 @@ public class ContentProvider implements IContentProvider {
             }
             event.setResponse(list);
         } catch (Exception e) {
-            Log.e(NAME, e.getMessage());
+            event.setErrorText(NAME, e, context.getString(R.string.error_read_phone_contacts));
         } finally {
             if (cursor != null) {
                 CloseUtils.close(cursor);

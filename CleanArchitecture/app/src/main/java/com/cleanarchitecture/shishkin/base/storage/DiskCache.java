@@ -2,6 +2,7 @@ package com.cleanarchitecture.shishkin.base.storage;
 
 import android.content.Context;
 
+import com.cleanarchitecture.shishkin.base.controller.ErrorController;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 import com.github.snowdream.android.util.Log;
 
@@ -56,7 +57,7 @@ public class DiskCache implements IStorage {
                 Paper.book(NAME).write(key, value);
             }
         } catch (Exception e) {
-            Log.e(getName(), e.getMessage());
+            ErrorController.getInstance().onError(NAME, e);
         } finally {
             mLock.unlock();
         }
@@ -75,7 +76,7 @@ public class DiskCache implements IStorage {
                 return Paper.book(NAME).read(key);
             }
         } catch (Exception e) {
-            Log.e(getName(), e.getMessage());
+            ErrorController.getInstance().onError(NAME, e);
         } finally {
             mLock.unlock();
         }
@@ -93,7 +94,7 @@ public class DiskCache implements IStorage {
         try {
             return Paper.book(NAME).read(key, defaultValue);
         } catch (Exception e) {
-            Log.e(getName(), e.getMessage());
+            ErrorController.getInstance().onError(NAME, e);
         } finally {
             mLock.unlock();
         }
@@ -111,7 +112,7 @@ public class DiskCache implements IStorage {
         try {
             Paper.book(NAME).delete(key);
         } catch (Exception e) {
-            Log.e(getName(), e.getMessage());
+            ErrorController.getInstance().onError(NAME, e);
         } finally {
             mLock.unlock();
         }
@@ -124,7 +125,7 @@ public class DiskCache implements IStorage {
         try {
             Paper.book(NAME).destroy();
         } catch (Exception e) {
-            Log.e(getName(), e.getMessage());
+            ErrorController.getInstance().onError(NAME, e);
         } finally {
             mLock.unlock();
         }

@@ -1,5 +1,6 @@
 package com.cleanarchitecture.shishkin.base.utils;
 
+import com.cleanarchitecture.shishkin.base.controller.ErrorController;
 import com.github.snowdream.android.util.Log;
 
 import java.io.Closeable;
@@ -20,7 +21,7 @@ public class CloseUtils {
                 }
             }
         } catch (IOException e) {
-            Log.e(LOG_TAG, e.getMessage(), e);
+            ErrorController.getInstance().onError(LOG_TAG, e);
         }
     }
 

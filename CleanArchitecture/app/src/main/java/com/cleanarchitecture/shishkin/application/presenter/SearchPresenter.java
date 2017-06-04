@@ -208,8 +208,6 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
                 list = new ArrayList<>();
             }
             setModel(list);
-        } else {
-            EventBusController.getInstance().post(new ShowErrorMessageEvent(event));
         }
     }
 
