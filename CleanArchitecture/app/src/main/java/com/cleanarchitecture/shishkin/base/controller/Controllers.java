@@ -45,7 +45,9 @@ public class Controllers implements ISubscriber {
         mMap = Collections.synchronizedMap(new HashMap<String, Object>());
 
         register(this);
+        register(ErrorController.getInstance());
         register(EventBusController.getInstance());
+
         register(new CrashController());
         register(new ActivityController());
         register(new LifecycleController());
@@ -70,7 +72,7 @@ public class Controllers implements ISubscriber {
                 return (C) mMap.get(controllerName);
             }
         } catch (Exception e) {
-            Log.e(NAME, e.getMessage());
+            ErrorController.getInstance().onError(NAME, e);
         }
         return null;
     }

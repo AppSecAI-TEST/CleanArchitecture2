@@ -95,8 +95,6 @@ public class IntentUtils {
 
         if (canStartActivity(context, intent)) {
             context.startActivity(intent);
-        } else {
-            Log.e(LOG_TAG, "Can't open web link in browser. No app found to handle intent.");
         }
     }
 

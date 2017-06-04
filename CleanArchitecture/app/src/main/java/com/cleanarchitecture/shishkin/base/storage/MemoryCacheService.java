@@ -38,15 +38,11 @@ public class MemoryCacheService extends LiveLongBackgroundIntentService {
 
     public synchronized static void put(final Context context, final String key, final Serializable object) {
         if (context != null) {
-            try {
-                final Intent intent = IntentUtils.createActionIntent(context, MemoryCacheService.class,
-                        ACTION_PUT);
-                intent.putExtra(Intent.EXTRA_TEXT, key);
-                intent.putExtra(EXTRA_SERIALIZABLE, object);
-                context.startService(intent);
-            } catch (Exception e) {
-                Log.e(LOG_TAG, e.getMessage());
-            }
+            final Intent intent = IntentUtils.createActionIntent(context, MemoryCacheService.class,
+                    ACTION_PUT);
+            intent.putExtra(Intent.EXTRA_TEXT, key);
+            intent.putExtra(EXTRA_SERIALIZABLE, object);
+            context.startService(intent);
         }
     }
 
@@ -93,29 +89,17 @@ public class MemoryCacheService extends LiveLongBackgroundIntentService {
 
     @WorkerThread
     private void onHandlePutAction(final String key, final Serializable object) {
-        try {
-            MemoryCache.getInstance().put(key, object);
-        } catch (Exception e) {
-            Log.e(LOG_TAG, e.getMessage());
-        }
+        MemoryCache.getInstance().put(key, object);
     }
 
     @WorkerThread
     private void onHandleClearAction(final String key) {
-        try {
-            MemoryCache.getInstance().clear(key);
-        } catch (Exception e) {
-            Log.e(LOG_TAG, e.getMessage());
-        }
+        MemoryCache.getInstance().clear(key);
     }
 
     @WorkerThread
     private void onHandleClearAllAction() {
-        try {
-            MemoryCache.getInstance().clearAll();
-        } catch (Exception e) {
-            Log.e(LOG_TAG, e.getMessage());
-        }
+        MemoryCache.getInstance().clearAll();
     }
 
 }

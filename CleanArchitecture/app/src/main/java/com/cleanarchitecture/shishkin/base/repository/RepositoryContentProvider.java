@@ -24,7 +24,7 @@ public class RepositoryContentProvider {
             final RepositoryResponseGetContactsEvent responseEvent = (RepositoryResponseGetContactsEvent) Controllers.getInstance().getContentProvider().getContacts();
             responseEvent.setFrom(Repository.FROM_CONTENT_PROVIDER);
 
-            if (responseEvent.getResponse() != null && !responseEvent.hasError()) {
+            if (!responseEvent.hasError()) {
                 Controllers.getInstance().getRepository().putToCache(String.valueOf(event.getId()), event.getCacheType(), (Serializable) responseEvent.getResponse());
             }
 

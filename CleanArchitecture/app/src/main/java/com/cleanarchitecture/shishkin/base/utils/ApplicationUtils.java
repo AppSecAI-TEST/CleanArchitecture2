@@ -17,6 +17,7 @@ import android.support.v4.app.ActivityCompat;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
+import com.cleanarchitecture.shishkin.base.controller.ErrorController;
 import com.github.snowdream.android.util.Log;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -74,7 +75,7 @@ public class ApplicationUtils {
                 d.setColorFilter(color, PorterDuff.Mode.SRC_IN);
             }
         } catch (final Resources.NotFoundException rnfe) {
-            Log.e(LOG_TAG, "Failed to find drawable for resource " + drawable, rnfe);
+            ErrorController.getInstance().onError(LOG_TAG, rnfe);
         }
     }
 
@@ -220,7 +221,7 @@ public class ApplicationUtils {
                 }
             }
         } catch (Exception e) {
-            Log.e(LOG_TAG, e.getMessage());
+            ErrorController.getInstance().onError(LOG_TAG, e);
         }
         return false;
     }

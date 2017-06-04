@@ -5,9 +5,9 @@ import android.content.Intent;
 import android.support.annotation.WorkerThread;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
+import com.cleanarchitecture.shishkin.base.controller.ErrorController;
 import com.cleanarchitecture.shishkin.base.controller.LiveLongBackgroundIntentService;
 import com.cleanarchitecture.shishkin.base.utils.IntentUtils;
-import com.github.snowdream.android.util.Log;
 
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
@@ -38,15 +38,11 @@ public class DiskCacheService extends LiveLongBackgroundIntentService {
 
     public synchronized static void put(final Context context, final String key, final Serializable object) {
         if (context != null) {
-            try {
-                final Intent intent = IntentUtils.createActionIntent(context, DiskCacheService.class,
-                        ACTION_PUT);
-                intent.putExtra(Intent.EXTRA_TEXT, key);
-                intent.putExtra(EXTRA_SERIALIZABLE, object);
-                context.startService(intent);
-            } catch (Exception e) {
-                Log.e(LOG_TAG, e.getMessage());
-            }
+            final Intent intent = IntentUtils.createActionIntent(context, DiskCacheService.class,
+                    ACTION_PUT);
+            intent.putExtra(Intent.EXTRA_TEXT, key);
+            intent.putExtra(EXTRA_SERIALIZABLE, object);
+            context.startService(intent);
         }
     }
 
@@ -93,29 +89,17 @@ public class DiskCacheService extends LiveLongBackgroundIntentService {
 
     @WorkerThread
     private void onHandlePutAction(final String key, final Serializable object) {
-        try {
-            DiskCache.getInstance(getApplicationContext()).put(key, object);
-        } catch (Exception e) {
-            Log.e(LOG_TAG, e.getMessage());
-        }
+        DiskCache.getInstance(getApplicationContext()).put(key, object);
     }
 
     @WorkerThread
     private void onHandleClearAction(final String key) {
-        try {
-            DiskCache.getInstance(getApplicationContext()).clear(key);
-        } catch (Exception e) {
-            Log.e(LOG_TAG, e.getMessage());
-        }
+        DiskCache.getInstance(getApplicationContext()).clear(key);
     }
 
     @WorkerThread
     private void onHandleClearAllAction() {
-        try {
-            DiskCache.getInstance(getApplicationContext()).clearAll();
-        } catch (Exception e) {
-            Log.e(LOG_TAG, e.getMessage());
-        }
+        DiskCache.getInstance(getApplicationContext()).clearAll();
     }
 
 }

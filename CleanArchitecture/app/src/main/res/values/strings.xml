@@ -37,7 +37,11 @@
     <string name="db_updated">БД %s обновлена</string>
 
     <string name="error_db_not_connected">Отсутствует соединение с БД</string>
+    <string name="error_get_data">Ошибка получения данных</string>
+    <string name="error_db">Ошибка базы данных</string>
     <string name="error_db_app_not_loaded">Приложение не запущено</string>
     <string name="error">Ошибка</string>
+    <string name="error_read_phone_contacts">Ошибка чтения телефонных контактов</string>
+    <string name="error_application">Ошибка в приложении</string>
 
 </resources>

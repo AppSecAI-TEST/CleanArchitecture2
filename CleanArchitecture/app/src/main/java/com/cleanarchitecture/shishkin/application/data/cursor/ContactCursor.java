@@ -18,30 +18,22 @@ public class ContactCursor {
     public static Cursor getCursor(@NonNull final Context context) {
         final String selection = PhoneContactDAO.Columns.HAS_PHONE_NUMBER + " > 0";
         Cursor cur = null;
-        try {
-            final ContentResolver cr = context.getContentResolver();
-            if (cr != null) {
-                cur = cr.query(PhoneContactDAO.CONTENT_URI, PhoneContactDAO.PROJECTION, selection, null, "upper(" + PhoneContactDAO.Columns.DISPLAY_NAME + ") asc");
-            }
-        } catch (Exception e) {
-            Log.e(LOG_TAG, e.getMessage());
+        final ContentResolver cr = context.getContentResolver();
+        if (cr != null) {
+            cur = cr.query(PhoneContactDAO.CONTENT_URI, PhoneContactDAO.PROJECTION, selection, null, "upper(" + PhoneContactDAO.Columns.DISPLAY_NAME + ") asc");
         }
         return cur;
     }
 
     public static Cursor getCursor(@NonNull final Context context, final String search) {
         Cursor cur = null;
-        try {
-            final ContentResolver cr = context.getContentResolver();
-            if (cr != null) {
-                String selection = PhoneContactDAO.Columns.HAS_PHONE_NUMBER + " > 0";
-                if (!StringUtils.isNullOrEmpty(search)) {
-                    selection += " and " + PhoneContactDAO.Columns.DISPLAY_NAME + " like '%" + search + "%'";
-                }
-                cur = cr.query(PhoneContactDAO.CONTENT_URI, PhoneContactDAO.PROJECTION, selection, null, "upper(" + PhoneContactDAO.Columns.DISPLAY_NAME + ") asc");
+        final ContentResolver cr = context.getContentResolver();
+        if (cr != null) {
+            String selection = PhoneContactDAO.Columns.HAS_PHONE_NUMBER + " > 0";
+            if (!StringUtils.isNullOrEmpty(search)) {
+                selection += " and " + PhoneContactDAO.Columns.DISPLAY_NAME + " like '%" + search + "%'";
             }
-        } catch (Exception e) {
-            Log.e(LOG_TAG, e.getMessage());
+            cur = cr.query(PhoneContactDAO.CONTENT_URI, PhoneContactDAO.PROJECTION, selection, null, "upper(" + PhoneContactDAO.Columns.DISPLAY_NAME + ") asc");
         }
         return cur;
     }

@@ -13,10 +13,21 @@ public interface IEvent {
     /**
      * Установить текст ошибки
      *
+     * @param sender отправитель события
      * @param error текст ошибки
      * @return событие
      */
-    IEvent setErrorText(String error);
+    IEvent setErrorText(String sender, String error);
+
+    /**
+     * Установить текст ошибки
+     *
+     * @param sender отправитель события
+     * @param e Exception
+     * @param error текст ошибки
+     * @return событие
+     */
+    IEvent setErrorText(String sender, Exception e, String error);
 
     /**
      * Получить код ошибки
@@ -28,10 +39,11 @@ public interface IEvent {
     /**
      * Установить код ошибки
      *
+     * @param sender отправитель события
      * @param code код ошибки
      * @return событие
      */
-    IEvent setErrorCode(int code);
+    IEvent setErrorCode(String sender, int code);
 
     /**
      * Флаг - имеет ли событие ошибку
@@ -56,18 +68,18 @@ public interface IEvent {
     IEvent setId(int id);
 
     /**
-     * Получить отправителя события
+     * Получить имя отправителя события
      *
      * @return отправитель события
      */
-    Object getSender();
+    String getSender();
 
     /**
-     * Установить отправителя события
+     * Установить имя отправителя события
      *
      * @param sender отправитель события
      * @return событие
      */
-    IEvent setSender(final Object sender);
+    IEvent setSender(final String sender);
 
 }

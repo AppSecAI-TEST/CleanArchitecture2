@@ -1,5 +1,6 @@
 package com.cleanarchitecture.shishkin.base.storage;
 
+import com.cleanarchitecture.shishkin.base.controller.ErrorController;
 import com.cleanarchitecture.shishkin.base.controller.ISubscriber;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 import com.github.snowdream.android.util.Log;
@@ -65,7 +66,7 @@ public class MemoryCache implements ISubscriber, IStorage {
             mValue = value;
             mCache.put(key, value);
         } catch (Exception e) {
-            Log.e(NAME, e.getMessage());
+            ErrorController.getInstance().onError(NAME, e);
         } finally {
             mLock.unlock();
         }
@@ -82,7 +83,7 @@ public class MemoryCache implements ISubscriber, IStorage {
         try {
             return mCache.getIfPresent(key);
         } catch (Exception e) {
-            Log.e(NAME, e.getMessage());
+            ErrorController.getInstance().onError(NAME, e);
         } finally {
             mLock.unlock();
         }
@@ -104,7 +105,7 @@ public class MemoryCache implements ISubscriber, IStorage {
             }
             return value;
         } catch (Exception e) {
-            Log.e(NAME, e.getMessage());
+            ErrorController.getInstance().onError(NAME, e);
         } finally {
             mLock.unlock();
         }
@@ -122,7 +123,7 @@ public class MemoryCache implements ISubscriber, IStorage {
         try {
             mCache.invalidate(key);
         } catch (Exception e) {
-            Log.e(NAME, e.getMessage());
+            ErrorController.getInstance().onError(NAME, e);
         } finally {
             mLock.unlock();
         }
@@ -135,7 +136,7 @@ public class MemoryCache implements ISubscriber, IStorage {
         try {
             mCache.invalidateAll();
         } catch (Exception e) {
-            Log.e(NAME, e.getMessage());
+            ErrorController.getInstance().onError(NAME, e);
         } finally {
             mLock.unlock();
         }

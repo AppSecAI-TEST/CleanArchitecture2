@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
+import com.cleanarchitecture.shishkin.base.controller.ErrorController;
 import com.cleanarchitecture.shishkin.base.controller.INavigationSubscriber;
 import com.cleanarchitecture.shishkin.base.controller.ISubscriber;
 import com.cleanarchitecture.shishkin.base.event.ui.HideKeyboardEvent;
@@ -26,7 +27,7 @@ import java.util.List;
 public abstract class AbstractContentActivity extends AbstractActivity
         implements ActivityResultListener, INavigationSubscriber {
 
-    private static final String LOG = "AbstractContentActivity";
+    private static final String NAME = "AbstractContentActivity";
 
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
@@ -126,7 +127,7 @@ public abstract class AbstractContentActivity extends AbstractActivity
                 }
             }
         } catch (Exception e) {
-            Log.e(LOG, e.getMessage());
+            ErrorController.getInstance().onError(NAME, e);
         }
         return false;
     }
@@ -247,7 +248,7 @@ public abstract class AbstractContentActivity extends AbstractActivity
                     replace(R.id.toolbar, mToolbar, ToolbarFragment.NAME).
                     commitAllowingStateLoss();
         } catch (Exception e) {
-            Log.e(LOG, e.getMessage());
+            ErrorController.getInstance().onError(NAME, e);
         }
     }
 

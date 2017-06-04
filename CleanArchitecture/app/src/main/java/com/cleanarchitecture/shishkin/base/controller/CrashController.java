@@ -17,7 +17,7 @@ public class CrashController implements Thread.UncaughtExceptionHandler, ISubscr
     @Override
     public void uncaughtException(Thread thread, Throwable throwable) {
         android.util.Log.e(NAME, throwable.getMessage(), throwable);
-        Log.e(NAME, throwable);
+        ErrorController.getInstance().onError(NAME, throwable);
         if (mHandler != null) {
             mHandler.uncaughtException(thread, throwable);
         }

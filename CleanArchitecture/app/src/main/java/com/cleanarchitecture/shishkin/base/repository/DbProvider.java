@@ -9,8 +9,10 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
+import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.application.database.CleanArchitectureDb;
+import com.cleanarchitecture.shishkin.base.controller.ErrorController;
 import com.cleanarchitecture.shishkin.base.room.AbstractViewModel;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
@@ -65,7 +67,7 @@ public class DbProvider<H extends AbstractViewModel> implements IDbProvider, Lif
                     .build();
             mDb.put(databaseName, db);
         } catch (Exception e) {
-            Log.e(NAME, e.getMessage());
+            ErrorController.getInstance().onError(NAME, e, ErrorController.ERROR_DB);
         }
         return isConnected(databaseName);
     }
@@ -85,7 +87,7 @@ public class DbProvider<H extends AbstractViewModel> implements IDbProvider, Lif
                 db.close();
                 mDb.remove(databaseName);
             } catch (Exception e) {
-                Log.e(NAME, e.getMessage());
+                ErrorController.getInstance().onError(NAME, e, ErrorController.ERROR_DB);
             }
         }
         return !isConnected(databaseName);
@@ -147,7 +149,7 @@ public class DbProvider<H extends AbstractViewModel> implements IDbProvider, Lif
                 }
             }
         } catch (Exception e) {
-            Log.e(NAME, e.getMessage());
+            ErrorController.getInstance().onError(NAME, e, ErrorController.ERROR_DB);
         }
 
         connect(klass, nameDb);
@@ -187,7 +189,7 @@ public class DbProvider<H extends AbstractViewModel> implements IDbProvider, Lif
                     }
                 }
             } catch (Exception e) {
-                Log.e(NAME, e.getMessage());
+                ErrorController.getInstance().onError(NAME, e, ErrorController.ERROR_DB);
             }
         }
 
@@ -215,7 +217,7 @@ public class DbProvider<H extends AbstractViewModel> implements IDbProvider, Lif
                     viewModel.getLiveData().observe(this, observer);
                 }
             } catch (Exception e) {
-                Log.e(NAME, e.getMessage());
+                ErrorController.getInstance().onError(NAME, e, ErrorController.ERROR_GET_DATA);
             }
         }
     }
@@ -232,7 +234,7 @@ public class DbProvider<H extends AbstractViewModel> implements IDbProvider, Lif
                     }
                 }
             } catch (Exception e) {
-                Log.e(NAME, e.getMessage());
+                ErrorController.getInstance().onError(NAME, e, ErrorController.ERROR_GET_DATA);
             }
         });
     }
@@ -255,7 +257,7 @@ public class DbProvider<H extends AbstractViewModel> implements IDbProvider, Lif
                 }
             }
         } catch (Exception e) {
-            Log.e(NAME, e.getMessage());
+            ErrorController.getInstance().onError(NAME, e, ErrorController.ERROR_GET_DATA);
         }
     }
 
