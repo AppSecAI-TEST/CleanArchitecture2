@@ -182,7 +182,7 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
     public void onChanged(@Nullable List<PhoneContactItem> list) {
         setModel(list);
     }
-    
+
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public synchronized void onSearchPresenterItemClick(OnSearchPresenterItemClick event) {
         if (ApplicationUtils.checkPermission(Manifest.permission.CALL_PHONE)) {

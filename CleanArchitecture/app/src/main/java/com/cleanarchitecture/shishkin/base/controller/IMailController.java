@@ -4,21 +4,7 @@ import com.cleanarchitecture.shishkin.base.mail.IMail;
 
 import java.util.List;
 
-public interface IMailController {
-
-    /**
-     * Register subscriber.
-     *
-     * @param subscriber the subscriber
-     */
-    void register(IMailSubscriber subscriber);
-
-    /**
-     * Unregister subscriber.
-     *
-     * @param subscriber the subscriber
-     */
-    void unregister(IMailSubscriber subscriber);
+public interface IMailController extends IController<IMailSubscriber> {
 
     /**
      * Get mails list for subscriber.

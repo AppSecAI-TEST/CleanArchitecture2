@@ -3,28 +3,7 @@ package com.cleanarchitecture.shishkin.base.controller;
 /**
  * Контроллер навигации приложения.
  */
-public interface INavigationController extends ISubscriber {
-
-    /**
-     * Зарегистрировать подписчика
-     *
-     * @param subscriber подписчик
-     */
-    void register(INavigationSubscriber subscriber);
-
-    /**
-     * Отключить подписчика
-     *
-     * @param subscriber подписчик
-     */
-    void unregister(INavigationSubscriber subscriber);
-
-    /**
-     * Получить подписчика
-     *
-     * @return подписчик
-     */
-    INavigationSubscriber getSubscriber();
+public interface INavigationController extends IController<INavigationSubscriber> {
 
     /**
      * Получить фрагмент по его id.
@@ -44,12 +23,5 @@ public interface INavigationController extends ISubscriber {
      * @return ContentFragment
      */
     <F> F getContentFragment(final Class<F> cls);
-
-    /**
-     * Установить текущего подписчика
-     *
-     * @param subscriber подписчик
-     */
-    void setCurrentSubscriber(INavigationSubscriber subscriber);
 
 }
