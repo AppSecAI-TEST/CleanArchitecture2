@@ -6,7 +6,7 @@ import com.github.snowdream.android.util.Log;
 /**
  * Контроллер ошибок
  */
-public class ErrorController extends AbstractController {
+public class ErrorController extends AbstractController implements IErrorController{
     public static final String NAME = "ErrorController";
     private static volatile ErrorController sInstance;
 
@@ -29,29 +29,36 @@ public class ErrorController extends AbstractController {
     private ErrorController() {
     }
 
+    @Override
     public synchronized void onError(final String source, final Exception e) {
         Log.e(source, e.getMessage());
     }
 
+    @Override
     public synchronized void onError(final String source, final Throwable throwable) {
         Log.e(source, throwable.getMessage());
     }
 
+    @Override
     public synchronized void onError(final String source, final Exception e, final String displayMessage) {
         onError(source, e);
 
         EventBusController.getInstance().post(new ShowErrorMessageEvent(displayMessage));
     }
 
+    @Override
     public synchronized void onError(final String source, final Exception e, final int errorCode) {
         onError(source, e);
 
         EventBusController.getInstance().post(new ShowErrorMessageEvent(errorCode));
     }
+
+    @Override
     public synchronized void onError(final String source, final String displayMessage) {
         EventBusController.getInstance().post(new ShowErrorMessageEvent(displayMessage));
     }
 
+    @Override
     public synchronized void onError(final String source, final int errorCode) {
         EventBusController.getInstance().post(new ShowErrorMessageEvent(errorCode));
     }
