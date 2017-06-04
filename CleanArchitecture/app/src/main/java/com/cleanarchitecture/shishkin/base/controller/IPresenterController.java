@@ -2,21 +2,7 @@ package com.cleanarchitecture.shishkin.base.controller;
 
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
 
-public interface IPresenterController {
-
-    /**
-     * Зарегистрировать presenter
-     *
-     * @param presenter presenter
-     */
-    void register(IPresenter presenter);
-
-    /**
-     * Отключить presenter
-     *
-     * @param presenter presenter
-     */
-    void unregister(IPresenter presenter);
+public interface IPresenterController extends IController<IPresenter> {
 
     /**
      * Получить presenter

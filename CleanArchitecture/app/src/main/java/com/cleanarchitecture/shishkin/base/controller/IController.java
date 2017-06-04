@@ -1,7 +1,5 @@
 package com.cleanarchitecture.shishkin.base.controller;
 
-import com.cleanarchitecture.shishkin.base.ui.activity.IActivity;
-
 import java.lang.ref.WeakReference;
 import java.util.Map;
 

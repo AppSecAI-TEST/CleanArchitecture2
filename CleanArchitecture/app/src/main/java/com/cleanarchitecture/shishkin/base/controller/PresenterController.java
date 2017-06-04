@@ -3,56 +3,19 @@ package com.cleanarchitecture.shishkin.base.controller;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
 
 import java.lang.ref.WeakReference;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Контроллер презенторов приложения
  */
 @SuppressWarnings("unused")
-public class PresenterController extends AbstractController
+public class PresenterController extends AbstractController<IPresenter>
         implements IPresenterController {
 
     public static final String NAME = "PresenterController";
-    private Map<String, WeakReference<IPresenter>> mPresenters = Collections.synchronizedMap(new HashMap<String, WeakReference<IPresenter>>());
 
     public PresenterController() {
-        mPresenters = Collections.synchronizedMap(new HashMap<String, WeakReference<IPresenter>>());
-    }
-
-    /**
-     * Зарегистрировать presenter
-     *
-     * @param presenter presenter
-     */
-    @Override
-    public synchronized void register(final IPresenter presenter) {
-        if (presenter != null) {
-            if (presenter.isRegister()) {
-                checkNullSubscriber();
-
-                mPresenters.put(presenter.getName(), new WeakReference<IPresenter>(presenter));
-            }
-        }
-    }
-
-    /**
-     * Отключить presenter
-     *
-     * @param presenter presenter
-     */
-    @Override
-    public synchronized void unregister(final IPresenter presenter) {
-        if (presenter != null) {
-            if (presenter.isRegister()) {
-                if (mPresenters.containsKey(presenter.getName())) {
-                    mPresenters.remove(presenter.getName());
-                }
-
-                checkNullSubscriber();
-            }
-        }
+        super();
     }
 
     /**
@@ -63,22 +26,14 @@ public class PresenterController extends AbstractController
      */
     @Override
     public synchronized IPresenter getPresenter(final String name) {
-        if (mPresenters.containsKey(name)) {
-            for (Map.Entry<String, WeakReference<IPresenter>> entry : mPresenters.entrySet()) {
+        if (getSubscribers().containsKey(name)) {
+            for (Map.Entry<String, WeakReference<IPresenter>> entry : getSubscribers().entrySet()) {
                 if (entry.getValue().get().getName().equalsIgnoreCase(name)) {
                     return entry.getValue().get();
                 }
             }
         }
         return null;
-    }
-
-    private synchronized void checkNullSubscriber() {
-        for (Map.Entry<String, WeakReference<IPresenter>> entry : mPresenters.entrySet()) {
-            if (entry.getValue().get() == null) {
-                mPresenters.remove(entry.getKey());
-            }
-        }
     }
 
     @Override

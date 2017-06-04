@@ -1,8 +1,5 @@
 package com.cleanarchitecture.shishkin.base.controller;
 
-import com.cleanarchitecture.shishkin.base.ui.activity.AbstractActivity;
-import com.cleanarchitecture.shishkin.base.ui.activity.IActivity;
-
 import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,7 +20,7 @@ public abstract class AbstractController<T> implements IController<T> {
             checkNullSubscriber();
 
             if (subscriber instanceof ISubscriber) {
-                mSubscribers.put(((ISubscriber)subscriber).getName(), new WeakReference<T>(subscriber));
+                mSubscribers.put(((ISubscriber) subscriber).getName(), new WeakReference<T>(subscriber));
             }
         }
 
@@ -41,15 +38,15 @@ public abstract class AbstractController<T> implements IController<T> {
     public synchronized void unregister(final T subscriber) {
         if (subscriber != null) {
             if (mCurrentSubscriber != null && mCurrentSubscriber.get() != null) {
-                if (((ISubscriber)subscriber).getName().equalsIgnoreCase(((ISubscriber)mCurrentSubscriber.get()).getName())) {
+                if (((ISubscriber) subscriber).getName().equalsIgnoreCase(((ISubscriber) mCurrentSubscriber.get()).getName())) {
                     mCurrentSubscriber.clear();
                     mCurrentSubscriber = null;
                 }
             }
 
             if (subscriber instanceof ISubscriber) {
-                if (mSubscribers.containsKey(((ISubscriber)subscriber).getName())) {
-                    mSubscribers.remove(((ISubscriber)subscriber).getName());
+                if (mSubscribers.containsKey(((ISubscriber) subscriber).getName())) {
+                    mSubscribers.remove(((ISubscriber) subscriber).getName());
                 }
             }
 
@@ -65,8 +62,8 @@ public abstract class AbstractController<T> implements IController<T> {
     }
 
     @Override
-    public T getCurrentSubscriber() {
-        if(mCurrentSubscriber != null) {
+    public synchronized T getCurrentSubscriber() {
+        if (mCurrentSubscriber != null) {
             return mCurrentSubscriber.get();
         }
         return null;
