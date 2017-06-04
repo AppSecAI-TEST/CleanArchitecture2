@@ -15,23 +15,19 @@ import com.annimon.stream.Stream;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
-import com.cleanarchitecture.shishkin.application.database.item.Contact;
-import com.cleanarchitecture.shishkin.application.database.viewmodel.ContactViewModel;
+import com.cleanarchitecture.shishkin.application.database.viewmodel.PhoneContactViewModel;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
-import com.cleanarchitecture.shishkin.application.event.repository.RepositoryResponseGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.event.searchpresenter.OnSearchPresenterItemClick;
 import com.cleanarchitecture.shishkin.application.ui.adapter.ContactRecyclerViewAdapter;
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.DialogResultEvent;
-import com.cleanarchitecture.shishkin.base.event.ui.HideHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.HideKeyboardEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowListDialogEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowToastEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
-import com.cleanarchitecture.shishkin.base.observer.Debounce;
 import com.cleanarchitecture.shishkin.base.presenter.AbstractPresenter;
 import com.cleanarchitecture.shishkin.base.repository.IObserver;
 import com.cleanarchitecture.shishkin.base.repository.Repository;
@@ -63,7 +59,7 @@ import io.reactivex.functions.Consumer;
 
 @SuppressWarnings("unused")
 public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
-        implements Consumer<TextViewAfterTextChangeEvent>, IObserver<List<Contact>> {
+        implements Consumer<TextViewAfterTextChangeEvent>, IObserver<List<PhoneContactItem>> {
     public static final String NAME = "SearchPresenter";
 
     private WeakReference<EditText> mSearchView;
@@ -71,7 +67,6 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
     private ContactRecyclerViewAdapter mContactAdapter;
     private String mCurrentFilter = null;
     private Disposable mDisposableSearchView;
-    private Debounce mDebounce;
 
     public SearchPresenter() {
         super();
@@ -80,26 +75,6 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
     public void bindView(@NonNull final View root, final AbstractContentFragment fragment) {
 
         EventBusController.getInstance().register(this);
-
-        mDebounce = new Debounce(TimeUnit.SECONDS.toMillis(2), 1) {
-            @Override
-            public void run() {
-                EventBusController.getInstance().post(new ShowToastEvent("Контактов: " + this.getObject().toString()));
-            }
-        };
-
-        Controllers.getInstance().getDbProvider().observe(fragment.getLifecycleActivity(), ContactViewModel.NAME, ContactViewModel.class, this);
-
-        final EditText searchView = ViewUtils.findView(root, R.id.search);
-        if (searchView != null) {
-            mDisposableSearchView = RxTextView.afterTextChangeEvents(searchView)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .debounce(1000, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
-                    .subscribe(this);
-
-            mSearchView = new WeakReference<>(searchView);
-            searchView.setText(mCurrentFilter);
-        }
 
         final FastScrollRecyclerView recyclerView = ViewUtils.findView(root, R.id.list);
         if (recyclerView != null) {
@@ -117,16 +92,24 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
 
             mRecyclerView = new WeakReference<>(recyclerView);
         }
-    }
 
-    private void onChangeData(final List<Contact> list) {
-        mDebounce.onEvent(String.valueOf(list.size()));
+        final EditText searchView = ViewUtils.findView(root, R.id.search);
+        if (searchView != null) {
+            mDisposableSearchView = RxTextView.afterTextChangeEvents(searchView)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .debounce(1000, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+                    .subscribe(this);
+
+            mSearchView = new WeakReference<>(searchView);
+            searchView.setText(mCurrentFilter);
+        }
+
+        Controllers.getInstance().getDbProvider().observe(fragment.getLifecycleActivity(), PhoneContactViewModel.NAME, PhoneContactViewModel.class, this);
     }
 
     @Override
     public void onDestroyLifecycle() {
-        Controllers.getInstance().getDbProvider().removeObserver(ContactViewModel.NAME, this);
-        mDebounce.finish();
+        Controllers.getInstance().getDbProvider().removeObserver(PhoneContactViewModel.NAME, this);
         mSearchView = null;
         mRecyclerView = null;
         if (!mDisposableSearchView.isDisposed()) {
@@ -171,9 +154,6 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
             mCurrentFilter = event.view().getText().toString();
             if (getModel() != null && !getModel().isEmpty()) {
                 updateView();
-            } else {
-                EventBusController.getInstance().post(new ShowHorizontalProgressBarEvent());
-                EventBusController.getInstance().post(new RepositoryRequestGetContactsEvent(Repository.USE_ONLY_CACHE));
             }
         }
     }
@@ -198,18 +178,11 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
         });
     }
 
-    @Subscribe(threadMode = ThreadMode.ASYNC)
-    public synchronized void onResponseGetContactsEvent(RepositoryResponseGetContactsEvent event) {
-        EventBusController.getInstance().post(new HideHorizontalProgressBarEvent());
-        if (!event.hasError()) {
-            List<PhoneContactItem> list = event.getResponse();
-            if (list == null) {
-                list = new ArrayList<>();
-            }
-            setModel(list);
-        }
+    @Override
+    public void onChanged(@Nullable List<PhoneContactItem> list) {
+        setModel(list);
     }
-
+    
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public synchronized void onSearchPresenterItemClick(OnSearchPresenterItemClick event) {
         if (ApplicationUtils.checkPermission(Manifest.permission.CALL_PHONE)) {
@@ -257,8 +230,4 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
         }
     }
 
-    @Override
-    public void onChanged(@Nullable List<Contact> contacts) {
-        onChangeData(contacts);
-    }
 }

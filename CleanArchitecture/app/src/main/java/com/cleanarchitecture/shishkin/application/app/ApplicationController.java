@@ -1,6 +1,5 @@
 package com.cleanarchitecture.shishkin.application.app;
 
-import android.Manifest;
 import android.content.Context;
 import android.os.Environment;
 import android.support.multidex.MultiDex;

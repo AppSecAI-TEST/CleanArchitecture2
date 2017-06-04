@@ -1,6 +1,7 @@
-package com.cleanarchitecture.shishkin.base.observer;
+package com.cleanarchitecture.shishkin.base.room;
 
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
+import com.cleanarchitecture.shishkin.base.observer.Debounce;
 
 import java.util.concurrent.TimeUnit;
 
