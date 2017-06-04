@@ -1,7 +1,5 @@
 package com.cleanarchitecture.shishkin.base.controller;
 
-import com.github.snowdream.android.util.Log;
-
 /**
  * Контроллер, протоколирующий Uncaught Exception
  */

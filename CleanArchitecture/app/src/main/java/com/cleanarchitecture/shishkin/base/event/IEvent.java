@@ -14,7 +14,7 @@ public interface IEvent {
      * Установить текст ошибки
      *
      * @param sender отправитель события
-     * @param error текст ошибки
+     * @param error  текст ошибки
      * @return событие
      */
     IEvent setErrorText(String sender, String error);
@@ -23,8 +23,8 @@ public interface IEvent {
      * Установить текст ошибки
      *
      * @param sender отправитель события
-     * @param e Exception
-     * @param error текст ошибки
+     * @param e      Exception
+     * @param error  текст ошибки
      * @return событие
      */
     IEvent setErrorText(String sender, Exception e, String error);
@@ -40,7 +40,7 @@ public interface IEvent {
      * Установить код ошибки
      *
      * @param sender отправитель события
-     * @param code код ошибки
+     * @param code   код ошибки
      * @return событие
      */
     IEvent setErrorCode(String sender, int code);

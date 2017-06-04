@@ -1,7 +1,6 @@
 package com.cleanarchitecture.shishkin.base.utils;
 
 import com.cleanarchitecture.shishkin.base.controller.ErrorController;
-import com.github.snowdream.android.util.Log;
 
 /**
  * {@code SafeUtils} contains static methods to perform safe operation like object casting.

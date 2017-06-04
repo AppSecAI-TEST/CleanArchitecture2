@@ -10,8 +10,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.github.snowdream.android.util.Log;
-
 /**
  * {@code IntentUtils} contains static methods which operate with {@code Intent}.
  */

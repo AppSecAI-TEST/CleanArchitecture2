@@ -1,5 +1,11 @@
 package com.cleanarchitecture.shishkin.base.usecases;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+
+import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.AbstractController;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionDeniedEvent;
@@ -14,8 +20,6 @@ import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissio
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.concurrent.locks.ReentrantLock;
-
 /**
  * Контроллер бизнес и пользовательской логики в приложении
  */
@@ -25,6 +29,31 @@ public class UseCasesController extends AbstractController implements IUseCasesC
 
     public UseCasesController() {
         EventBusController.getInstance().register(this);
+    }
+
+    private void registerScreenOnOffBroadcastReceiver() {
+        final Context context = ApplicationController.getInstance();
+        if (context != null) {
+            final IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(Intent.ACTION_SCREEN_ON);
+            intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+
+            final BroadcastReceiver screenOnOffReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    final String strAction = intent.getAction();
+
+                    if (strAction.equals(Intent.ACTION_SCREEN_OFF)) {
+                        EventBusController.getInstance().post(new UseCaseOnScreenOffEvent());
+                    } else {
+                        EventBusController.getInstance().post(new UseCaseOnScreenOnEvent());
+                    }
+                }
+            };
+
+            context.registerReceiver(screenOnOffReceiver, intentFilter);
+        }
+
     }
 
     @Override

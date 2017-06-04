@@ -11,7 +11,7 @@ public class BackupDbTask extends AbstractAsyncTask {
     public void run() {
         final IRepository repository = Controllers.getInstance().getRepository();
         if (repository != null) {
-            repository.getDbProvider().backup(CleanArchitectureDb.NAME, ApplicationController.APPLICATION_PATH);
+            repository.getDbProvider().backup(CleanArchitectureDb.NAME, ApplicationController.EXTERNAL_STORAGE_APPLICATION_PATH);
         }
     }
 }

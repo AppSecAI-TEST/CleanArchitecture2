@@ -16,7 +16,6 @@ import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.IntentUtils;
 import com.cleanarchitecture.shishkin.base.utils.SerializableUtil;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
-import com.github.snowdream.android.util.Log;
 
 import java.util.Collections;
 import java.util.LinkedList;

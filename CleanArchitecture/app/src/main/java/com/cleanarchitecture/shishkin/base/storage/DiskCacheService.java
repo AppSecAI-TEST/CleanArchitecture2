@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.annotation.WorkerThread;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
-import com.cleanarchitecture.shishkin.base.controller.ErrorController;
 import com.cleanarchitecture.shishkin.base.controller.LiveLongBackgroundIntentService;
 import com.cleanarchitecture.shishkin.base.utils.IntentUtils;
 

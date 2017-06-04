@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 
 import com.cleanarchitecture.shishkin.application.data.dao.PhoneContactDAO;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
-import com.github.snowdream.android.util.Log;
 
 public class ContactCursor {
     private final static String LOG_TAG = "ContactCursor:";

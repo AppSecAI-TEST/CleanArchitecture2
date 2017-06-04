@@ -9,18 +9,16 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.application.database.CleanArchitectureDb;
 import com.cleanarchitecture.shishkin.base.controller.ErrorController;
-import com.cleanarchitecture.shishkin.base.room.AbstractViewModel;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.observer.ViewModelDebounce;
+import com.cleanarchitecture.shishkin.base.room.AbstractViewModel;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.SafeUtils;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
-import com.github.snowdream.android.util.Log;
 import com.google.common.io.Files;
 
 import org.greenrobot.eventbus.Subscribe;

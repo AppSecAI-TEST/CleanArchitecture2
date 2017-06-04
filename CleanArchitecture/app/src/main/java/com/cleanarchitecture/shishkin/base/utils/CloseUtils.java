@@ -1,7 +1,6 @@
 package com.cleanarchitecture.shishkin.base.utils;
 
 import com.cleanarchitecture.shishkin.base.controller.ErrorController;
-import com.github.snowdream.android.util.Log;
 
 import java.io.Closeable;
 import java.io.IOException;

@@ -7,7 +7,6 @@ import android.support.annotation.WorkerThread;
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.base.controller.LiveLongBackgroundIntentService;
 import com.cleanarchitecture.shishkin.base.utils.IntentUtils;
-import com.github.snowdream.android.util.Log;
 
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;

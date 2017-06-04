@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.cleanarchitecture.shishkin.base.controller.ErrorController;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
-import com.github.snowdream.android.util.Log;
 
 import java.io.Serializable;
 import java.util.concurrent.locks.ReentrantLock;

@@ -20,7 +20,6 @@ import com.cleanarchitecture.shishkin.base.ui.fragment.ToolbarFragment;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.SafeUtils;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
-import com.github.snowdream.android.util.Log;
 
 import java.util.List;
 
