@@ -6,21 +6,7 @@ import com.cleanarchitecture.shishkin.base.ui.activity.AbstractContentActivity;
 /**
  * Интерфейс контроллера Lifecycle приложения.
  */
-public interface ILifecycleController extends ISubscriber {
-
-    /**
-     * Зарегестрировать подписчика
-     *
-     * @param subscriber подписчик
-     */
-    void register(ILifecycleSubscriber subscriber);
-
-    /**
-     * Отключить подписчика
-     *
-     * @param subscriber подписчик
-     */
-    void unregister(ILifecycleSubscriber subscriber);
+public interface ILifecycleController extends IController<ILifecycleSubscriber> {
 
     /**
      * Получить AbstractActivity
@@ -35,14 +21,6 @@ public interface ILifecycleController extends ISubscriber {
      * @return текущая AbstractActivity
      */
     AbstractActivity getCurrentActivity();
-
-    /**
-     * Установить текущего подписчика
-     *
-     * @param subscriber подписчик
-     */
-    void setCurrentSubscriber(ILifecycleSubscriber subscriber);
-
 
     /**
      * Получить AbstractContentActivity

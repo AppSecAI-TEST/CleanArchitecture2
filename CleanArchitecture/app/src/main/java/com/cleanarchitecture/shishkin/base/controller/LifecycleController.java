@@ -19,81 +19,17 @@ import java.util.Map;
  * Контроллер, отвечающий за жизненный цикл activities приложения
  */
 @SuppressWarnings("unused")
-public class LifecycleController extends AbstractController
+public class LifecycleController extends AbstractController<ILifecycleSubscriber>
         implements ILifecycleController {
 
     public static final String NAME = "LifecycleController";
-    private Map<String, WeakReference<ILifecycleSubscriber>> mSubscribers = Collections.synchronizedMap(new HashMap<String, WeakReference<ILifecycleSubscriber>>());
-    private WeakReference<ILifecycleSubscriber> mCurrentSubscriber;
 
     public LifecycleController() {
-        mSubscribers = Collections.synchronizedMap(new HashMap<String, WeakReference<ILifecycleSubscriber>>());
+        super();
 
         EventBusController.getInstance().register(this);
     }
 
-    /**
-     * Зарегестрировать подписчика
-     *
-     * @param subscriber подписчик
-     */
-    @Override
-    public synchronized void register(final ILifecycleSubscriber subscriber) {
-        if (subscriber != null) {
-            checkNullSubscriber();
-
-            mSubscribers.put(subscriber.getName(), new WeakReference<>(subscriber));
-        }
-    }
-
-    /**
-     * Отключить подписчика
-     *
-     * @param subscriber подписчик
-     */
-    @Override
-    public synchronized void unregister(final ILifecycleSubscriber subscriber) {
-        if (subscriber != null) {
-            if (mCurrentSubscriber != null && mCurrentSubscriber.get() != null) {
-                if (subscriber.getName().equalsIgnoreCase(mCurrentSubscriber.get().getName())) {
-                    mCurrentSubscriber.clear();
-                    mCurrentSubscriber = null;
-                }
-            }
-
-            if (mSubscribers.containsKey(subscriber.getName())) {
-                mSubscribers.remove(subscriber.getName());
-            }
-
-            checkNullSubscriber();
-        }
-    }
-
-    /**
-     * Установить текущего подписчика
-     *
-     * @param subscriber подписчик
-     */
-    @Override
-    public synchronized void setCurrentSubscriber(final ILifecycleSubscriber subscriber) {
-        if (subscriber != null) {
-            mCurrentSubscriber = new WeakReference<>(subscriber);
-        }
-    }
-
-    private synchronized void checkNullSubscriber() {
-        for (Map.Entry<String, WeakReference<ILifecycleSubscriber>> entry : mSubscribers.entrySet()) {
-            if (entry.getValue().get() == null) {
-                mSubscribers.remove(entry.getKey());
-            }
-        }
-    }
-
-    /**
-     * Получить AbstractActivity
-     *
-     * @return the AbstractActivity
-     */
     @Override
     public synchronized AbstractActivity getActivity() {
         final AbstractActivity activity = getCurrentActivity();
@@ -101,7 +37,7 @@ public class LifecycleController extends AbstractController
             return activity;
         }
 
-        for (WeakReference<ILifecycleSubscriber> weakReference : mSubscribers.values()) {
+        for (WeakReference<ILifecycleSubscriber> weakReference : getSubscribers().values()) {
             final ILifecycleSubscriber subscriber = weakReference.get();
             if (subscriber != null && subscriber instanceof AbstractActivity) {
                 return (AbstractActivity) subscriber;
@@ -110,18 +46,11 @@ public class LifecycleController extends AbstractController
         return null;
     }
 
-    /**
-     * Получить текущую AbstractActivity.
-     *
-     * @return текущая AbstractActivity
-     */
     @Override
     public synchronized AbstractActivity getCurrentActivity() {
-        if (mCurrentSubscriber != null && mCurrentSubscriber.get() != null) {
-            final ILifecycleSubscriber subscriber = mCurrentSubscriber.get();
-            if (subscriber != null && subscriber instanceof AbstractActivity) {
-                return (AbstractActivity) subscriber;
-            }
+        final ILifecycleSubscriber subscriber = getCurrentSubscriber();
+        if (subscriber != null && subscriber instanceof AbstractActivity) {
+            return (AbstractActivity) subscriber;
         }
         return null;
     }
@@ -141,11 +70,6 @@ public class LifecycleController extends AbstractController
         return NAME;
     }
 
-    /**
-     * Получить AbstractContentActivity
-     *
-     * @return AbstractContentActivity
-     */
     @Override
     public synchronized AbstractContentActivity getContentActivity() {
         final AbstractContentActivity activity = getCurrentContentActivity();
@@ -153,7 +77,7 @@ public class LifecycleController extends AbstractController
             return activity;
         }
 
-        for (WeakReference<ILifecycleSubscriber> weakReference : mSubscribers.values()) {
+        for (WeakReference<ILifecycleSubscriber> weakReference : getSubscribers().values()) {
             final ILifecycleSubscriber subscriber = weakReference.get();
             if (subscriber != null && subscriber instanceof AbstractContentActivity) {
                 return (AbstractContentActivity) subscriber;
@@ -162,18 +86,11 @@ public class LifecycleController extends AbstractController
         return null;
     }
 
-    /**
-     * Получить текущую AbstractContentActivity
-     *
-     * @return текущая AbstractContentActivity
-     */
     @Override
     public synchronized AbstractContentActivity getCurrentContentActivity() {
-        if (mCurrentSubscriber != null && mCurrentSubscriber.get() != null) {
-            final ILifecycleSubscriber subscriber = mCurrentSubscriber.get();
-            if (subscriber != null && subscriber instanceof AbstractContentActivity) {
-                return (AbstractContentActivity) subscriber;
-            }
+        final ILifecycleSubscriber subscriber = getCurrentSubscriber();
+        if (subscriber != null && subscriber instanceof AbstractContentActivity) {
+            return (AbstractContentActivity) subscriber;
         }
         return null;
     }

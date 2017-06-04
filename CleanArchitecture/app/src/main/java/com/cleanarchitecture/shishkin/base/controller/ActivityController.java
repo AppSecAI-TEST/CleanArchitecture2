@@ -52,7 +52,7 @@ import static com.cleanarchitecture.shishkin.base.utils.ApplicationUtils.runOnUi
  * Контроллер activities
  */
 @SuppressWarnings("unused")
-public class ActivityController extends AbstractController implements IActivityController {
+public class ActivityController extends AbstractController<IActivity> implements IActivityController {
 
     public static final String NAME = "ActivityController";
 
@@ -61,100 +61,10 @@ public class ActivityController extends AbstractController implements IActivityC
     public static final int TOAST_TYPE_WARNING = 2;
     public static final int TOAST_TYPE_SUCCESS = 3;
 
-    private Map<String, WeakReference<IActivity>> mSubscribers;
-    private WeakReference<IActivity> mCurrentSubscriber;
-
     public ActivityController() {
-        mSubscribers = Collections.synchronizedMap(new HashMap<String, WeakReference<IActivity>>());
+        super();
 
         EventBusController.getInstance().register(this);
-    }
-
-    private synchronized void checkNullSubscriber() {
-        for (Map.Entry<String, WeakReference<IActivity>> entry : mSubscribers.entrySet()) {
-            if (entry.getValue().get() == null) {
-                mSubscribers.remove(entry.getKey());
-            }
-        }
-    }
-
-    /**
-     * Зарегестрировать подписчика
-     *
-     * @param subscriber подписчик
-     */
-    @Override
-    public synchronized void register(@NonNull IActivity subscriber) {
-        checkNullSubscriber();
-
-        mSubscribers.put(subscriber.getName(), new WeakReference<IActivity>(subscriber));
-    }
-
-    /**
-     * Отключить подписчика
-     *
-     * @param subscriber подписчик
-     */
-    @Override
-    public synchronized void unregister(@NonNull IActivity subscriber) {
-        final String name = subscriber.getName();
-
-        if (mCurrentSubscriber != null && mCurrentSubscriber.get() != null) {
-            if (name.equalsIgnoreCase(mCurrentSubscriber.get().getName())) {
-                mCurrentSubscriber.clear();
-                mCurrentSubscriber = null;
-            }
-        }
-
-        if (mSubscribers.containsKey(name)) {
-            mSubscribers.remove(name);
-        }
-
-        checkNullSubscriber();
-    }
-
-    /**
-     * Получить подписчика
-     *
-     * @return подписчик
-     */
-    @Override
-    public synchronized IActivity getSubscriber() {
-        final IActivity currentSubscriber = getCurrentSubscriber();
-        if (currentSubscriber != null) {
-            return currentSubscriber;
-        }
-
-        for (WeakReference<IActivity> weakReference : mSubscribers.values()) {
-            final IActivity subscriber = weakReference.get();
-            if (subscriber != null && subscriber instanceof AbstractActivity) {
-                return subscriber;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Получить текущего подписчика
-     *
-     * @return текущий подписчик
-     */
-    @Override
-    public synchronized IActivity getCurrentSubscriber() {
-        if (mCurrentSubscriber != null && mCurrentSubscriber.get() != null) {
-            return mCurrentSubscriber.get();
-        }
-        return null;
-    }
-
-    /**
-     * Установить текущего подписчика
-     *
-     * @param subscriber подписчик
-     */
-    @Override
-    public synchronized void setCurrentSubscriber(@NonNull IActivity subscriber) {
-        mCurrentSubscriber = new WeakReference<>(subscriber);
     }
 
     /**
