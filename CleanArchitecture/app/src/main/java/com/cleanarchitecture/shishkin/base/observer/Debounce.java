@@ -2,12 +2,14 @@ package com.cleanarchitecture.shishkin.base.observer;
 
 import android.os.Handler;
 
+import java.lang.ref.WeakReference;
+
 public class Debounce implements Runnable {
 
     private long mDelay = 5000; //5 sec
     private int mSkip = 0;
     private Handler mHandler = null;
-    private Object mObject;
+    private WeakReference<Object> mObject;
 
     public Debounce(final long delay) {
         this(delay, 0);
@@ -19,8 +21,12 @@ public class Debounce implements Runnable {
         mSkip = skip;
     }
 
-    public void onEvent(final Object t) {
-        mObject = t;
+    public void onEvent(final Object object) {
+        if (object != null) {
+            mObject = new WeakReference<>(object);
+        } else {
+            mObject = null;
+        }
 
         if (mSkip >= 0) {
             mSkip--;
@@ -37,12 +43,17 @@ public class Debounce implements Runnable {
     }
 
     public void finish() {
+        mObject = null;
+
         mHandler.removeCallbacks(this);
         mHandler = null;
     }
 
     public Object getObject() {
-        return mObject;
+        if (mObject != null) {
+            return mObject.get();
+        }
+        return null;
     }
 
 }
