@@ -15,15 +15,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class MailController extends AbstractController implements IMailController {
+public class MailController extends AbstractController<IMailSubscriber> implements IMailController {
 
     public static final String NAME = "MailController";
-    private Map<String, WeakReference<IMailSubscriber>> mSubscribers = Collections.synchronizedMap(new HashMap<String, WeakReference<IMailSubscriber>>());
     private Map<Long, IMail> mMail = Collections.synchronizedMap(new HashMap<Long, IMail>());
     private AtomicLong mId = new AtomicLong(0L);
 
     public MailController() {
-        mSubscribers = Collections.synchronizedMap(new HashMap<String, WeakReference<IMailSubscriber>>());
+        super();
+
         mMail = Collections.synchronizedMap(new HashMap<Long, IMail>());
     }
 
@@ -32,27 +32,10 @@ public class MailController extends AbstractController implements IMailControlle
         return NAME;
     }
 
-    private synchronized void checkNullSubscriber() {
-        for (Map.Entry<String, WeakReference<IMailSubscriber>> entry : mSubscribers.entrySet()) {
-            if (entry.getValue().get() == null) {
-                mSubscribers.remove(entry.getKey());
-            }
-        }
-    }
-
-    @Override
-    public synchronized void register(final IMailSubscriber subscriber) {
-        if (subscriber != null) {
-            checkNullSubscriber();
-
-            mSubscribers.put(subscriber.getName(), new WeakReference<>(subscriber));
-        }
-    }
-
     @Override
     public synchronized void unregister(final IMailSubscriber subscriber) {
         if (subscriber != null) {
-            if (mSubscribers.containsKey(subscriber.getName())) {
+            if (getSubscribers().containsKey(subscriber.getName())) {
                 for (IMail mail : mMail.values()) {
                     if (mail.contains(subscriber.getName())) {
                         if (!mail.isSticky()) {
@@ -60,11 +43,9 @@ public class MailController extends AbstractController implements IMailControlle
                         }
                     }
                 }
-
-                mSubscribers.remove(subscriber.getName());
             }
 
-            checkNullSubscriber();
+            super.unregister(subscriber);
         }
     }
 
@@ -124,7 +105,7 @@ public class MailController extends AbstractController implements IMailControlle
             return;
         }
 
-        for (WeakReference<IMailSubscriber> reference : mSubscribers.values()) {
+        for (WeakReference<IMailSubscriber> reference : getSubscribers().values()) {
             if (reference != null && reference.get() != null) {
                 final IMailSubscriber subscriber = reference.get();
                 if (address.equalsIgnoreCase(subscriber.getName())) {
