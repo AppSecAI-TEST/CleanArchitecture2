@@ -3,6 +3,7 @@ package com.cleanarchitecture.shishkin.base.ui.activity;
 import android.support.annotation.IdRes;
 import android.view.View;
 
+import com.cleanarchitecture.shishkin.base.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.base.controller.ISubscriber;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
 
@@ -12,7 +13,7 @@ import butterknife.Unbinder;
  * Интерфейс activity
  */
 @SuppressWarnings("unused")
-public interface IActivity extends ISubscriber {
+public interface IActivity extends IModuleSubscriber {
     /**
      * Найти view в activity
      *

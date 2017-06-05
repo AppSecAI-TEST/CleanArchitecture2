@@ -130,4 +130,8 @@ public class ErrorController implements IErrorController {
         return NAME;
     }
 
+    @Override
+    public String getSubscriberType() {
+        return null;
+    }
 }

@@ -61,6 +61,11 @@ public class UseCasesController extends AbstractController implements IUseCasesC
         return NAME;
     }
 
+    @Override
+    public String getSubscriberType() {
+        return null;
+    }
+
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onSnackBarClickEvent(final OnSnackBarClickEvent event) {
         SnackbarOnClickUseCase.onClick(event);

@@ -101,4 +101,9 @@ public class EventBusController implements IEventBusController {
         return NAME;
     }
 
+    @Override
+    public String getSubscriberType() {
+        return null;
+    }
+
 }

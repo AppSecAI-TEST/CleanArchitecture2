@@ -117,6 +117,16 @@ public class ActivityController extends AbstractController<IActivity> implements
     }
 
     @Override
+    public String getName() {
+        return NAME;
+    }
+
+    @Override
+    public String getSubscriberType() {
+        return "IActivity";
+    }
+
+    @Override
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onShowMessageEvent(ShowMessageEvent event) {
         final IActivity subscriber = getSubscriber();
@@ -288,8 +298,4 @@ public class ActivityController extends AbstractController<IActivity> implements
         }
     }
 
-    @Override
-    public String getName() {
-        return NAME;
-    }
 }

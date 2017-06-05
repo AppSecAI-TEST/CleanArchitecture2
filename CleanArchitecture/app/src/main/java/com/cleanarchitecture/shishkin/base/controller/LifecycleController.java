@@ -93,6 +93,11 @@ public class LifecycleController extends AbstractController<ILifecycleSubscriber
     }
 
     @Override
+    public String getSubscriberType() {
+        return "ILifecycleSubscriber";
+    }
+
+    @Override
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onStartActivityEvent(final StartActivityEvent event) {
         startActivity(event);

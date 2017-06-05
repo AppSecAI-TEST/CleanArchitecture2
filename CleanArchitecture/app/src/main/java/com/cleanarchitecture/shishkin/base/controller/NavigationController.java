@@ -44,6 +44,11 @@ public class NavigationController extends AbstractController<INavigationSubscrib
     }
 
     @Override
+    public String getSubscriberType() {
+        return "INavigationSubscriber";
+    }
+
+    @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onShowFragmentEvent(ShowFragmentEvent event) {
         final INavigationSubscriber subscriber = getSubscriber();

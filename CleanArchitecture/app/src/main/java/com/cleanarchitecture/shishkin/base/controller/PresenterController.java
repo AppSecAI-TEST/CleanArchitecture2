@@ -42,4 +42,8 @@ public class PresenterController extends AbstractController<IPresenter>
         return NAME;
     }
 
+    @Override
+    public String getSubscriberType() {
+        return "IPresenter";
+    }
 }

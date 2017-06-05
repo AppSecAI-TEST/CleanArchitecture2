@@ -6,8 +6,8 @@ import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.ui.activity.MainActivity;
+import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.controller.AppPreferences;
-import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
 import com.cleanarchitecture.shishkin.base.event.ClearDiskCacheEvent;
@@ -147,6 +147,11 @@ public class Repository implements IRepository, IEventVendor {
         return mDbProvider;
     }
 
+    @Override
+    public String getSubscriberType() {
+        return null;
+    }
+
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onClearDiskCacheEvent(final ClearDiskCacheEvent event) {
         final Context context = ApplicationController.getInstance();
@@ -168,7 +173,7 @@ public class Repository implements IRepository, IEventVendor {
     public void onDbCreatedEvent(final DbCreatedEvent event) {
         final Context context = ApplicationController.getInstance();
         if (context != null) {
-            Controllers.getInstance().getMailController().addMail(new ShowToastMail(MainActivity.NAME, context.getString(R.string.db_created, event.getName())));
+            Admin.getInstance().getMailController().addMail(new ShowToastMail(MainActivity.NAME, context.getString(R.string.db_created, event.getName())));
         }
     }
 
@@ -176,7 +181,7 @@ public class Repository implements IRepository, IEventVendor {
     public void onDbUpdatedEvent(final DbUpdatedEvent event) {
         final Context context = ApplicationController.getInstance();
         if (context != null) {
-            Controllers.getInstance().getMailController().addMail(new ShowToastMail(MainActivity.NAME, context.getString(R.string.db_updated, event.getName())));
+            Admin.getInstance().getMailController().addMail(new ShowToastMail(MainActivity.NAME, context.getString(R.string.db_updated, event.getName())));
         }
     }
 

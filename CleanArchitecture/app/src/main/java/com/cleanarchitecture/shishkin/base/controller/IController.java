@@ -8,7 +8,7 @@ import java.util.Map;
  *
  * @param <T> the type parameter
  */
-public interface IController<T> extends ISubscriber {
+public interface IController<T> extends IModule {
 
     /**
      * Зарегестрировать подписчика

@@ -17,7 +17,15 @@ import android.support.v4.app.ActivityCompat;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
+import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.controller.ErrorController;
+import com.cleanarchitecture.shishkin.base.controller.ILifecycleController;
+import com.cleanarchitecture.shishkin.base.controller.IMailController;
+import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
+import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
+import com.cleanarchitecture.shishkin.base.controller.MailController;
+import com.cleanarchitecture.shishkin.base.mail.IMail;
+import com.cleanarchitecture.shishkin.base.ui.activity.AbstractActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
@@ -225,6 +233,31 @@ public class ApplicationUtils {
         return false;
     }
 
+    public static void readMail(final IMailSubscriber subscriber) {
+        final IMailController controller = Admin.getInstance().getModule(MailController.NAME);
+        if (controller != null ) {
+            final List<IMail> list = controller.getMail(subscriber);
+            for (IMail mail : list) {
+                mail.read(subscriber);
+                controller.removeMail(mail);
+            }
+        }
+    }
+
+    public static void addMail(final IMail mail) {
+        final IMailController controller = Admin.getInstance().getModule(MailController.NAME);
+        if (controller != null ) {
+            addMail(mail);
+        }
+    }
+
+    public static AbstractActivity getActivity() {
+        final ILifecycleController controller = Admin.getInstance().getModule(LifecycleController.NAME);
+        if (controller != null ) {
+            return controller.getActivity();
+        }
+        return null;
+    }
 
     private ApplicationUtils() {
     }

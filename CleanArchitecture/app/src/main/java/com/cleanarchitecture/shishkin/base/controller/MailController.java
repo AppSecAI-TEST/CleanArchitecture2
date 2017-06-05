@@ -4,6 +4,7 @@ import com.annimon.stream.Stream;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.mail.IMail;
 import com.cleanarchitecture.shishkin.base.task.BaseAsyncTask;
+import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 
 import java.lang.ref.WeakReference;
@@ -113,7 +114,7 @@ public class MailController extends AbstractController<IMailSubscriber> implemen
                         new BaseAsyncTask() {
                             @Override
                             public void run() {
-                                subscriber.readMail();
+                                ApplicationUtils.readMail(subscriber);
                             }
                         }.execute();
                     }
@@ -145,5 +146,11 @@ public class MailController extends AbstractController<IMailSubscriber> implemen
     public synchronized void clearMail() {
         mMail.clear();
     }
+
+    @Override
+    public String getSubscriberType() {
+        return "IMailSubscriber";
+    }
+
 
 }

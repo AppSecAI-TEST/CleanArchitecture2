@@ -6,7 +6,7 @@ import android.content.pm.PackageManager;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
-import com.cleanarchitecture.shishkin.base.controller.Controllers;
+import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionDeniedEvent;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
@@ -37,7 +37,7 @@ public class RequestPermissionUseCase extends AbstractUseCase {
 
                     case PackageManager.PERMISSION_DENIED:
                         disabledLog();
-                        Controllers.getInstance().getActivityController().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_write_external_storage));
+                        Admin.getInstance().getActivityController().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_write_external_storage));
                         break;
 
                 }
@@ -49,7 +49,7 @@ public class RequestPermissionUseCase extends AbstractUseCase {
                         break;
 
                     case PackageManager.PERMISSION_DENIED:
-                        Controllers.getInstance().getActivityController().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_read_contacts));
+                        Admin.getInstance().getActivityController().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_read_contacts));
                         break;
 
                 }
@@ -61,7 +61,7 @@ public class RequestPermissionUseCase extends AbstractUseCase {
                         break;
 
                     case PackageManager.PERMISSION_DENIED:
-                        Controllers.getInstance().getActivityController().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_call_phone));
+                        Admin.getInstance().getActivityController().grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_call_phone));
                         break;
 
                 }

@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.base.controller.Controllers;
+import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.OnNetworkConnectedEvent;
 import com.cleanarchitecture.shishkin.base.event.OnNetworkDisconnectedEvent;
@@ -287,7 +287,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     public void showHorizontalProgressBar() {
         ApplicationUtils.runOnUiThread(() -> {
             if (validate()) {
-                final AbstractContentActivity activity = Controllers.getInstance().getLifecycleController().getContentActivity();
+                final AbstractContentActivity activity = Admin.getInstance().getLifecycleController().getContentActivity();
                 if (activity != null) {
                     final AbstractContentFragment fragment = activity.getContentFragment(AbstractContentFragment.class);
                     if (fragment != null) {
@@ -311,7 +311,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     public void hideHorizontalProgressBar() {
         ApplicationUtils.runOnUiThread(() -> {
             if (validate()) {
-                final AbstractContentActivity activity = Controllers.getInstance().getLifecycleController().getContentActivity();
+                final AbstractContentActivity activity = Admin.getInstance().getLifecycleController().getContentActivity();
                 if (activity != null) {
                     final AbstractContentFragment fragment = activity.getContentFragment(AbstractContentFragment.class);
                     if (fragment != null) {
@@ -461,7 +461,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     @Override
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onToolbarOnClickEvent(OnToolbarClickEvent event) {
-        final AbstractContentFragment fragment = Controllers.getInstance().getNavigationController().getContentFragment(AbstractContentFragment.class);
+        final AbstractContentFragment fragment = Admin.getInstance().getNavigationController().getContentFragment(AbstractContentFragment.class);
         if (fragment != null) {
             ApplicationUtils.runOnUiThread(() -> fragment.onClick(event.getView()));
         }

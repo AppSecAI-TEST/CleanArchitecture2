@@ -61,6 +61,11 @@ public class NetProvider implements INetProvider {
         return NAME;
     }
 
+    @Override
+    public String getSubscriberType() {
+        return null;
+    }
+
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onNetworkConnectedEvent(OnNetworkConnectedEvent event) {
         setPaused(false);

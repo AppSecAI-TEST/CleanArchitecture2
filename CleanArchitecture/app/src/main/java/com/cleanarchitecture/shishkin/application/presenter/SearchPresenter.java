@@ -19,7 +19,7 @@ import com.cleanarchitecture.shishkin.application.data.viewmodel.PhoneContactVie
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.event.searchpresenter.OnSearchPresenterItemClick;
 import com.cleanarchitecture.shishkin.application.ui.adapter.ContactRecyclerViewAdapter;
-import com.cleanarchitecture.shishkin.base.controller.Controllers;
+import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.DialogResultEvent;
@@ -29,6 +29,8 @@ import com.cleanarchitecture.shishkin.base.event.ui.ShowListDialogEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowToastEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
 import com.cleanarchitecture.shishkin.base.presenter.AbstractPresenter;
+import com.cleanarchitecture.shishkin.base.repository.DbProvider;
+import com.cleanarchitecture.shishkin.base.repository.IDbProvider;
 import com.cleanarchitecture.shishkin.base.repository.IObserver;
 import com.cleanarchitecture.shishkin.base.repository.Repository;
 import com.cleanarchitecture.shishkin.base.ui.dialog.MaterialDialogExt;
@@ -67,6 +69,7 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
     private ContactRecyclerViewAdapter mContactAdapter;
     private String mCurrentFilter = null;
     private Disposable mDisposableSearchView;
+    private IDbProvider mDbProvider = Admin.getInstance().getModule(DbProvider.NAME);
 
     public SearchPresenter() {
         super();
@@ -78,7 +81,7 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
 
         final FastScrollRecyclerView recyclerView = ViewUtils.findView(root, R.id.list);
         if (recyclerView != null) {
-            final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Controllers.getInstance().getLifecycleController().getActivity());
+            final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ApplicationUtils.getActivity());
             recyclerView.setLayoutManager(linearLayoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             mContactAdapter = new ContactRecyclerViewAdapter(root.getContext());
@@ -104,12 +107,16 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
             searchView.setText(mCurrentFilter);
         }
 
-        Controllers.getInstance().getDbProvider().observe(fragment.getLifecycleActivity(), PhoneContactViewModel.NAME, PhoneContactViewModel.class, this);
+        if (mDbProvider != null) {
+            mDbProvider.observe(fragment.getLifecycleActivity(), PhoneContactViewModel.NAME, PhoneContactViewModel.class, this);
+        }
     }
 
     @Override
     public void onDestroyLifecycle() {
-        Controllers.getInstance().getDbProvider().removeObserver(PhoneContactViewModel.NAME, this);
+        if (mDbProvider != null) {
+            mDbProvider.removeObserver(PhoneContactViewModel.NAME, this);
+        }
         mSearchView = null;
         mRecyclerView = null;
         if (!mDisposableSearchView.isDisposed()) {
@@ -216,7 +223,7 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
                 if (MaterialDialogExt.POSITIVE.equals(bundle.getString(MaterialDialogExt.BUTTON))) {
                     final ArrayList<String> list = bundle.getStringArrayList("list");
                     if (list != null && list.size() == 1) {
-                        PhoneUtils.call(Controllers.getInstance().getLifecycleController().getActivity(), list.get(0));
+                        PhoneUtils.call(ApplicationUtils.getActivity(), list.get(0));
                     }
                 }
             }

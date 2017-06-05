@@ -89,4 +89,7 @@ public abstract class AbstractController<T> implements IController<T> {
         return null;
     }
 
+    @Override
+    public abstract String getSubscriberType();
+
 }

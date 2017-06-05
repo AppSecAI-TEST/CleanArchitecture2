@@ -20,12 +20,17 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.base.controller.ActivityController;
+import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.controller.AppPreferences;
-import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
 import com.cleanarchitecture.shishkin.base.controller.ILifecycleSubscriber;
+import com.cleanarchitecture.shishkin.base.controller.IMailController;
 import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
+import com.cleanarchitecture.shishkin.base.controller.IPresenterController;
+import com.cleanarchitecture.shishkin.base.controller.MailController;
+import com.cleanarchitecture.shishkin.base.controller.PresenterController;
 import com.cleanarchitecture.shishkin.base.event.BackpressActivityEvent;
 import com.cleanarchitecture.shishkin.base.event.ClearBackStackEvent;
 import com.cleanarchitecture.shishkin.base.event.FinishActivityEvent;
@@ -35,8 +40,8 @@ import com.cleanarchitecture.shishkin.base.event.OnPermisionDeniedEvent;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
-import com.cleanarchitecture.shishkin.base.mail.IMail;
 import com.cleanarchitecture.shishkin.base.lifecycle.StateMachine;
+import com.cleanarchitecture.shishkin.base.mail.IMail;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.base.ui.dialog.MaterialDialogExt;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
@@ -45,6 +50,7 @@ import com.cleanarchitecture.shishkin.base.utils.ViewUtils;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -66,9 +72,7 @@ public abstract class AbstractActivity extends LifecycleActivity
         super.onCreate(savedInstanceState);
 
         EventBusController.getInstance().register(this);
-        Controllers.getInstance().getLifecycleController().register(this);
-        Controllers.getInstance().getActivityController().register(this);
-        Controllers.getInstance().getMailController().register(this);
+        Admin.getInstance().register(this);
 
         mStateMachine.setState(Lifecycle.STATE_CREATE);
     }
@@ -99,15 +103,13 @@ public abstract class AbstractActivity extends LifecycleActivity
         }
 
         EventBusController.getInstance().unregister(this);
-        Controllers.getInstance().getActivityController().unregister(this);
-        Controllers.getInstance().getLifecycleController().unregister(this);
-        Controllers.getInstance().getMailController().unregister(this);
+        Admin.getInstance().unregister(this);
 
         mStateMachine.setState(Lifecycle.STATE_DESTROY);
         mStateMachine.clear();
 
         for (IPresenter presenter : mPresenters.values()) {
-            Controllers.getInstance().getPresenterController().unregister(presenter);
+            Admin.getInstance().unregister(presenter);
         }
         mPresenters.clear();
 
@@ -118,12 +120,11 @@ public abstract class AbstractActivity extends LifecycleActivity
     protected void onResume() {
         super.onResume();
 
-        Controllers.getInstance().getActivityController().setCurrentSubscriber(this);
-        Controllers.getInstance().getLifecycleController().setCurrentSubscriber(this);
+        Admin.getInstance().setCurrentSubscriber(this);
 
         mStateMachine.setState(Lifecycle.STATE_RESUME);
 
-        readMail();
+        ApplicationUtils.readMail(this);
     }
 
     @Override
@@ -167,6 +168,15 @@ public abstract class AbstractActivity extends LifecycleActivity
     public abstract String getName();
 
     @Override
+    public List<String> getSubscriberType() {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("IActivity");
+        list.add("ILifecycleSubscriber");
+        list.add("IMailSubscriber");
+        return list;
+    }
+
+    @Override
     public void clearBackStack() {
         getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
@@ -194,10 +204,10 @@ public abstract class AbstractActivity extends LifecycleActivity
     public synchronized void registerPresenter(final IPresenter presenter) {
         if (mPresenters.containsKey(presenter.getName())) {
             mPresenters.remove(presenter);
-            Controllers.getInstance().getPresenterController().unregister(presenter);
+            Admin.getInstance().unregister(presenter);
         }
         mPresenters.put(presenter.getName(), presenter);
-        Controllers.getInstance().getPresenterController().register(presenter);
+        Admin.getInstance().register(presenter);
         mStateMachine.addObserver(presenter);
     }
 
@@ -231,15 +241,6 @@ public abstract class AbstractActivity extends LifecycleActivity
     @Override
     public void setUnbinder(Unbinder unbinder) {
         mUnbinder = unbinder;
-    }
-
-    @Override
-    public synchronized void readMail() {
-        final List<IMail> list = Controllers.getInstance().getMailController().getMail(this);
-        for (IMail mail : list) {
-            mail.read(this);
-            Controllers.getInstance().getMailController().removeMail(mail);
-        }
     }
 
     @Override

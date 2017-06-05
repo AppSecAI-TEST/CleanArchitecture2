@@ -1,13 +1,13 @@
 package com.cleanarchitecture.shishkin.base.repository;
 
-import com.cleanarchitecture.shishkin.base.controller.ISubscriber;
+import com.cleanarchitecture.shishkin.base.controller.IModule;
 
 import java.io.Serializable;
 
 /**
  * The interface Repository.
  */
-public interface IRepository extends ISubscriber {
+public interface IRepository extends IModule {
 
     /**
      * Получить данные из кэша

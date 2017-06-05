@@ -9,8 +9,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.base.controller.Controllers;
+import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.controller.ErrorController;
+import com.cleanarchitecture.shishkin.base.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.base.controller.INavigationSubscriber;
 import com.cleanarchitecture.shishkin.base.controller.ISubscriber;
 import com.cleanarchitecture.shishkin.base.event.ui.HideKeyboardEvent;
@@ -21,6 +22,7 @@ import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.SafeUtils;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractContentActivity extends AbstractActivity
@@ -35,23 +37,7 @@ public abstract class AbstractContentActivity extends AbstractActivity
 
         setContentView(R.layout.activity_main);
 
-        Controllers.getInstance().getNavigationController().register(this);
-
         addToolbar();
-    }
-
-    @Override
-    protected void onDestroy() {
-        Controllers.getInstance().getNavigationController().unregister(this);
-
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        Controllers.getInstance().getNavigationController().setCurrentSubscriber(this);
     }
 
     @Override
@@ -63,6 +49,16 @@ public abstract class AbstractContentActivity extends AbstractActivity
 
     @Override
     public abstract String getName();
+
+    @Override
+    public List<String> getSubscriberType() {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("IActivity");
+        list.add("INavigationSubscriber");
+        list.add("ILifecycleSubscriber");
+        list.add("IMailSubscriber");
+        return list;
+    }
 
     @Override
     public void showFragment(final Fragment fragment) {
