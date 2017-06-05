@@ -7,7 +7,7 @@ import java.lang.ref.WeakReference;
  */
 public class Lifecycle {
     public static final int STATE_CREATE = 0;
-    public static final int STATE_VIEW_CREATED = 1;
+    public static final int STATE_READY = 1;
     public static final int STATE_DESTROY = 2;
     public static final int STATE_PAUSE = 3;
     public static final int STATE_RESUME = 4;
@@ -43,7 +43,7 @@ public class Lifecycle {
                 onCreateLifecycle();
                 break;
 
-            case STATE_VIEW_CREATED:
+            case STATE_READY:
                 onViewCreatedLifecycle();
                 break;
 
@@ -73,7 +73,7 @@ public class Lifecycle {
 
     private void onViewCreatedLifecycle() {
         if (mListener != null && mListener.get() != null) {
-            mListener.get().onViewCreatedLifecycle();
+            mListener.get().onReadyLifecycle();
         }
     }
 

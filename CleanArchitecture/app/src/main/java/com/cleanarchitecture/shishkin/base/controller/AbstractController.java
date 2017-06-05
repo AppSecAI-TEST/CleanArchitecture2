@@ -68,7 +68,6 @@ public abstract class AbstractController<T> implements IController<T> {
         return null;
     }
 
-
     @Override
     public synchronized Map<String, WeakReference<T>> getSubscribers() {
         return mSubscribers;

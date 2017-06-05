@@ -1,5 +1,9 @@
 package com.cleanarchitecture.shishkin.base.controller;
 
+import com.cleanarchitecture.shishkin.base.event.OnActivityBackPressedEvent;
+import com.cleanarchitecture.shishkin.base.event.ShowFragmentEvent;
+import com.cleanarchitecture.shishkin.base.event.SwitchToFragmentEvent;
+
 /**
  * Контроллер навигации приложения.
  */
@@ -24,4 +28,24 @@ public interface INavigationController extends IController<INavigationSubscriber
      */
     <F> F getContentFragment(final Class<F> cls);
 
+    /**
+     * Обрабатывает событие - показать фрагмент
+     *
+     * @param event событие
+     */
+    void onShowFragmentEvent(ShowFragmentEvent event);
+
+    /**
+     * Обрабатывает событие - переключиться на фрагмент
+     *
+     * @param event событие
+     */
+    void onSwitchToFragmentEvent(SwitchToFragmentEvent event);
+
+    /**
+     * Обрабатывает событие - нажатие на BackPress
+     *
+     * @param event событие
+     */
+    void onActivityBackPressedEvent(OnActivityBackPressedEvent event);
 }

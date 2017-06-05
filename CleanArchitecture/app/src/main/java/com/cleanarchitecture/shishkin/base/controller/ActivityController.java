@@ -116,6 +116,7 @@ public class ActivityController extends AbstractController<IActivity> implements
         }
     }
 
+    @Override
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onShowMessageEvent(ShowMessageEvent event) {
         final IActivity subscriber = getSubscriber();
@@ -132,6 +133,7 @@ public class ActivityController extends AbstractController<IActivity> implements
         }
     }
 
+    @Override
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onShowErrorMessageEvent(ShowErrorMessageEvent event) {
         final IActivity subscriber = getSubscriber();
@@ -152,6 +154,7 @@ public class ActivityController extends AbstractController<IActivity> implements
         }
     }
 
+    @Override
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onShowToastEvent(ShowToastEvent event) {
         final Context context = ApplicationController.getInstance();
@@ -191,6 +194,7 @@ public class ActivityController extends AbstractController<IActivity> implements
         });
     }
 
+    @Override
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onHideKeyboardEvent(HideKeyboardEvent event) {
         final IActivity subscriber = getSubscriber();
@@ -209,6 +213,7 @@ public class ActivityController extends AbstractController<IActivity> implements
         }
     }
 
+    @Override
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onShowKeyboardEvent(ShowKeyboardEvent event) {
         final IActivity subscriber = getSubscriber();
@@ -219,6 +224,7 @@ public class ActivityController extends AbstractController<IActivity> implements
         }
     }
 
+    @Override
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onShowProgressBarEvent(ShowProgressBarEvent event) {
         final IActivity subscriber = getSubscriber();
@@ -235,6 +241,7 @@ public class ActivityController extends AbstractController<IActivity> implements
         }
     }
 
+    @Override
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onHideProgressBarEvent(HideProgressBarEvent event) {
         final IActivity subscriber = getSubscriber();
@@ -251,6 +258,7 @@ public class ActivityController extends AbstractController<IActivity> implements
         }
     }
 
+    @Override
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onShowListDialogEvent(ShowListDialogEvent event) {
         final IActivity subscriber = getSubscriber();
@@ -261,6 +269,7 @@ public class ActivityController extends AbstractController<IActivity> implements
         }
     }
 
+    @Override
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onShowEditDialogEvent(ShowEditDialogEvent event) {
         final IActivity subscriber = getSubscriber();
@@ -270,6 +279,7 @@ public class ActivityController extends AbstractController<IActivity> implements
         }
     }
 
+    @Override
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onShowDialogEvent(ShowDialogEvent event) {
         final IActivity subscriber = getSubscriber();

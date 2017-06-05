@@ -1,7 +1,7 @@
 package com.cleanarchitecture.shishkin.base.controller;
 
 /**
- * The interface Error controller.
+ * Интерфейс контроллера ошибок
  */
 public interface IErrorController extends ISubscriber {
 

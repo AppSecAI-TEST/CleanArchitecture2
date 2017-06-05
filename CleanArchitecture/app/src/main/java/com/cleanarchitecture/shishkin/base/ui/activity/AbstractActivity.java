@@ -36,7 +36,7 @@ import com.cleanarchitecture.shishkin.base.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.mail.IMail;
-import com.cleanarchitecture.shishkin.base.observer.StateMachine;
+import com.cleanarchitecture.shishkin.base.lifecycle.StateMachine;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.base.ui.dialog.MaterialDialogExt;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
@@ -88,7 +88,7 @@ public abstract class AbstractActivity extends LifecycleActivity
     protected void onStart() {
         super.onStart();
 
-        mStateMachine.setState(Lifecycle.STATE_VIEW_CREATED);
+        mStateMachine.setState(Lifecycle.STATE_READY);
 
     }
 

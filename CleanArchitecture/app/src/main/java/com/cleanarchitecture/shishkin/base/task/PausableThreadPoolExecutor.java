@@ -96,7 +96,7 @@ public class PausableThreadPoolExecutor extends ThreadPoolExecutor implements IL
     }
 
     @Override
-    public void onViewCreatedLifecycle() {
+    public void onReadyLifecycle() {
     }
 
     @Override

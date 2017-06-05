@@ -15,7 +15,7 @@ import java.io.File;
 /**
  * Контроллер ошибок
  */
-public class ErrorController extends AbstractController implements IErrorController {
+public class ErrorController implements IErrorController {
     public static final String NAME = "ErrorController";
     private static final long MAX_LOG_LENGTH = 2000000;//2Mb
 
@@ -24,7 +24,6 @@ public class ErrorController extends AbstractController implements IErrorControl
     public static final int ERROR_LOST_AAPLICATION_CONTEXT = 1;
     public static final int ERROR_GET_DATA = 2;
     public static final int ERROR_DB = 3;
-
 
     public static ErrorController getInstance() {
         if (sInstance == null) {
@@ -77,6 +76,7 @@ public class ErrorController extends AbstractController implements IErrorControl
                 if (file.length() == 0) {
                     Log.i(ApplicationUtils.getPhoneInfo());
                 }
+
                 if (file.length() > MAX_LOG_LENGTH) {
                     final String new_path = path + ".1";
                     final File new_file = new File(new_path);
@@ -90,7 +90,6 @@ public class ErrorController extends AbstractController implements IErrorControl
             android.util.Log.e(NAME, e.getMessage());
         }
     }
-
 
     @Override
     public synchronized void onError(final String source, final Exception e) {

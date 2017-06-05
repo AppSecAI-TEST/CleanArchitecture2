@@ -2,7 +2,18 @@ package com.cleanarchitecture.shishkin.base.presenter;
 
 import android.graphics.drawable.Drawable;
 
-public interface IToolbarPresenter {
+import com.cleanarchitecture.shishkin.base.event.OnNetworkConnectedEvent;
+import com.cleanarchitecture.shishkin.base.event.OnNetworkDisconnectedEvent;
+import com.cleanarchitecture.shishkin.base.event.toolbar.OnToolbarClickEvent;
+import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetBackNavigationEvent;
+import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetBackgroundEvent;
+import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetItemEvent;
+import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetMenuEvent;
+import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetTitleEvent;
+import com.cleanarchitecture.shishkin.base.event.ui.HideHorizontalProgressBarEvent;
+import com.cleanarchitecture.shishkin.base.event.ui.ShowHorizontalProgressBarEvent;
+
+public interface IToolbarPresenter{
 
     /**
      * Флаг - поддерживает Toolbar backpress навигацию
@@ -85,4 +96,74 @@ public interface IToolbarPresenter {
      * @param drawable фон
      */
     void setBackground(final Drawable drawable);
+
+    /**
+     * Обрабатывает событие - установить флаг наличия Back Navigation (кнопки Назад)
+     *
+     * @param event событие
+     */
+    void onSetToolbarBackNavigationEvent(ToolbarSetBackNavigationEvent event);
+
+    /**
+     * Обрабатывает событие - установить заголовок Toolbar
+     *
+     * @param event событие
+     */
+    void onSetToolbarTitleEvent(ToolbarSetTitleEvent event);
+
+    /**
+     * Обрабатывает событие - установить меню Toolbar
+     *
+     * @param event событие
+     */
+    void onSetToolbarMenuEvent(ToolbarSetMenuEvent event);
+
+    /**
+     * Обрабатывает событие - установить item Toolbar
+     *
+     * @param event событие
+     */
+    void onSetToolbarItemEvent(ToolbarSetItemEvent event);
+
+    /**
+     * Обрабатывает событие - показать горизонтальный Progress Bar
+     *
+     * @param event событие
+     */
+    void onShowHorizontalProgressBarEvent(ShowHorizontalProgressBarEvent event);
+
+    /**
+     * Обрабатывает событие - скрыть горизонтальный Progress Bar
+     *
+     * @param event событие
+     */
+    void onHideHorizontalProgressBarEvent(HideHorizontalProgressBarEvent event);
+
+    /**
+     * Обрабатывает событие - клик на Toolbar
+     *
+     * @param event событие
+     */
+    void onToolbarOnClickEvent(OnToolbarClickEvent event);
+
+    /**
+     * Обрабатывает событие - установить фон Toolbar
+     *
+     * @param event событие
+     */
+    void onToolbarSetBackgroundEvent(ToolbarSetBackgroundEvent event);
+
+    /**
+     * Обрабатывает событие - появилось соединение сети
+     *
+     * @param event событие
+     */
+    void onNetworkConnectedEvent(OnNetworkConnectedEvent event);
+
+    /**
+     * Обрабатывает событие - отсутствует соединение сети
+     *
+     * @param event событие
+     */
+    void onNetworkDisconnectedEvent(OnNetworkDisconnectedEvent event);
 }

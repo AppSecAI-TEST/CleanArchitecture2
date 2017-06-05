@@ -10,9 +10,9 @@ public interface ILifecycle extends IStateable {
     void onCreateLifecycle();
 
     /**
-     * Событие - объект уже создан и готов к использованию
+     * Событие - объект готов к использованию
      */
-    void onViewCreatedLifecycle();
+    void onReadyLifecycle();
 
     /**
      * Событие - объект становиться видимым на экране
