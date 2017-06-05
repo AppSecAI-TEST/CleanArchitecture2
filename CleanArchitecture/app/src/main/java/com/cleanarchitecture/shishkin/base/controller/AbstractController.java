@@ -8,7 +8,6 @@ import java.util.Map;
 public abstract class AbstractController<T> implements IController<T> {
 
     private Map<String, WeakReference<T>> mSubscribers = Collections.synchronizedMap(new HashMap<String, WeakReference<T>>());
-
     private WeakReference<T> mCurrentSubscriber;
 
     @Override
