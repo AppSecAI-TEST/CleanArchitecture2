@@ -7,16 +7,13 @@ import android.support.annotation.NonNull;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
-import com.cleanarchitecture.shishkin.application.data.cursor.ContactCursor;
+import com.cleanarchitecture.shishkin.application.data.cursor.PhoneContactCursor;
 import com.cleanarchitecture.shishkin.application.data.dao.PhoneContactDAO;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
-import com.cleanarchitecture.shishkin.application.database.CleanArchitectureDb;
-import com.cleanarchitecture.shishkin.application.database.item.Contact;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryResponseGetContactsEvent;
-import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.ErrorController;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
-import com.cleanarchitecture.shishkin.base.database.dao.AbstractReadOnlyDAO;
+import com.cleanarchitecture.shishkin.base.content.dao.AbstractReadOnlyDAO;
 import com.cleanarchitecture.shishkin.base.event.IEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
@@ -44,29 +41,15 @@ public class ContentProvider implements IContentProvider {
             return event.setErrorText(NAME, context.getString(R.string.permission_read_contacts));
         }
 
-        final CleanArchitectureDb db = Controllers.getInstance().getRepository().getDbProvider().getDb(CleanArchitectureDb.class, CleanArchitectureDb.NAME);
-        if (db == null) {
-            return event.setErrorText(NAME, context.getString(R.string.error_db_not_connected));
-        }
-
-        db.contactDao().delete();
         final LinkedList<PhoneContactItem> list = new LinkedList<>();
         Cursor cursor = null;
         try {
             final PhoneContactDAO phoneContactDAO = new PhoneContactDAO(context);
-            cursor = ContactCursor.getCursor(context);
+            cursor = PhoneContactCursor.getCursor(context);
             if (AbstractReadOnlyDAO.isCursorValid(cursor)) {
                 while (cursor.moveToNext()) {
                     final PhoneContactItem phoneContactItem = phoneContactDAO.getItemFromCursor(cursor);
                     list.add(phoneContactItem);
-                    if (db.contactDao().getCount(phoneContactItem.getId()) == 0) {
-                        db.contactDao().insert(new Contact()
-                                .setRowId(phoneContactItem.getId())
-                                .setName(phoneContactItem.getName())
-                                .setPhones(phoneContactItem.getPhones())
-                                .setPhoto(phoneContactItem.getPhoto())
-                        );
-                    }
                 }
             }
             event.setResponse(list);

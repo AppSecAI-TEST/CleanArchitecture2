@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.application.data.live;
+package com.cleanarchitecture.shishkin.application.data.livingdata;
 
 import com.cleanarchitecture.shishkin.application.data.dao.PhoneContactDAO;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
@@ -8,7 +8,7 @@ import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.ui.HideHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.repository.Repository;
-import com.cleanarchitecture.shishkin.base.room.AbstractContentProviderLivingData;
+import com.cleanarchitecture.shishkin.base.data.AbstractContentProviderLivingData;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;

@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.base.database;
+package com.cleanarchitecture.shishkin.base.content;
 
 public interface IBaseColumns {
 
