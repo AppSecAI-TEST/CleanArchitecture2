@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.base.database.dao;
+package com.cleanarchitecture.shishkin.base.content.dao;
 
 import android.support.annotation.NonNull;
 

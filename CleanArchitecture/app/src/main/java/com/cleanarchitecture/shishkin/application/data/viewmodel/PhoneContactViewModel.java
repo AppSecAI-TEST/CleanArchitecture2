@@ -5,7 +5,7 @@ import android.arch.lifecycle.LiveData;
 
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.data.livingdata.PhoneContactLivingData;
-import com.cleanarchitecture.shishkin.base.room.AbstractViewModel;
+import com.cleanarchitecture.shishkin.base.data.AbstractViewModel;
 
 import java.util.List;
 

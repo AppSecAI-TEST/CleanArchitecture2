@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.base.room;
+package com.cleanarchitecture.shishkin.base.data;
 
 import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.observer.Debounce;

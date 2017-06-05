@@ -8,10 +8,9 @@ import android.support.annotation.NonNull;
 import com.cleanarchitecture.shishkin.application.data.dao.PhoneContactDAO;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 
-public class ContactCursor {
-    private final static String LOG_TAG = "ContactCursor:";
+public class PhoneContactCursor {
 
-    private ContactCursor() {
+    private PhoneContactCursor() {
     }
 
     public static Cursor getCursor(@NonNull final Context context) {

@@ -8,7 +8,7 @@ import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.ui.HideHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.repository.Repository;
-import com.cleanarchitecture.shishkin.base.room.AbstractContentProviderLivingData;
+import com.cleanarchitecture.shishkin.base.data.AbstractContentProviderLivingData;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;

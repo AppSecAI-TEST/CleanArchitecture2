@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.base.database.dao;
+package com.cleanarchitecture.shishkin.base.content.dao;
 
 /**
  * Interface to any data entity class that can be inserted, updated or deleted

@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.base.room;
+package com.cleanarchitecture.shishkin.base.data;
 
 import android.arch.lifecycle.LiveData;
 import android.content.ContentResolver;

@@ -10,7 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
-import com.cleanarchitecture.shishkin.base.database.dao.AbstractReadOnlyDAO;
+import com.cleanarchitecture.shishkin.base.content.dao.AbstractReadOnlyDAO;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 
 public class PhoneContactDAO extends AbstractReadOnlyDAO<PhoneContactItem> {

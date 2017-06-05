@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.base.database.dao;
+package com.cleanarchitecture.shishkin.base.content.dao;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.cleanarchitecture.shishkin.base.database.IBaseColumns;
+import com.cleanarchitecture.shishkin.base.content.IBaseColumns;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -10,12 +10,11 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
-import com.cleanarchitecture.shishkin.application.database.CleanArchitectureDb;
 import com.cleanarchitecture.shishkin.base.controller.ErrorController;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
-import com.cleanarchitecture.shishkin.base.room.AbstractViewModel;
-import com.cleanarchitecture.shishkin.base.room.ViewModelDebounce;
+import com.cleanarchitecture.shishkin.base.data.AbstractViewModel;
+import com.cleanarchitecture.shishkin.base.data.ViewModelDebounce;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.SafeUtils;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
@@ -44,8 +43,6 @@ public class DbProvider<H extends AbstractViewModel> implements IDbProvider, Lif
         mViewModel = Collections.synchronizedMap(new HashMap<String, H>());
 
         EventBusController.getInstance().register(this);
-
-        connect(CleanArchitectureDb.class, CleanArchitectureDb.NAME);
 
         mLifecycleRegistry.markState(Lifecycle.State.STARTED);
     }
@@ -203,7 +200,6 @@ public class DbProvider<H extends AbstractViewModel> implements IDbProvider, Lif
 
     @Override
     public synchronized <T, E extends AbstractViewModel> void observe(final LifecycleActivity activity, final String nameViewModel, final Class<E> klass, final IObserver<T> observer) {
-        if (mDb.size() == 1) {
             try {
                 E viewModel = null;
                 if (!mViewModel.containsKey(nameViewModel)) {
@@ -217,7 +213,6 @@ public class DbProvider<H extends AbstractViewModel> implements IDbProvider, Lif
             } catch (Exception e) {
                 ErrorController.getInstance().onError(NAME, e, ErrorController.ERROR_GET_DATA);
             }
-        }
     }
 
     @Override
