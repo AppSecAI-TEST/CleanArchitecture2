@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Сервис вывода сообщений в зону уведомлений телефона
+ * Сервис вывода сообщений в зону уведомлений
  */
 @SuppressWarnings("unused")
 public class NotificationService extends LiveLongBackgroundIntentService {

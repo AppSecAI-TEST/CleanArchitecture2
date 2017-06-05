@@ -31,7 +31,7 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IEventVendo
     }
 
     @Override
-    public void onViewCreatedLifecycle() {
+    public void onReadyLifecycle() {
         Controllers.getInstance().getMailController().register(this);
         updateView();
     }
@@ -55,7 +55,7 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IEventVendo
         mModel = model;
 
         if (validate()) {
-            if (getState() == Lifecycle.STATE_RESUME || getState() == Lifecycle.STATE_VIEW_CREATED) {
+            if (getState() == Lifecycle.STATE_RESUME || getState() == Lifecycle.STATE_READY) {
                 updateView();
             } else {
                 Controllers.getInstance().getMailController().addMail(new UpdateViewPresenterMail(getName()));
@@ -77,16 +77,13 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IEventVendo
         return (mLifecycle.getState() != Lifecycle.STATE_DESTROY && mLifecycle.getState() != Lifecycle.STATE_CREATE);
     }
 
+    @Override
     abstract public boolean isRegister();
 
     @Override
     abstract public String getName();
 
-    /**
-     * послать событие на шину событий
-     *
-     * @param event событие
-     */
+    @Override
     public void postEvent(IEvent event) {
         EventBusController.getInstance().post(event);
     }

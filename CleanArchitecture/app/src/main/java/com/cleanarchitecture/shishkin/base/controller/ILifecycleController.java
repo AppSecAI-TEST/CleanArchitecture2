@@ -1,5 +1,6 @@
 package com.cleanarchitecture.shishkin.base.controller;
 
+import com.cleanarchitecture.shishkin.base.event.StartActivityEvent;
 import com.cleanarchitecture.shishkin.base.ui.activity.AbstractActivity;
 import com.cleanarchitecture.shishkin.base.ui.activity.AbstractContentActivity;
 
@@ -35,5 +36,12 @@ public interface ILifecycleController extends IController<ILifecycleSubscriber> 
      * @return текущая AbstractContentActivity
      */
     AbstractContentActivity getCurrentContentActivity();
+
+    /**
+     * Обрабатывает событие - Start Activity
+     *
+     * @param event событие
+     */
+    void onStartActivityEvent(final StartActivityEvent event);
 
 }

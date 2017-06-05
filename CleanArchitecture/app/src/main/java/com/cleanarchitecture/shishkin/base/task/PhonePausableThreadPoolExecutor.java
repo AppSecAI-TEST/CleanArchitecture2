@@ -39,8 +39,8 @@ public class PhonePausableThreadPoolExecutor implements IPhonePausableThreadPool
 
     private void setThreadCount(final NetworkInfo info) {
         if (info == null || !info.isConnectedOrConnecting()) {
-            mThreadCount = 2;
-            mMaxThreadCount = 2;
+            mThreadCount = 1;
+            mMaxThreadCount = 1;
             return;
         }
 
@@ -48,8 +48,8 @@ public class PhonePausableThreadPoolExecutor implements IPhonePausableThreadPool
             case ConnectivityManager.TYPE_WIFI:
             case ConnectivityManager.TYPE_WIMAX:
             case ConnectivityManager.TYPE_ETHERNET:
-                mThreadCount = 6;
-                mMaxThreadCount = 6;
+                mThreadCount = 4;
+                mMaxThreadCount = 4;
                 return;
 
             case ConnectivityManager.TYPE_MOBILE:
@@ -57,8 +57,8 @@ public class PhonePausableThreadPoolExecutor implements IPhonePausableThreadPool
                     case TelephonyManager.NETWORK_TYPE_LTE:  // 4G
                     case TelephonyManager.NETWORK_TYPE_HSPAP:
                     case TelephonyManager.NETWORK_TYPE_EHRPD:
-                        mThreadCount = 4;
-                        mMaxThreadCount = 4;
+                        mThreadCount = 3;
+                        mMaxThreadCount = 3;
                         return;
 
                     case TelephonyManager.NETWORK_TYPE_UMTS: // 3G
@@ -77,14 +77,14 @@ public class PhonePausableThreadPoolExecutor implements IPhonePausableThreadPool
                         return;
 
                     default:
-                        mThreadCount = 2;
-                        mMaxThreadCount = 2;
+                        mThreadCount = 1;
+                        mMaxThreadCount = 1;
                         return;
                 }
 
             default:
-                mThreadCount = 2;
-                mMaxThreadCount = 2;
+                mThreadCount = 1;
+                mMaxThreadCount = 1;
                 return;
         }
     }

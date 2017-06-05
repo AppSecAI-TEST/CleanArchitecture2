@@ -417,6 +417,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         }
     }
 
+    @Override
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onSetToolbarBackNavigationEvent(ToolbarSetBackNavigationEvent event) {
         setBackNavigation(event.getBackNavigation());
@@ -427,31 +428,37 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         resetToolbar();
     }
 
+    @Override
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onSetToolbarTitleEvent(ToolbarSetTitleEvent event) {
         setTitle(event.getIconId(), event.getTitle());
     }
 
+    @Override
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onSetToolbarMenuEvent(ToolbarSetMenuEvent event) {
         setMenu(event.getMenuId(), event.isVisible());
     }
 
+    @Override
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onSetToolbarItemEvent(ToolbarSetItemEvent event) {
         setItem(event.getItemId(), event.isVisible());
     }
 
+    @Override
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onShowHorizontalProgressBarEvent(ShowHorizontalProgressBarEvent event) {
         showHorizontalProgressBar();
     }
 
+    @Override
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onHideHorizontalProgressBarEvent(HideHorizontalProgressBarEvent event) {
         hideHorizontalProgressBar();
     }
 
+    @Override
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onToolbarOnClickEvent(OnToolbarClickEvent event) {
         final AbstractContentFragment fragment = Controllers.getInstance().getNavigationController().getContentFragment(AbstractContentFragment.class);
@@ -460,16 +467,19 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         }
     }
 
+    @Override
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onToolbarSetBackgroundEvent(ToolbarSetBackgroundEvent event) {
         setBackground(event.getDrawable());
     }
 
+    @Override
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onNetworkConnectedEvent(OnNetworkConnectedEvent event) {
         onNetworkConnected();
     }
 
+    @Override
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onNetworkDisconnectedEvent(OnNetworkDisconnectedEvent event) {
         onNetworkDisconnected();

@@ -20,14 +20,6 @@ public class NavigationController extends AbstractController<INavigationSubscrib
         EventBusController.getInstance().register(this);
     }
 
-    /**
-     * Получить фрагмент по его id.
-     *
-     * @param <F> тип фрагмента
-     * @param cls класс фрагмента
-     * @param id  the id
-     * @return фрагмент
-     */
     @Override
     public synchronized <F> F getFragment(Class<F> cls, int id) {
         final INavigationSubscriber subscriber = getSubscriber();
@@ -37,13 +29,6 @@ public class NavigationController extends AbstractController<INavigationSubscrib
         return null;
     }
 
-    /**
-     * Получить ContentFragment
-     *
-     * @param <F> тип фрагмента
-     * @param cls класс фрагмента
-     * @return ContentFragment
-     */
     @Override
     public synchronized <F> F getContentFragment(Class<F> cls) {
         final INavigationSubscriber subscriber = getSubscriber();
@@ -58,6 +43,7 @@ public class NavigationController extends AbstractController<INavigationSubscrib
         return NAME;
     }
 
+    @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onShowFragmentEvent(ShowFragmentEvent event) {
         final INavigationSubscriber subscriber = getSubscriber();
@@ -66,15 +52,16 @@ public class NavigationController extends AbstractController<INavigationSubscrib
         }
     }
 
+    @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public boolean onSwitchToFragmentEvent(SwitchToFragmentEvent event) {
+    public void onSwitchToFragmentEvent(SwitchToFragmentEvent event) {
         final INavigationSubscriber subscriber = getSubscriber();
         if (subscriber != null) {
-            return subscriber.switchToFragment(event.getName());
+            subscriber.switchToFragment(event.getName());
         }
-        return false;
     }
 
+    @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onActivityBackPressedEvent(OnActivityBackPressedEvent event) {
         final INavigationSubscriber subscriber = getSubscriber();

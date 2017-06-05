@@ -7,7 +7,7 @@ import java.util.List;
 public interface IMailController extends IController<IMailSubscriber> {
 
     /**
-     * Get mails list for subscriber.
+     * Получить почту подписчика
      *
      * @param subscriber the subscriber
      * @return the list
@@ -15,21 +15,21 @@ public interface IMailController extends IController<IMailSubscriber> {
     List<IMail> getMail(IMailSubscriber subscriber);
 
     /**
-     * Add mail.
+     * Добавить почтовое сообщение
      *
      * @param mail the mail
      */
     void addMail(IMail mail);
 
     /**
-     * Remove mail.
+     * Удалить почтовое сообщение
      *
      * @param mail the mail
      */
     void removeMail(IMail mail);
 
     /**
-     * Clear all mails.
+     * Удалить все сообщения
      */
     void clearMail();
 

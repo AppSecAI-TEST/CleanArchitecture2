@@ -17,7 +17,7 @@ import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
 import com.cleanarchitecture.shishkin.base.event.IEvent;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.mail.IMail;
-import com.cleanarchitecture.shishkin.base.observer.StateMachine;
+import com.cleanarchitecture.shishkin.base.lifecycle.StateMachine;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.base.ui.activity.IActivity;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
@@ -51,7 +51,7 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mStateMachine.setState(Lifecycle.STATE_VIEW_CREATED);
+        mStateMachine.setState(Lifecycle.STATE_READY);
 
         Controllers.getInstance().getMailController().register(this);
     }

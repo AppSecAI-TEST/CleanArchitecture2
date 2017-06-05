@@ -10,7 +10,7 @@ public class ViewModelDebounce extends Debounce {
     private String mName;
 
     public ViewModelDebounce(final String name) {
-        super(TimeUnit.MINUTES.toMillis(5), 0);
+        super(TimeUnit.SECONDS.toMillis(20), 0);
 
         mName = name;
     }
