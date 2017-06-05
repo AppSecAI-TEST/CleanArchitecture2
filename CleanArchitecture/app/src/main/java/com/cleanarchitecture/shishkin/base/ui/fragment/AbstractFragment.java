@@ -15,16 +15,14 @@ import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
 import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
 import com.cleanarchitecture.shishkin.base.event.IEvent;
-import com.cleanarchitecture.shishkin.base.lifecycle.IStateable;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.mail.IMail;
+import com.cleanarchitecture.shishkin.base.observer.StateMachine;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.base.ui.activity.IActivity;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.ViewUtils;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -37,8 +35,7 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
         , IEventVendor, IMailSubscriber {
 
     private Map<String, IPresenter> mPresenters = Collections.synchronizedMap(new HashMap<String, IPresenter>());
-    private List<WeakReference<IStateable>> mLifecycleList = Collections.synchronizedList(new ArrayList<WeakReference<IStateable>>());
-    private int mLifecycleState = Lifecycle.STATE_CREATE;
+    private StateMachine mStateMachine = new StateMachine(Lifecycle.STATE_CREATE);
     private Unbinder mUnbinder = null;
 
     @Override
@@ -50,20 +47,11 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
         return null;
     }
 
-    private void setLifecycleStatus(final int status) {
-        mLifecycleState = status;
-        for (WeakReference<IStateable> object : mLifecycleList) {
-            if (object.get() != null) {
-                object.get().setState(mLifecycleState);
-            }
-        }
-    }
-
     @Override
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        setLifecycleStatus(Lifecycle.STATE_VIEW_CREATED);
+        mStateMachine.setState(Lifecycle.STATE_VIEW_CREATED);
 
         Controllers.getInstance().getMailController().register(this);
     }
@@ -77,14 +65,14 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
     public void onPause() {
         super.onPause();
 
-        setLifecycleStatus(Lifecycle.STATE_PAUSE);
+        mStateMachine.setState(Lifecycle.STATE_PAUSE);
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        setLifecycleStatus(Lifecycle.STATE_RESUME);
+        mStateMachine.setState(Lifecycle.STATE_RESUME);
 
         readMail();
     }
@@ -93,8 +81,8 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
     public void onDestroyView() {
         super.onDestroyView();
 
-        setLifecycleStatus(Lifecycle.STATE_DESTROY);
-        mLifecycleList.clear();
+        mStateMachine.setState(Lifecycle.STATE_DESTROY);
+        mStateMachine.clear();
 
         for (IPresenter presenter : mPresenters.values()) {
             Controllers.getInstance().getPresenterController().unregister(presenter);
@@ -148,33 +136,13 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
 
     @Override
     public synchronized void registerPresenter(final IPresenter presenter) {
-        presenter.setState(mLifecycleState);
         if (mPresenters.containsKey(presenter.getName())) {
             mPresenters.remove(presenter);
             Controllers.getInstance().getPresenterController().unregister(presenter);
         }
         mPresenters.put(presenter.getName(), presenter);
         Controllers.getInstance().getPresenterController().register(presenter);
-        registerLifecycleObject(presenter);
-    }
-
-    public synchronized void registerLifecycleObject(final IStateable object) {
-        for (WeakReference<IStateable> reference : mLifecycleList) {
-            if (reference.get() == null) {
-                mLifecycleList.remove(reference);
-            }
-        }
-
-        boolean found = false;
-        for (WeakReference<IStateable> reference : mLifecycleList) {
-            if (reference.get() != null && reference.get() == object) {
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            mLifecycleList.add(new WeakReference<IStateable>(object));
-        }
+        mStateMachine.addObserver(presenter);
     }
 
     @Override
@@ -206,7 +174,7 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
 
     @Override
     public int getState() {
-        return mLifecycleState;
+        return mStateMachine.getState();
     }
 
     @Override

@@ -20,7 +20,7 @@ public class PresenterController extends AbstractController<IPresenter>
 
     @Override
     public synchronized void register(final IPresenter subscriber) {
-        if(subscriber != null && subscriber.isRegister()) {
+        if (subscriber != null && subscriber.isRegister()) {
             super.register(subscriber);
         }
     }

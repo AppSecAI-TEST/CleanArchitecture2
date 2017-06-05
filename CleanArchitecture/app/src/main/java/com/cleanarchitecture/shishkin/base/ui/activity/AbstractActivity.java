@@ -34,10 +34,9 @@ import com.cleanarchitecture.shishkin.base.event.IEvent;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionDeniedEvent;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.DialogResultEvent;
-import com.cleanarchitecture.shishkin.base.lifecycle.ILifecycle;
-import com.cleanarchitecture.shishkin.base.lifecycle.IStateable;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.mail.IMail;
+import com.cleanarchitecture.shishkin.base.observer.StateMachine;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.base.ui.dialog.MaterialDialogExt;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
@@ -46,8 +45,6 @@ import com.cleanarchitecture.shishkin.base.utils.ViewUtils;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -61,8 +58,7 @@ public abstract class AbstractActivity extends LifecycleActivity
 
     private static final String NAME = "AbstractActivity";
     private Map<String, IPresenter> mPresenters = Collections.synchronizedMap(new HashMap<String, IPresenter>());
-    private List<WeakReference<IStateable>> mLifecycleList = Collections.synchronizedList(new ArrayList<WeakReference<IStateable>>());
-    private int mLifecycleState = Lifecycle.STATE_CREATE;
+    private StateMachine mStateMachine = new StateMachine(Lifecycle.STATE_CREATE);
     private Unbinder mUnbinder = null;
 
     @Override
@@ -74,21 +70,7 @@ public abstract class AbstractActivity extends LifecycleActivity
         Controllers.getInstance().getActivityController().register(this);
         Controllers.getInstance().getMailController().register(this);
 
-        setLifecycleStatus(Lifecycle.STATE_CREATE);
-    }
-
-    private void setLifecycleStatus(final int status) {
-        mLifecycleState = status;
-        for (WeakReference<IStateable> object : mLifecycleList) {
-            if (object.get() != null) {
-                object.get().setState(mLifecycleState);
-            }
-        }
-    }
-
-    @Override
-    public void onUserInteraction() {
-        // EventController.getInstance().post(new OnUserIteractionEvent());
+        mStateMachine.setState(Lifecycle.STATE_CREATE);
     }
 
     /**
@@ -106,9 +88,8 @@ public abstract class AbstractActivity extends LifecycleActivity
     protected void onStart() {
         super.onStart();
 
-        setLifecycleStatus(Lifecycle.STATE_VIEW_CREATED);
+        mStateMachine.setState(Lifecycle.STATE_VIEW_CREATED);
 
-        //EventController.getInstance().post(new OnUserIteractionEvent());
     }
 
     @Override
@@ -122,8 +103,8 @@ public abstract class AbstractActivity extends LifecycleActivity
         Controllers.getInstance().getLifecycleController().unregister(this);
         Controllers.getInstance().getMailController().unregister(this);
 
-        setLifecycleStatus(Lifecycle.STATE_DESTROY);
-        mLifecycleList.clear();
+        mStateMachine.setState(Lifecycle.STATE_DESTROY);
+        mStateMachine.clear();
 
         for (IPresenter presenter : mPresenters.values()) {
             Controllers.getInstance().getPresenterController().unregister(presenter);
@@ -140,7 +121,7 @@ public abstract class AbstractActivity extends LifecycleActivity
         Controllers.getInstance().getActivityController().setCurrentSubscriber(this);
         Controllers.getInstance().getLifecycleController().setCurrentSubscriber(this);
 
-        setLifecycleStatus(Lifecycle.STATE_RESUME);
+        mStateMachine.setState(Lifecycle.STATE_RESUME);
 
         readMail();
     }
@@ -149,7 +130,7 @@ public abstract class AbstractActivity extends LifecycleActivity
     protected void onPause() {
         super.onPause();
 
-        setLifecycleStatus(Lifecycle.STATE_PAUSE);
+        mStateMachine.setState(Lifecycle.STATE_PAUSE);
     }
 
     /**
@@ -194,8 +175,6 @@ public abstract class AbstractActivity extends LifecycleActivity
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        //EventController.getInstance().post(new OnUserIteractionEvent());
-
         for (int i = 0; i < permissions.length; i++) {
             AppPreferences.putInt(this, permissions[i], grantResults[i]);
             if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
@@ -213,34 +192,13 @@ public abstract class AbstractActivity extends LifecycleActivity
 
     @Override
     public synchronized void registerPresenter(final IPresenter presenter) {
-        presenter.setState(mLifecycleState);
         if (mPresenters.containsKey(presenter.getName())) {
             mPresenters.remove(presenter);
             Controllers.getInstance().getPresenterController().unregister(presenter);
         }
         mPresenters.put(presenter.getName(), presenter);
         Controllers.getInstance().getPresenterController().register(presenter);
-        registerLifecycleObject(presenter);
-    }
-
-    @Override
-    public synchronized void registerLifecycleObject(final ILifecycle object) {
-        for (WeakReference<IStateable> reference : mLifecycleList) {
-            if (reference.get() == null) {
-                mLifecycleList.remove(reference);
-            }
-        }
-
-        boolean found = false;
-        for (WeakReference<IStateable> reference : mLifecycleList) {
-            if (reference.get() != null && reference.get() == object) {
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            mLifecycleList.add(new WeakReference<IStateable>(object));
-        }
+        mStateMachine.addObserver(presenter);
     }
 
     @Override
@@ -263,7 +221,7 @@ public abstract class AbstractActivity extends LifecycleActivity
 
     @Override
     public int getState() {
-        return mLifecycleState;
+        return mStateMachine.getState();
     }
 
     @Override
@@ -374,8 +332,6 @@ public abstract class AbstractActivity extends LifecycleActivity
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDialogResultEvent(DialogResultEvent event) {
-
-        //EventController.getInstance().post(new OnUserIteractionEvent());
 
         final Bundle bundle = event.getResult();
         if (bundle != null && bundle.getInt("id", -1) == R.id.dialog_request_permissions) {
