@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.application.data.live;
+package com.cleanarchitecture.shishkin.application.data.livingdata;
 
 import com.cleanarchitecture.shishkin.application.data.dao.PhoneContactDAO;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
