@@ -2,6 +2,8 @@ package com.cleanarchitecture.shishkin.base.data;
 
 import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.observer.Debounce;
+import com.cleanarchitecture.shishkin.base.repository.DbProvider;
+import com.cleanarchitecture.shishkin.base.repository.IDbProvider;
 
 import java.util.concurrent.TimeUnit;
 
@@ -18,7 +20,10 @@ public class ViewModelDebounce extends Debounce {
     @Override
     public void run() {
         if (Admin.getInstance() != null) {
-            Admin.getInstance().getDbProvider().removeViewModel(mName);
+            final IDbProvider provider = Admin.getInstance().getModule(DbProvider.NAME);
+            if (provider != null) {
+                provider.removeViewModel(mName);
+            }
         }
     }
 }
