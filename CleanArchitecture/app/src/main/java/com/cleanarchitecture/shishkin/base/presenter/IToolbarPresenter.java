@@ -13,7 +13,7 @@ import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetTitleEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.HideHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowHorizontalProgressBarEvent;
 
-public interface IToolbarPresenter{
+public interface IToolbarPresenter {
 
     /**
      * Флаг - поддерживает Toolbar backpress навигацию

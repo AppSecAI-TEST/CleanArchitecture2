@@ -12,9 +12,10 @@ import android.content.Context;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.ErrorController;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
-import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
+import com.cleanarchitecture.shishkin.base.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.base.data.AbstractViewModel;
 import com.cleanarchitecture.shishkin.base.data.ViewModelDebounce;
+import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.SafeUtils;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
@@ -24,11 +25,13 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class DbProvider<H extends AbstractViewModel> implements IDbProvider, LifecycleOwner {
+public class DbProvider<H extends AbstractViewModel> implements IDbProvider, LifecycleOwner, IModuleSubscriber {
     public static final String NAME = "DbProvider";
 
     private Map<String, Object> mDb;
@@ -41,8 +44,6 @@ public class DbProvider<H extends AbstractViewModel> implements IDbProvider, Lif
 
         mDb = Collections.synchronizedMap(new HashMap<String, Object>());
         mViewModel = Collections.synchronizedMap(new HashMap<String, H>());
-
-        EventBusController.getInstance().register(this);
 
         mLifecycleRegistry.markState(Lifecycle.State.STARTED);
     }
@@ -200,19 +201,19 @@ public class DbProvider<H extends AbstractViewModel> implements IDbProvider, Lif
 
     @Override
     public synchronized <T, E extends AbstractViewModel> void observe(final LifecycleActivity activity, final String nameViewModel, final Class<E> klass, final IObserver<T> observer) {
-            try {
-                E viewModel = null;
-                if (!mViewModel.containsKey(nameViewModel)) {
-                    viewModel = ViewModelProviders.of(activity).get(klass);
-                    viewModel.getLiveData().observe(this, observer);
-                    mViewModel.put(viewModel.getName(), (H) viewModel);
-                } else {
-                    viewModel = (E) mViewModel.get(nameViewModel);
-                    viewModel.getLiveData().observe(this, observer);
-                }
-            } catch (Exception e) {
-                ErrorController.getInstance().onError(NAME, e, ErrorController.ERROR_GET_DATA);
+        try {
+            E viewModel = null;
+            if (!mViewModel.containsKey(nameViewModel)) {
+                viewModel = ViewModelProviders.of(activity).get(klass);
+                viewModel.getLiveData().observe(this, observer);
+                mViewModel.put(viewModel.getName(), (H) viewModel);
+            } else {
+                viewModel = (E) mViewModel.get(nameViewModel);
+                viewModel.getLiveData().observe(this, observer);
             }
+        } catch (Exception e) {
+            ErrorController.getInstance().onError(NAME, e, ErrorController.ERROR_GET_DATA);
+        }
     }
 
     @Override
@@ -257,6 +258,18 @@ public class DbProvider<H extends AbstractViewModel> implements IDbProvider, Lif
     @Override
     public String getName() {
         return NAME;
+    }
+
+    @Override
+    public String getSubscriberType() {
+        return null;
+    }
+
+    @Override
+    public List<String> hasSubscriberType() {
+        final ArrayList<String> list = new ArrayList<>();
+        list.add(EventBusController.SUBSCRIBER_TYPE);
+        return list;
     }
 
     @Override

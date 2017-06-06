@@ -1,9 +1,6 @@
 package com.cleanarchitecture.shishkin.base.mail;
 
-import com.cleanarchitecture.shishkin.base.controller.EventBusController;
-import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
 import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
-import com.cleanarchitecture.shishkin.base.event.IEvent;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 
 import org.apache.commons.lang3.SerializationUtils;
@@ -12,7 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractMail implements IMail, IEventVendor, Serializable {
+public abstract class AbstractMail implements IMail, Serializable {
 
     private String mAddress;
     private String mSender;
@@ -119,10 +116,4 @@ public abstract class AbstractMail implements IMail, IEventVendor, Serializable 
         return false;
     }
 
-    @Override
-    public void postEvent(IEvent event) {
-        if (event != null) {
-            EventBusController.getInstance().post(event);
-        }
-    }
 }

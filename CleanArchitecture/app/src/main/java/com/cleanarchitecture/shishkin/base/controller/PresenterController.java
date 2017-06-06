@@ -13,6 +13,7 @@ public class PresenterController extends AbstractController<IPresenter>
         implements IPresenterController {
 
     public static final String NAME = "PresenterController";
+    public static final String SUBSCRIBER_TYPE = "IPresenter";
 
     public PresenterController() {
         super();
@@ -42,4 +43,8 @@ public class PresenterController extends AbstractController<IPresenter>
         return NAME;
     }
 
+    @Override
+    public String getSubscriberType() {
+        return SUBSCRIBER_TYPE;
+    }
 }

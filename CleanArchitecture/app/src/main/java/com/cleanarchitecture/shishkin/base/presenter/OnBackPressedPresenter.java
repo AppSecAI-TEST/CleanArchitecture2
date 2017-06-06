@@ -4,9 +4,9 @@ import android.content.Context;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
-import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowMessageEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseFinishApplicationEvent;
+import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -23,11 +23,11 @@ public class OnBackPressedPresenter extends AbstractPresenter<Void> {
                 final Context context = ApplicationController.getInstance();
                 if (context != null) {
                     mDoubleBackPressedOnce = true;
-                    EventBusController.getInstance().post(new ShowMessageEvent(context.getString(R.string.double_back_pressed)).setAction(context.getString(R.string.exit)));
+                    ApplicationUtils.postEvent(new ShowMessageEvent(context.getString(R.string.double_back_pressed)).setAction(context.getString(R.string.exit)));
                     startTimer();
                 }
             } else {
-                EventBusController.getInstance().post(new UseCaseFinishApplicationEvent());
+                ApplicationUtils.postEvent(new UseCaseFinishApplicationEvent());
             }
         }
     }

@@ -5,6 +5,7 @@ import android.widget.Toast;
 import com.cleanarchitecture.shishkin.base.controller.ActivityController;
 import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowToastEvent;
+import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 
 public class ShowToastMail extends AbstractMail {
 
@@ -32,7 +33,7 @@ public class ShowToastMail extends AbstractMail {
 
     @Override
     public void read(final IMailSubscriber subscriber) {
-        postEvent(new ShowToastEvent(mMessage)
+        ApplicationUtils.postEvent(new ShowToastEvent(mMessage)
                 .setDuration(mDuration)
                 .setType(mType));
     }

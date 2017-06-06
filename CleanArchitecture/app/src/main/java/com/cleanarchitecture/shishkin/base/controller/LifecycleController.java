@@ -11,20 +11,21 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Контроллер, отвечающий за жизненный цикл activities приложения
  */
 @SuppressWarnings("unused")
 public class LifecycleController extends AbstractController<ILifecycleSubscriber>
-        implements ILifecycleController {
+        implements ILifecycleController, IModuleSubscriber {
 
     public static final String NAME = "LifecycleController";
+    public static final String SUBSCRIBER_TYPE = "ILifecycleSubscriber";
 
     public LifecycleController() {
         super();
-
-        EventBusController.getInstance().register(this);
     }
 
     @Override
@@ -68,6 +69,18 @@ public class LifecycleController extends AbstractController<ILifecycleSubscriber
     }
 
     @Override
+    public String getSubscriberType() {
+        return SUBSCRIBER_TYPE;
+    }
+
+    @Override
+    public List<String> hasSubscriberType() {
+        final ArrayList<String> list = new ArrayList<>();
+        list.add(EventBusController.SUBSCRIBER_TYPE);
+        return list;
+    }
+
+    @Override
     public synchronized AbstractContentActivity getContentActivity() {
         final AbstractContentActivity activity = getCurrentContentActivity();
         if (activity != null) {
@@ -97,6 +110,5 @@ public class LifecycleController extends AbstractController<ILifecycleSubscriber
     public void onStartActivityEvent(final StartActivityEvent event) {
         startActivity(event);
     }
-
 
 }

@@ -4,6 +4,7 @@ import com.annimon.stream.Stream;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.mail.IMail;
 import com.cleanarchitecture.shishkin.base.task.BaseAsyncTask;
+import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 
 import java.lang.ref.WeakReference;
@@ -18,6 +19,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class MailController extends AbstractController<IMailSubscriber> implements IMailController {
 
     public static final String NAME = "MailController";
+    public static final String SUBSCRIBER_TYPE = "IMailSubscriber";
     private Map<Long, IMail> mMail = Collections.synchronizedMap(new HashMap<Long, IMail>());
     private AtomicLong mId = new AtomicLong(0L);
 
@@ -30,6 +32,11 @@ public class MailController extends AbstractController<IMailSubscriber> implemen
     @Override
     public String getName() {
         return NAME;
+    }
+
+    @Override
+    public String getSubscriberType() {
+        return SUBSCRIBER_TYPE;
     }
 
     @Override
@@ -113,7 +120,7 @@ public class MailController extends AbstractController<IMailSubscriber> implemen
                         new BaseAsyncTask() {
                             @Override
                             public void run() {
-                                subscriber.readMail();
+                                ApplicationUtils.readMail(subscriber);
                             }
                         }.execute();
                     }

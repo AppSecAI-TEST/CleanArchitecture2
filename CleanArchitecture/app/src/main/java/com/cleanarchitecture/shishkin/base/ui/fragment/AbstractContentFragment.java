@@ -11,10 +11,12 @@ import android.view.View;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
+import com.cleanarchitecture.shishkin.base.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarInitEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarPrepareEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarResetEvent;
 import com.cleanarchitecture.shishkin.base.ui.activity.OnBackPressListener;
+import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.ViewUtils;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -25,22 +27,20 @@ import java.util.List;
 @SuppressWarnings("unused")
 public abstract class AbstractContentFragment extends AbstractFragment implements
         IContentFragment,
-        OnBackPressListener {
+        OnBackPressListener, IModuleSubscriber {
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
-    public void onDestroyView() {
-        EventBusController.getInstance().unregister(this);
-
-        super.onDestroyView();
+    public List<String> hasSubscriberType() {
+        final List<String> list = super.hasSubscriberType();
+        list.add(EventBusController.SUBSCRIBER_TYPE);
+        return list;
     }
 
     @Override
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        EventBusController.getInstance().register(this);
 
         mSwipeRefreshLayout = ViewUtils.findView(view, R.id.swipeRefreshLayout);
         if (mSwipeRefreshLayout != null) {
@@ -125,7 +125,7 @@ public abstract class AbstractContentFragment extends AbstractFragment implement
 
     @Subscribe(sticky = true, threadMode = ThreadMode.ASYNC)
     public synchronized void onToolbarInitEvent(ToolbarInitEvent event) {
-        postEvent(new ToolbarResetEvent());
+        ApplicationUtils.postEvent(new ToolbarResetEvent());
     }
 
 }

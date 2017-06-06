@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.AbstractController;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
+import com.cleanarchitecture.shishkin.base.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionDeniedEvent;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.OnSnackBarClickEvent;
@@ -16,19 +17,22 @@ import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnLowMemoryEvent
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOffEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOnEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
+import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Контроллер бизнес и пользовательской логики в приложении
  */
 @SuppressWarnings("unused")
-public class UseCasesController extends AbstractController implements IUseCasesController {
+public class UseCasesController extends AbstractController implements IUseCasesController, IModuleSubscriber {
     public static final String NAME = "UseCasesController";
 
     public UseCasesController() {
-        EventBusController.getInstance().register(this);
     }
 
     private void registerScreenOnOffBroadcastReceiver() {
@@ -44,9 +48,9 @@ public class UseCasesController extends AbstractController implements IUseCasesC
                     final String strAction = intent.getAction();
 
                     if (strAction.equals(Intent.ACTION_SCREEN_OFF)) {
-                        EventBusController.getInstance().post(new UseCaseOnScreenOffEvent());
+                        ApplicationUtils.postEvent(new UseCaseOnScreenOffEvent());
                     } else {
-                        EventBusController.getInstance().post(new UseCaseOnScreenOnEvent());
+                        ApplicationUtils.postEvent(new UseCaseOnScreenOnEvent());
                     }
                 }
             };
@@ -59,6 +63,18 @@ public class UseCasesController extends AbstractController implements IUseCasesC
     @Override
     public String getName() {
         return NAME;
+    }
+
+    @Override
+    public String getSubscriberType() {
+        return null;
+    }
+
+    @Override
+    public List<String> hasSubscriberType() {
+        final ArrayList<String> list = new ArrayList<>();
+        list.add(EventBusController.SUBSCRIBER_TYPE);
+        return list;
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)

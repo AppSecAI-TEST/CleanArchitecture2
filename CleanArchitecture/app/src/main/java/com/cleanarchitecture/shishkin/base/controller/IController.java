@@ -8,21 +8,7 @@ import java.util.Map;
  *
  * @param <T> the type parameter
  */
-public interface IController<T> extends ISubscriber {
-
-    /**
-     * Зарегестрировать подписчика
-     *
-     * @param subscriber подписчик
-     */
-    void register(T subscriber);
-
-    /**
-     * Отключить подписчика
-     *
-     * @param subscriber подписчик
-     */
-    void unregister(T subscriber);
+public interface IController<T> extends ISmallController<T> {
 
     /**
      * Установить текущего подписчика

@@ -3,7 +3,7 @@ package com.cleanarchitecture.shishkin.base.controller;
 /**
  * Интерфейс контроллера ошибок
  */
-public interface IErrorController extends ISubscriber {
+public interface IErrorController extends IModule {
 
     /**
      * Ошибка
