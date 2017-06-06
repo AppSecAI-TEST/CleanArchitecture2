@@ -1,5 +1,9 @@
 package com.cleanarchitecture.shishkin.application.data.livingdata;
 
+import android.content.Context;
+
+import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.application.data.dao.PhoneContactDAO;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
@@ -8,6 +12,8 @@ import com.cleanarchitecture.shishkin.base.data.AbstractContentProviderLivingDat
 import com.cleanarchitecture.shishkin.base.event.ui.HideHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.repository.Repository;
+import com.cleanarchitecture.shishkin.base.storage.DiskCache;
+import com.cleanarchitecture.shishkin.base.storage.MemoryCache;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -29,6 +35,15 @@ public class PhoneContactLivingData extends AbstractContentProviderLivingData<Li
     public void getData() {
         ApplicationUtils.postEvent(new ShowHorizontalProgressBarEvent());
         ApplicationUtils.postEvent(new RepositoryRequestGetContactsEvent(Repository.USE_ONLY_CACHE));
+    }
+
+    @Override
+    public void onChanged() {
+        MemoryCache.getInstance().clear(String.valueOf(R.id.repository_get_contacts));
+        final Context context = ApplicationController.getInstance();
+        if (context != null) {
+            DiskCache.getInstance(context).clear(String.valueOf(R.id.repository_get_contacts));
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
