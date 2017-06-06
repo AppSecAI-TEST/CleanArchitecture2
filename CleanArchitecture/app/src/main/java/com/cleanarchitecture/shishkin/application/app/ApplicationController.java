@@ -41,22 +41,7 @@ public class ApplicationController extends MultiDexApplication implements IModul
             LeakCanary.install(this);
         }
 
-        Admin.getInstance().registerModule(ErrorController.getInstance());
-        Admin.getInstance().registerModule(EventBusController.getInstance());
-        Admin.getInstance().registerModule(new CrashController());
-        Admin.getInstance().registerModule(new ActivityController());
-        Admin.getInstance().registerModule(new LifecycleController());
-        Admin.getInstance().registerModule(new PresenterController());
-        Admin.getInstance().registerModule(new NavigationController());
-        Admin.getInstance().registerModule(new UseCasesController());
-        Admin.getInstance().registerModule(new MailController());
-        Admin.getInstance().registerModule(this);
 
-        final IRepository repository = new Repository();
-        Admin.getInstance().registerModule(repository);
-        Admin.getInstance().registerModule(repository.getDbProvider());
-        Admin.getInstance().registerModule(repository.getNetProvider());
-        Admin.getInstance().registerModule(repository.getContentProvider());
     }
 
     @Override
