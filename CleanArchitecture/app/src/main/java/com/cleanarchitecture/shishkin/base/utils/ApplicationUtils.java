@@ -239,7 +239,7 @@ public class ApplicationUtils {
 
     public static void readMail(final IMailSubscriber subscriber) {
         final IMailController controller = Admin.getInstance().getModule(MailController.NAME);
-        if (controller != null ) {
+        if (controller != null) {
             final List<IMail> list = controller.getMail(subscriber);
             for (IMail mail : list) {
                 mail.read(subscriber);
@@ -250,28 +250,28 @@ public class ApplicationUtils {
 
     public static void addMail(final IMail mail) {
         final IMailController controller = Admin.getInstance().getModule(MailController.NAME);
-        if (controller != null ) {
+        if (controller != null) {
             addMail(mail);
         }
     }
 
     public static AbstractActivity getActivity() {
         final ILifecycleController controller = Admin.getInstance().getModule(LifecycleController.NAME);
-        if (controller != null ) {
+        if (controller != null) {
             return controller.getActivity();
         }
         return null;
     }
 
-    public static void postEvent(IEvent event){
+    public static void postEvent(IEvent event) {
         EventBusController.getInstance().post(event);
     }
 
-    public static void postStickyEvent(IEvent event){
+    public static void postStickyEvent(IEvent event) {
         EventBusController.getInstance().postSticky(event);
     }
 
-    public static void removeStickyEvent(IEvent event){
+    public static void removeStickyEvent(IEvent event) {
         EventBusController.getInstance().removeSticky(event);
     }
 

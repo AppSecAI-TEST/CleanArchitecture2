@@ -10,12 +10,9 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
-import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.controller.ErrorController;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.controller.IModuleSubscriber;
-import com.cleanarchitecture.shishkin.base.controller.MailController;
-import com.cleanarchitecture.shishkin.base.controller.PresenterController;
 import com.cleanarchitecture.shishkin.base.data.AbstractViewModel;
 import com.cleanarchitecture.shishkin.base.data.ViewModelDebounce;
 import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
@@ -47,8 +44,6 @@ public class DbProvider<H extends AbstractViewModel> implements IDbProvider, Lif
 
         mDb = Collections.synchronizedMap(new HashMap<String, Object>());
         mViewModel = Collections.synchronizedMap(new HashMap<String, H>());
-
-        Admin.getInstance().register(this);
 
         mLifecycleRegistry.markState(Lifecycle.State.STARTED);
     }

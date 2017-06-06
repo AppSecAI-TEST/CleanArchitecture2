@@ -12,12 +12,10 @@ import android.view.View;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.base.controller.ActivityController;
 import com.cleanarchitecture.shishkin.base.controller.Admin;
-import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.controller.IActivityController;
 import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
 import com.cleanarchitecture.shishkin.base.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.base.controller.MailController;
-import com.cleanarchitecture.shishkin.base.event.IEvent;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.lifecycle.StateMachine;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
@@ -150,10 +148,8 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
     public synchronized void registerPresenter(final IPresenter presenter) {
         if (mPresenters.containsKey(presenter.getName())) {
             mPresenters.remove(presenter);
-            Admin.getInstance().unregister(presenter);
         }
         mPresenters.put(presenter.getName(), presenter);
-        Admin.getInstance().register(presenter);
         mStateMachine.addObserver(presenter);
     }
 

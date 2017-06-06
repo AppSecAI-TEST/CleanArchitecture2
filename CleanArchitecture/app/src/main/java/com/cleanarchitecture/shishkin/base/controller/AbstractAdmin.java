@@ -11,11 +11,7 @@ import java.util.Map;
 public abstract class AbstractAdmin implements IAdmin {
     private static final String NAME = "AbstractAdmin";
 
-    private Map<String, IModule> mModules;
-
-    public AbstractAdmin() {
-        mModules = Collections.synchronizedMap(new HashMap<String, IModule>());
-    }
+    private Map<String, IModule> mModules = Collections.synchronizedMap(new HashMap<String, IModule>());
 
     @Override
     public synchronized <C> C getModule(final String controllerName) {
@@ -42,21 +38,23 @@ public abstract class AbstractAdmin implements IAdmin {
                     final List<String> types = ((IModuleSubscriber) controller).hasSubscriberType();
 
                     for (IModule module : mModules.values()) {
-                        if (module instanceof IController) {
+                        if (module instanceof ISmallController) {
                             if (types.contains(module.getSubscriberType())) {
-                                ((IController) module).register(controller);
+                                //Log.i(NAME, controller.getName() + " зарегестрирован в " + module.getName());
+                                ((ISmallController) module).register(controller);
                             }
                         }
                     }
                 }
 
                 // регистрируем другие модули в модуле
-                if (controller instanceof IController) {
+                if (controller instanceof ISmallController) {
                     final String type = controller.getSubscriberType();
                     for (IModule module : mModules.values()) {
                         if (module instanceof IModuleSubscriber) {
                             if (((IModuleSubscriber) module).hasSubscriberType().contains(type)) {
-                                ((IController) controller).register(module);
+                                //Log.i(NAME, module.getName() + " зарегестрирован в " + controller.getName());
+                                ((ISmallController) controller).register(module);
                             }
                         }
                     }
@@ -80,8 +78,8 @@ public abstract class AbstractAdmin implements IAdmin {
                         final List<String> subscribers = ((IModuleSubscriber) module).hasSubscriberType();
                         for (String subscriber : subscribers) {
                             final IModule moduleSubscriber = mModules.get(subscriber);
-                            if (moduleSubscriber != null && moduleSubscriber instanceof IController) {
-                                ((IController) moduleSubscriber).unregister(module);
+                            if (moduleSubscriber != null && moduleSubscriber instanceof ISmallController) {
+                                ((ISmallController) moduleSubscriber).unregister(module);
                             }
                         }
                     }
@@ -102,9 +100,10 @@ public abstract class AbstractAdmin implements IAdmin {
 
                 // регистрируемся subscriber в модулях
                 for (IModule module : mModules.values()) {
-                    if (module instanceof IController) {
+                    if (module instanceof ISmallController) {
                         if (types.contains(module.getSubscriberType())) {
-                            ((IController) module).register(subscriber);
+                            // Log.i("Admin", subscriber.getName() + " зарегестрирован в " + module.getName());
+                            ((ISmallController) module).register(subscriber);
                         }
                     }
                 }
@@ -120,9 +119,9 @@ public abstract class AbstractAdmin implements IAdmin {
             try {
                 final List<String> types = subscriber.hasSubscriberType();
                 for (IModule module : mModules.values()) {
-                    if (module instanceof IController) {
+                    if (module instanceof ISmallController) {
                         if (types.contains(module.getSubscriberType())) {
-                            ((IController) module).unregister(subscriber);
+                            ((ISmallController) module).unregister(subscriber);
                         }
                     }
                 }

@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.presenter.SearchPresenter;
-import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.OnToolbarMenuItemClickEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetBackNavigationEvent;

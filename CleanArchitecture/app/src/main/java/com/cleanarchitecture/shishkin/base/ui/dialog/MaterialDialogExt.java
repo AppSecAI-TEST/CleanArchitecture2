@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;

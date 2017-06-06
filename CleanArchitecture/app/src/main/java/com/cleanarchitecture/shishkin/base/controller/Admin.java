@@ -10,7 +10,7 @@ public class Admin extends AbstractAdmin {
 
     private static volatile Admin sInstance;
 
-    public static Admin getInstance() {
+    public static void instantiate() {
         if (sInstance == null) {
             synchronized (Admin.class) {
                 if (sInstance == null) {
@@ -18,12 +18,16 @@ public class Admin extends AbstractAdmin {
                 }
             }
         }
+    }
+
+    public static Admin getInstance() {
+        if (sInstance == null) {
+            instantiate();
+        }
         return sInstance;
     }
 
     private Admin() {
-        super();
-
         registerModule(ErrorController.getInstance());
         registerModule(EventBusController.getInstance());
         registerModule(new CrashController());

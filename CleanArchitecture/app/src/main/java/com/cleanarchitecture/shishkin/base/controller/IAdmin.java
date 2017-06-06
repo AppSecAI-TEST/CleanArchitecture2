@@ -3,13 +3,13 @@ package com.cleanarchitecture.shishkin.base.controller;
 /**
  * Итерфейс администратора
  */
-public interface IAdmin extends ISubscriber{
+public interface IAdmin extends ISubscriber {
 
     /**
      * Получить модуль
      *
-     * @param <C>           тип модуля
-     * @param nameModule    имя модуля
+     * @param <C>        тип модуля
+     * @param nameModule имя модуля
      * @return модуль
      */
     <C> C getModule(final String nameModule);
@@ -24,7 +24,7 @@ public interface IAdmin extends ISubscriber{
     /**
      * Отменить регистрациюмодуля
      *
-     * @param nameModule    имя модуля
+     * @param nameModule имя модуля
      */
     void unregisterModule(final String nameModule);
 

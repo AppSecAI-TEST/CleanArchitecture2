@@ -6,12 +6,10 @@ import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.ui.activity.MainActivity;
-import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.controller.AppPreferences;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.base.event.ClearDiskCacheEvent;
-import com.cleanarchitecture.shishkin.base.event.IEvent;
 import com.cleanarchitecture.shishkin.base.event.database.DbCreatedEvent;
 import com.cleanarchitecture.shishkin.base.event.database.DbUpdatedEvent;
 import com.cleanarchitecture.shishkin.base.mail.ShowToastMail;
@@ -56,8 +54,6 @@ public class Repository implements IRepository, IModuleSubscriber {
     private IDbProvider mDbProvider;
 
     public Repository() {
-        Admin.getInstance().register(this);
-
         mNetProvider = new NetProvider();
         mContentProvider = new ContentProvider();
         mDbProvider = new DbProvider();

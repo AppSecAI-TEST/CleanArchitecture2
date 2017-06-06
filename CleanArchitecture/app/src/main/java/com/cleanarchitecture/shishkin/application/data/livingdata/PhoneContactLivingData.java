@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class PhoneContactLivingData extends AbstractContentProviderLivingData<List<PhoneContactItem>> {
+    public static final String NAME = "PhoneContactLivingData";
 
     public PhoneContactLivingData() {
         super(PhoneContactDAO.CONTENT_URI);
@@ -38,4 +39,8 @@ public class PhoneContactLivingData extends AbstractContentProviderLivingData<Li
         }
     }
 
+    @Override
+    public String getName() {
+        return NAME;
+    }
 }

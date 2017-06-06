@@ -9,12 +9,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.base.controller.ActivityController;
 import com.cleanarchitecture.shishkin.base.controller.ErrorController;
 import com.cleanarchitecture.shishkin.base.controller.INavigationSubscriber;
 import com.cleanarchitecture.shishkin.base.controller.ISubscriber;
-import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
-import com.cleanarchitecture.shishkin.base.controller.MailController;
 import com.cleanarchitecture.shishkin.base.controller.NavigationController;
 import com.cleanarchitecture.shishkin.base.event.ui.HideKeyboardEvent;
 import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractContentFragment;
@@ -24,7 +21,6 @@ import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.SafeUtils;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractContentActivity extends AbstractActivity
@@ -54,11 +50,8 @@ public abstract class AbstractContentActivity extends AbstractActivity
 
     @Override
     public List<String> hasSubscriberType() {
-        ArrayList<String> list = new ArrayList<>();
-        list.add(ActivityController.SUBSCRIBER_TYPE);
+        final List<String> list = super.hasSubscriberType();
         list.add(NavigationController.SUBSCRIBER_TYPE);
-        list.add(LifecycleController.SUBSCRIBER_TYPE);
-        list.add(MailController.SUBSCRIBER_TYPE);
         return list;
     }
 

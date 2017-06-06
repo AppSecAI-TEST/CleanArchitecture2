@@ -6,20 +6,9 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
-import com.cleanarchitecture.shishkin.base.controller.ActivityController;
 import com.cleanarchitecture.shishkin.base.controller.Admin;
-import com.cleanarchitecture.shishkin.base.controller.CrashController;
-import com.cleanarchitecture.shishkin.base.controller.ErrorController;
-import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.controller.IModule;
-import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
-import com.cleanarchitecture.shishkin.base.controller.MailController;
-import com.cleanarchitecture.shishkin.base.controller.NavigationController;
-import com.cleanarchitecture.shishkin.base.controller.PresenterController;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnLowMemoryEvent;
-import com.cleanarchitecture.shishkin.base.repository.IRepository;
-import com.cleanarchitecture.shishkin.base.repository.Repository;
-import com.cleanarchitecture.shishkin.base.usecases.UseCasesController;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.squareup.leakcanary.LeakCanary;
 
@@ -41,7 +30,7 @@ public class ApplicationController extends MultiDexApplication implements IModul
             LeakCanary.install(this);
         }
 
-
+        Admin.instantiate();
     }
 
     @Override

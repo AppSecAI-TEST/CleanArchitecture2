@@ -198,10 +198,8 @@ public abstract class AbstractActivity extends LifecycleActivity
     public synchronized void registerPresenter(final IPresenter presenter) {
         if (mPresenters.containsKey(presenter.getName())) {
             mPresenters.remove(presenter);
-            Admin.getInstance().unregister(presenter);
         }
         mPresenters.put(presenter.getName(), presenter);
-        Admin.getInstance().register(presenter);
         mStateMachine.addObserver(presenter);
     }
 

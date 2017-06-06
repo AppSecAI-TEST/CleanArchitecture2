@@ -21,9 +21,6 @@ import com.cleanarchitecture.shishkin.application.event.searchpresenter.OnSearch
 import com.cleanarchitecture.shishkin.application.ui.adapter.ContactRecyclerViewAdapter;
 import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
-import com.cleanarchitecture.shishkin.base.controller.IModuleSubscriber;
-import com.cleanarchitecture.shishkin.base.controller.MailController;
-import com.cleanarchitecture.shishkin.base.controller.PresenterController;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.HideKeyboardEvent;
@@ -80,8 +77,6 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
 
     public void bindView(@NonNull final View root, final AbstractContentFragment fragment) {
 
-        Admin.getInstance().register(this);
-
         final FastScrollRecyclerView recyclerView = ViewUtils.findView(root, R.id.list);
         if (recyclerView != null) {
             final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ApplicationUtils.getActivity());
@@ -117,6 +112,8 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
 
     @Override
     public void onDestroyLifecycle() {
+        super.onDestroyLifecycle();
+
         if (mDbProvider != null) {
             mDbProvider.removeObserver(PhoneContactViewModel.NAME, this);
         }
@@ -126,9 +123,6 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
             mDisposableSearchView.dispose();
         }
 
-        Admin.getInstance().unregister(this);
-
-        super.onDestroyLifecycle();
     }
 
     @Override

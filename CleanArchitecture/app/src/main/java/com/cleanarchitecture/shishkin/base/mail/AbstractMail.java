@@ -1,8 +1,6 @@
 package com.cleanarchitecture.shishkin.base.mail;
 
-import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
-import com.cleanarchitecture.shishkin.base.event.IEvent;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 
 import org.apache.commons.lang3.SerializationUtils;

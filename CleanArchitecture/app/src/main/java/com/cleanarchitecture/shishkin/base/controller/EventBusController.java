@@ -4,9 +4,6 @@ import com.cleanarchitecture.shishkin.base.event.IEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.lang.ref.WeakReference;
-import java.util.Map;
-
 /**
  * Контроллер шины событий приложения
  */
@@ -99,25 +96,6 @@ public class EventBusController implements IEventBusController {
                 EventBus.getDefault().unregister(subscriber);
             }
         }
-    }
-
-    @Override
-    public void setCurrentSubscriber(Object subscriber) {
-    }
-
-    @Override
-    public Object getCurrentSubscriber() {
-        return null;
-    }
-
-    @Override
-    public Map<String, WeakReference<Object>> getSubscribers() {
-        return null;
-    }
-
-    @Override
-    public Object getSubscriber() {
-        return null;
     }
 
     @Override

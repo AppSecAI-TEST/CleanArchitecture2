@@ -8,13 +8,15 @@ import android.net.Uri;
 import android.os.Handler;
 
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
+import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
+import com.cleanarchitecture.shishkin.base.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.base.observer.LivingDataDebounce;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractContentProviderLivingData<T> extends LiveData<T> {
+public abstract class AbstractContentProviderLivingData<T> extends LiveData<T> implements IModuleSubscriber {
 
     private List<Uri> mUris = new ArrayList<>();
     private boolean isChanged = true;
@@ -54,7 +56,7 @@ public abstract class AbstractContentProviderLivingData<T> extends LiveData<T> {
 
     @Override
     protected void onActive() {
-        EventBusController.getInstance().register(this);
+        Admin.getInstance().register(this);
 
         final Context context = ApplicationController.getInstance();
         if (context != null) {
@@ -69,7 +71,7 @@ public abstract class AbstractContentProviderLivingData<T> extends LiveData<T> {
 
     @Override
     protected void onInactive() {
-        EventBusController.getInstance().unregister(this);
+        Admin.getInstance().unregister(this);
 
         final Context context = ApplicationController.getInstance();
         if (context != null) {
@@ -82,6 +84,13 @@ public abstract class AbstractContentProviderLivingData<T> extends LiveData<T> {
         if (mDebounce != null) {
             mDebounce.finish();
         }
+    }
+
+    @Override
+    public List<String> hasSubscriberType() {
+        final ArrayList<String> list = new ArrayList<>();
+        list.add(EventBusController.SUBSCRIBER_TYPE);
+        return list;
     }
 
     @Override

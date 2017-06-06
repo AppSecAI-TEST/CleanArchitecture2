@@ -10,10 +10,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.controller.IModuleSubscriber;
-import com.cleanarchitecture.shishkin.base.controller.MailController;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarInitEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarPrepareEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarResetEvent;
@@ -24,7 +22,6 @@ import com.cleanarchitecture.shishkin.base.utils.ViewUtils;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -42,17 +39,8 @@ public abstract class AbstractContentFragment extends AbstractFragment implement
     }
 
     @Override
-    public void onDestroyView() {
-        Admin.getInstance().unregister(this);
-
-        super.onDestroyView();
-    }
-
-    @Override
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        Admin.getInstance().register(this);
 
         mSwipeRefreshLayout = ViewUtils.findView(view, R.id.swipeRefreshLayout);
         if (mSwipeRefreshLayout != null) {

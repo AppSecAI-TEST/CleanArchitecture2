@@ -75,8 +75,6 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
             return;
         }
 
-        Admin.getInstance().register(this);
-
         final View toolbarLL = ViewUtils.findView(root, R.id.toolbar_ll);
         final RelativeLayout toolbar = ViewUtils.findView(root, R.id.toolbar);
         final TextView title = ViewUtils.findView(root, R.id.title);
@@ -134,7 +132,6 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         mItem = null;
 
         ApplicationUtils.removeStickyEvent(new ToolbarInitEvent());
-        Admin.getInstance().unregister(this);
     }
 
     @Override

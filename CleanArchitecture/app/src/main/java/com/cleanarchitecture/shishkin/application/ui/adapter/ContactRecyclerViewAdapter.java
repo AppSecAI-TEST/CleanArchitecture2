@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.event.searchpresenter.OnSearchPresenterItemClick;
-import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.ui.recyclerview.AbstractRecyclerViewAdapter;
 import com.cleanarchitecture.shishkin.base.ui.recyclerview.AbstractViewHolder;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;

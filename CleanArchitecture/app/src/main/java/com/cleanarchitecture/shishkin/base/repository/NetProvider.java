@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
-import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.base.event.OnNetworkConnectedEvent;
@@ -32,8 +31,6 @@ public class NetProvider implements INetProvider, IModuleSubscriber {
     private IPhonePausableThreadPoolExecutor mPhonePausableThreadPoolExecutor;
 
     public NetProvider() {
-        Admin.getInstance().register(this);
-
         final Context context = ApplicationController.getInstance();
 
         if (context != null) {

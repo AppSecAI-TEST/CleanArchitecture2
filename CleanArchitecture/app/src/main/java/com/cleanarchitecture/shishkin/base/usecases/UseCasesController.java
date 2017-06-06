@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.AbstractController;
-import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionDeniedEvent;
@@ -34,7 +33,6 @@ public class UseCasesController extends AbstractController implements IUseCasesC
     public static final String NAME = "UseCasesController";
 
     public UseCasesController() {
-        Admin.getInstance().register(this);
     }
 
     private void registerScreenOnOffBroadcastReceiver() {

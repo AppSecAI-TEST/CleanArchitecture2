@@ -1,6 +1,5 @@
 package com.cleanarchitecture.shishkin.base.usecases;
 
-import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.OnScreenOffEvent;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 
