@@ -101,9 +101,6 @@ public abstract class AbstractActivity extends LifecycleActivity
         mStateMachine.setState(Lifecycle.STATE_DESTROY);
         mStateMachine.clear();
 
-        for (IPresenter presenter : mPresenters.values()) {
-            Admin.getInstance().unregister(presenter);
-        }
         mPresenters.clear();
 
         super.onDestroy();
