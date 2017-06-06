@@ -101,5 +101,9 @@ public class DiskCacheService extends LiveLongBackgroundIntentService {
         DiskCache.getInstance(getApplicationContext()).clearAll();
     }
 
+    @Override
+    public String getName() {
+        return NAME;
+    }
 }
 

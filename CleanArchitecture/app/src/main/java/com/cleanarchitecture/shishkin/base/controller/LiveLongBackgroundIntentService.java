@@ -12,6 +12,9 @@ import com.cleanarchitecture.shishkin.base.event.OnScreenOffEvent;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * LiveLongAndProsperIntentService is a base class for {@link Service}s that handle
  * asynchronous * requests (expressed as {@link Intent}s) on demand.  Clients send
@@ -40,7 +43,7 @@ import org.greenrobot.eventbus.ThreadMode;
 @SuppressWarnings("unused")
 public abstract class LiveLongBackgroundIntentService extends Service
         implements AutoCompleteHandler.OnHandleEventListener<Intent>,
-        AutoCompleteHandler.OnShutdownListener {
+        AutoCompleteHandler.OnShutdownListener, IModuleSubscriber {
 
     private final String mName;
 
@@ -58,10 +61,17 @@ public abstract class LiveLongBackgroundIntentService extends Service
     }
 
     @Override
+    public List<String> hasSubscriberType() {
+        final ArrayList<String> list = new ArrayList<>();
+        list.add(EventBusController.SUBSCRIBER_TYPE);
+        return list;
+    }
+
+    @Override
     public void onCreate() {
         super.onCreate();
 
-        EventBusController.getInstance().register(this);
+        Admin.getInstance().register(this);
 
         mServiceHandler = new AutoCompleteHandler<>("LiveLongAndProsperIntentService [" + mName + "]");
         mServiceHandler.setOnHandleEventListener(this);
@@ -73,7 +83,7 @@ public abstract class LiveLongBackgroundIntentService extends Service
     public void onDestroy() {
         super.onDestroy();
 
-        EventBusController.getInstance().unregister(this);
+        Admin.getInstance().unregister(this);
     }
 
     /**
