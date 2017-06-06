@@ -8,13 +8,15 @@ public class RepositoryRequestGetContactsEvent extends AbstractEvent {
 
     private int mCacheType = Repository.USE_ONLY_CACHE;
 
-    public RepositoryRequestGetContactsEvent(final int cacheType) {
-        setId(R.id.repository_get_contacts);
-
-        mCacheType = cacheType;
-    }
-
     public int getCacheType() {
         return mCacheType;
     }
+
+    public RepositoryRequestGetContactsEvent setCacheType(final int cacheType) {
+        this.mCacheType = cacheType;
+        return this;
+    }
+
+
+
 }

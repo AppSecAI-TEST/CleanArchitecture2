@@ -34,7 +34,9 @@ public class PhoneContactLivingData extends AbstractContentProviderLivingData<Li
     @Override
     public void getData() {
         ApplicationUtils.postEvent(new ShowHorizontalProgressBarEvent());
-        ApplicationUtils.postEvent(new RepositoryRequestGetContactsEvent(Repository.USE_ONLY_CACHE));
+        ApplicationUtils.postEvent(new RepositoryRequestGetContactsEvent()
+                .setCacheType(Repository.USE_ONLY_CACHE)
+                .setId(R.id.repository_get_contacts));
     }
 
     @Override

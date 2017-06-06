@@ -156,7 +156,10 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
 
     public void refreshData() {
         ApplicationUtils.postEvent(new ShowHorizontalProgressBarEvent());
-        ApplicationUtils.postEvent(new RepositoryRequestGetContactsEvent(Repository.USE_SAVE_CACHE));
+        ApplicationUtils.postEvent(new RepositoryRequestGetContactsEvent()
+                .setCacheType(Repository.USE_SAVE_CACHE)
+                .setId(R.id.repository_get_contacts)
+        );
     }
 
     @Override
