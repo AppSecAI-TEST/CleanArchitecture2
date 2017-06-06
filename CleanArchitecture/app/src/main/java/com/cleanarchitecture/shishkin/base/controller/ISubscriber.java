@@ -1,7 +1,7 @@
 package com.cleanarchitecture.shishkin.base.controller;
 
 /**
- * Интерфейс подписчика.
+ * Интерфейс объекта - подписчика.
  */
 public interface ISubscriber {
 

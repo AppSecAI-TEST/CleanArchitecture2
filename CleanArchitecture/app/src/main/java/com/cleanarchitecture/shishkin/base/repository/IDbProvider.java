@@ -6,6 +6,9 @@ import android.arch.persistence.room.RoomDatabase;
 import com.cleanarchitecture.shishkin.base.controller.IModule;
 import com.cleanarchitecture.shishkin.base.data.AbstractViewModel;
 
+/**
+ * The interface Db provider.
+ */
 public interface IDbProvider extends IModule {
 
     /**
@@ -27,7 +30,7 @@ public interface IDbProvider extends IModule {
     <T extends RoomDatabase> void restore(String databaseName, String dirBackup);
 
     /**
-     * Gets db.
+     * Получить БД
      *
      * @param <T>          the type parameter
      * @param klass        Class объекта БД
@@ -36,11 +39,41 @@ public interface IDbProvider extends IModule {
      */
     <T extends RoomDatabase> T getDb(final Class<T> klass, final String databaseName);
 
+    /**
+     * Зарегестрировать слушателя ViewModel
+     *
+     * @param <T>           the type parameter
+     * @param <E>           the type parameter
+     * @param activity      the activity
+     * @param nameViewModel the name view model
+     * @param klass         the klass
+     * @param observer      the observer
+     */
     <T, E extends AbstractViewModel> void observe(LifecycleActivity activity, String nameViewModel, Class<E> klass, IObserver<T> observer);
 
+    /**
+     * Удалить слушателя ViewModel
+     *
+     * @param <E>           the type parameter
+     * @param <T>           the type parameter
+     * @param nameViewModel the name view model
+     * @param observer      the observer
+     */
     <E extends AbstractViewModel, T> void removeObserver(final String nameViewModel, final IObserver<T> observer);
 
+    /**
+     * Удалить ViewModel
+     *
+     * @param nameViewModel the name view model
+     */
     void removeViewModel(String nameViewModel);
 
+    /**
+     * Получить ViewModel
+     *
+     * @param <E>           the type parameter
+     * @param nameViewModel the name view model
+     * @return the view model
+     */
     <E extends AbstractViewModel> E getViewModel(final String nameViewModel);
 }

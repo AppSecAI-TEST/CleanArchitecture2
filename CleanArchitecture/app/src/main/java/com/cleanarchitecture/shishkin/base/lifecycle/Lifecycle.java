@@ -3,7 +3,7 @@ package com.cleanarchitecture.shishkin.base.lifecycle;
 import java.lang.ref.WeakReference;
 
 /**
- * Класс, отвечающий за текущее состояние объекта
+ * Объект, отвечающий за текущее состояние внешнего объекта
  */
 public class Lifecycle {
     public static final int STATE_CREATE = 0;

@@ -27,18 +27,4 @@ public interface IEventBusController extends ISmallController<Object> {
      * @param event the event
      */
     void removeSticky(IEvent event);
-
-    /**
-     * Зарегестрировать подписчика шины событий
-     *
-     * @param subscriber подписчик
-     */
-    void register(Object subscriber);
-
-    /**
-     * Отключить подписчика шины событий
-     *
-     * @param subscriber подписчик
-     */
-    void unregister(Object subscriber);
 }

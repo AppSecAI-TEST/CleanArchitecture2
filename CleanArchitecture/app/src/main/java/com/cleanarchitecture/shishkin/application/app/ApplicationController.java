@@ -10,7 +10,6 @@ import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.controller.IModule;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnLowMemoryEvent;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
-import com.squareup.leakcanary.LeakCanary;
 
 import java.io.File;
 
@@ -26,9 +25,9 @@ public class ApplicationController extends MultiDexApplication implements IModul
 
         super.onCreate();
 
-        if (!LeakCanary.isInAnalyzerProcess(this)) {
-            LeakCanary.install(this);
-        }
+        //if (!LeakCanary.isInAnalyzerProcess(this)) {
+        //    LeakCanary.install(this);
+        //}
 
         Admin.instantiate();
     }
@@ -42,7 +41,6 @@ public class ApplicationController extends MultiDexApplication implements IModul
     public static ApplicationController getInstance() {
         return sInstance;
     }
-
 
     @Override
     public void onLowMemory() {
