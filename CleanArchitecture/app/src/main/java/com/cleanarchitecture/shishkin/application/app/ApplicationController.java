@@ -20,6 +20,7 @@ import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnLowMemoryEvent
 import com.cleanarchitecture.shishkin.base.repository.IRepository;
 import com.cleanarchitecture.shishkin.base.repository.Repository;
 import com.cleanarchitecture.shishkin.base.usecases.UseCasesController;
+import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.squareup.leakcanary.LeakCanary;
 
 import java.io.File;
@@ -73,7 +74,7 @@ public class ApplicationController extends MultiDexApplication implements IModul
     public void onLowMemory() {
         super.onLowMemory();
 
-        EventBusController.getInstance().post(new UseCaseOnLowMemoryEvent());
+        ApplicationUtils.postEvent(new UseCaseOnLowMemoryEvent());
     }
 
     @Override
@@ -85,5 +86,4 @@ public class ApplicationController extends MultiDexApplication implements IModul
     public String getSubscriberType() {
         return null;
     }
-
 }

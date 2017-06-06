@@ -70,13 +70,28 @@ public class Admin implements ISubscriber {
     public synchronized void register(final IModuleSubscriber subscriber) {
         if (subscriber != null) {
             try {
-                final List<String> types = subscriber.getSubscriberType();
+                final List<String> types = subscriber.hasSubscriberType();
+
+                // регистрируемся subscriber в чужих моулях
                 for (IModule module : mModules.values()) {
                     if (module instanceof IController) {
                         if (types.contains(module.getSubscriberType())) {
                             ((IController) module).register(subscriber);
                         }
                     }
+                }
+
+                // регистрируем чужие модули у subscriber
+                if (subscriber instanceof IController) {
+                    final String type = ((IController) subscriber).getSubscriberType();
+                    for (IModule module : mModules.values()) {
+                        if (module instanceof IModuleSubscriber) {
+                            if (((IModuleSubscriber) module).hasSubscriberType().contains(type)) {
+                                ((IController) subscriber).register(module);
+                            }
+                        }
+                    }
+
                 }
             } catch (Exception e) {
                 ErrorController.getInstance().onError(NAME, e.getMessage());
@@ -87,7 +102,7 @@ public class Admin implements ISubscriber {
     public synchronized void unregister(final IModuleSubscriber subscriber) {
         if (subscriber != null) {
             try {
-                final List<String> types = subscriber.getSubscriberType();
+                final List<String> types = subscriber.hasSubscriberType();
                 for (IModule module : mModules.values()) {
                     if (module instanceof IController) {
                         if (types.contains(module.getSubscriberType())) {
@@ -104,7 +119,7 @@ public class Admin implements ISubscriber {
     public synchronized void setCurrentSubscriber(final IModuleSubscriber subscriber) {
         if (subscriber != null) {
             try {
-                final List<String> types = subscriber.getSubscriberType();
+                final List<String> types = subscriber.hasSubscriberType();
                 for (IModule module : mModules.values()) {
                     if (module instanceof IController) {
                         if (types.contains(module.getSubscriberType())) {

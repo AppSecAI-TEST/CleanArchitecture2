@@ -14,13 +14,12 @@ import com.cleanarchitecture.shishkin.base.controller.ActivityController;
 import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.controller.IActivityController;
-import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
 import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
 import com.cleanarchitecture.shishkin.base.controller.IModuleSubscriber;
+import com.cleanarchitecture.shishkin.base.controller.MailController;
 import com.cleanarchitecture.shishkin.base.event.IEvent;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.lifecycle.StateMachine;
-import com.cleanarchitecture.shishkin.base.mail.IMail;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.base.ui.activity.IActivity;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
@@ -36,7 +35,7 @@ import butterknife.Unbinder;
 
 @SuppressWarnings("unused")
 public abstract class AbstractFragment extends LifecycleFragment implements IFragment
-        , IEventVendor, IMailSubscriber, IModuleSubscriber {
+        , IMailSubscriber, IModuleSubscriber {
 
     private Map<String, IPresenter> mPresenters = Collections.synchronizedMap(new HashMap<String, IPresenter>());
     private StateMachine mStateMachine = new StateMachine(Lifecycle.STATE_CREATE);
@@ -109,16 +108,10 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
     public abstract String getName();
 
     @Override
-    public List<String> getSubscriberType() {
-        ArrayList<String> list = new ArrayList<>();
-        list.add("IFragment");
-        list.add("IMailSubscriber");
+    public List<String> hasSubscriberType() {
+        final ArrayList<String> list = new ArrayList<>();
+        list.add(MailController.SUBSCRIBER_TYPE);
         return list;
-    }
-
-    @Override
-    public void postEvent(IEvent event) {
-        EventBusController.getInstance().post(event);
     }
 
     @Override

@@ -24,24 +24,19 @@ import com.cleanarchitecture.shishkin.base.controller.ActivityController;
 import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.controller.AppPreferences;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
-import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
 import com.cleanarchitecture.shishkin.base.controller.ILifecycleSubscriber;
-import com.cleanarchitecture.shishkin.base.controller.IMailController;
 import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
-import com.cleanarchitecture.shishkin.base.controller.IPresenterController;
+import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
 import com.cleanarchitecture.shishkin.base.controller.MailController;
-import com.cleanarchitecture.shishkin.base.controller.PresenterController;
 import com.cleanarchitecture.shishkin.base.event.BackpressActivityEvent;
 import com.cleanarchitecture.shishkin.base.event.ClearBackStackEvent;
 import com.cleanarchitecture.shishkin.base.event.FinishActivityEvent;
 import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
-import com.cleanarchitecture.shishkin.base.event.IEvent;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionDeniedEvent;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.lifecycle.StateMachine;
-import com.cleanarchitecture.shishkin.base.mail.IMail;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.base.ui.dialog.MaterialDialogExt;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
@@ -60,7 +55,7 @@ import butterknife.Unbinder;
 
 @SuppressWarnings("unused")
 public abstract class AbstractActivity extends LifecycleActivity
-        implements IActivity, ILifecycleSubscriber, IEventVendor, IBackStack, IMailSubscriber {
+        implements IActivity, ILifecycleSubscriber, IBackStack, IMailSubscriber {
 
     private static final String NAME = "AbstractActivity";
     private Map<String, IPresenter> mPresenters = Collections.synchronizedMap(new HashMap<String, IPresenter>());
@@ -71,7 +66,6 @@ public abstract class AbstractActivity extends LifecycleActivity
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        EventBusController.getInstance().register(this);
         Admin.getInstance().register(this);
 
         mStateMachine.setState(Lifecycle.STATE_CREATE);
@@ -102,7 +96,6 @@ public abstract class AbstractActivity extends LifecycleActivity
             mUnbinder.unbind();
         }
 
-        EventBusController.getInstance().unregister(this);
         Admin.getInstance().unregister(this);
 
         mStateMachine.setState(Lifecycle.STATE_DESTROY);
@@ -168,11 +161,12 @@ public abstract class AbstractActivity extends LifecycleActivity
     public abstract String getName();
 
     @Override
-    public List<String> getSubscriberType() {
+    public List<String> hasSubscriberType() {
         ArrayList<String> list = new ArrayList<>();
-        list.add("IActivity");
-        list.add("ILifecycleSubscriber");
-        list.add("IMailSubscriber");
+        list.add(EventBusController.SUBSCRIBER_TYPE);
+        list.add(ActivityController.SUBSCRIBER_TYPE);
+        list.add(LifecycleController.SUBSCRIBER_TYPE);
+        list.add(MailController.SUBSCRIBER_TYPE);
         return list;
     }
 
@@ -188,9 +182,9 @@ public abstract class AbstractActivity extends LifecycleActivity
         for (int i = 0; i < permissions.length; i++) {
             AppPreferences.putInt(this, permissions[i], grantResults[i]);
             if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                postEvent(new OnPermisionGrantedEvent(permissions[i]));
+                ApplicationUtils.postEvent(new OnPermisionGrantedEvent(permissions[i]));
             } else if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
-                postEvent(new OnPermisionDeniedEvent(permissions[i]));
+                ApplicationUtils.postEvent(new OnPermisionDeniedEvent(permissions[i]));
             }
         }
 
@@ -209,11 +203,6 @@ public abstract class AbstractActivity extends LifecycleActivity
         mPresenters.put(presenter.getName(), presenter);
         Admin.getInstance().register(presenter);
         mStateMachine.addObserver(presenter);
-    }
-
-    @Override
-    public void postEvent(IEvent event) {
-        EventBusController.getInstance().post(event);
     }
 
     @Override

@@ -4,7 +4,6 @@ import android.support.annotation.IdRes;
 import android.view.View;
 
 import com.cleanarchitecture.shishkin.base.controller.IModuleSubscriber;
-import com.cleanarchitecture.shishkin.base.controller.ISubscriber;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
 
 import butterknife.Unbinder;

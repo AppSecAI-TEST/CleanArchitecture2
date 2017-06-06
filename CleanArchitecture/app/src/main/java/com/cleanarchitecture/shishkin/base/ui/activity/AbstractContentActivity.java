@@ -9,11 +9,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.base.controller.Admin;
+import com.cleanarchitecture.shishkin.base.controller.ActivityController;
 import com.cleanarchitecture.shishkin.base.controller.ErrorController;
-import com.cleanarchitecture.shishkin.base.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.base.controller.INavigationSubscriber;
 import com.cleanarchitecture.shishkin.base.controller.ISubscriber;
+import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
+import com.cleanarchitecture.shishkin.base.controller.MailController;
+import com.cleanarchitecture.shishkin.base.controller.NavigationController;
 import com.cleanarchitecture.shishkin.base.event.ui.HideKeyboardEvent;
 import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractFragment;
@@ -44,19 +46,19 @@ public abstract class AbstractContentActivity extends AbstractActivity
     protected void onPause() {
         super.onPause();
 
-        postEvent(new HideKeyboardEvent());
+        ApplicationUtils.postEvent(new HideKeyboardEvent());
     }
 
     @Override
     public abstract String getName();
 
     @Override
-    public List<String> getSubscriberType() {
+    public List<String> hasSubscriberType() {
         ArrayList<String> list = new ArrayList<>();
-        list.add("IActivity");
-        list.add("INavigationSubscriber");
-        list.add("ILifecycleSubscriber");
-        list.add("IMailSubscriber");
+        list.add(ActivityController.SUBSCRIBER_TYPE);
+        list.add(NavigationController.SUBSCRIBER_TYPE);
+        list.add(LifecycleController.SUBSCRIBER_TYPE);
+        list.add(MailController.SUBSCRIBER_TYPE);
         return list;
     }
 

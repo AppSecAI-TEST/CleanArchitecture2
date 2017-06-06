@@ -37,6 +37,9 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import es.dmoral.toasty.Toasty;
 
 import static com.cleanarchitecture.shishkin.base.utils.ApplicationUtils.runOnUiThread;
@@ -45,9 +48,10 @@ import static com.cleanarchitecture.shishkin.base.utils.ApplicationUtils.runOnUi
  * Контроллер activities
  */
 @SuppressWarnings("unused")
-public class ActivityController extends AbstractController<IActivity> implements IActivityController {
+public class ActivityController extends AbstractController<IActivity> implements IActivityController, IModuleSubscriber {
 
     public static final String NAME = "ActivityController";
+    public static final String SUBSCRIBER_TYPE = "IActivity";
 
     public static final int TOAST_TYPE_INFO = 0;
     public static final int TOAST_TYPE_ERROR = 1;
@@ -56,8 +60,6 @@ public class ActivityController extends AbstractController<IActivity> implements
 
     public ActivityController() {
         super();
-
-        EventBusController.getInstance().register(this);
     }
 
     /**
@@ -107,7 +109,7 @@ public class ActivityController extends AbstractController<IActivity> implements
         final IActivity subscriber = getSubscriber();
         if (subscriber != null && subscriber.validate()) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(subscriber.getActivity(), permission)) {
-                EventBusController.getInstance().post(new ShowDialogEvent(R.id.dialog_request_permissions, -1, helpMessage, R.string.setting, R.string.cancel, false));
+                ApplicationUtils.postEvent(new ShowDialogEvent(R.id.dialog_request_permissions, -1, helpMessage, R.string.setting, R.string.cancel, false));
             } else {
                 subscriber.getActivity().runOnUiThread(() -> {
                     ActivityCompat.requestPermissions(subscriber.getActivity(), new String[]{permission}, ApplicationUtils.REQUEST_PERMISSIONS);
@@ -123,7 +125,14 @@ public class ActivityController extends AbstractController<IActivity> implements
 
     @Override
     public String getSubscriberType() {
-        return "IActivity";
+        return SUBSCRIBER_TYPE;
+    }
+
+    @Override
+    public List<String> hasSubscriberType() {
+        ArrayList<String> list = new ArrayList<>();
+        list.add(EventBusController.SUBSCRIBER_TYPE);
+        return list;
     }
 
     @Override
@@ -160,7 +169,7 @@ public class ActivityController extends AbstractController<IActivity> implements
             action = ((Button) view).getText().toString();
         }
         if (!StringUtils.isNullOrEmpty(action)) {
-            EventBusController.getInstance().post(new OnSnackBarClickEvent(action));
+            ApplicationUtils.postEvent(new OnSnackBarClickEvent(action));
         }
     }
 
@@ -297,5 +306,4 @@ public class ActivityController extends AbstractController<IActivity> implements
             subscriber.getActivity().runOnUiThread(() -> new MaterialDialogExt(subscriber.getActivity(), event.getId(), event.getTitle(), event.getMessage(), event.getButtonPositive(), event.getButtonNegative(), event.isCancelable()).show());
         }
     }
-
 }

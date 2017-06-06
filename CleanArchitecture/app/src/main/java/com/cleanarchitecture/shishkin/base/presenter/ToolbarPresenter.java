@@ -14,6 +14,10 @@ import android.widget.TextView;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
+import com.cleanarchitecture.shishkin.base.controller.ILifecycleController;
+import com.cleanarchitecture.shishkin.base.controller.INavigationController;
+import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
+import com.cleanarchitecture.shishkin.base.controller.NavigationController;
 import com.cleanarchitecture.shishkin.base.event.OnNetworkConnectedEvent;
 import com.cleanarchitecture.shishkin.base.event.OnNetworkDisconnectedEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.OnToolbarClickEvent;
@@ -41,6 +45,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
+import java.util.List;
 
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
@@ -70,7 +75,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
             return;
         }
 
-        EventBusController.getInstance().register(this);
+        Admin.getInstance().register(this);
 
         final View toolbarLL = ViewUtils.findView(root, R.id.toolbar_ll);
         final RelativeLayout toolbar = ViewUtils.findView(root, R.id.toolbar);
@@ -128,8 +133,8 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         mMenu = null;
         mItem = null;
 
-        EventBusController.getInstance().removeSticky(new ToolbarInitEvent());
-        EventBusController.getInstance().unregister(this);
+        ApplicationUtils.removeStickyEvent(new ToolbarInitEvent());
+        Admin.getInstance().unregister(this);
     }
 
     @Override
@@ -153,6 +158,13 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     }
 
     @Override
+    public List<String> hasSubscriberType() {
+        final List<String> list = super.hasSubscriberType();
+        list.add(EventBusController.SUBSCRIBER_TYPE);
+        return list;
+    }
+
+    @Override
     public boolean isRegister() {
         return true;
     }
@@ -171,7 +183,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     public void onResumeLifecycle() {
         super.onResumeLifecycle();
 
-        EventBusController.getInstance().postSticky(new ToolbarInitEvent());
+        ApplicationUtils.postStickyEvent(new ToolbarInitEvent());
     }
 
     private void onClick(View view) {
@@ -179,7 +191,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         switch (id) {
             case R.id.item:
             case R.id.back:
-                EventBusController.getInstance().post(new OnToolbarClickEvent(view));
+                ApplicationUtils.postEvent(new OnToolbarClickEvent(view));
                 break;
 
             case R.id.menu:
@@ -210,7 +222,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     }
 
     private boolean onMenuItemClick(MenuItem item) {
-        EventBusController.getInstance().post(new OnToolbarMenuItemClickEvent(item));
+        ApplicationUtils.postEvent(new OnToolbarMenuItemClickEvent(item));
         return true;
     }
 
@@ -260,7 +272,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         setItem(0, false);
         setBackNavigation(false);
 
-        EventBusController.getInstance().post(new ToolbarPrepareEvent());
+        ApplicationUtils.postEvent(new ToolbarPrepareEvent());
     }
 
     @Override
@@ -287,21 +299,24 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     public void showHorizontalProgressBar() {
         ApplicationUtils.runOnUiThread(() -> {
             if (validate()) {
-                final AbstractContentActivity activity = Admin.getInstance().getLifecycleController().getContentActivity();
-                if (activity != null) {
-                    final AbstractContentFragment fragment = activity.getContentFragment(AbstractContentFragment.class);
-                    if (fragment != null) {
-                        final SwipeRefreshLayout swipeRefreshLayout = fragment.getSwipeRefreshLayout();
-                        if (swipeRefreshLayout == null) {
-                            mHorizontalPogressBar.get().setVisibility(View.VISIBLE);
-                        } else if (!swipeRefreshLayout.isRefreshing()) {
+                final ILifecycleController controller = Admin.getInstance().getModule(LifecycleController.NAME);
+                if (controller != null) {
+                    final AbstractContentActivity activity = controller.getContentActivity();
+                    if (activity != null) {
+                        final AbstractContentFragment fragment = activity.getContentFragment(AbstractContentFragment.class);
+                        if (fragment != null) {
+                            final SwipeRefreshLayout swipeRefreshLayout = fragment.getSwipeRefreshLayout();
+                            if (swipeRefreshLayout == null) {
+                                mHorizontalPogressBar.get().setVisibility(View.VISIBLE);
+                            } else if (!swipeRefreshLayout.isRefreshing()) {
+                                mHorizontalPogressBar.get().setVisibility(View.VISIBLE);
+                            }
+                        } else {
                             mHorizontalPogressBar.get().setVisibility(View.VISIBLE);
                         }
                     } else {
                         mHorizontalPogressBar.get().setVisibility(View.VISIBLE);
                     }
-                } else {
-                    mHorizontalPogressBar.get().setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -311,18 +326,21 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     public void hideHorizontalProgressBar() {
         ApplicationUtils.runOnUiThread(() -> {
             if (validate()) {
-                final AbstractContentActivity activity = Admin.getInstance().getLifecycleController().getContentActivity();
-                if (activity != null) {
-                    final AbstractContentFragment fragment = activity.getContentFragment(AbstractContentFragment.class);
-                    if (fragment != null) {
-                        final SwipeRefreshLayout swipeRefreshLayout = fragment.getSwipeRefreshLayout();
-                        if (swipeRefreshLayout != null) {
-                            swipeRefreshLayout.setRefreshing(false);
+                final ILifecycleController controller = Admin.getInstance().getModule(LifecycleController.NAME);
+                if (controller != null) {
+                    final AbstractContentActivity activity = controller.getContentActivity();
+                    if (activity != null) {
+                        final AbstractContentFragment fragment = activity.getContentFragment(AbstractContentFragment.class);
+                        if (fragment != null) {
+                            final SwipeRefreshLayout swipeRefreshLayout = fragment.getSwipeRefreshLayout();
+                            if (swipeRefreshLayout != null) {
+                                swipeRefreshLayout.setRefreshing(false);
+                            }
                         }
+                        mHorizontalPogressBar.get().setVisibility(View.INVISIBLE);
+                    } else {
+                        mHorizontalPogressBar.get().setVisibility(View.INVISIBLE);
                     }
-                    mHorizontalPogressBar.get().setVisibility(View.INVISIBLE);
-                } else {
-                    mHorizontalPogressBar.get().setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -461,9 +479,12 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     @Override
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onToolbarOnClickEvent(OnToolbarClickEvent event) {
-        final AbstractContentFragment fragment = Admin.getInstance().getNavigationController().getContentFragment(AbstractContentFragment.class);
-        if (fragment != null) {
-            ApplicationUtils.runOnUiThread(() -> fragment.onClick(event.getView()));
+        final INavigationController controller = Admin.getInstance().getModule(NavigationController.NAME);
+        if (controller != null) {
+            final AbstractContentFragment fragment = controller.getContentFragment(AbstractContentFragment.class);
+            if (fragment != null) {
+                ApplicationUtils.runOnUiThread(() -> fragment.onClick(event.getView()));
+            }
         }
     }
 

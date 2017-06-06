@@ -19,12 +19,16 @@ import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.controller.ErrorController;
+import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.controller.ILifecycleController;
 import com.cleanarchitecture.shishkin.base.controller.IMailController;
 import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
 import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
 import com.cleanarchitecture.shishkin.base.controller.MailController;
+import com.cleanarchitecture.shishkin.base.event.IEvent;
 import com.cleanarchitecture.shishkin.base.mail.IMail;
+import com.cleanarchitecture.shishkin.base.repository.IRepository;
+import com.cleanarchitecture.shishkin.base.repository.Repository;
 import com.cleanarchitecture.shishkin.base.ui.activity.AbstractActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -257,6 +261,22 @@ public class ApplicationUtils {
             return controller.getActivity();
         }
         return null;
+    }
+
+    public static void postEvent(IEvent event){
+        EventBusController.getInstance().post(event);
+    }
+
+    public static void postStickyEvent(IEvent event){
+        EventBusController.getInstance().postSticky(event);
+    }
+
+    public static void removeStickyEvent(IEvent event){
+        EventBusController.getInstance().removeSticky(event);
+    }
+
+    public static IRepository getRepository() {
+        return Admin.getInstance().getModule(Repository.NAME);
     }
 
     private ApplicationUtils() {

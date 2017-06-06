@@ -37,7 +37,7 @@ public class ContentProvider implements IContentProvider {
         }
 
         if (!ApplicationUtils.checkPermission(Manifest.permission.READ_CONTACTS)) {
-            EventBusController.getInstance().post(new UseCaseRequestPermissionEvent(Manifest.permission.READ_CONTACTS));
+            ApplicationUtils.postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.READ_CONTACTS));
             return event.setErrorText(NAME, context.getString(R.string.permission_read_contacts));
         }
 

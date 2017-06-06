@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.event.ui.DialogResultEvent;
+import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 
 import java.util.ArrayList;
@@ -61,7 +62,7 @@ public class MaterialDialogExt {
                 final Bundle bundle = new Bundle();
                 bundle.putInt(ID, mId);
                 bundle.putString(BUTTON, POSITIVE);
-                EventBusController.getInstance().post(new DialogResultEvent(bundle));
+                ApplicationUtils.postEvent(new DialogResultEvent(bundle));
             }
         });
         builder.onNegative((dialog, which) -> {
@@ -69,7 +70,7 @@ public class MaterialDialogExt {
                 final Bundle bundle = new Bundle();
                 bundle.putInt(ID, mId);
                 bundle.putString(BUTTON, NEGATIVE);
-                EventBusController.getInstance().post(new DialogResultEvent(bundle));
+                ApplicationUtils.postEvent(new DialogResultEvent(bundle));
             }
         });
         builder.onNeutral((dialog, which) -> {
@@ -77,7 +78,7 @@ public class MaterialDialogExt {
                 final Bundle bundle = new Bundle();
                 bundle.putInt(ID, mId);
                 bundle.putString(BUTTON, NEUTRAL);
-                EventBusController.getInstance().post(new DialogResultEvent(bundle));
+                ApplicationUtils.postEvent(new DialogResultEvent(bundle));
             }
         });
         builder.cancelable(setCancelable);
@@ -111,7 +112,7 @@ public class MaterialDialogExt {
                     final ArrayList<String> list = new ArrayList();
                     list.add(text.toString());
                     bundle.putStringArrayList("list", list);
-                    EventBusController.getInstance().post(new DialogResultEvent(bundle));
+                    ApplicationUtils.postEvent(new DialogResultEvent(bundle));
                 }
                 dialog.dismiss();
                 return true;
@@ -138,7 +139,7 @@ public class MaterialDialogExt {
                         list.add(itemsCharSequence.get(i).toString());
                     }
                     bundle.putStringArrayList("list", list);
-                    EventBusController.getInstance().post(new DialogResultEvent(bundle));
+                    ApplicationUtils.postEvent(new DialogResultEvent(bundle));
                 }
             });
         }
@@ -147,7 +148,7 @@ public class MaterialDialogExt {
                 final Bundle bundle = new Bundle();
                 bundle.putInt(ID, mId);
                 bundle.putString(BUTTON, NEGATIVE);
-                EventBusController.getInstance().post(new DialogResultEvent(bundle));
+                ApplicationUtils.postEvent(new DialogResultEvent(bundle));
             }
         });
         builder.cancelable(setCancelable);
@@ -186,7 +187,7 @@ public class MaterialDialogExt {
                 bundle.putInt(ID, mId);
                 bundle.putString(BUTTON, POSITIVE);
                 bundle.putString("object", dialog.getInputEditText().getText().toString());
-                EventBusController.getInstance().post(new DialogResultEvent(bundle));
+                ApplicationUtils.postEvent(new DialogResultEvent(bundle));
             }
         });
         builder.onNegative((dialog, which) -> {
@@ -194,7 +195,7 @@ public class MaterialDialogExt {
                 final Bundle bundle = new Bundle();
                 bundle.putInt(ID, mId);
                 bundle.putString(BUTTON, NEGATIVE);
-                EventBusController.getInstance().post(new DialogResultEvent(bundle));
+                ApplicationUtils.postEvent(new DialogResultEvent(bundle));
             }
         });
         builder.cancelable(setCancelable);

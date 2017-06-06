@@ -21,6 +21,9 @@ import com.cleanarchitecture.shishkin.application.event.searchpresenter.OnSearch
 import com.cleanarchitecture.shishkin.application.ui.adapter.ContactRecyclerViewAdapter;
 import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
+import com.cleanarchitecture.shishkin.base.controller.IModuleSubscriber;
+import com.cleanarchitecture.shishkin.base.controller.MailController;
+import com.cleanarchitecture.shishkin.base.controller.PresenterController;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.HideKeyboardEvent;
@@ -77,7 +80,7 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
 
     public void bindView(@NonNull final View root, final AbstractContentFragment fragment) {
 
-        EventBusController.getInstance().register(this);
+        Admin.getInstance().register(this);
 
         final FastScrollRecyclerView recyclerView = ViewUtils.findView(root, R.id.list);
         if (recyclerView != null) {
@@ -123,7 +126,7 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
             mDisposableSearchView.dispose();
         }
 
-        EventBusController.getInstance().unregister(this);
+        Admin.getInstance().unregister(this);
 
         super.onDestroyLifecycle();
     }
@@ -131,6 +134,13 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
     @Override
     public String getName() {
         return NAME;
+    }
+
+    @Override
+    public List<String> hasSubscriberType() {
+        final List<String> list = super.hasSubscriberType();
+        list.add(EventBusController.SUBSCRIBER_TYPE);
+        return list;
     }
 
     @Override
@@ -151,8 +161,8 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
     }
 
     public void refreshData() {
-        EventBusController.getInstance().post(new ShowHorizontalProgressBarEvent());
-        EventBusController.getInstance().post(new RepositoryRequestGetContactsEvent(Repository.USE_SAVE_CACHE));
+        ApplicationUtils.postEvent(new ShowHorizontalProgressBarEvent());
+        ApplicationUtils.postEvent(new RepositoryRequestGetContactsEvent(Repository.USE_SAVE_CACHE));
     }
 
     @Override
@@ -177,9 +187,9 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
                 }
 
                 if (!mContactAdapter.isEmpty()) {
-                    EventBusController.getInstance().post(new HideKeyboardEvent());
+                    ApplicationUtils.postEvent(new HideKeyboardEvent());
                 } else {
-                    EventBusController.getInstance().post(new ShowToastEvent(ApplicationController.getInstance().getString(R.string.no_data)));
+                    ApplicationUtils.postEvent(new ShowToastEvent(ApplicationController.getInstance().getString(R.string.no_data)));
                 }
             }
         });
@@ -208,10 +218,10 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
                         list.add(phone1);
                     }
                 }
-                EventBusController.getInstance().post(new ShowListDialogEvent(R.id.dialog_call_phone, R.string.phone_call, null, list, -1, R.string.exit, true));
+                ApplicationUtils.postEvent(new ShowListDialogEvent(R.id.dialog_call_phone, R.string.phone_call, null, list, -1, R.string.exit, true));
             }
         } else {
-            postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.CALL_PHONE));
+            ApplicationUtils.postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.CALL_PHONE));
         }
     }
 

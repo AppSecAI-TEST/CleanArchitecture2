@@ -4,10 +4,14 @@ import com.cleanarchitecture.shishkin.base.event.IEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.lang.ref.WeakReference;
+import java.util.Map;
+
 /**
  * Контроллер шины событий приложения
  */
 public class EventBusController implements IEventBusController {
+
     public static final int MAX_RANK = 10;
     public static final int HIGH_RANK = 8;
     public static final int MIDDLE_RANK = 5;
@@ -15,6 +19,7 @@ public class EventBusController implements IEventBusController {
     public static final int MIN_RANK = 0;
 
     public static final String NAME = "EventController";
+    public static final String SUBSCRIBER_TYPE = "IEventbusSubscriber";
     private static volatile EventBusController sInstance;
 
     public static EventBusController getInstance() {
@@ -97,13 +102,32 @@ public class EventBusController implements IEventBusController {
     }
 
     @Override
+    public void setCurrentSubscriber(Object subscriber) {
+    }
+
+    @Override
+    public Object getCurrentSubscriber() {
+        return null;
+    }
+
+    @Override
+    public Map<String, WeakReference<Object>> getSubscribers() {
+        return null;
+    }
+
+    @Override
+    public Object getSubscriber() {
+        return null;
+    }
+
+    @Override
     public String getName() {
         return NAME;
     }
 
     @Override
     public String getSubscriberType() {
-        return null;
+        return SUBSCRIBER_TYPE;
     }
 
 }
