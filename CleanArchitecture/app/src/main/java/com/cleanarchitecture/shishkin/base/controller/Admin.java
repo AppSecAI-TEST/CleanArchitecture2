@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unused")
-public class Admin implements ISubscriber {
+public class Admin implements IAdmin {
     public static final String NAME = "Controllers";
 
     private static volatile Admin sInstance;
@@ -29,6 +29,7 @@ public class Admin implements ISubscriber {
         mModules = Collections.synchronizedMap(new HashMap<String, IModule>());
     }
 
+    @Override
     public synchronized <C> C getModule(final String controllerName) {
         if (StringUtils.isNullOrEmpty(controllerName)) {
             return null;
@@ -44,6 +45,7 @@ public class Admin implements ISubscriber {
         return null;
     }
 
+    @Override
     public synchronized void registerModule(final IModule controller) {
         if (controller != null) {
             try {
@@ -79,6 +81,7 @@ public class Admin implements ISubscriber {
         }
     }
 
+    @Override
     public synchronized void unregisterModule(final String nameController) {
         if (!StringUtils.isNullOrEmpty(nameController)) {
             try {
@@ -89,7 +92,7 @@ public class Admin implements ISubscriber {
                         final List<String> subscribers = ((IModuleSubscriber) module).hasSubscriberType();
                         for (String subscriber : subscribers) {
                             final IModule moduleSubscriber = mModules.get(subscriber);
-                            if (moduleSubscriber instanceof IController) {
+                            if (moduleSubscriber != null && moduleSubscriber instanceof IController) {
                                 ((IController) moduleSubscriber).unregister(module);
                             }
                         }
@@ -103,6 +106,7 @@ public class Admin implements ISubscriber {
         }
     }
 
+    @Override
     public synchronized void register(final IModuleSubscriber subscriber) {
         if (subscriber != null) {
             try {
@@ -122,6 +126,7 @@ public class Admin implements ISubscriber {
         }
     }
 
+    @Override
     public synchronized void unregister(final IModuleSubscriber subscriber) {
         if (subscriber != null) {
             try {
@@ -139,6 +144,7 @@ public class Admin implements ISubscriber {
         }
     }
 
+    @Override
     public synchronized void setCurrentSubscriber(final IModuleSubscriber subscriber) {
         if (subscriber != null) {
             try {
