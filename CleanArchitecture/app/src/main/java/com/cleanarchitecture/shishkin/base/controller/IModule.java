@@ -5,7 +5,7 @@ public interface IModule extends ISubscriber {
     /**
      * Получить имя типа слушателей, которые обрабатывает модуль
      *
-     * @return подписчик
+     * @return имя типа обрабатываемых слушателей
      */
     String getSubscriberType();
 
