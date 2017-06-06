@@ -1,17 +1,19 @@
 package com.cleanarchitecture.shishkin.base.presenter;
 
-import com.cleanarchitecture.shishkin.base.controller.Controllers;
+import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
-import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
 import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
+import com.cleanarchitecture.shishkin.base.controller.MailController;
+import com.cleanarchitecture.shishkin.base.controller.PresenterController;
 import com.cleanarchitecture.shishkin.base.event.IEvent;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
-import com.cleanarchitecture.shishkin.base.mail.IMail;
 import com.cleanarchitecture.shishkin.base.mail.UpdateViewPresenterMail;
+import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractPresenter<M> implements IPresenter<M>, IEventVendor, IMailSubscriber {
+public abstract class AbstractPresenter<M> implements IPresenter<M>, IMailSubscriber {
 
     private M mModel = null;
     private Lifecycle mLifecycle = new Lifecycle(this);
@@ -32,13 +34,13 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IEventVendo
 
     @Override
     public void onReadyLifecycle() {
-        Controllers.getInstance().getMailController().register(this);
+        Admin.getInstance().register(this);
         updateView();
     }
 
     @Override
     public void onResumeLifecycle() {
-        readMail();
+        ApplicationUtils.readMail(this);
     }
 
     @Override
@@ -47,7 +49,7 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IEventVendo
 
     @Override
     public void onDestroyLifecycle() {
-        Controllers.getInstance().getMailController().unregister(this);
+        Admin.getInstance().unregister(this);
     }
 
     @Override
@@ -58,7 +60,7 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IEventVendo
             if (getState() == Lifecycle.STATE_RESUME || getState() == Lifecycle.STATE_READY) {
                 updateView();
             } else {
-                Controllers.getInstance().getMailController().addMail(new UpdateViewPresenterMail(getName()));
+                ApplicationUtils.addMail(new UpdateViewPresenterMail(getName()));
             }
         }
     }
@@ -84,17 +86,11 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IEventVendo
     abstract public String getName();
 
     @Override
-    public void postEvent(IEvent event) {
-        EventBusController.getInstance().post(event);
-    }
-
-    @Override
-    public synchronized void readMail() {
-        final List<IMail> list = Controllers.getInstance().getMailController().getMail(this);
-        for (IMail mail : list) {
-            mail.read(this);
-            Controllers.getInstance().getMailController().removeMail(mail);
-        }
+    public List<String> hasSubscriberType() {
+        final ArrayList<String> list = new ArrayList<>();
+        list.add(PresenterController.SUBSCRIBER_TYPE);
+        list.add(MailController.SUBSCRIBER_TYPE);
+        return list;
     }
 
     @Override

@@ -7,17 +7,20 @@ import com.cleanarchitecture.shishkin.base.event.SwitchToFragmentEvent;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Контроллер, отвечающий за навигацию в приложении
  */
-public class NavigationController extends AbstractController<INavigationSubscriber> implements INavigationController {
+public class NavigationController extends AbstractController<INavigationSubscriber>
+        implements INavigationController, IModuleSubscriber {
 
     public static final String NAME = "NavigationController";
+    public static final String SUBSCRIBER_TYPE = "INavigationSubscriber";
 
     public NavigationController() {
         super();
-
-        EventBusController.getInstance().register(this);
     }
 
     @Override
@@ -41,6 +44,18 @@ public class NavigationController extends AbstractController<INavigationSubscrib
     @Override
     public String getName() {
         return NAME;
+    }
+
+    @Override
+    public String getSubscriberType() {
+        return SUBSCRIBER_TYPE;
+    }
+
+    @Override
+    public List<String> hasSubscriberType() {
+        final ArrayList<String> list = new ArrayList<>();
+        list.add(EventBusController.SUBSCRIBER_TYPE);
+        return list;
     }
 
     @Override

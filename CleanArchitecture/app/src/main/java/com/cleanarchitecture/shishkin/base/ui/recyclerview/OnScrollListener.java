@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.ui.recyclerview.event.OnRecyclerViewIdleEvent;
 import com.cleanarchitecture.shishkin.base.ui.recyclerview.event.OnRecyclerViewScrolledEvent;
+import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 
 public class OnScrollListener extends RecyclerView.OnScrollListener {
 
@@ -31,10 +32,10 @@ public class OnScrollListener extends RecyclerView.OnScrollListener {
             }
         }
         if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-            EventBusController.getInstance().post(new OnRecyclerViewIdleEvent(recyclerView));
+            ApplicationUtils.postEvent(new OnRecyclerViewIdleEvent(recyclerView));
         } else {
             if (!(mLinearLayoutManager.findLastCompletelyVisibleItemPosition() == mRecyclerView.getAdapter().getItemCount() - 1)) {
-                EventBusController.getInstance().post(new OnRecyclerViewScrolledEvent(recyclerView));
+                ApplicationUtils.postEvent(new OnRecyclerViewScrolledEvent(recyclerView));
             }
         }
     }

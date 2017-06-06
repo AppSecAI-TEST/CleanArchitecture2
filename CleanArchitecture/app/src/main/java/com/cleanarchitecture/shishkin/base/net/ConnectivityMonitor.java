@@ -11,6 +11,7 @@ import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.controller.ISubscribeable;
 import com.cleanarchitecture.shishkin.base.event.OnNetworkConnectedEvent;
 import com.cleanarchitecture.shishkin.base.event.OnNetworkDisconnectedEvent;
+import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 
 /**
  * A helpful implementation of {@link ISubscribeable} that receives network state changes.
@@ -57,9 +58,9 @@ public class ConnectivityMonitor extends BroadcastReceiver implements ISubscribe
         final String action = intent.getAction();
         if (ConnectivityManager.CONNECTIVITY_ACTION.equals(action)) {
             if (Connectivity.isNetworkConnected(context)) {
-                EventBusController.getInstance().post(new OnNetworkConnectedEvent());
+                ApplicationUtils.postEvent(new OnNetworkConnectedEvent());
             } else {
-                EventBusController.getInstance().post(new OnNetworkDisconnectedEvent());
+                ApplicationUtils.postEvent(new OnNetworkDisconnectedEvent());
             }
         }
     }

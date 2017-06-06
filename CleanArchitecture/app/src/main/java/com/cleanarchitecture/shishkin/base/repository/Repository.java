@@ -6,10 +6,10 @@ import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.ui.activity.MainActivity;
+import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.controller.AppPreferences;
-import com.cleanarchitecture.shishkin.base.controller.Controllers;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
-import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
+import com.cleanarchitecture.shishkin.base.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.base.event.ClearDiskCacheEvent;
 import com.cleanarchitecture.shishkin.base.event.IEvent;
 import com.cleanarchitecture.shishkin.base.event.database.DbCreatedEvent;
@@ -19,6 +19,7 @@ import com.cleanarchitecture.shishkin.base.storage.DiskCache;
 import com.cleanarchitecture.shishkin.base.storage.DiskCacheService;
 import com.cleanarchitecture.shishkin.base.storage.MemoryCache;
 import com.cleanarchitecture.shishkin.base.storage.MemoryCacheService;
+import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -26,9 +27,11 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-public class Repository implements IRepository, IEventVendor {
+public class Repository implements IRepository, IModuleSubscriber {
     public static final String NAME = "Repository";
 
     // информация об источниках данных
@@ -53,7 +56,7 @@ public class Repository implements IRepository, IEventVendor {
     private IDbProvider mDbProvider;
 
     public Repository() {
-        EventBusController.getInstance().register(this);
+        Admin.getInstance().register(this);
 
         mNetProvider = new NetProvider();
         mContentProvider = new ContentProvider();
@@ -128,8 +131,15 @@ public class Repository implements IRepository, IEventVendor {
     }
 
     @Override
-    public void postEvent(IEvent event) {
-        EventBusController.getInstance().post(event);
+    public String getSubscriberType() {
+        return null;
+    }
+
+    @Override
+    public List<String> hasSubscriberType() {
+        final ArrayList<String> list = new ArrayList<>();
+        list.add(EventBusController.SUBSCRIBER_TYPE);
+        return list;
     }
 
     @Override
@@ -168,7 +178,7 @@ public class Repository implements IRepository, IEventVendor {
     public void onDbCreatedEvent(final DbCreatedEvent event) {
         final Context context = ApplicationController.getInstance();
         if (context != null) {
-            Controllers.getInstance().getMailController().addMail(new ShowToastMail(MainActivity.NAME, context.getString(R.string.db_created, event.getName())));
+            ApplicationUtils.addMail(new ShowToastMail(MainActivity.NAME, context.getString(R.string.db_created, event.getName())));
         }
     }
 
@@ -176,7 +186,7 @@ public class Repository implements IRepository, IEventVendor {
     public void onDbUpdatedEvent(final DbUpdatedEvent event) {
         final Context context = ApplicationController.getInstance();
         if (context != null) {
-            Controllers.getInstance().getMailController().addMail(new ShowToastMail(MainActivity.NAME, context.getString(R.string.db_updated, event.getName())));
+            ApplicationUtils.addMail(new ShowToastMail(MainActivity.NAME, context.getString(R.string.db_updated, event.getName())));
         }
     }
 

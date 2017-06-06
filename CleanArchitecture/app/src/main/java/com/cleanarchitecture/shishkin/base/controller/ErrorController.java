@@ -105,24 +105,24 @@ public class ErrorController implements IErrorController {
     public synchronized void onError(final String source, final Exception e, final String displayMessage) {
         onError(source, e);
 
-        EventBusController.getInstance().post(new ShowErrorMessageEvent(displayMessage));
+        ApplicationUtils.postEvent(new ShowErrorMessageEvent(displayMessage));
     }
 
     @Override
     public synchronized void onError(final String source, final Exception e, final int errorCode) {
         onError(source, e);
 
-        EventBusController.getInstance().post(new ShowErrorMessageEvent(errorCode));
+        ApplicationUtils.postEvent(new ShowErrorMessageEvent(errorCode));
     }
 
     @Override
     public synchronized void onError(final String source, final String displayMessage) {
-        EventBusController.getInstance().post(new ShowErrorMessageEvent(displayMessage));
+        ApplicationUtils.postEvent(new ShowErrorMessageEvent(displayMessage));
     }
 
     @Override
     public synchronized void onError(final String source, final int errorCode) {
-        EventBusController.getInstance().post(new ShowErrorMessageEvent(errorCode));
+        ApplicationUtils.postEvent(new ShowErrorMessageEvent(errorCode));
     }
 
     @Override
@@ -130,4 +130,8 @@ public class ErrorController implements IErrorController {
         return NAME;
     }
 
+    @Override
+    public String getSubscriberType() {
+        return null;
+    }
 }

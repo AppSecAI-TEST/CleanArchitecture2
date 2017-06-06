@@ -1,9 +1,10 @@
 package com.cleanarchitecture.shishkin.base.presenter;
 
+import com.cleanarchitecture.shishkin.base.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.base.lifecycle.ILifecycle;
 import com.cleanarchitecture.shishkin.base.ui.IView;
 
-public interface IPresenter<M> extends ILifecycle, IView {
+public interface IPresenter<M> extends ILifecycle, IView, IModuleSubscriber {
 
     /**
      * Получить имя презентера

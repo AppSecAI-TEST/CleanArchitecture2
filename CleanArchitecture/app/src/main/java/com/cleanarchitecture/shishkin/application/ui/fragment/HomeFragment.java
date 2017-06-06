@@ -71,14 +71,14 @@ public class HomeFragment extends AbstractContentFragment {
         registerPresenter(mSearchPresenter);
 
         if (!ApplicationUtils.checkPermission(Manifest.permission.READ_CONTACTS)) {
-            postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.READ_CONTACTS));
+            ApplicationUtils.postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.READ_CONTACTS));
         } else if (!ApplicationUtils.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.WRITE_EXTERNAL_STORAGE));
+            ApplicationUtils.postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.WRITE_EXTERNAL_STORAGE));
         }
     }
 
     private void onClickFab(View view) {
-        EventBusController.getInstance().post(new FinishApplicationEvent());
+        ApplicationUtils.postEvent(new FinishApplicationEvent());
     }
 
     @Override
@@ -97,9 +97,9 @@ public class HomeFragment extends AbstractContentFragment {
 
     @Override
     public void prepareToolbar() {
-        postEvent(new ToolbarSetTitleEvent(0, getString(R.string.app_name)));
-        postEvent(new ToolbarSetMenuEvent(R.menu.main_menu, true));
-        postEvent(new ToolbarSetBackNavigationEvent(true));
+        ApplicationUtils.postEvent(new ToolbarSetTitleEvent(0, getString(R.string.app_name)));
+        ApplicationUtils.postEvent(new ToolbarSetMenuEvent(R.menu.main_menu, true));
+        ApplicationUtils.postEvent(new ToolbarSetBackNavigationEvent(true));
     }
 
     @Override
@@ -122,7 +122,7 @@ public class HomeFragment extends AbstractContentFragment {
     public synchronized void onToolbarMenuItemClickEvent(OnToolbarMenuItemClickEvent event) {
         final MenuItem item = event.getMenuItem();
         if (item != null && item.getItemId() == R.id.exit) {
-            postEvent(new UseCaseFinishApplicationEvent());
+            ApplicationUtils.postEvent(new UseCaseFinishApplicationEvent());
         }
     }
 

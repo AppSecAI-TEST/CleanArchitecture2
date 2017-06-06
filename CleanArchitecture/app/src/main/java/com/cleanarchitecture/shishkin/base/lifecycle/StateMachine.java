@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * State machine.
  */
-public class StateMachine implements IStateable{
+public class StateMachine implements IStateable {
     private List<WeakReference<IStateable>> mList = Collections.synchronizedList(new ArrayList<>());
     private int mState = Lifecycle.STATE_CREATE;
 

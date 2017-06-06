@@ -3,7 +3,7 @@ package com.cleanarchitecture.shishkin.base.controller;
 /**
  * Контроллер, протоколирующий Uncaught Exception
  */
-public class CrashController implements Thread.UncaughtExceptionHandler, ISubscriber {
+public class CrashController implements Thread.UncaughtExceptionHandler, IModule {
 
     public static final String NAME = "CrashController";
     private static Thread.UncaughtExceptionHandler mHandler = Thread.getDefaultUncaughtExceptionHandler();
@@ -25,5 +25,11 @@ public class CrashController implements Thread.UncaughtExceptionHandler, ISubscr
     public String getName() {
         return NAME;
     }
+
+    @Override
+    public String getSubscriberType() {
+        return null;
+    }
+
 }
 

@@ -3,10 +3,10 @@ package com.cleanarchitecture.shishkin.base.repository;
 import android.arch.lifecycle.LifecycleActivity;
 import android.arch.persistence.room.RoomDatabase;
 
-import com.cleanarchitecture.shishkin.base.controller.ISubscriber;
+import com.cleanarchitecture.shishkin.base.controller.IModule;
 import com.cleanarchitecture.shishkin.base.data.AbstractViewModel;
 
-public interface IDbProvider extends ISubscriber {
+public interface IDbProvider extends IModule {
 
     /**
      * архивировать БД

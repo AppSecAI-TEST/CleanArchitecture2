@@ -6,15 +6,26 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
-import com.cleanarchitecture.shishkin.base.controller.Controllers;
+import com.cleanarchitecture.shishkin.base.controller.ActivityController;
+import com.cleanarchitecture.shishkin.base.controller.Admin;
+import com.cleanarchitecture.shishkin.base.controller.CrashController;
+import com.cleanarchitecture.shishkin.base.controller.ErrorController;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
-import com.cleanarchitecture.shishkin.base.controller.ISubscriber;
+import com.cleanarchitecture.shishkin.base.controller.IModule;
+import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
+import com.cleanarchitecture.shishkin.base.controller.MailController;
+import com.cleanarchitecture.shishkin.base.controller.NavigationController;
+import com.cleanarchitecture.shishkin.base.controller.PresenterController;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnLowMemoryEvent;
+import com.cleanarchitecture.shishkin.base.repository.IRepository;
+import com.cleanarchitecture.shishkin.base.repository.Repository;
+import com.cleanarchitecture.shishkin.base.usecases.UseCasesController;
+import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.squareup.leakcanary.LeakCanary;
 
 import java.io.File;
 
-public class ApplicationController extends MultiDexApplication implements ISubscriber {
+public class ApplicationController extends MultiDexApplication implements IModule {
     private static final String NAME = "ApplicationController";
     public static final String EXTERNAL_STORAGE_APPLICATION_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() +
             File.separator + BuildConfig.APPLICATION_ID + File.separator;
@@ -30,7 +41,7 @@ public class ApplicationController extends MultiDexApplication implements ISubsc
             LeakCanary.install(this);
         }
 
-        Controllers.instantiate();
+
     }
 
     @Override
@@ -48,11 +59,16 @@ public class ApplicationController extends MultiDexApplication implements ISubsc
     public void onLowMemory() {
         super.onLowMemory();
 
-        EventBusController.getInstance().post(new UseCaseOnLowMemoryEvent());
+        ApplicationUtils.postEvent(new UseCaseOnLowMemoryEvent());
     }
 
     @Override
     public String getName() {
         return NAME;
+    }
+
+    @Override
+    public String getSubscriberType() {
+        return null;
     }
 }

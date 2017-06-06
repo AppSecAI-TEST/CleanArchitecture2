@@ -10,19 +10,22 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.base.controller.Controllers;
+import com.cleanarchitecture.shishkin.base.controller.ActivityController;
+import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
-import com.cleanarchitecture.shishkin.base.controller.IEventVendor;
+import com.cleanarchitecture.shishkin.base.controller.IActivityController;
 import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
+import com.cleanarchitecture.shishkin.base.controller.IModuleSubscriber;
+import com.cleanarchitecture.shishkin.base.controller.MailController;
 import com.cleanarchitecture.shishkin.base.event.IEvent;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
-import com.cleanarchitecture.shishkin.base.mail.IMail;
 import com.cleanarchitecture.shishkin.base.lifecycle.StateMachine;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.base.ui.activity.IActivity;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.ViewUtils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +35,7 @@ import butterknife.Unbinder;
 
 @SuppressWarnings("unused")
 public abstract class AbstractFragment extends LifecycleFragment implements IFragment
-        , IEventVendor, IMailSubscriber {
+        , IMailSubscriber, IModuleSubscriber {
 
     private Map<String, IPresenter> mPresenters = Collections.synchronizedMap(new HashMap<String, IPresenter>());
     private StateMachine mStateMachine = new StateMachine(Lifecycle.STATE_CREATE);
@@ -53,7 +56,7 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
 
         mStateMachine.setState(Lifecycle.STATE_READY);
 
-        Controllers.getInstance().getMailController().register(this);
+        Admin.getInstance().register(this);
     }
 
     /**
@@ -74,7 +77,7 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
 
         mStateMachine.setState(Lifecycle.STATE_RESUME);
 
-        readMail();
+        ApplicationUtils.readMail(this);
     }
 
     @Override
@@ -85,11 +88,11 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
         mStateMachine.clear();
 
         for (IPresenter presenter : mPresenters.values()) {
-            Controllers.getInstance().getPresenterController().unregister(presenter);
+            Admin.getInstance().unregister(presenter);
         }
         mPresenters.clear();
 
-        Controllers.getInstance().getMailController().unregister(this);
+        Admin.getInstance().unregister(this);
     }
 
     @Override
@@ -105,8 +108,10 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
     public abstract String getName();
 
     @Override
-    public void postEvent(IEvent event) {
-        EventBusController.getInstance().post(event);
+    public List<String> hasSubscriberType() {
+        final ArrayList<String> list = new ArrayList<>();
+        list.add(MailController.SUBSCRIBER_TYPE);
+        return list;
     }
 
     @Override
@@ -117,9 +122,12 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
                 return (LifecycleActivity) activity;
             }
         } else {
-            final IActivity subscriber = Controllers.getInstance().getActivityController().getSubscriber();
-            if (subscriber != null && subscriber instanceof LifecycleActivity) {
-                return (LifecycleActivity) subscriber;
+            final IActivityController controller = Admin.getInstance().getModule(ActivityController.NAME);
+            if (controller != null) {
+                final IActivity subscriber = controller.getSubscriber();
+                if (subscriber != null && subscriber instanceof LifecycleActivity) {
+                    return (LifecycleActivity) subscriber;
+                }
             }
         }
         return null;
@@ -131,17 +139,21 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
         if (activity != null && activity instanceof IActivity) {
             return (IActivity) activity;
         }
-        return Controllers.getInstance().getActivityController().getSubscriber();
+        final IActivityController controller = Admin.getInstance().getModule(ActivityController.NAME);
+        if (controller != null) {
+            return controller.getSubscriber();
+        }
+        return null;
     }
 
     @Override
     public synchronized void registerPresenter(final IPresenter presenter) {
         if (mPresenters.containsKey(presenter.getName())) {
             mPresenters.remove(presenter);
-            Controllers.getInstance().getPresenterController().unregister(presenter);
+            Admin.getInstance().unregister(presenter);
         }
         mPresenters.put(presenter.getName(), presenter);
-        Controllers.getInstance().getPresenterController().register(presenter);
+        Admin.getInstance().register(presenter);
         mStateMachine.addObserver(presenter);
     }
 
@@ -161,15 +173,6 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
     @Override
     public void setUnbinder(Unbinder unbinder) {
         mUnbinder = unbinder;
-    }
-
-    @Override
-    public synchronized void readMail() {
-        List<IMail> list = Controllers.getInstance().getMailController().getMail(this);
-        for (IMail mail : list) {
-            mail.read(this);
-            Controllers.getInstance().getMailController().removeMail(mail);
-        }
     }
 
     @Override
