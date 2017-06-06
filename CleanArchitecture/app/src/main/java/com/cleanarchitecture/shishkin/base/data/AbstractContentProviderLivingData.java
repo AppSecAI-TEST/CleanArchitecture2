@@ -26,6 +26,8 @@ public abstract class AbstractContentProviderLivingData<T> extends LiveData<T> i
         public void onChange(boolean selfChange) {
             super.onChange(selfChange);
 
+            onChanged();
+
             if (AbstractContentProviderLivingData.this.hasObservers()) {
                 if (mDebounce == null || getValue() == null) {
                     getData();
@@ -48,6 +50,9 @@ public abstract class AbstractContentProviderLivingData<T> extends LiveData<T> i
         super();
 
         mUris.addAll(uris);
+    }
+
+    public void onChanged() {
     }
 
     public void setDebounce(final long delay) {
