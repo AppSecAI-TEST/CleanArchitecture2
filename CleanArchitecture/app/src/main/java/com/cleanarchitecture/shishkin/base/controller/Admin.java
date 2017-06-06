@@ -13,7 +13,6 @@ public class Admin implements ISubscriber {
 
     private static volatile Admin sInstance;
     private Map<String, IModule> mModules;
-    private Map<String, String> mTypeModules;
 
     public static Admin getInstance() {
         if (sInstance == null) {
@@ -28,7 +27,6 @@ public class Admin implements ISubscriber {
 
     private Admin() {
         mModules = Collections.synchronizedMap(new HashMap<String, IModule>());
-        mTypeModules = Collections.synchronizedMap(new HashMap<String, String>());
     }
 
     public synchronized <C> C getModule(final String controllerName) {
@@ -48,21 +46,59 @@ public class Admin implements ISubscriber {
 
     public synchronized void registerModule(final IModule controller) {
         if (controller != null) {
-            mModules.put(controller.getName(), controller);
-            mTypeModules.put(controller.getSubscriberType(), getName());
+            try {
+                // регистрируем модуль в других модулях
+                if (controller instanceof IModuleSubscriber) {
+                    final List<String> types = ((IModuleSubscriber) controller).hasSubscriberType();
+
+                    for (IModule module : mModules.values()) {
+                        if (module instanceof IController) {
+                            if (types.contains(module.getSubscriberType())) {
+                                ((IController) module).register(controller);
+                            }
+                        }
+                    }
+                }
+
+                // регистрируем другие модули в модуле
+                if (controller instanceof IController) {
+                    final String type = controller.getSubscriberType();
+                    for (IModule module : mModules.values()) {
+                        if (module instanceof IModuleSubscriber) {
+                            if (((IModuleSubscriber) module).hasSubscriberType().contains(type)) {
+                                ((IController) controller).register(module);
+                            }
+                        }
+                    }
+                }
+
+                mModules.put(controller.getName(), controller);
+            } catch (Exception e) {
+                ErrorController.getInstance().onError(NAME, e.getMessage());
+            }
         }
     }
 
     public synchronized void unregisterModule(final String nameController) {
         if (!StringUtils.isNullOrEmpty(nameController)) {
-            if (mModules.containsKey(nameController)) {
-                for (IModule module : mModules.values()) {
-                    if (nameController.equalsIgnoreCase(module.getName())) {
-                        mTypeModules.remove(module.getSubscriberType());
+            try {
+                // отменяем регистрацию в других модулях
+                if (mModules.containsKey(nameController)) {
+                    final IModule module = mModules.get(nameController);
+                    if (module != null && module instanceof IModuleSubscriber) {
+                        final List<String> subscribers = ((IModuleSubscriber) module).hasSubscriberType();
+                        for (String subscriber : subscribers) {
+                            final IModule moduleSubscriber = mModules.get(subscriber);
+                            if (moduleSubscriber instanceof IController) {
+                                ((IController) moduleSubscriber).unregister(module);
+                            }
+                        }
                     }
-                }
 
-                mModules.remove(nameController);
+                    mModules.remove(nameController);
+                }
+            } catch (Exception e) {
+                ErrorController.getInstance().onError(NAME, e.getMessage());
             }
         }
     }
@@ -72,26 +108,13 @@ public class Admin implements ISubscriber {
             try {
                 final List<String> types = subscriber.hasSubscriberType();
 
-                // регистрируемся subscriber в чужих моулях
+                // регистрируемся subscriber в модулях
                 for (IModule module : mModules.values()) {
                     if (module instanceof IController) {
                         if (types.contains(module.getSubscriberType())) {
                             ((IController) module).register(subscriber);
                         }
                     }
-                }
-
-                // регистрируем чужие модули у subscriber
-                if (subscriber instanceof IController) {
-                    final String type = ((IController) subscriber).getSubscriberType();
-                    for (IModule module : mModules.values()) {
-                        if (module instanceof IModuleSubscriber) {
-                            if (((IModuleSubscriber) module).hasSubscriberType().contains(type)) {
-                                ((IController) subscriber).register(module);
-                            }
-                        }
-                    }
-
                 }
             } catch (Exception e) {
                 ErrorController.getInstance().onError(NAME, e.getMessage());
@@ -132,7 +155,6 @@ public class Admin implements ISubscriber {
             }
         }
     }
-
 
 
     @Override
