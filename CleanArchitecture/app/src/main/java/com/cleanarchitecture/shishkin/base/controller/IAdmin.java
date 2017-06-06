@@ -22,7 +22,7 @@ public interface IAdmin extends ISubscriber {
     void registerModule(final IModule module);
 
     /**
-     * Отменить регистрациюмодуля
+     * Отменить регистрацию модуля
      *
      * @param nameModule имя модуля
      */
@@ -31,14 +31,14 @@ public interface IAdmin extends ISubscriber {
     /**
      * Зарегистрировать подписчика модуля
      *
-     * @param subscriber подписчик
+     * @param subscriber подписчик модуля
      */
     void register(final IModuleSubscriber subscriber);
 
     /**
-     * Отменить регистрацию подписчика
+     * Отменить регистрацию подписчика модуля
      *
-     * @param subscriber подписчик
+     * @param subscriber подписчик модуля
      */
     void unregister(final IModuleSubscriber subscriber);
 

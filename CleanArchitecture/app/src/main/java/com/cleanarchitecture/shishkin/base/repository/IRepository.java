@@ -13,7 +13,7 @@ public interface IRepository extends IModule {
      * Получить данные из кэша
      *
      * @param key       ключ данных
-     * @param cacheType тип кеша
+     * @param cacheType тип кеширования
      * @return возвращаемые Serializable данные
      */
     Serializable getFromCache(String key, int cacheType);
@@ -22,7 +22,7 @@ public interface IRepository extends IModule {
      * Сохранить данные в кэше.
      *
      * @param key       ключ данных
-     * @param cacheType тип кеша
+     * @param cacheType тип кеширования
      * @param value     сохраняемые Serializable данные
      */
     void putToCache(String key, int cacheType, Serializable value);

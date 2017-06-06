@@ -7,13 +7,6 @@ import com.cleanarchitecture.shishkin.base.ui.IView;
 public interface IPresenter<M> extends ILifecycle, IView, IModuleSubscriber {
 
     /**
-     * Получить имя презентера
-     *
-     * @return имя презентера
-     */
-    String getName();
-
-    /**
      * Установить модель презентера
      *
      * @param model the model

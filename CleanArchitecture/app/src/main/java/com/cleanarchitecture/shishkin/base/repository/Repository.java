@@ -37,7 +37,7 @@ public class Repository implements IRepository, IModuleSubscriber {
     public static final int FROM_CACHE = 1; // данные получены из кеша
     public static final int FROM_NETWORK = 2; // данные получены из сети
 
-    // стратегия получения данных
+    // типы кеширования
     public static final int USE_NO_CACHE = 0; // не использовать кеш ни при чтении ни при сохранении данных
     public static final int USE_MEMORY_CACHE = 1; // использовать кеш в памяти при чтении и при сохранении данных - данные будут прочитаны позднее
     public static final int USE_DISK_CACHE = 2; // использовать кеш на диске при чтении и при сохранении данных - данные будут прочитаны позднее

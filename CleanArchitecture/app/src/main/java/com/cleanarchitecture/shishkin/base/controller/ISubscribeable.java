@@ -3,17 +3,17 @@ package com.cleanarchitecture.shishkin.base.controller;
 import android.content.Context;
 
 /**
- * Interface defines subscribeable behavior of concrete implementation.
+ * Интерфейс объекта - подписчика, использующего Context
  */
 public interface ISubscribeable {
 
     /**
-     * Зарегистрировать компонент
+     * Подписать объект
      */
     void subscribe(final Context context);
 
     /**
-     * Отключить компонент
+     * Отключить подписку объекта
      */
     void unsubscribe(final Context context);
 
