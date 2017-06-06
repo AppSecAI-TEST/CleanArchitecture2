@@ -1,8 +1,8 @@
 package com.cleanarchitecture.shishkin.base.observer;
 
-import com.cleanarchitecture.shishkin.base.data.AbstractContentProviderLivingData;
+import com.cleanarchitecture.shishkin.base.data.AbstractContentProviderLiveData;
 
-public class LivingDataDebounce<T extends AbstractContentProviderLivingData> extends Debounce {
+public class LivingDataDebounce<T extends AbstractContentProviderLiveData> extends Debounce {
 
     private T mLivingData = null;
 

@@ -166,9 +166,7 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
     public void accept(@io.reactivex.annotations.NonNull TextViewAfterTextChangeEvent event) {
         if (validate()) {
             mCurrentFilter = event.view().getText().toString();
-            if (getModel() != null && !getModel().isEmpty()) {
-                updateView();
-            }
+            updateView();
         }
     }
 

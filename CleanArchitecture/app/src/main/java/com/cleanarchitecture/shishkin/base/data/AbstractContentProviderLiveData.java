@@ -16,7 +16,7 @@ import com.cleanarchitecture.shishkin.base.observer.LivingDataDebounce;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractContentProviderLivingData<T> extends LiveData<T> implements IModuleSubscriber {
+public abstract class AbstractContentProviderLiveData<T> extends LiveData<T> implements IModuleSubscriber {
 
     private List<Uri> mUris = new ArrayList<>();
     private boolean isChanged = true;
@@ -28,7 +28,7 @@ public abstract class AbstractContentProviderLivingData<T> extends LiveData<T> i
 
             onChanged();
 
-            if (AbstractContentProviderLivingData.this.hasObservers()) {
+            if (AbstractContentProviderLiveData.this.hasObservers()) {
                 if (mDebounce == null || getValue() == null) {
                     getData();
                 } else {
@@ -40,21 +40,29 @@ public abstract class AbstractContentProviderLivingData<T> extends LiveData<T> i
         }
     };
 
-    public AbstractContentProviderLivingData(final Uri uri) {
+    public AbstractContentProviderLiveData(final Uri uri) {
         super();
 
         mUris.add(uri);
     }
 
-    public AbstractContentProviderLivingData(final List<Uri> uris) {
+    public AbstractContentProviderLiveData(final List<Uri> uris) {
         super();
 
         mUris.addAll(uris);
     }
 
+    /**
+     * Событие - данные изменены в Content Provider
+     */
     public void onChanged() {
     }
 
+    /**
+     * Установить задержку для повторной выборки данных
+     *
+     * @param delay the delay
+     */
     public void setDebounce(final long delay) {
         mDebounce = new LivingDataDebounce(this, delay);
     }
@@ -107,6 +115,9 @@ public abstract class AbstractContentProviderLivingData<T> extends LiveData<T> i
         return super.getValue();
     }
 
+    /**
+     * Получить данные
+     */
     public abstract void getData();
 
 

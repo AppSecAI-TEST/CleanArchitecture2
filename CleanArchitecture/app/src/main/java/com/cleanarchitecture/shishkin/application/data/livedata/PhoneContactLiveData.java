@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.application.data.livingdata;
+package com.cleanarchitecture.shishkin.application.data.livedata;
 
 import android.content.Context;
 
@@ -8,7 +8,7 @@ import com.cleanarchitecture.shishkin.application.data.dao.PhoneContactDAO;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryResponseGetContactsEvent;
-import com.cleanarchitecture.shishkin.base.data.AbstractContentProviderLivingData;
+import com.cleanarchitecture.shishkin.base.data.AbstractContentProviderLiveData;
 import com.cleanarchitecture.shishkin.base.event.ui.HideHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.repository.Repository;
@@ -22,10 +22,10 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class PhoneContactLivingData extends AbstractContentProviderLivingData<List<PhoneContactItem>> {
-    public static final String NAME = "PhoneContactLivingData";
+public class PhoneContactLiveData extends AbstractContentProviderLiveData<List<PhoneContactItem>> {
+    public static final String NAME = "PhoneContactLiveData";
 
-    public PhoneContactLivingData() {
+    public PhoneContactLiveData() {
         super(PhoneContactDAO.CONTENT_URI);
 
         setDebounce(TimeUnit.SECONDS.toMillis(2));

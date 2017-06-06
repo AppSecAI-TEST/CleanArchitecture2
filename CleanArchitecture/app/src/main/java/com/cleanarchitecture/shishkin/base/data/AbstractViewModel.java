@@ -14,7 +14,15 @@ public abstract class AbstractViewModel<T> extends AndroidViewModel implements I
         subscribe();
     }
 
+    /**
+     * Подписаться на LiveData
+     */
     public abstract void subscribe();
 
+    /**
+     * Получить LiveData
+     *
+     * @return LiveData
+     */
     public abstract LiveData<T> getLiveData();
 }
