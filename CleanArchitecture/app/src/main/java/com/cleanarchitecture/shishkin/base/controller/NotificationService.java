@@ -305,4 +305,9 @@ public class NotificationService extends LiveLongBackgroundIntentService {
     private void onHandleSetMessagesCount(final int count) {
         mMessagesCount = count;
     }
+
+    @Override
+    public String getName() {
+        return NAME;
+    }
 }

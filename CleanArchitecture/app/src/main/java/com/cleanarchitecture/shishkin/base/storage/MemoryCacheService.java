@@ -101,5 +101,9 @@ public class MemoryCacheService extends LiveLongBackgroundIntentService {
         MemoryCache.getInstance().clearAll();
     }
 
+    @Override
+    public String getName() {
+        return NAME;
+    }
 }
 
