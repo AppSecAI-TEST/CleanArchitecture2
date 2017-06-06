@@ -79,6 +79,7 @@ public abstract class AbstractAdmin implements IAdmin {
                         for (String subscriber : subscribers) {
                             final IModule moduleSubscriber = mModules.get(subscriber);
                             if (moduleSubscriber != null && moduleSubscriber instanceof ISmallController) {
+                                //Log.i(NAME, module.getName() + " исключен в " + moduleSubscriber.getName());
                                 ((ISmallController) moduleSubscriber).unregister(module);
                             }
                         }
@@ -102,7 +103,7 @@ public abstract class AbstractAdmin implements IAdmin {
                 for (IModule module : mModules.values()) {
                     if (module instanceof ISmallController) {
                         if (types.contains(module.getSubscriberType())) {
-                            // Log.i("Admin", subscriber.getName() + " зарегестрирован в " + module.getName());
+                            //Log.i("Admin", subscriber.getName() + " зарегестрирован в " + module.getName());
                             ((ISmallController) module).register(subscriber);
                         }
                     }
@@ -121,6 +122,7 @@ public abstract class AbstractAdmin implements IAdmin {
                 for (IModule module : mModules.values()) {
                     if (module instanceof ISmallController) {
                         if (types.contains(module.getSubscriberType())) {
+                            //Log.i(NAME, subscriber.getName() + " исключен в " + module.getName());
                             ((ISmallController) module).unregister(subscriber);
                         }
                     }
