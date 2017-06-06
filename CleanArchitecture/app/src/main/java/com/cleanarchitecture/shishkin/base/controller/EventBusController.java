@@ -15,7 +15,7 @@ public class EventBusController implements IEventBusController {
     public static final int LOW_RANK = 2;
     public static final int MIN_RANK = 0;
 
-    public static final String NAME = "EventController";
+    public static final String NAME = "EventBusController";
     public static final String SUBSCRIBER_TYPE = "IEventbusSubscriber";
     private static volatile EventBusController sInstance;
 
