@@ -14,6 +14,7 @@ import android.widget.EditText;
 import com.annimon.stream.Stream;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
+import com.cleanarchitecture.shishkin.application.app.Constant;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.data.viewmodel.PhoneContactViewModel;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
@@ -158,7 +159,7 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
         ApplicationUtils.postEvent(new ShowHorizontalProgressBarEvent());
         ApplicationUtils.postEvent(new RepositoryRequestGetContactsEvent()
                 .setCacheType(Repository.USE_SAVE_CACHE)
-                .setId(R.id.repository_get_contacts)
+                .setId(Constant.REPOSITORY_GET_CONTACTS)
         );
     }
 
