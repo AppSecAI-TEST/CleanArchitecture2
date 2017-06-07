@@ -285,6 +285,7 @@ public abstract class AbstractActivity extends LifecycleActivity
         }
     }
 
+    @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onFinishActivityEvent(final FinishActivityEvent event) {
         if (event.getName().equals(getName())) {
@@ -292,6 +293,7 @@ public abstract class AbstractActivity extends LifecycleActivity
         }
     }
 
+    @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onBackpressActivityEvent(final BackpressActivityEvent event) {
         if (event.getName().equals(getName())) {
@@ -299,11 +301,13 @@ public abstract class AbstractActivity extends LifecycleActivity
         }
     }
 
+    @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
     public synchronized void onClearBackStackEvent(ClearBackStackEvent event) {
         clearBackStack();
     }
 
+    @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
     public synchronized void onFinishApplicationEvent(FinishApplicationEvent event) {
         if (ApplicationUtils.hasLollipop()) {
@@ -315,6 +319,7 @@ public abstract class AbstractActivity extends LifecycleActivity
         }
     }
 
+    @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDialogResultEvent(DialogResultEvent event) {
 

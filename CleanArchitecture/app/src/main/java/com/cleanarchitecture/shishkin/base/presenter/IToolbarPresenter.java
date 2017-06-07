@@ -5,11 +5,13 @@ import android.graphics.drawable.Drawable;
 import com.cleanarchitecture.shishkin.base.event.OnNetworkConnectedEvent;
 import com.cleanarchitecture.shishkin.base.event.OnNetworkDisconnectedEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.OnToolbarClickEvent;
+import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarHideProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetBackNavigationEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetBackgroundEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetItemEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetMenuEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetTitleEvent;
+import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarShowProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.HideHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowHorizontalProgressBarEvent;
 
@@ -166,4 +168,19 @@ public interface IToolbarPresenter {
      * @param event событие
      */
     void onNetworkDisconnectedEvent(OnNetworkDisconnectedEvent event);
+
+    /**
+     * Обрабатывает событие - показать Progress Bar
+     *
+     * @param event событие
+     */
+    void onToolbarShowProgressBarEvent(ToolbarShowProgressBarEvent event);
+
+    /**
+     * Обрабатывает событие - скрыть Progress Bar
+     *
+     * @param event событие
+     */
+    void onToolbarHideProgressBarEvent(ToolbarHideProgressBarEvent event);
+
 }

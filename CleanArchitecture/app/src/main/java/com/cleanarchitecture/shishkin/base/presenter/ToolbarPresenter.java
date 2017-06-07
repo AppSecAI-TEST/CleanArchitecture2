@@ -22,6 +22,7 @@ import com.cleanarchitecture.shishkin.base.event.OnNetworkConnectedEvent;
 import com.cleanarchitecture.shishkin.base.event.OnNetworkDisconnectedEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.OnToolbarClickEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.OnToolbarMenuItemClickEvent;
+import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarHideProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarInitEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarPrepareEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarResetEvent;
@@ -30,6 +31,7 @@ import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetBackgroundEve
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetItemEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetMenuEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarSetTitleEvent;
+import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarShowProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.HideHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.net.Connectivity;
@@ -471,6 +473,18 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onHideHorizontalProgressBarEvent(HideHorizontalProgressBarEvent event) {
         hideHorizontalProgressBar();
+    }
+
+    @Override
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onToolbarShowProgressBarEvent(ToolbarShowProgressBarEvent event) {
+        showProgressBar();
+    }
+
+    @Override
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onToolbarHideProgressBarEvent(ToolbarHideProgressBarEvent event) {
+        hideProgressBar();
     }
 
     @Override
