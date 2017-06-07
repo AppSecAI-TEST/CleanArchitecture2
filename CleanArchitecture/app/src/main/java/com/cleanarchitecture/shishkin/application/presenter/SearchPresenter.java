@@ -70,7 +70,7 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
     private ContactRecyclerViewAdapter mContactAdapter;
     private String mCurrentFilter = null;
     private Disposable mDisposableSearchView;
-    private IDbProvider mDbProvider = Admin.getInstance().getModule(DbProvider.NAME);
+    private IDbProvider mDbProvider = ApplicationUtils.getDbProvider();
 
     public SearchPresenter() {
         super();

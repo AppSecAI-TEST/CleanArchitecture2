@@ -42,6 +42,7 @@ import java.util.List;
 
 import es.dmoral.toasty.Toasty;
 
+import static com.cleanarchitecture.shishkin.base.utils.ApplicationUtils.hasMarshmallow;
 import static com.cleanarchitecture.shishkin.base.utils.ApplicationUtils.runOnUiThread;
 
 /**
@@ -70,10 +71,12 @@ public class ActivityController extends AbstractController<IActivity> implements
      */
     @Override
     public synchronized boolean checkPermission(String permission) {
-        final IActivity subscriber = getSubscriber();
-        if (subscriber != null) {
-            if (ApplicationUtils.hasMarshmallow() && ActivityCompat.checkSelfPermission(subscriber.getActivity(), permission) != PackageManager.PERMISSION_GRANTED) {
-                return false;
+        if (hasMarshmallow()) {
+            final IActivity subscriber = getSubscriber();
+            if (subscriber != null) {
+                if (ActivityCompat.checkSelfPermission(subscriber.getActivity(), permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
             }
         }
         return true;
@@ -106,14 +109,16 @@ public class ActivityController extends AbstractController<IActivity> implements
      */
     @Override
     public synchronized void grantPermission(String permission, String helpMessage) {
-        final IActivity subscriber = getSubscriber();
-        if (subscriber != null && subscriber.validate()) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(subscriber.getActivity(), permission)) {
-                ApplicationUtils.postEvent(new ShowDialogEvent(R.id.dialog_request_permissions, -1, helpMessage, R.string.setting, R.string.cancel, false));
-            } else {
-                subscriber.getActivity().runOnUiThread(() -> {
-                    ActivityCompat.requestPermissions(subscriber.getActivity(), new String[]{permission}, ApplicationUtils.REQUEST_PERMISSIONS);
-                });
+        if (hasMarshmallow()) {
+            final IActivity subscriber = getSubscriber();
+            if (subscriber != null && subscriber.validate()) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(subscriber.getActivity(), permission)) {
+                    ApplicationUtils.postEvent(new ShowDialogEvent(R.id.dialog_request_permissions, -1, helpMessage, R.string.setting, R.string.cancel, false));
+                } else {
+                    subscriber.getActivity().runOnUiThread(() -> {
+                        ActivityCompat.requestPermissions(subscriber.getActivity(), new String[]{permission}, ApplicationUtils.REQUEST_PERMISSIONS);
+                    });
+                }
             }
         }
     }
