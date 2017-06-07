@@ -9,7 +9,10 @@ import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryResponseGetContactsEvent;
 import com.cleanarchitecture.shishkin.base.data.AbstractContentProviderLiveData;
+import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarHideProgressBarEvent;
+import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarShowProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.HideHorizontalProgressBarEvent;
+import com.cleanarchitecture.shishkin.base.event.ui.HideProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.repository.Repository;
 import com.cleanarchitecture.shishkin.base.storage.DiskCache;
@@ -33,7 +36,7 @@ public class PhoneContactLiveData extends AbstractContentProviderLiveData<List<P
 
     @Override
     public void getData() {
-        ApplicationUtils.postEvent(new ShowHorizontalProgressBarEvent());
+        ApplicationUtils.postEvent(new ToolbarShowProgressBarEvent());
         ApplicationUtils.postEvent(new RepositoryRequestGetContactsEvent()
                 .setCacheType(Repository.USE_ONLY_CACHE)
                 .setId(Constant.REPOSITORY_GET_CONTACTS));
@@ -50,7 +53,8 @@ public class PhoneContactLiveData extends AbstractContentProviderLiveData<List<P
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public synchronized void onResponseGetContactsEvent(RepositoryResponseGetContactsEvent event) {
-        ApplicationUtils.postEvent(new HideHorizontalProgressBarEvent());
+        ApplicationUtils.postEvent(new ToolbarHideProgressBarEvent());
+        ApplicationUtils.postEvent(new HideProgressBarEvent());
         if (!event.hasError()) {
             setValue(event.getResponse());
         }

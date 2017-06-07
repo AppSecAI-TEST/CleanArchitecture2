@@ -4,6 +4,11 @@ import android.support.annotation.IdRes;
 import android.view.View;
 
 import com.cleanarchitecture.shishkin.base.controller.IModuleSubscriber;
+import com.cleanarchitecture.shishkin.base.event.BackpressActivityEvent;
+import com.cleanarchitecture.shishkin.base.event.ClearBackStackEvent;
+import com.cleanarchitecture.shishkin.base.event.FinishActivityEvent;
+import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
+import com.cleanarchitecture.shishkin.base.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
 
 import butterknife.Unbinder;
@@ -54,7 +59,7 @@ public interface IActivity extends IModuleSubscriber {
     /**
      * Получить Activity
      *
-     * @return Activity
+     * @return Activity activity
      */
     AbstractActivity getActivity();
 
@@ -81,5 +86,40 @@ public interface IActivity extends IModuleSubscriber {
      * @return true - если Activity находиться в рабочем состоянии
      */
     boolean validate();
+
+    /**
+     * Событие - finish, указанной Activity
+     *
+     * @param event событие
+     */
+    void onFinishActivityEvent(final FinishActivityEvent event);
+
+    /**
+     * Событие - Backpress, указанной Activity
+     *
+     * @param event событие
+     */
+    void onBackpressActivityEvent(final BackpressActivityEvent event);
+
+    /**
+     * Событие - очистить Back Stack
+     *
+     * @param event событие
+     */
+    void onClearBackStackEvent(ClearBackStackEvent event);
+
+    /**
+     * Событие - finish приложения
+     *
+     * @param event событие
+     */
+    void onFinishApplicationEvent(FinishApplicationEvent event);
+
+    /**
+     * Событие - закрыт диалог
+     *
+     * @param event событие
+     */
+    void onDialogResultEvent(DialogResultEvent event);
 
 }

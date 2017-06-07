@@ -18,8 +18,7 @@ public class ToolbarFragment extends AbstractFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View root = inflater.inflate(R.layout.toolbar, container, false);
-        return root;
+        return inflater.inflate(R.layout.toolbar, container, false);
     }
 
     @Override
@@ -33,10 +32,6 @@ public class ToolbarFragment extends AbstractFragment {
     @Override
     public String getName() {
         return NAME;
-    }
-
-    public ToolbarPresenter getToolbarPresenter() {
-        return mToolbarPresenter;
     }
 
 }
