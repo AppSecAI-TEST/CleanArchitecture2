@@ -87,20 +87,6 @@ public class ApplicationUtils {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
     }
 
-    // It is the only one method to change built-in colors and yes - it's a hack
-    private static void brandGlowDrawableColor(final Context context, final String drawable, final int color) {
-        final Resources resources = context.getResources();
-        final int drawableRes = resources.getIdentifier(drawable, "drawable", "android");
-        try {
-            final Drawable d = ViewUtils.getDrawable(context, drawableRes);
-            if (d != null) {
-                d.setColorFilter(color, PorterDuff.Mode.SRC_IN);
-            }
-        } catch (final Resources.NotFoundException rnfe) {
-            ErrorController.getInstance().onError(LOG_TAG, rnfe);
-        }
-    }
-
     public static String getPhoneInfo() {
         final StringBuilder sb = new StringBuilder();
         sb.append("\n");
@@ -257,22 +243,25 @@ public class ApplicationUtils {
         return getStatusPermission(permission) == PackageManager.PERMISSION_GRANTED;
     }
 
-    public static boolean existsDb(final Context context, final String nameDb) {
-        try {
-            final String pathDb = context.getDatabasePath(nameDb).getAbsolutePath();
-            if (StringUtils.isNullOrEmpty(pathDb)) {
-                return false;
-            }
-
-            final File file = new File(pathDb);
-            if (file.exists()) {
-                final long length = file.length();
-                if (length > 0) {
-                    return true;
+    public static boolean existsDb(final String nameDb) {
+        final Context context = ApplicationController.getInstance();
+        if (context != null) {
+            try {
+                final String pathDb = context.getDatabasePath(nameDb).getAbsolutePath();
+                if (StringUtils.isNullOrEmpty(pathDb)) {
+                    return false;
                 }
+
+                final File file = new File(pathDb);
+                if (file.exists()) {
+                    final long length = file.length();
+                    if (length > 0) {
+                        return true;
+                    }
+                }
+            } catch (Exception e) {
+                ErrorController.getInstance().onError(LOG_TAG, e);
             }
-        } catch (Exception e) {
-            ErrorController.getInstance().onError(LOG_TAG, e);
         }
         return false;
     }
@@ -368,6 +357,13 @@ public class ApplicationUtils {
             return provider.getDb(klass, databaseName);
         }
         return null;
+    }
+
+    public static void setStatusBarColor(int color_res) {
+        final AbstractActivity activity = getCurrentActivity();
+        if (activity != null) {
+            ViewUtils.setStatusBarColor(activity, color_res);
+        }
     }
 
     private ApplicationUtils() {
