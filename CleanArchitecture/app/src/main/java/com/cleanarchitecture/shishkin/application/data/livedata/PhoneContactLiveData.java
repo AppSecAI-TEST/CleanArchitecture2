@@ -2,8 +2,8 @@ package com.cleanarchitecture.shishkin.application.data.livedata;
 
 import android.content.Context;
 
-import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
+import com.cleanarchitecture.shishkin.application.app.Constant;
 import com.cleanarchitecture.shishkin.application.data.dao.PhoneContactDAO;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
@@ -36,15 +36,15 @@ public class PhoneContactLiveData extends AbstractContentProviderLiveData<List<P
         ApplicationUtils.postEvent(new ShowHorizontalProgressBarEvent());
         ApplicationUtils.postEvent(new RepositoryRequestGetContactsEvent()
                 .setCacheType(Repository.USE_ONLY_CACHE)
-                .setId(R.id.repository_get_contacts));
+                .setId(Constant.REPOSITORY_GET_CONTACTS));
     }
 
     @Override
     public void onChanged() {
-        MemoryCache.getInstance().clear(String.valueOf(R.id.repository_get_contacts));
+        MemoryCache.getInstance().clear(String.valueOf(Constant.REPOSITORY_GET_CONTACTS));
         final Context context = ApplicationController.getInstance();
         if (context != null) {
-            DiskCache.getInstance(context).clear(String.valueOf(R.id.repository_get_contacts));
+            DiskCache.getInstance(context).clear(String.valueOf(Constant.REPOSITORY_GET_CONTACTS));
         }
     }
 

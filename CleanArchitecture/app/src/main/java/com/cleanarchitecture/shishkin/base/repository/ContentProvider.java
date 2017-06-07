@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
+import com.cleanarchitecture.shishkin.application.app.Constant;
 import com.cleanarchitecture.shishkin.application.data.cursor.PhoneContactCursor;
 import com.cleanarchitecture.shishkin.application.data.dao.PhoneContactDAO;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
@@ -28,7 +29,8 @@ public class ContentProvider implements IContentProvider {
 
     @NonNull
     public synchronized IEvent getContacts() {
-        final RepositoryResponseGetContactsEvent event = new RepositoryResponseGetContactsEvent();
+        final RepositoryResponseGetContactsEvent event = (RepositoryResponseGetContactsEvent)new RepositoryResponseGetContactsEvent()
+                .setId(Constant.REPOSITORY_GET_CONTACTS);
 
         final Context context = ApplicationController.getInstance();
         if (context == null) {

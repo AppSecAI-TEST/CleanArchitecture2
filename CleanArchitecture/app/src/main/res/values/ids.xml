@@ -9,9 +9,4 @@
 
     <item name="dialog_call_phone" type="id" />
 
-    <item name="cache_contact_items" type="id" />
-
-    <item name="type_caching" type="id" />
-
-    <item name="repository_get_contacts" type="id" />
 </resources>
