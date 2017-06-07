@@ -54,7 +54,6 @@ public class PhoneContactLiveData extends AbstractContentProviderLiveData<List<P
     @Subscribe(threadMode = ThreadMode.MAIN)
     public synchronized void onResponseGetContactsEvent(RepositoryResponseGetContactsEvent event) {
         ApplicationUtils.postEvent(new ToolbarHideProgressBarEvent());
-        ApplicationUtils.postEvent(new HideProgressBarEvent());
         if (!event.hasError()) {
             setValue(event.getResponse());
         }

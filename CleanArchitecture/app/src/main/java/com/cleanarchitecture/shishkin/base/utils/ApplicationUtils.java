@@ -14,6 +14,8 @@ import android.os.Looper;
 import android.os.PowerManager;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.View;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
@@ -30,6 +32,8 @@ import com.cleanarchitecture.shishkin.base.mail.IMail;
 import com.cleanarchitecture.shishkin.base.repository.IRepository;
 import com.cleanarchitecture.shishkin.base.repository.Repository;
 import com.cleanarchitecture.shishkin.base.ui.activity.AbstractActivity;
+import com.cleanarchitecture.shishkin.base.ui.activity.AbstractContentActivity;
+import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractContentFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
@@ -263,6 +267,17 @@ public class ApplicationUtils {
         return null;
     }
 
+    public static AbstractContentFragment getContentFragment() {
+        final ILifecycleController controller = Admin.getInstance().getModule(LifecycleController.NAME);
+        if (controller != null) {
+            final AbstractContentActivity activity = controller.getContentActivity();
+            if (activity != null) {
+                return activity.getContentFragment(AbstractContentFragment.class);
+            }
+        }
+        return null;
+    }
+
     public static void postEvent(IEvent event) {
         EventBusController.getInstance().post(event);
     }
@@ -278,6 +293,8 @@ public class ApplicationUtils {
     public static IRepository getRepository() {
         return Admin.getInstance().getModule(Repository.NAME);
     }
+
+
 
     private ApplicationUtils() {
     }
