@@ -31,7 +31,7 @@ public abstract class AbstractAdmin implements IAdmin {
 
     @Override
     public synchronized void registerModule(final IModule controller) {
-        if (controller != null) {
+        if (controller != null && !StringUtils.isNullOrEmpty(controller.getName())) {
             try {
                 // регистрируем модуль в других модулях
                 if (controller instanceof IModuleSubscriber) {
@@ -40,8 +40,10 @@ public abstract class AbstractAdmin implements IAdmin {
                     for (IModule module : mModules.values()) {
                         if (module instanceof ISmallController) {
                             if (types.contains(module.getSubscriberType())) {
-                                //Log.i(NAME, controller.getName() + " зарегестрирован в " + module.getName());
-                                ((ISmallController) module).register(controller);
+                                if (!module.getName().equalsIgnoreCase(controller.getName())) {
+                                    //Log.i(NAME, controller.getName() + " зарегестрирован в " + module.getName());
+                                    ((ISmallController) module).register(controller);
+                                }
                             }
                         }
                     }
@@ -53,8 +55,10 @@ public abstract class AbstractAdmin implements IAdmin {
                     for (IModule module : mModules.values()) {
                         if (module instanceof IModuleSubscriber) {
                             if (((IModuleSubscriber) module).hasSubscriberType().contains(type)) {
-                                //Log.i(NAME, module.getName() + " зарегестрирован в " + controller.getName());
-                                ((ISmallController) controller).register(module);
+                                if (!module.getName().equalsIgnoreCase(controller.getName())) {
+                                    //Log.i(NAME, module.getName() + " зарегестрирован в " + controller.getName());
+                                    ((ISmallController) controller).register(module);
+                                }
                             }
                         }
                     }
@@ -65,6 +69,8 @@ public abstract class AbstractAdmin implements IAdmin {
             } catch (Exception e) {
                 ErrorController.getInstance().onError(NAME, e.getMessage());
             }
+        } else {
+            ErrorController.getInstance().onError(NAME, "Module is null or has no name");
         }
     }
 
@@ -97,7 +103,7 @@ public abstract class AbstractAdmin implements IAdmin {
 
     @Override
     public synchronized void register(final IModuleSubscriber subscriber) {
-        if (subscriber != null) {
+        if (subscriber != null && !StringUtils.isNullOrEmpty(subscriber.getName())) {
             try {
                 final List<String> types = subscriber.hasSubscriberType();
 
@@ -105,14 +111,18 @@ public abstract class AbstractAdmin implements IAdmin {
                 for (IModule module : mModules.values()) {
                     if (module instanceof ISmallController) {
                         if (types.contains(module.getSubscriberType())) {
-                            //Log.i("Admin", subscriber.getName() + " зарегестрирован в " + module.getName());
-                            ((ISmallController) module).register(subscriber);
+                            if (!module.getName().equalsIgnoreCase(subscriber.getName())) {
+                                //Log.i("Admin", subscriber.getName() + " зарегестрирован в " + module.getName());
+                                ((ISmallController) module).register(subscriber);
+                            }
                         }
                     }
                 }
             } catch (Exception e) {
                 ErrorController.getInstance().onError(NAME, e.getMessage());
             }
+        } else {
+            ErrorController.getInstance().onError(NAME, "Subscriber is null or has no name");
         }
     }
 
