@@ -298,24 +298,16 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     public void showHorizontalProgressBar() {
         ApplicationUtils.runOnUiThread(() -> {
             if (validate()) {
-                final ILifecycleController controller = Admin.getInstance().getModule(LifecycleController.NAME);
-                if (controller != null) {
-                    final AbstractContentActivity activity = controller.getContentActivity();
-                    if (activity != null) {
-                        final AbstractContentFragment fragment = activity.getContentFragment(AbstractContentFragment.class);
-                        if (fragment != null) {
-                            final SwipeRefreshLayout swipeRefreshLayout = fragment.getSwipeRefreshLayout();
-                            if (swipeRefreshLayout == null) {
-                                mHorizontalPogressBar.get().setVisibility(View.VISIBLE);
-                            } else if (!swipeRefreshLayout.isRefreshing()) {
-                                mHorizontalPogressBar.get().setVisibility(View.VISIBLE);
-                            }
-                        } else {
-                            mHorizontalPogressBar.get().setVisibility(View.VISIBLE);
-                        }
-                    } else {
+                final AbstractContentFragment fragment = ApplicationUtils.getContentFragment();
+                if (fragment != null) {
+                    final SwipeRefreshLayout swipeRefreshLayout = fragment.getSwipeRefreshLayout();
+                    if (swipeRefreshLayout == null) {
+                        mHorizontalPogressBar.get().setVisibility(View.VISIBLE);
+                    } else if (!swipeRefreshLayout.isRefreshing()) {
                         mHorizontalPogressBar.get().setVisibility(View.VISIBLE);
                     }
+                } else {
+                    mHorizontalPogressBar.get().setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -325,22 +317,8 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     public void hideHorizontalProgressBar() {
         ApplicationUtils.runOnUiThread(() -> {
             if (validate()) {
-                final ILifecycleController controller = Admin.getInstance().getModule(LifecycleController.NAME);
-                if (controller != null) {
-                    final AbstractContentActivity activity = controller.getContentActivity();
-                    if (activity != null) {
-                        final AbstractContentFragment fragment = activity.getContentFragment(AbstractContentFragment.class);
-                        if (fragment != null) {
-                            final SwipeRefreshLayout swipeRefreshLayout = fragment.getSwipeRefreshLayout();
-                            if (swipeRefreshLayout != null) {
-                                swipeRefreshLayout.setRefreshing(false);
-                            }
-                        }
-                        mHorizontalPogressBar.get().setVisibility(View.INVISIBLE);
-                    } else {
-                        mHorizontalPogressBar.get().setVisibility(View.INVISIBLE);
-                    }
-                }
+                hideSwipeRefreshLayout();
+                mHorizontalPogressBar.get().setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -349,7 +327,17 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     public void showProgressBar() {
         ApplicationUtils.runOnUiThread(() -> {
             if (validate()) {
-                mPogressBar.get().setVisibility(View.VISIBLE);
+                final AbstractContentFragment fragment = ApplicationUtils.getContentFragment();
+                if (fragment != null) {
+                    final SwipeRefreshLayout swipeRefreshLayout = fragment.getSwipeRefreshLayout();
+                    if (swipeRefreshLayout == null) {
+                        mPogressBar.get().setVisibility(View.VISIBLE);
+                    } else if (!swipeRefreshLayout.isRefreshing()) {
+                        mPogressBar.get().setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    mPogressBar.get().setVisibility(View.VISIBLE);
+                }
             }
         });
     }
@@ -358,9 +346,20 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     public void hideProgressBar() {
         ApplicationUtils.runOnUiThread(() -> {
             if (validate()) {
+                hideSwipeRefreshLayout();
                 mPogressBar.get().setVisibility(View.GONE);
             }
         });
+    }
+
+    private void hideSwipeRefreshLayout() {
+        final AbstractContentFragment fragment = ApplicationUtils.getContentFragment();
+        if (fragment != null) {
+            final SwipeRefreshLayout swipeRefreshLayout = fragment.getSwipeRefreshLayout();
+            if (swipeRefreshLayout != null) {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }
     }
 
     @Override
