@@ -66,7 +66,7 @@ public class ContactRecyclerViewAdapter extends AbstractRecyclerViewAdapter<Phon
             if (!StringUtils.isNullOrEmpty(item.getPhoto())) {
                 mImageView.setImageURI(Uri.parse(item.getPhoto()));
             } else {
-                mImageView.setImageDrawable(ViewUtils.getDrawable(mImageView.getContext(), R.drawable.ic_account));
+                mImageView.setImageDrawable(ViewUtils.getDrawable(mImageView.getContext(), R.mipmap.ic_account));
             }
             final int position = getAdapterPosition();
             mDivider.setVisibility(position == cnt - 1 ? View.VISIBLE : View.GONE);

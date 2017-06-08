@@ -97,7 +97,7 @@
             android:id="@+id/fab_btn_exit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_home"
+            android:src="@mipmap/ic_home"
             fab:fab_label="@string/exit"
             fab:fab_size="mini" />
 
@@ -105,7 +105,7 @@
             android:id="@+id/fab_btn_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_cat"
+            android:src="@mipmap/ic_cat"
             fab:fab_size="mini" />
 
     </com.github.clans.fab.FloatingActionMenu>

@@ -245,7 +245,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
                 if (!mBackNavigation) {
                     mHome.get().setImageDrawable(ViewUtils.getDrawable(mContext.get(), R.mipmap.ic_menu));
                 } else {
-                    mHome.get().setImageDrawable(ViewUtils.getDrawable(mContext.get(), R.mipmap.ic_arrow_left));
+                    mHome.get().setImageDrawable(ViewUtils.getDrawable(mContext.get(), R.mipmap.ic_arrow_left_bold_circle_outline));
                 }
             }
         });

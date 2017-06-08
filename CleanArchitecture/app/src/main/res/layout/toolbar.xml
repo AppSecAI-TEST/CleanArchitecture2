@@ -18,7 +18,7 @@
             android:layout_width="40dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:src="@mipmap/ic_arrow_left"
+            android:src="@mipmap/ic_arrow_left_bold_circle_outline"
             android:visibility="visible"
             android:paddingLeft="@dimen/padding_4dp"
             android:paddingRight="@dimen/padding_4dp" />
