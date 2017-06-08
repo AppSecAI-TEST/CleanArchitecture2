@@ -2,6 +2,7 @@ package com.cleanarchitecture.shishkin.base.utils;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -19,9 +20,11 @@ import android.view.View;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
+import com.cleanarchitecture.shishkin.base.controller.ActivityController;
 import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.controller.ErrorController;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
+import com.cleanarchitecture.shishkin.base.controller.IActivityController;
 import com.cleanarchitecture.shishkin.base.controller.ILifecycleController;
 import com.cleanarchitecture.shishkin.base.controller.IMailController;
 import com.cleanarchitecture.shishkin.base.controller.IMailSubscriber;
@@ -29,6 +32,9 @@ import com.cleanarchitecture.shishkin.base.controller.LifecycleController;
 import com.cleanarchitecture.shishkin.base.controller.MailController;
 import com.cleanarchitecture.shishkin.base.event.IEvent;
 import com.cleanarchitecture.shishkin.base.mail.IMail;
+import com.cleanarchitecture.shishkin.base.repository.IContentProvider;
+import com.cleanarchitecture.shishkin.base.repository.IDbProvider;
+import com.cleanarchitecture.shishkin.base.repository.INetProvider;
 import com.cleanarchitecture.shishkin.base.repository.IRepository;
 import com.cleanarchitecture.shishkin.base.repository.Repository;
 import com.cleanarchitecture.shishkin.base.ui.activity.AbstractActivity;
@@ -41,6 +47,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class ApplicationUtils {
 
     private static final String LOG_TAG = "ApplicationUtils:";
@@ -80,20 +87,6 @@ public class ApplicationUtils {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
     }
 
-    // It is the only one method to change built-in colors and yes - it's a hack
-    private static void brandGlowDrawableColor(final Context context, final String drawable, final int color) {
-        final Resources resources = context.getResources();
-        final int drawableRes = resources.getIdentifier(drawable, "drawable", "android");
-        try {
-            final Drawable d = ViewUtils.getDrawable(context, drawableRes);
-            if (d != null) {
-                d.setColorFilter(color, PorterDuff.Mode.SRC_IN);
-            }
-        } catch (final Resources.NotFoundException rnfe) {
-            ErrorController.getInstance().onError(LOG_TAG, rnfe);
-        }
-    }
-
     public static String getPhoneInfo() {
         final StringBuilder sb = new StringBuilder();
         sb.append("\n");
@@ -131,17 +124,64 @@ public class ApplicationUtils {
         return null;
     }
 
+    public static <S> S getSystemService(final String serviceName) {
+        final Context context = ApplicationController.getInstance();
+        if (context != null) {
+            return SafeUtils.cast(context.getSystemService(serviceName));
+        }
+        return null;
+    }
+
     public static void runOnUiThread(Runnable action) {
         new Handler(Looper.getMainLooper()).post(action);
     }
 
-    public static void isIgnoringBatteryOptimizations(final Activity activity) {
-        if (activity != null) {
-            if (hasMarshmallow()) {
-                final PowerManager pm = (PowerManager) activity.getSystemService(Context.POWER_SERVICE);
-                if (pm != null) {
-                    if (!pm.isIgnoringBatteryOptimizations(BuildConfig.APPLICATION_ID)) {
-                        final Intent myIntent = new Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+    public static void isIgnoringBatteryOptimizations() {
+        final ILifecycleController controller = Admin.getInstance().getModule(LifecycleController.NAME);
+        if (controller != null) {
+            final AbstractActivity activity = controller.getCurrentActivity();
+            if (activity != null) {
+                if (hasMarshmallow()) {
+                    final PowerManager pm = (PowerManager) activity.getSystemService(Context.POWER_SERVICE);
+                    if (pm != null) {
+                        if (!pm.isIgnoringBatteryOptimizations(BuildConfig.APPLICATION_ID)) {
+                            final Intent myIntent = new Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+                            activity.startActivity(myIntent);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public static void checkGooglePlayServices() {
+        final ILifecycleController controller = Admin.getInstance().getModule(LifecycleController.NAME);
+        if (controller != null) {
+            final AbstractActivity activity = controller.getCurrentActivity();
+            if (activity != null) {
+                final GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
+                final int result = googleAPI.isGooglePlayServicesAvailable(activity);
+                if (result != ConnectionResult.SUCCESS) {
+                    if (googleAPI.isUserResolvableError(result)) {
+                        runOnUiThread(() -> {
+                            final Dialog dialog = googleAPI.getErrorDialog(activity, result, ApplicationUtils.REQUEST_GOOGLE_PLAY_SERVICES);
+                            dialog.setOnCancelListener(dialogInterface -> activity.finish());
+                            dialog.show();
+                        });
+                    }
+                }
+            }
+        }
+    }
+
+    public static void canDrawOverlays() {
+        final ILifecycleController controller = Admin.getInstance().getModule(LifecycleController.NAME);
+        if (controller != null) {
+            final AbstractActivity activity = controller.getCurrentActivity();
+            if (activity != null) {
+                if (hasMarshmallow()) {
+                    if (!Settings.canDrawOverlays(activity)) {
+                        final Intent myIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
                         activity.startActivity(myIntent);
                     }
                 }
@@ -149,40 +189,22 @@ public class ApplicationUtils {
         }
     }
 
-    public static void checkGooglePlayServices(final Activity activity) {
-        if (activity != null) {
-            final GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
-            final int result = googleAPI.isGooglePlayServicesAvailable(activity);
-            if (result != ConnectionResult.SUCCESS) {
-                if (googleAPI.isUserResolvableError(result)) {
-                    runOnUiThread(() -> {
-                        final Dialog dialog = googleAPI.getErrorDialog(activity, result, ApplicationUtils.REQUEST_GOOGLE_PLAY_SERVICES);
-                        dialog.setOnCancelListener(dialogInterface -> activity.finish());
-                        dialog.show();
-                    });
-                }
-            }
-        }
-    }
-
-    public static void canDrawOverlays(final Activity activity) {
-        if (activity != null) {
-            if (hasMarshmallow()) {
-                if (!Settings.canDrawOverlays(activity)) {
-                    final Intent myIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-                    activity.startActivity(myIntent);
-                }
+    public static void grantPermission(String permission, String helpMessage) {
+        if (hasMarshmallow()) {
+            final IActivityController controller = Admin.getInstance().getModule(ActivityController.NAME);
+            if (controller != null) {
+                controller.grantPermission(permission, helpMessage);
             }
         }
     }
 
     public static boolean grantPermisions(final String[] permissions, final Activity activity) {
-        if (hasMarshmallow()) {
-            if (ApplicationController.getInstance() != null) {
+        if (activity != null && permissions != null) {
+            if (hasMarshmallow()) {
                 final List<String> listPermissionsNeeded = new ArrayList();
 
                 for (String permission : permissions) {
-                    if (ActivityCompat.checkSelfPermission(ApplicationController.getInstance(),
+                    if (ActivityCompat.checkSelfPermission(activity.getApplicationContext(),
                             permission)
                             != PackageManager.PERMISSION_GRANTED) {
                         listPermissionsNeeded.add(permission);
@@ -200,10 +222,10 @@ public class ApplicationUtils {
                     return false;
                 }
             } else {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     public static int getStatusPermission(final String permission) {
@@ -221,22 +243,25 @@ public class ApplicationUtils {
         return getStatusPermission(permission) == PackageManager.PERMISSION_GRANTED;
     }
 
-    public static boolean existsDb(final Context context, final String nameDb) {
-        try {
-            final String pathDb = context.getDatabasePath(nameDb).getAbsolutePath();
-            if (StringUtils.isNullOrEmpty(pathDb)) {
-                return false;
-            }
-
-            final File file = new File(pathDb);
-            if (file.exists()) {
-                final long length = file.length();
-                if (length > 0) {
-                    return true;
+    public static boolean existsDb(final String nameDb) {
+        final Context context = ApplicationController.getInstance();
+        if (context != null) {
+            try {
+                final String pathDb = context.getDatabasePath(nameDb).getAbsolutePath();
+                if (StringUtils.isNullOrEmpty(pathDb)) {
+                    return false;
                 }
+
+                final File file = new File(pathDb);
+                if (file.exists()) {
+                    final long length = file.length();
+                    if (length > 0) {
+                        return true;
+                    }
+                }
+            } catch (Exception e) {
+                ErrorController.getInstance().onError(LOG_TAG, e);
             }
-        } catch (Exception e) {
-            ErrorController.getInstance().onError(LOG_TAG, e);
         }
         return false;
     }
@@ -267,10 +292,18 @@ public class ApplicationUtils {
         return null;
     }
 
+    public static AbstractActivity getCurrentActivity() {
+        final ILifecycleController controller = Admin.getInstance().getModule(LifecycleController.NAME);
+        if (controller != null) {
+            return controller.getCurrentActivity();
+        }
+        return null;
+    }
+
     public static AbstractContentFragment getContentFragment() {
         final ILifecycleController controller = Admin.getInstance().getModule(LifecycleController.NAME);
         if (controller != null) {
-            final AbstractContentActivity activity = controller.getContentActivity();
+            final AbstractContentActivity activity = controller.getCurrentContentActivity();
             if (activity != null) {
                 return activity.getContentFragment(AbstractContentFragment.class);
             }
@@ -294,7 +327,44 @@ public class ApplicationUtils {
         return Admin.getInstance().getModule(Repository.NAME);
     }
 
+    public static IContentProvider getContentProvider() {
+        final IRepository repository = Admin.getInstance().getModule(Repository.NAME);
+        if (repository != null) {
+            return repository.getContentProvider();
+        }
+        return null;
+    }
 
+    public static IDbProvider getDbProvider() {
+        final IRepository repository = Admin.getInstance().getModule(Repository.NAME);
+        if (repository != null) {
+            return repository.getDbProvider();
+        }
+        return null;
+    }
+
+    public static INetProvider getNetProvider() {
+        final IRepository repository = Admin.getInstance().getModule(Repository.NAME);
+        if (repository != null) {
+            return repository.getNetProvider();
+        }
+        return null;
+    }
+
+    public static <T extends RoomDatabase> T getDb(final Class<T> klass, final String databaseName) {
+        final IDbProvider provider = getDbProvider();
+        if (provider != null) {
+            return provider.getDb(klass, databaseName);
+        }
+        return null;
+    }
+
+    public static void setStatusBarColor(int color_res) {
+        final AbstractActivity activity = getCurrentActivity();
+        if (activity != null) {
+            ViewUtils.setStatusBarColor(activity, color_res);
+        }
+    }
 
     private ApplicationUtils() {
     }
