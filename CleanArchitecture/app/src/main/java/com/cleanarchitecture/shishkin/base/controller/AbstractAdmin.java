@@ -103,6 +103,13 @@ public abstract class AbstractAdmin implements IAdmin {
     }
 
     @Override
+    public void unregisterModule(final IModule module) {
+        if (module != null) {
+            unregisterModule(module.getName());
+        }
+    }
+
+    @Override
     public synchronized void register(final IModuleSubscriber subscriber) {
         if (subscriber != null && !StringUtils.isNullOrEmpty(subscriber.getName())) {
             try {
@@ -149,8 +156,8 @@ public abstract class AbstractAdmin implements IAdmin {
 
     @Override
     public synchronized void setCurrentSubscriber(final IModuleSubscriber subscriber) {
-        if (subscriber != null) {
-            try {
+        try {
+            if (subscriber != null) {
                 final List<String> types = subscriber.hasSubscriberType();
                 for (IModule module : mModules.values()) {
                     if (module instanceof IController) {
@@ -159,9 +166,10 @@ public abstract class AbstractAdmin implements IAdmin {
                         }
                     }
                 }
-            } catch (Exception e) {
-                ErrorController.getInstance().onError(NAME, e.getMessage());
             }
+        } catch (Exception e) {
+            ErrorController.getInstance().onError(NAME, e.getMessage());
         }
     }
+
 }

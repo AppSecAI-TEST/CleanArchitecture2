@@ -1,5 +1,6 @@
 package com.cleanarchitecture.shishkin.base.usecases;
 
+import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.HideKeyboardEvent;
 import com.cleanarchitecture.shishkin.base.storage.MemoryCache;
@@ -12,6 +13,7 @@ public class FinishApplicationUseCase extends AbstractUseCase {
     public static final String NAME = "FinishApplicationUseCase";
 
     public static synchronized void onFinishApplication() {
+
         ApplicationUtils.postEvent(new HideKeyboardEvent());
 
         // finish all activities и LiveLongBackgroundIntentService
