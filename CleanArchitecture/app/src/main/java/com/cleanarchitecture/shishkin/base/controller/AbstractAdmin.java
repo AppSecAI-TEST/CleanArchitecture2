@@ -68,10 +68,8 @@ public abstract class AbstractAdmin implements IAdmin {
                 //Log.i(NAME, controller.getName() + " зарегестрирован");
                 mModules.put(controller.getName(), controller);
             } catch (Exception e) {
-                ErrorController.getInstance().onError(NAME, e.getMessage());
+                ErrorController.getInstance().onError(NAME, e);
             }
-        } else {
-            ErrorController.getInstance().onError(NAME, "Module is null or has no name");
         }
     }
 
@@ -97,7 +95,7 @@ public abstract class AbstractAdmin implements IAdmin {
                     mModules.remove(nameController);
                 }
             } catch (Exception e) {
-                ErrorController.getInstance().onError(NAME, e.getMessage());
+                ErrorController.getInstance().onError(NAME, e);
             }
         }
     }
@@ -127,10 +125,8 @@ public abstract class AbstractAdmin implements IAdmin {
                     }
                 }
             } catch (Exception e) {
-                ErrorController.getInstance().onError(NAME, e.getMessage());
+                ErrorController.getInstance().onError(NAME, e);
             }
-        } else {
-            ErrorController.getInstance().onError(NAME, "Subscriber is null or has no name");
         }
     }
 
@@ -149,7 +145,7 @@ public abstract class AbstractAdmin implements IAdmin {
                 }
                 //Log.i(NAME, subscriber.getName() + " исключен");
             } catch (Exception e) {
-                ErrorController.getInstance().onError(NAME, e.getMessage());
+                ErrorController.getInstance().onError(NAME, e);
             }
         }
     }
@@ -168,7 +164,7 @@ public abstract class AbstractAdmin implements IAdmin {
                 }
             }
         } catch (Exception e) {
-            ErrorController.getInstance().onError(NAME, e.getMessage());
+            ErrorController.getInstance().onError(NAME, e);
         }
     }
 
