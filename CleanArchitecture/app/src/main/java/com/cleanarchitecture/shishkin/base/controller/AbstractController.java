@@ -10,6 +10,22 @@ public abstract class AbstractController<T> extends AbstractSmallController<T> i
     public synchronized void setCurrentSubscriber(final T subscriber) {
         if (subscriber != null) {
             mCurrentSubscriber = new WeakReference<>(subscriber);
+        } else {
+            mCurrentSubscriber = null;
+        }
+    }
+
+    @Override
+    public synchronized void unregister(final T subscriber) {
+        super.unregister(subscriber);
+
+        if (mCurrentSubscriber != null && mCurrentSubscriber.get() != null) {
+            if (subscriber instanceof ISubscriber) {
+                if (((ISubscriber)subscriber).getName().equalsIgnoreCase(((ISubscriber)mCurrentSubscriber.get()).getName())) {
+                    mCurrentSubscriber.clear();
+                    mCurrentSubscriber = null;
+                }
+            }
         }
     }
 
