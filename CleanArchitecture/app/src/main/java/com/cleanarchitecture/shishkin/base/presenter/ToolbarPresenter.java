@@ -37,6 +37,7 @@ import com.cleanarchitecture.shishkin.base.event.ui.ShowHorizontalProgressBarEve
 import com.cleanarchitecture.shishkin.base.net.Connectivity;
 import com.cleanarchitecture.shishkin.base.ui.activity.AbstractContentActivity;
 import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractContentFragment;
+import com.cleanarchitecture.shishkin.base.ui.widget.AutoResizeTextView;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 import com.cleanarchitecture.shishkin.base.utils.ViewUtils;
@@ -58,7 +59,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     private WeakReference<Context> mContext;
     private WeakReference<View> mToolbarLL;
     private WeakReference<RelativeLayout> mToolbar;
-    private WeakReference<TextView> mTitle;
+    private WeakReference<AutoResizeTextView> mTitle;
     private WeakReference<MaterialProgressBar> mHorizontalPogressBar;
     private WeakReference<ImageView> mHome;
     private WeakReference<ImageView> mMenu;
@@ -79,7 +80,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
 
         final View toolbarLL = ViewUtils.findView(root, R.id.toolbar_ll);
         final RelativeLayout toolbar = ViewUtils.findView(root, R.id.toolbar);
-        final TextView title = ViewUtils.findView(root, R.id.title);
+        final AutoResizeTextView title = ViewUtils.findView(root, R.id.title);
         final ImageView home = ViewUtils.findView(root, R.id.back);
         final ImageView menu = ViewUtils.findView(root, R.id.menu);
         final ImageView item = ViewUtils.findView(root, R.id.item);
