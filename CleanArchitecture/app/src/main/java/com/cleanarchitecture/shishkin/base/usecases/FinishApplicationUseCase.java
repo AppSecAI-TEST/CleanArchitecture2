@@ -16,9 +16,6 @@ public class FinishApplicationUseCase extends AbstractUseCase {
 
         ApplicationUtils.postEvent(new HideKeyboardEvent());
 
-        // сбрасываем всех current subscribers
-        Admin.getInstance().setCurrentSubscriber(null);
-
         // finish all activities и LiveLongBackgroundIntentService
         ApplicationUtils.postEvent(new FinishApplicationEvent());
 

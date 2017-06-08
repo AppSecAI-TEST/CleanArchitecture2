@@ -157,11 +157,13 @@ public abstract class AbstractAdmin implements IAdmin {
     @Override
     public synchronized void setCurrentSubscriber(final IModuleSubscriber subscriber) {
         try {
-            final List<String> types = subscriber.hasSubscriberType();
-            for (IModule module : mModules.values()) {
-                if (module instanceof IController) {
-                    if (types.contains(module.getSubscriberType())) {
-                        ((IController) module).setCurrentSubscriber(subscriber);
+            if (subscriber != null) {
+                final List<String> types = subscriber.hasSubscriberType();
+                for (IModule module : mModules.values()) {
+                    if (module instanceof IController) {
+                        if (types.contains(module.getSubscriberType())) {
+                            ((IController) module).setCurrentSubscriber(subscriber);
+                        }
                     }
                 }
             }
