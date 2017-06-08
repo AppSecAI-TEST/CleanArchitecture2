@@ -29,7 +29,7 @@ public class ContentProvider implements IContentProvider {
 
     @NonNull
     public synchronized IEvent getContacts() {
-        final RepositoryResponseGetContactsEvent event = (RepositoryResponseGetContactsEvent)new RepositoryResponseGetContactsEvent()
+        final RepositoryResponseGetContactsEvent event = (RepositoryResponseGetContactsEvent) new RepositoryResponseGetContactsEvent()
                 .setId(Constant.REPOSITORY_GET_CONTACTS);
 
         final Context context = ApplicationController.getInstance();
