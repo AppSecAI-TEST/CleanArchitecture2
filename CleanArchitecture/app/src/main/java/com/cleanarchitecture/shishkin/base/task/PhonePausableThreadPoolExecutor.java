@@ -48,8 +48,8 @@ public class PhonePausableThreadPoolExecutor implements IPhonePausableThreadPool
             case ConnectivityManager.TYPE_WIFI:
             case ConnectivityManager.TYPE_WIMAX:
             case ConnectivityManager.TYPE_ETHERNET:
-                mThreadCount = 4;
-                mMaxThreadCount = 4;
+                mThreadCount = 8;
+                mMaxThreadCount = 8;
                 return;
 
             case ConnectivityManager.TYPE_MOBILE:
@@ -57,8 +57,8 @@ public class PhonePausableThreadPoolExecutor implements IPhonePausableThreadPool
                     case TelephonyManager.NETWORK_TYPE_LTE:  // 4G
                     case TelephonyManager.NETWORK_TYPE_HSPAP:
                     case TelephonyManager.NETWORK_TYPE_EHRPD:
-                        mThreadCount = 3;
-                        mMaxThreadCount = 3;
+                        mThreadCount = 4;
+                        mMaxThreadCount = 4;
                         return;
 
                     case TelephonyManager.NETWORK_TYPE_UMTS: // 3G
