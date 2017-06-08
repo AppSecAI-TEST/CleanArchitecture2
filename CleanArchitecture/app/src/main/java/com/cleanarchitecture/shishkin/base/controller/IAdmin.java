@@ -12,40 +12,47 @@ public interface IAdmin extends ISubscriber {
      * @param nameModule имя модуля
      * @return модуль
      */
-    <C> C getModule(final String nameModule);
+    <C> C getModule(String nameModule);
 
     /**
      * Зарегистрировать модуль
      *
      * @param module модуль
      */
-    void registerModule(final IModule module);
+    void registerModule(IModule module);
 
     /**
      * Отменить регистрацию модуля
      *
      * @param nameModule имя модуля
      */
-    void unregisterModule(final String nameModule);
+    void unregisterModule(String nameModule);
+
+    /**
+     * Отменить регистрацию модуля
+     *
+     * @param module имя модуля
+     */
+    void unregisterModule(IModule module);
 
     /**
      * Зарегистрировать подписчика модуля
      *
      * @param subscriber подписчик модуля
      */
-    void register(final IModuleSubscriber subscriber);
+    void register(IModuleSubscriber subscriber);
 
     /**
      * Отменить регистрацию подписчика модуля
      *
      * @param subscriber подписчик модуля
      */
-    void unregister(final IModuleSubscriber subscriber);
+    void unregister(IModuleSubscriber subscriber);
 
     /**
      * Установить подписчика текущим
      *
      * @param subscriber подписчик
      */
-    void setCurrentSubscriber(final IModuleSubscriber subscriber);
+    void setCurrentSubscriber(IModuleSubscriber subscriber);
 }

@@ -50,4 +50,5 @@ public class Admin extends AbstractAdmin {
     public String getName() {
         return NAME;
     }
+
 }
