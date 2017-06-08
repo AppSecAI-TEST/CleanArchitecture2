@@ -11,9 +11,6 @@ import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRes
 import com.cleanarchitecture.shishkin.base.data.AbstractContentProviderLiveData;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarHideProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarShowProgressBarEvent;
-import com.cleanarchitecture.shishkin.base.event.ui.HideHorizontalProgressBarEvent;
-import com.cleanarchitecture.shishkin.base.event.ui.HideProgressBarEvent;
-import com.cleanarchitecture.shishkin.base.event.ui.ShowHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.repository.Repository;
 import com.cleanarchitecture.shishkin.base.storage.DiskCache;
 import com.cleanarchitecture.shishkin.base.storage.MemoryCache;
