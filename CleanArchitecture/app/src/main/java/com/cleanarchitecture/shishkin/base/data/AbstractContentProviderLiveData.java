@@ -7,11 +7,11 @@ import android.database.ContentObserver;
 import android.net.Uri;
 import android.os.Handler;
 
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.base.observer.LivingDataDebounce;
+import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +71,7 @@ public abstract class AbstractContentProviderLiveData<T> extends LiveData<T> imp
     protected void onActive() {
         Admin.getInstance().register(this);
 
-        final Context context = ApplicationController.getInstance();
+        final Context context = AdminUtils.getContext();
         if (context != null) {
             final ContentResolver contentResolver = context.getContentResolver();
             for (final Uri uri : mUris) {
@@ -86,7 +86,7 @@ public abstract class AbstractContentProviderLiveData<T> extends LiveData<T> imp
     protected void onInactive() {
         Admin.getInstance().unregister(this);
 
-        final Context context = ApplicationController.getInstance();
+        final Context context = AdminUtils.getContext();
         if (context != null) {
             final ContentResolver contentResolver = context.getContentResolver();
             for (final Uri uri : mUris) {

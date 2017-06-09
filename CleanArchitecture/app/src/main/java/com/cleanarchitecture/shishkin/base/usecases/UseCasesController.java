@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.AbstractController;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.controller.IModuleSubscriber;
@@ -17,7 +16,7 @@ import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnLowMemoryEvent
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOffEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnScreenOnEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
-import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
+import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -36,7 +35,7 @@ public class UseCasesController extends AbstractController implements IUseCasesC
     }
 
     private void registerScreenOnOffBroadcastReceiver() {
-        final Context context = ApplicationController.getInstance();
+        final Context context = AdminUtils.getContext();
         if (context != null) {
             final IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(Intent.ACTION_SCREEN_ON);
@@ -48,9 +47,9 @@ public class UseCasesController extends AbstractController implements IUseCasesC
                     final String strAction = intent.getAction();
 
                     if (strAction.equals(Intent.ACTION_SCREEN_OFF)) {
-                        ApplicationUtils.postEvent(new UseCaseOnScreenOffEvent());
+                        AdminUtils.postEvent(new UseCaseOnScreenOffEvent());
                     } else {
-                        ApplicationUtils.postEvent(new UseCaseOnScreenOnEvent());
+                        AdminUtils.postEvent(new UseCaseOnScreenOnEvent());
                     }
                 }
             };

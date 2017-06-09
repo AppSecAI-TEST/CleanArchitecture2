@@ -5,14 +5,13 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.ActivityController;
 import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.controller.IActivityController;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionDeniedEvent;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseRequestPermissionEvent;
-import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
+import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
 import com.github.snowdream.android.util.Log;
 
 /**
@@ -24,14 +23,14 @@ public class RequestPermissionUseCase extends AbstractUseCase {
     public static synchronized void request(final UseCaseRequestPermissionEvent event) {
         final String permission = event.getPermission();
 
-        final Context context = ApplicationController.getInstance();
+        final Context context = AdminUtils.getContext();
         if (context == null) {
             return;
         }
 
         final IActivityController controller = Admin.getInstance().getModule(ActivityController.NAME);
         if (controller != null) {
-            final int status = ApplicationUtils.getStatusPermission(permission);
+            final int status = AdminUtils.getStatusPermission(permission);
             switch (permission) {
                 case Manifest.permission.WRITE_EXTERNAL_STORAGE:
                     switch (status) {
@@ -41,7 +40,7 @@ public class RequestPermissionUseCase extends AbstractUseCase {
 
                         case PackageManager.PERMISSION_DENIED:
                             disabledLog();
-                            controller.grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_write_external_storage));
+                            controller.grantPermission(permission, context.getString(R.string.permission_write_external_storage));
                             break;
 
                     }
@@ -53,7 +52,7 @@ public class RequestPermissionUseCase extends AbstractUseCase {
                             break;
 
                         case PackageManager.PERMISSION_DENIED:
-                            controller.grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_read_contacts));
+                            controller.grantPermission(permission, context.getString(R.string.permission_read_contacts));
                             break;
 
                     }
@@ -65,7 +64,7 @@ public class RequestPermissionUseCase extends AbstractUseCase {
                             break;
 
                         case PackageManager.PERMISSION_DENIED:
-                            controller.grantPermission(permission, ApplicationController.getInstance().getString(R.string.permission_call_phone));
+                            controller.grantPermission(permission, context.getString(R.string.permission_call_phone));
                             break;
 
                     }

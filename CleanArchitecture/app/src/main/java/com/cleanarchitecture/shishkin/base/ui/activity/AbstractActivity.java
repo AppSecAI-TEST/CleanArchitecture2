@@ -39,6 +39,7 @@ import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.lifecycle.StateMachine;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.base.ui.dialog.MaterialDialogExt;
+import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.ViewUtils;
 
@@ -114,7 +115,7 @@ public abstract class AbstractActivity extends LifecycleActivity
 
         mStateMachine.setState(Lifecycle.STATE_RESUME);
 
-        ApplicationUtils.readMail(this);
+        AdminUtils.readMail(this);
     }
 
     @Override
@@ -179,9 +180,9 @@ public abstract class AbstractActivity extends LifecycleActivity
         for (int i = 0; i < permissions.length; i++) {
             AppPreferences.putInt(this, permissions[i], grantResults[i]);
             if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                ApplicationUtils.postEvent(new OnPermisionGrantedEvent(permissions[i]));
+                AdminUtils.postEvent(new OnPermisionGrantedEvent(permissions[i]));
             } else if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
-                ApplicationUtils.postEvent(new OnPermisionDeniedEvent(permissions[i]));
+                AdminUtils.postEvent(new OnPermisionDeniedEvent(permissions[i]));
             }
         }
 

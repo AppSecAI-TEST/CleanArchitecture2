@@ -12,7 +12,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.event.ui.HideKeyboardEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.HideProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.OnSnackBarClickEvent;
@@ -29,6 +28,7 @@ import com.cleanarchitecture.shishkin.base.ui.activity.IActivity;
 import com.cleanarchitecture.shishkin.base.ui.dialog.MaterialDialogExt;
 import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.base.ui.widget.BaseSnackbar;
+import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 import com.google.android.gms.common.ConnectionResult;
@@ -41,9 +41,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.dmoral.toasty.Toasty;
-
-import static com.cleanarchitecture.shishkin.base.utils.ApplicationUtils.hasMarshmallow;
-import static com.cleanarchitecture.shishkin.base.utils.ApplicationUtils.runOnUiThread;
 
 /**
  * Контроллер activities
@@ -71,7 +68,7 @@ public class ActivityController extends AbstractController<IActivity> implements
      */
     @Override
     public synchronized boolean checkPermission(String permission) {
-        if (hasMarshmallow()) {
+        if (ApplicationUtils.hasMarshmallow()) {
             final IActivity subscriber = getSubscriber();
             if (subscriber != null) {
                 if (ActivityCompat.checkSelfPermission(subscriber.getActivity(), permission) != PackageManager.PERMISSION_GRANTED) {
@@ -90,8 +87,8 @@ public class ActivityController extends AbstractController<IActivity> implements
             final int result = googleAPI.isGooglePlayServicesAvailable(subscriber.getActivity());
             if (result != ConnectionResult.SUCCESS) {
                 if (googleAPI.isUserResolvableError(result)) {
-                    runOnUiThread(() -> {
-                        final Dialog dialog = googleAPI.getErrorDialog(subscriber.getActivity(), result, ApplicationUtils.REQUEST_GOOGLE_PLAY_SERVICES);
+                    ApplicationUtils.runOnUiThread(() -> {
+                        final Dialog dialog = googleAPI.getErrorDialog(subscriber.getActivity(), result, AdminUtils.REQUEST_GOOGLE_PLAY_SERVICES);
                         dialog.setOnCancelListener(dialogInterface -> subscriber.getActivity().finish());
                         dialog.show();
                     });
@@ -109,14 +106,14 @@ public class ActivityController extends AbstractController<IActivity> implements
      */
     @Override
     public synchronized void grantPermission(String permission, String helpMessage) {
-        if (hasMarshmallow()) {
+        if (ApplicationUtils.hasMarshmallow()) {
             final IActivity subscriber = getSubscriber();
             if (subscriber != null && subscriber.validate()) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(subscriber.getActivity(), permission)) {
-                    ApplicationUtils.postEvent(new ShowDialogEvent(R.id.dialog_request_permissions, -1, helpMessage, R.string.setting, R.string.cancel, false));
+                    AdminUtils.postEvent(new ShowDialogEvent(R.id.dialog_request_permissions, -1, helpMessage, R.string.setting, R.string.cancel, false));
                 } else {
                     subscriber.getActivity().runOnUiThread(() -> {
-                        ActivityCompat.requestPermissions(subscriber.getActivity(), new String[]{permission}, ApplicationUtils.REQUEST_PERMISSIONS);
+                        ActivityCompat.requestPermissions(subscriber.getActivity(), new String[]{permission}, AdminUtils.REQUEST_PERMISSIONS);
                     });
                 }
             }
@@ -174,14 +171,14 @@ public class ActivityController extends AbstractController<IActivity> implements
             action = ((Button) view).getText().toString();
         }
         if (!StringUtils.isNullOrEmpty(action)) {
-            ApplicationUtils.postEvent(new OnSnackBarClickEvent(action));
+            AdminUtils.postEvent(new OnSnackBarClickEvent(action));
         }
     }
 
     @Override
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onShowToastEvent(ShowToastEvent event) {
-        final Context context = ApplicationController.getInstance();
+        final Context context = AdminUtils.getContext();
         if (context == null) {
             return;
         }
@@ -214,7 +211,7 @@ public class ActivityController extends AbstractController<IActivity> implements
 
             }
 
-            Toasty.info(ApplicationController.getInstance(), event.getMessage(), event.getDuration()).show();
+            Toasty.info(AdminUtils.getContext(), event.getMessage(), event.getDuration()).show();
         });
     }
 

@@ -6,7 +6,7 @@ import com.cleanarchitecture.shishkin.base.controller.MailController;
 import com.cleanarchitecture.shishkin.base.controller.PresenterController;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.mail.UpdateViewPresenterMail;
-import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
+import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IMailSubscr
 
     @Override
     public void onResumeLifecycle() {
-        ApplicationUtils.readMail(this);
+        AdminUtils.readMail(this);
     }
 
     @Override
@@ -58,7 +58,7 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IMailSubscr
             if (getState() == Lifecycle.STATE_RESUME || getState() == Lifecycle.STATE_READY) {
                 updateView();
             } else {
-                ApplicationUtils.addMail(new UpdateViewPresenterMail(getName()));
+                AdminUtils.addMail(new UpdateViewPresenterMail(getName()));
             }
         }
     }

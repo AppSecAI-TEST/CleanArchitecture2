@@ -5,11 +5,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.net.Connectivity;
 import com.cleanarchitecture.shishkin.base.repository.requests.AbstractRequest;
 import com.cleanarchitecture.shishkin.base.repository.requests.IRequest;
+import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -25,10 +25,11 @@ public class PhonePausableThreadPoolExecutor implements IPhonePausableThreadPool
     private TimeUnit mUnit = TimeUnit.MINUTES;
     private PausableThreadPoolExecutor mPausableThreadPoolExecutor;
 
-    public PhonePausableThreadPoolExecutor(final Context context, final long keepAliveTime, final TimeUnit unit) {
+    public PhonePausableThreadPoolExecutor(final long keepAliveTime, final TimeUnit unit) {
         mKeepAliveTime = keepAliveTime;
         mUnit = unit;
 
+        final Context context = AdminUtils.getContext();
         if (context != null) {
             setThreadCount(Connectivity.getActiveNetworkInfo(context));
         }
@@ -100,13 +101,14 @@ public class PhonePausableThreadPoolExecutor implements IPhonePausableThreadPool
             mPausableThreadPoolExecutor.setState(Lifecycle.STATE_PAUSE);
         }
 
-        if (!paused && mPausableThreadPoolExecutor.isPaused()) {
-            if (ApplicationController.getInstance() != null) {
-                setThreadCount(Connectivity.getActiveNetworkInfo(ApplicationController.getInstance()));
+        final Context context = AdminUtils.getContext();
+        if (context != null) {
+            if (!paused && mPausableThreadPoolExecutor.isPaused()) {
+                setThreadCount(Connectivity.getActiveNetworkInfo(context));
+                mPausableThreadPoolExecutor.setCorePoolSize(mThreadCount);
+                mPausableThreadPoolExecutor.setMaximumPoolSize(mMaxThreadCount);
+                mPausableThreadPoolExecutor.setState(Lifecycle.STATE_RESUME);
             }
-            mPausableThreadPoolExecutor.setCorePoolSize(mThreadCount);
-            mPausableThreadPoolExecutor.setMaximumPoolSize(mMaxThreadCount);
-            mPausableThreadPoolExecutor.setState(Lifecycle.STATE_RESUME);
         }
     }
 

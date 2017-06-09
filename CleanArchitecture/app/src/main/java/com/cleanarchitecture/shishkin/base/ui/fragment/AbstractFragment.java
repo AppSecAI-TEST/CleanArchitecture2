@@ -20,6 +20,7 @@ import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.lifecycle.StateMachine;
 import com.cleanarchitecture.shishkin.base.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.base.ui.activity.IActivity;
+import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.ViewUtils;
 
@@ -75,7 +76,7 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
 
         mStateMachine.setState(Lifecycle.STATE_RESUME);
 
-        ApplicationUtils.readMail(this);
+        AdminUtils.readMail(this);
     }
 
     @Override

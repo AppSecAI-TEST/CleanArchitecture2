@@ -13,7 +13,6 @@ import android.widget.EditText;
 
 import com.annimon.stream.Stream;
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.application.app.Constant;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.data.viewmodel.PhoneContactViewModel;
@@ -35,6 +34,7 @@ import com.cleanarchitecture.shishkin.base.ui.dialog.MaterialDialogExt;
 import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.base.ui.recyclerview.OnScrollListener;
 import com.cleanarchitecture.shishkin.base.ui.recyclerview.SwipeTouchHelper;
+import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.PhoneUtils;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
@@ -67,7 +67,7 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
     private ContactRecyclerViewAdapter mContactAdapter;
     private String mCurrentFilter = null;
     private Disposable mDisposableSearchView;
-    private IDbProvider mDbProvider = ApplicationUtils.getDbProvider();
+    private IDbProvider mDbProvider = AdminUtils.getDbProvider();
 
     public SearchPresenter() {
         super();
@@ -77,7 +77,7 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
 
         final FastScrollRecyclerView recyclerView = ViewUtils.findView(root, R.id.list);
         if (recyclerView != null) {
-            final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ApplicationUtils.getActivity());
+            final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(AdminUtils.getActivity());
             recyclerView.setLayoutManager(linearLayoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             mContactAdapter = new ContactRecyclerViewAdapter(root.getContext());
@@ -153,7 +153,7 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
     }
 
     public void refreshData() {
-        ApplicationUtils.postEvent(new RepositoryRequestGetContactsEvent()
+        AdminUtils.postEvent(new RepositoryRequestGetContactsEvent()
                 .setCacheType(Repository.USE_SAVE_CACHE)
                 .setId(Constant.REPOSITORY_GET_CONTACTS)
         );
@@ -179,9 +179,9 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
                 }
 
                 if (!mContactAdapter.isEmpty()) {
-                    ApplicationUtils.postEvent(new HideKeyboardEvent());
+                    AdminUtils.postEvent(new HideKeyboardEvent());
                 } else {
-                    ApplicationUtils.postEvent(new ShowToastEvent(ApplicationController.getInstance().getString(R.string.no_data)));
+                    AdminUtils.postEvent(new ShowToastEvent(AdminUtils.getContext().getString(R.string.no_data)));
                 }
             }
         });
@@ -194,7 +194,7 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public synchronized void onSearchPresenterItemClick(OnSearchPresenterItemClick event) {
-        if (ApplicationUtils.checkPermission(Manifest.permission.CALL_PHONE)) {
+        if (AdminUtils.checkPermission(Manifest.permission.CALL_PHONE)) {
             if (event.getContactItem() != null) {
                 final PhoneContactItem item = event.getContactItem();
                 final ArrayList<String> list = new ArrayList<>();
@@ -210,22 +210,22 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
                         list.add(phone1);
                     }
                 }
-                ApplicationUtils.postEvent(new ShowListDialogEvent(R.id.dialog_call_phone, R.string.phone_call, null, list, -1, R.string.exit, true));
+                AdminUtils.postEvent(new ShowListDialogEvent(R.id.dialog_call_phone, R.string.phone_call, null, list, -1, R.string.exit, true));
             }
         } else {
-            ApplicationUtils.postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.CALL_PHONE));
+            AdminUtils.postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.CALL_PHONE));
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public synchronized void onDialogResultEvent(DialogResultEvent event) {
-        if (ApplicationUtils.checkPermission(Manifest.permission.CALL_PHONE)) {
+        if (AdminUtils.checkPermission(Manifest.permission.CALL_PHONE)) {
             final Bundle bundle = event.getResult();
             if (bundle != null && bundle.getInt("id", -1) == R.id.dialog_call_phone) {
                 if (MaterialDialogExt.POSITIVE.equals(bundle.getString(MaterialDialogExt.BUTTON))) {
                     final ArrayList<String> list = bundle.getStringArrayList("list");
                     if (list != null && list.size() == 1) {
-                        PhoneUtils.call(ApplicationUtils.getActivity(), list.get(0));
+                        PhoneUtils.call(AdminUtils.getActivity(), list.get(0));
                     }
                 }
             }

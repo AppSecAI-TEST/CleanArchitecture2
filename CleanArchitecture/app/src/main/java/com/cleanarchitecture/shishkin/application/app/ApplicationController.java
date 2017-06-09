@@ -7,14 +7,14 @@ import android.support.multidex.MultiDexApplication;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.base.controller.Admin;
-import com.cleanarchitecture.shishkin.base.controller.IModule;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnLowMemoryEvent;
-import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
+import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
 
 import java.io.File;
 
-public class ApplicationController extends MultiDexApplication implements IModule {
-    private static final String NAME = "ApplicationController";
+public class ApplicationController extends MultiDexApplication {
+
+    public static final String NAME = "ApplicationController";
     public static final String EXTERNAL_STORAGE_APPLICATION_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() +
             File.separator + BuildConfig.APPLICATION_ID + File.separator;
     private static volatile ApplicationController sInstance;
@@ -46,16 +46,7 @@ public class ApplicationController extends MultiDexApplication implements IModul
     public void onLowMemory() {
         super.onLowMemory();
 
-        ApplicationUtils.postEvent(new UseCaseOnLowMemoryEvent());
+        AdminUtils.postEvent(new UseCaseOnLowMemoryEvent());
     }
 
-    @Override
-    public String getName() {
-        return NAME;
-    }
-
-    @Override
-    public String getSubscriberType() {
-        return null;
-    }
 }

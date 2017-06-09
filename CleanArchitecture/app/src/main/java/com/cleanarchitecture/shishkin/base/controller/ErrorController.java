@@ -5,6 +5,7 @@ import android.os.Environment;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.base.event.ui.ShowErrorMessageEvent;
+import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 import com.github.snowdream.android.util.FilePathGenerator;
@@ -38,7 +39,7 @@ public class ErrorController implements IErrorController {
 
     private ErrorController() {
         boolean isGrant = true;
-        if (!ApplicationUtils.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+        if (!AdminUtils.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             isGrant = false;
         }
 
@@ -105,24 +106,24 @@ public class ErrorController implements IErrorController {
     public synchronized void onError(final String source, final Exception e, final String displayMessage) {
         onError(source, e);
 
-        ApplicationUtils.postEvent(new ShowErrorMessageEvent(displayMessage));
+        AdminUtils.postEvent(new ShowErrorMessageEvent(displayMessage));
     }
 
     @Override
     public synchronized void onError(final String source, final Exception e, final int errorCode) {
         onError(source, e);
 
-        ApplicationUtils.postEvent(new ShowErrorMessageEvent(errorCode));
+        AdminUtils.postEvent(new ShowErrorMessageEvent(errorCode));
     }
 
     @Override
     public synchronized void onError(final String source, final String displayMessage) {
-        ApplicationUtils.postEvent(new ShowErrorMessageEvent(displayMessage));
+        AdminUtils.postEvent(new ShowErrorMessageEvent(displayMessage));
     }
 
     @Override
     public synchronized void onError(final String source, final int errorCode) {
-        ApplicationUtils.postEvent(new ShowErrorMessageEvent(errorCode));
+        AdminUtils.postEvent(new ShowErrorMessageEvent(errorCode));
     }
 
     @Override

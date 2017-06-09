@@ -3,7 +3,7 @@ package com.cleanarchitecture.shishkin.base.repository;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryResponseGetContactsEvent;
-import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
+import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
 import com.cleanarchitecture.shishkin.base.utils.SerializableUtil;
 
 import java.io.Serializable;
@@ -14,11 +14,11 @@ public class RepositoryContentProvider {
     }
 
     public static synchronized void requestContacts(final RepositoryRequestGetContactsEvent event) {
-        final IRepository repository = ApplicationUtils.getRepository();
+        final IRepository repository = AdminUtils.getRepository();
         if (repository != null) {
             final List<PhoneContactItem> list = SerializableUtil.serializableToList(repository.getFromCache(String.valueOf(event.getId()), event.getCacheType()));
             if (list != null) {
-                ApplicationUtils.postEvent(new RepositoryResponseGetContactsEvent()
+                AdminUtils.postEvent(new RepositoryResponseGetContactsEvent()
                         .setResponse(list)
                         .setFrom(Repository.FROM_CACHE));
             } else {
@@ -29,7 +29,7 @@ public class RepositoryContentProvider {
                     repository.putToCache(String.valueOf(event.getId()), event.getCacheType(), (Serializable) responseEvent.getResponse());
                 }
 
-                ApplicationUtils.postEvent(responseEvent);
+                AdminUtils.postEvent(responseEvent);
             }
         }
     }

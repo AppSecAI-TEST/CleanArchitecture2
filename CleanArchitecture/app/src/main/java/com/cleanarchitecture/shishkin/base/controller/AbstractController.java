@@ -19,7 +19,7 @@ public abstract class AbstractController<T> extends AbstractSmallController<T> i
 
         if (subscriber != null && mCurrentSubscriber != null && mCurrentSubscriber.get() != null) {
             if (subscriber instanceof ISubscriber) {
-                if (((ISubscriber)subscriber).getName().equalsIgnoreCase(((ISubscriber)mCurrentSubscriber.get()).getName())) {
+                if (((ISubscriber) subscriber).getName().equalsIgnoreCase(((ISubscriber) mCurrentSubscriber.get()).getName())) {
                     mCurrentSubscriber.clear();
                     mCurrentSubscriber = null;
                 }

@@ -2,7 +2,6 @@ package com.cleanarchitecture.shishkin.application.data.livedata;
 
 import android.content.Context;
 
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.application.app.Constant;
 import com.cleanarchitecture.shishkin.application.data.dao.PhoneContactDAO;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
@@ -14,7 +13,7 @@ import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarShowProgressBarE
 import com.cleanarchitecture.shishkin.base.repository.Repository;
 import com.cleanarchitecture.shishkin.base.storage.DiskCache;
 import com.cleanarchitecture.shishkin.base.storage.MemoryCache;
-import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
+import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -33,8 +32,8 @@ public class PhoneContactLiveData extends AbstractContentProviderLiveData<List<P
 
     @Override
     public void getData() {
-        ApplicationUtils.postEvent(new ToolbarShowProgressBarEvent());
-        ApplicationUtils.postEvent(new RepositoryRequestGetContactsEvent()
+        AdminUtils.postEvent(new ToolbarShowProgressBarEvent());
+        AdminUtils.postEvent(new RepositoryRequestGetContactsEvent()
                 .setCacheType(Repository.USE_ONLY_CACHE)
                 .setId(Constant.REPOSITORY_GET_CONTACTS));
     }
@@ -42,7 +41,7 @@ public class PhoneContactLiveData extends AbstractContentProviderLiveData<List<P
     @Override
     public void onChanged() {
         MemoryCache.getInstance().clear(String.valueOf(Constant.REPOSITORY_GET_CONTACTS));
-        final Context context = ApplicationController.getInstance();
+        final Context context = AdminUtils.getContext();
         if (context != null) {
             DiskCache.getInstance(context).clear(String.valueOf(Constant.REPOSITORY_GET_CONTACTS));
         }
@@ -50,7 +49,7 @@ public class PhoneContactLiveData extends AbstractContentProviderLiveData<List<P
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public synchronized void onResponseGetContactsEvent(RepositoryResponseGetContactsEvent event) {
-        ApplicationUtils.postEvent(new ToolbarHideProgressBarEvent());
+        AdminUtils.postEvent(new ToolbarHideProgressBarEvent());
         if (!event.hasError()) {
             setValue(event.getResponse());
         }

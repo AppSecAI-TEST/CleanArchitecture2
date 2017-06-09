@@ -12,7 +12,7 @@ import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.ui.activity.MainActivity;
 import com.cleanarchitecture.shishkin.base.storage.DiskStorage;
-import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
+import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
 import com.cleanarchitecture.shishkin.base.utils.IntentUtils;
 import com.cleanarchitecture.shishkin.base.utils.SerializableUtil;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
@@ -197,7 +197,7 @@ public class NotificationService extends LiveLongBackgroundIntentService {
             intent.setAction(ACTION_DELETE_MESSAGES);
             final PendingIntent pendingDeleteIntent = PendingIntent.getBroadcast(this, 0, intentDelete, PendingIntent.FLAG_CANCEL_CURRENT);
 
-            final NotificationManager nm = ApplicationUtils.getSystemService(getApplicationContext(), Context.NOTIFICATION_SERVICE);
+            final NotificationManager nm = AdminUtils.getSystemService(Context.NOTIFICATION_SERVICE);
             if (nm != null) {
                 final NotificationCompat.Builder builderCompat = new NotificationCompat.Builder(getApplicationContext());
                 final Notification notification = builderCompat
@@ -289,7 +289,7 @@ public class NotificationService extends LiveLongBackgroundIntentService {
         mMessages.clear();
         DiskStorage.getInstance(getApplicationContext()).put(NAME, SerializableUtil.toSerializable(mMessages));
 
-        final NotificationManager nm = ApplicationUtils.getSystemService(getApplicationContext(), Context.NOTIFICATION_SERVICE);
+        final NotificationManager nm = AdminUtils.getSystemService(Context.NOTIFICATION_SERVICE);
         if (nm != null) {
             nm.cancelAll();
         }
