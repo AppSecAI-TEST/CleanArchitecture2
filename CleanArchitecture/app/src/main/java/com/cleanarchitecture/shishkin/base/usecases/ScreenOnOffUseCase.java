@@ -1,7 +1,7 @@
 package com.cleanarchitecture.shishkin.base.usecases;
 
 import com.cleanarchitecture.shishkin.base.event.OnScreenOffEvent;
-import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
+import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
 
 /**
  * Команда - блокировка/разблокировка экрана
@@ -12,7 +12,7 @@ public class ScreenOnOffUseCase extends AbstractUseCase {
 
     public static synchronized void onScreenOff() {
         // остановить все LiveLongBackgroundIntentService
-        ApplicationUtils.postEvent(new OnScreenOffEvent());
+        AdminUtils.postEvent(new OnScreenOffEvent());
     }
 
     public static synchronized void onScreenOn() {

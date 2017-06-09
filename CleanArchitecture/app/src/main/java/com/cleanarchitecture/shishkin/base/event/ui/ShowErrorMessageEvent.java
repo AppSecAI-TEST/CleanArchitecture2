@@ -3,10 +3,10 @@ package com.cleanarchitecture.shishkin.base.event.ui;
 import android.content.Context;
 
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.ErrorController;
 import com.cleanarchitecture.shishkin.base.event.AbstractEvent;
 import com.cleanarchitecture.shishkin.base.event.IEvent;
+import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
 
 /**
  * Событие - выполнить команду "показать сообщение об ошибке"
@@ -16,7 +16,7 @@ public class ShowErrorMessageEvent extends AbstractEvent {
 
     public ShowErrorMessageEvent(final IEvent event) {
         if (getErrorCode() == 1) {
-            final Context context = ApplicationController.getInstance();
+            final Context context = AdminUtils.getContext();
             if (context != null) {
                 mMessage = context.getString(R.string.error_db_app_not_loaded);
             } else {
@@ -32,7 +32,7 @@ public class ShowErrorMessageEvent extends AbstractEvent {
     }
 
     public ShowErrorMessageEvent(final int errorCode) {
-        final Context context = ApplicationController.getInstance();
+        final Context context = AdminUtils.getContext();
         if (context != null) {
             return;
         }

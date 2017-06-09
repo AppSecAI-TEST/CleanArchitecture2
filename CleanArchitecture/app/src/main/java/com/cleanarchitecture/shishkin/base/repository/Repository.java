@@ -3,7 +3,6 @@ package com.cleanarchitecture.shishkin.base.repository;
 import android.content.Context;
 
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.ui.activity.MainActivity;
 import com.cleanarchitecture.shishkin.base.controller.AppPreferences;
@@ -17,7 +16,7 @@ import com.cleanarchitecture.shishkin.base.storage.DiskCache;
 import com.cleanarchitecture.shishkin.base.storage.DiskCacheService;
 import com.cleanarchitecture.shishkin.base.storage.MemoryCache;
 import com.cleanarchitecture.shishkin.base.storage.MemoryCacheService;
-import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
+import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -61,7 +60,7 @@ public class Repository implements IRepository, IModuleSubscriber {
 
     @Override
     public synchronized Serializable getFromCache(final String key, final int cacheType) {
-        final Context context = ApplicationController.getInstance();
+        final Context context = AdminUtils.getContext();
         if (context == null) {
             return null;
         }
@@ -91,7 +90,7 @@ public class Repository implements IRepository, IModuleSubscriber {
 
     @Override
     public synchronized void putToCache(final String key, final int cacheType, Serializable value) {
-        final Context context = ApplicationController.getInstance();
+        final Context context = AdminUtils.getContext();
         if (context == null) {
             return;
         }
@@ -155,7 +154,7 @@ public class Repository implements IRepository, IModuleSubscriber {
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onClearDiskCacheEvent(final ClearDiskCacheEvent event) {
-        final Context context = ApplicationController.getInstance();
+        final Context context = AdminUtils.getContext();
         if (context == null) {
             return;
         }
@@ -172,17 +171,17 @@ public class Repository implements IRepository, IModuleSubscriber {
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onDbCreatedEvent(final DbCreatedEvent event) {
-        final Context context = ApplicationController.getInstance();
+        final Context context = AdminUtils.getContext();
         if (context != null) {
-            ApplicationUtils.addMail(new ShowToastMail(MainActivity.NAME, context.getString(R.string.db_created, event.getName())));
+            AdminUtils.addMail(new ShowToastMail(MainActivity.NAME, context.getString(R.string.db_created, event.getName())));
         }
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onDbUpdatedEvent(final DbUpdatedEvent event) {
-        final Context context = ApplicationController.getInstance();
+        final Context context = AdminUtils.getContext();
         if (context != null) {
-            ApplicationUtils.addMail(new ShowToastMail(MainActivity.NAME, context.getString(R.string.db_updated, event.getName())));
+            AdminUtils.addMail(new ShowToastMail(MainActivity.NAME, context.getString(R.string.db_updated, event.getName())));
         }
     }
 

@@ -10,7 +10,7 @@ import android.support.annotation.NonNull;
 import com.cleanarchitecture.shishkin.base.controller.ISubscribeable;
 import com.cleanarchitecture.shishkin.base.event.OnNetworkConnectedEvent;
 import com.cleanarchitecture.shishkin.base.event.OnNetworkDisconnectedEvent;
-import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
+import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
 
 /**
  * A helpful implementation of {@link ISubscribeable} that receives network state changes.
@@ -57,9 +57,9 @@ public class ConnectivityMonitor extends BroadcastReceiver implements ISubscribe
         final String action = intent.getAction();
         if (ConnectivityManager.CONNECTIVITY_ACTION.equals(action)) {
             if (Connectivity.isNetworkConnected(context)) {
-                ApplicationUtils.postEvent(new OnNetworkConnectedEvent());
+                AdminUtils.postEvent(new OnNetworkConnectedEvent());
             } else {
-                ApplicationUtils.postEvent(new OnNetworkDisconnectedEvent());
+                AdminUtils.postEvent(new OnNetworkDisconnectedEvent());
             }
         }
     }

@@ -16,6 +16,7 @@ import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarInitEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarPrepareEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarResetEvent;
 import com.cleanarchitecture.shishkin.base.ui.activity.OnBackPressListener;
+import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.ViewUtils;
 
@@ -139,7 +140,7 @@ public abstract class AbstractContentFragment extends AbstractFragment implement
 
     @Subscribe(sticky = true, threadMode = ThreadMode.ASYNC)
     public synchronized void onToolbarInitEvent(ToolbarInitEvent event) {
-        ApplicationUtils.postEvent(new ToolbarResetEvent());
+        AdminUtils.postEvent(new ToolbarResetEvent());
     }
 
 }

@@ -17,6 +17,7 @@ import com.cleanarchitecture.shishkin.base.event.ui.HideKeyboardEvent;
 import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractFragment;
 import com.cleanarchitecture.shishkin.base.ui.fragment.ToolbarFragment;
+import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.SafeUtils;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
@@ -42,7 +43,7 @@ public abstract class AbstractContentActivity extends AbstractActivity
     protected void onPause() {
         super.onPause();
 
-        ApplicationUtils.postEvent(new HideKeyboardEvent());
+        AdminUtils.postEvent(new HideKeyboardEvent());
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.cleanarchitecture.shishkin.base.repository;
 import android.content.Context;
 
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.base.event.OnNetworkConnectedEvent;
@@ -14,7 +13,7 @@ import com.cleanarchitecture.shishkin.base.net.ConnectivityMonitor;
 import com.cleanarchitecture.shishkin.base.repository.requests.IRequest;
 import com.cleanarchitecture.shishkin.base.task.IPhonePausableThreadPoolExecutor;
 import com.cleanarchitecture.shishkin.base.task.PhonePausableThreadPoolExecutor;
-import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
+import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -31,14 +30,14 @@ public class NetProvider implements INetProvider, IModuleSubscriber {
     private IPhonePausableThreadPoolExecutor mPhonePausableThreadPoolExecutor;
 
     public NetProvider() {
-        final Context context = ApplicationController.getInstance();
+        final Context context = AdminUtils.getContext();
 
         if (context != null) {
             mConnectivityMonitor = new ConnectivityMonitor();
             mConnectivityMonitor.subscribe(context);
 
             mConnected = Connectivity.isNetworkConnected(context);
-            mPhonePausableThreadPoolExecutor = new PhonePausableThreadPoolExecutor(context, 4, TimeUnit.MINUTES);
+            mPhonePausableThreadPoolExecutor = new PhonePausableThreadPoolExecutor(4, TimeUnit.MINUTES);
         }
     }
 
@@ -84,9 +83,9 @@ public class NetProvider implements INetProvider, IModuleSubscriber {
     public void onNetworkDisconnectedEvent(OnNetworkDisconnectedEvent event) {
         setPaused(true);
 
-        final Context context = ApplicationController.getInstance();
+        final Context context = AdminUtils.getContext();
         if (context != null) {
-            ApplicationUtils.postEvent(new ShowMessageEvent(context.getString(R.string.network_disconnected)));
+            AdminUtils.postEvent(new ShowMessageEvent(context.getString(R.string.network_disconnected)));
         }
     }
 

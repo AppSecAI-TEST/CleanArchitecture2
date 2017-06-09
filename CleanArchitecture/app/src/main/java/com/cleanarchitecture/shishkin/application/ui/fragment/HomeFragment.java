@@ -21,7 +21,7 @@ import com.cleanarchitecture.shishkin.base.presenter.OnBackPressedPresenter;
 import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.base.ui.recyclerview.event.OnRecyclerViewIdleEvent;
 import com.cleanarchitecture.shishkin.base.ui.recyclerview.event.OnRecyclerViewScrolledEvent;
-import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
+import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
@@ -69,15 +69,15 @@ public class HomeFragment extends AbstractContentFragment {
         mSearchPresenter.bindView(view, this);
         registerPresenter(mSearchPresenter);
 
-        if (!ApplicationUtils.checkPermission(Manifest.permission.READ_CONTACTS)) {
-            ApplicationUtils.postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.READ_CONTACTS));
-        } else if (!ApplicationUtils.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            ApplicationUtils.postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.WRITE_EXTERNAL_STORAGE));
+        if (!AdminUtils.checkPermission(Manifest.permission.READ_CONTACTS)) {
+            AdminUtils.postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.READ_CONTACTS));
+        } else if (!AdminUtils.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            AdminUtils.postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.WRITE_EXTERNAL_STORAGE));
         }
     }
 
     private void onClickFab(View view) {
-        ApplicationUtils.postEvent(new FinishApplicationEvent());
+        AdminUtils.postEvent(new FinishApplicationEvent());
     }
 
     @Override
@@ -96,9 +96,9 @@ public class HomeFragment extends AbstractContentFragment {
 
     @Override
     public void prepareToolbar() {
-        ApplicationUtils.postEvent(new ToolbarSetTitleEvent(0, getString(R.string.app_name)));
-        ApplicationUtils.postEvent(new ToolbarSetMenuEvent(R.menu.main_menu, true));
-        ApplicationUtils.postEvent(new ToolbarSetBackNavigationEvent(true));
+        AdminUtils.postEvent(new ToolbarSetTitleEvent(0, getString(R.string.app_name)));
+        AdminUtils.postEvent(new ToolbarSetMenuEvent(R.menu.main_menu, true));
+        AdminUtils.postEvent(new ToolbarSetBackNavigationEvent(true));
     }
 
     @Override
@@ -121,7 +121,7 @@ public class HomeFragment extends AbstractContentFragment {
     public synchronized void onToolbarMenuItemClickEvent(OnToolbarMenuItemClickEvent event) {
         final MenuItem item = event.getMenuItem();
         if (item != null && item.getItemId() == R.id.exit) {
-            ApplicationUtils.postEvent(new UseCaseFinishApplicationEvent());
+            AdminUtils.postEvent(new UseCaseFinishApplicationEvent());
         }
     }
 

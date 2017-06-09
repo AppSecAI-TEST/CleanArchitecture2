@@ -9,13 +9,13 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.controller.ErrorController;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.base.data.AbstractViewModel;
 import com.cleanarchitecture.shishkin.base.data.ViewModelDebounce;
 import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
+import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.SafeUtils;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
@@ -49,7 +49,7 @@ public class DbProvider<H extends AbstractViewModel> implements IDbProvider, Lif
     }
 
     private synchronized <T extends RoomDatabase> boolean connect(final Class<T> klass, final String databaseName) {
-        final Context context = ApplicationController.getInstance();
+        final Context context = AdminUtils.getContext();
         if (context == null) {
             return false;
         }

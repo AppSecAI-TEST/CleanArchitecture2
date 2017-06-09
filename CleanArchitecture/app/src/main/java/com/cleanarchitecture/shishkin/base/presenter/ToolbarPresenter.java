@@ -34,6 +34,7 @@ import com.cleanarchitecture.shishkin.base.event.ui.ShowHorizontalProgressBarEve
 import com.cleanarchitecture.shishkin.base.net.Connectivity;
 import com.cleanarchitecture.shishkin.base.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.base.ui.widget.AutoResizeTextView;
+import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
 import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 import com.cleanarchitecture.shishkin.base.utils.ViewUtils;
@@ -130,7 +131,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         mMenu = null;
         mItem = null;
 
-        ApplicationUtils.removeStickyEvent(new ToolbarInitEvent());
+        AdminUtils.removeStickyEvent(new ToolbarInitEvent());
     }
 
     @Override
@@ -179,7 +180,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     public void onResumeLifecycle() {
         super.onResumeLifecycle();
 
-        ApplicationUtils.postStickyEvent(new ToolbarInitEvent());
+        AdminUtils.postStickyEvent(new ToolbarInitEvent());
     }
 
     private void onClick(View view) {
@@ -187,7 +188,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         switch (id) {
             case R.id.item:
             case R.id.back:
-                ApplicationUtils.postEvent(new OnToolbarClickEvent(view));
+                AdminUtils.postEvent(new OnToolbarClickEvent(view));
                 break;
 
             case R.id.menu:
@@ -218,7 +219,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     }
 
     private boolean onMenuItemClick(MenuItem item) {
-        ApplicationUtils.postEvent(new OnToolbarMenuItemClickEvent(item));
+        AdminUtils.postEvent(new OnToolbarMenuItemClickEvent(item));
         return true;
     }
 
@@ -268,7 +269,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         setItem(0, false);
         setBackNavigation(false);
 
-        ApplicationUtils.postEvent(new ToolbarPrepareEvent());
+        AdminUtils.postEvent(new ToolbarPrepareEvent());
     }
 
     @Override
@@ -295,7 +296,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     public void showHorizontalProgressBar() {
         ApplicationUtils.runOnUiThread(() -> {
             if (validate()) {
-                final AbstractContentFragment fragment = ApplicationUtils.getContentFragment();
+                final AbstractContentFragment fragment = AdminUtils.getContentFragment();
                 if (fragment != null) {
                     final SwipeRefreshLayout swipeRefreshLayout = fragment.getSwipeRefreshLayout();
                     if (swipeRefreshLayout == null) {
@@ -324,7 +325,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     public void showProgressBar() {
         ApplicationUtils.runOnUiThread(() -> {
             if (validate()) {
-                final AbstractContentFragment fragment = ApplicationUtils.getContentFragment();
+                final AbstractContentFragment fragment = AdminUtils.getContentFragment();
                 if (fragment != null) {
                     final SwipeRefreshLayout swipeRefreshLayout = fragment.getSwipeRefreshLayout();
                     if (swipeRefreshLayout == null) {
@@ -350,7 +351,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     }
 
     private void hideSwipeRefreshLayout() {
-        final AbstractContentFragment fragment = ApplicationUtils.getContentFragment();
+        final AbstractContentFragment fragment = AdminUtils.getContentFragment();
         if (fragment != null) {
             final SwipeRefreshLayout swipeRefreshLayout = fragment.getSwipeRefreshLayout();
             if (swipeRefreshLayout != null) {

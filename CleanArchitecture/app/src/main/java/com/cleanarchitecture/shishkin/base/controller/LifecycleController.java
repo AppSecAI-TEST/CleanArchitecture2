@@ -2,10 +2,10 @@ package com.cleanarchitecture.shishkin.base.controller;
 
 import android.content.Context;
 
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.event.StartActivityEvent;
 import com.cleanarchitecture.shishkin.base.ui.activity.AbstractActivity;
 import com.cleanarchitecture.shishkin.base.ui.activity.AbstractContentActivity;
+import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -56,7 +56,7 @@ public class LifecycleController extends AbstractController<ILifecycleSubscriber
 
     private synchronized void startActivity(final StartActivityEvent event) {
         if (event != null) {
-            final Context context = ApplicationController.getInstance();
+            final Context context = AdminUtils.getContext();
             if (context != null) {
                 context.startActivity(event.getIntent());
             }

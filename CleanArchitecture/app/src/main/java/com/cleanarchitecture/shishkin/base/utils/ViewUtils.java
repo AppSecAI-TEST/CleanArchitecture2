@@ -27,9 +27,6 @@ import android.widget.TextView;
 import java.lang.reflect.Field;
 import java.util.Locale;
 
-import static com.cleanarchitecture.shishkin.base.utils.ApplicationUtils.hasJellyBean;
-import static com.cleanarchitecture.shishkin.base.utils.ApplicationUtils.hasJellyBeanMR1;
-
 /**
  * {@code ViewUtils} contains static methods which operate on {@code View}.
  */
@@ -272,9 +269,9 @@ public class ViewUtils {
     private static final ViewCompatExtImpl EXT_IMPL;
 
     static {
-        if (hasJellyBeanMR1()) {
+        if (ApplicationUtils.hasJellyBeanMR1()) {
             EXT_IMPL = new JellyBeanMR1ViewCompatExtImpl();
-        } else if (hasJellyBean()) {
+        } else if (ApplicationUtils.hasJellyBean()) {
             EXT_IMPL = new JellyBeanViewCompatExtImpl();
         } else {
             EXT_IMPL = new BaseViewCompatExtImpl();
