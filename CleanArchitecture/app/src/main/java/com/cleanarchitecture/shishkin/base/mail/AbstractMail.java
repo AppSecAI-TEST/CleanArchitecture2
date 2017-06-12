@@ -6,14 +6,14 @@ import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 import org.apache.commons.lang3.SerializationUtils;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public abstract class AbstractMail implements IMail, Serializable {
 
     private String mAddress;
     private String mSender;
-    private List<String> mCopyTo = new ArrayList<>();
+    private List<String> mCopyTo = new LinkedList<String>();
     private long mId = 0;
     private long mEndTime = -1;
 

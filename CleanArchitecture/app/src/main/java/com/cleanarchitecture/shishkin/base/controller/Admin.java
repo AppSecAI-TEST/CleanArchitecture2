@@ -49,7 +49,7 @@ public class Admin extends AbstractAdmin {
         registerModule(new NavigationController());
         registerModule(new UseCasesController());
         registerModule(new MailController());
-
+        registerModule(new UserIteractionController());
 
         final IRepository repository = new Repository();
         registerModule(repository);

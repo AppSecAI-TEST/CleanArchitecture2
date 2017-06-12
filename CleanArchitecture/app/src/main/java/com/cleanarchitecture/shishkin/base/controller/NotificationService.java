@@ -29,6 +29,8 @@ import java.util.concurrent.TimeUnit;
 public class NotificationService extends LiveLongBackgroundIntentService {
 
     private static final String NAME = "NotificationService";
+    private static final String CANAL_ID = "CANAL_" + BuildConfig.APPLICATION_ID;
+    private static final String CANAL_NAME = "Notification Service Canal";
 
     public static final String ACTION_CLICK = BuildConfig.APPLICATION_ID + ".NotificationService.ACTION_CLICK";
     public static final String ACTION_DELETE_MESSAGES = BuildConfig.APPLICATION_ID + "action.NotificationBroadcastReceiver.ACTION_DELETE_MESSAGES";
@@ -189,6 +191,25 @@ public class NotificationService extends LiveLongBackgroundIntentService {
                 sb.append("\n\n");
             }
 
+            /*
+            if (ApplicationUtils.hasO()) {
+                final NotificationManager nm = AdminUtils.getSystemService(Context.NOTIFICATION_SERVICE);
+                if (nm != null) {
+                    int importance = NotificationManager.IMPORTANCE_LOW;
+                    NotificationChannel mChannel = new NotificationChannel(CANAL_ID, CANAL_NAME, importance);
+                    // Configure the notification channel.
+                    //mChannel.setDescription(description);
+                    mChannel.enableLights(true);
+                    // Sets the notification light color for notifications posted to this
+                    // channel, if the device supports this feature.
+                    mChannel.setLightColor(Color.RED);
+                    mChannel.enableVibration(true);
+                    mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+                    nm.createNotificationChannel(mChannel);
+                }
+            }
+            */
+
             final Intent intent = new Intent(this, MainActivity.class);
             intent.setAction(ACTION_CLICK);
             final PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
@@ -212,6 +233,7 @@ public class NotificationService extends LiveLongBackgroundIntentService {
                         .setDefaults(Notification.DEFAULT_SOUND)
                         .setContentText(message)
                         .setDeleteIntent(pendingDeleteIntent)
+                        //.setChannelId(CANAL_ID)
                         .build();
 
                 nm.notify(R.id.notification_service, notification);

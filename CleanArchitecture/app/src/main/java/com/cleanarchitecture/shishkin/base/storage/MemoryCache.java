@@ -16,7 +16,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class MemoryCache implements ISubscriber, IStorage, IModule {
     public static final String NAME = "MemoryCache";
     private static final long MAX_SIZE = 1000L;
-    private static final long DURATION = 2;
+    private static final long DURATION = 3;
     private static final TimeUnit DURATION_TIMEUNIT = TimeUnit.MINUTES;
 
     private static volatile MemoryCache sInstance;
