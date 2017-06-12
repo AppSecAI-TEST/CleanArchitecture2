@@ -62,7 +62,7 @@ public class AdminUtils {
      * Добавить в список приложений, которые будут игнорироваться системой оптимизации питания
      */
     public static void isIgnoringBatteryOptimizations() {
-        final ILifecycleController controller = Admin.getInstance().getModule(LifecycleController.NAME);
+        final ILifecycleController controller = Admin.getInstance().get(LifecycleController.NAME);
         if (controller != null) {
             final AbstractActivity activity = controller.getCurrentActivity();
             if (activity != null) {
@@ -83,7 +83,7 @@ public class AdminUtils {
      * Контролировать наличие и версию Google Play Services
      */
     public static void checkGooglePlayServices() {
-        final ILifecycleController controller = Admin.getInstance().getModule(LifecycleController.NAME);
+        final ILifecycleController controller = Admin.getInstance().get(LifecycleController.NAME);
         if (controller != null) {
             final AbstractActivity activity = controller.getCurrentActivity();
             if (activity != null) {
@@ -106,7 +106,7 @@ public class AdminUtils {
      * Добавить в список приложений, которым разрешен вывод поверх других окон
      */
     public static void canDrawOverlays() {
-        final ILifecycleController controller = Admin.getInstance().getModule(LifecycleController.NAME);
+        final ILifecycleController controller = Admin.getInstance().get(LifecycleController.NAME);
         if (controller != null) {
             final AbstractActivity activity = controller.getCurrentActivity();
             if (activity != null) {
@@ -128,7 +128,7 @@ public class AdminUtils {
      */
     public static void grantPermission(final String permission, final String helpMessage) {
         if (ApplicationUtils.hasMarshmallow()) {
-            final IActivityController controller = Admin.getInstance().getModule(ActivityController.NAME);
+            final IActivityController controller = Admin.getInstance().get(ActivityController.NAME);
             if (controller != null) {
                 controller.grantPermission(permission, helpMessage);
             }
@@ -198,7 +198,7 @@ public class AdminUtils {
      * @param subscriber почтовый подписчик
      */
     public static void readMail(final IMailSubscriber subscriber) {
-        final IMailController controller = Admin.getInstance().getModule(MailController.NAME);
+        final IMailController controller = Admin.getInstance().get(MailController.NAME);
         if (controller != null) {
             final List<IMail> list = controller.getMail(subscriber);
             for (IMail mail : list) {
@@ -214,7 +214,7 @@ public class AdminUtils {
      * @param mail почтовое сообщение
      */
     public static void addMail(final IMail mail) {
-        final IMailController controller = Admin.getInstance().getModule(MailController.NAME);
+        final IMailController controller = Admin.getInstance().get(MailController.NAME);
         if (controller != null) {
             addMail(mail);
         }
@@ -226,7 +226,7 @@ public class AdminUtils {
      * @return the activity
      */
     public static AbstractActivity getActivity() {
-        final ILifecycleController controller = Admin.getInstance().getModule(LifecycleController.NAME);
+        final ILifecycleController controller = Admin.getInstance().get(LifecycleController.NAME);
         if (controller != null) {
             return controller.getActivity();
         }
@@ -239,7 +239,7 @@ public class AdminUtils {
      * @return the current activity
      */
     public static AbstractActivity getCurrentActivity() {
-        final ILifecycleController controller = Admin.getInstance().getModule(LifecycleController.NAME);
+        final ILifecycleController controller = Admin.getInstance().get(LifecycleController.NAME);
         if (controller != null) {
             return controller.getCurrentActivity();
         }
@@ -252,7 +252,7 @@ public class AdminUtils {
      * @return the content fragment
      */
     public static AbstractContentFragment getContentFragment() {
-        final ILifecycleController controller = Admin.getInstance().getModule(LifecycleController.NAME);
+        final ILifecycleController controller = Admin.getInstance().get(LifecycleController.NAME);
         if (controller != null) {
             final AbstractContentActivity activity = controller.getCurrentContentActivity();
             if (activity != null) {
@@ -304,7 +304,7 @@ public class AdminUtils {
      * @return репозиторий
      */
     public static IRepository getRepository() {
-        return Admin.getInstance().getModule(Repository.NAME);
+        return Admin.getInstance().get(Repository.NAME);
     }
 
     /**
@@ -313,7 +313,7 @@ public class AdminUtils {
      * @return content провайдер
      */
     public static IContentProvider getContentProvider() {
-        final IRepository repository = Admin.getInstance().getModule(Repository.NAME);
+        final IRepository repository = Admin.getInstance().get(Repository.NAME);
         if (repository != null) {
             return repository.getContentProvider();
         }
@@ -326,7 +326,7 @@ public class AdminUtils {
      * @return провайдер БД
      */
     public static IDbProvider getDbProvider() {
-        final IRepository repository = Admin.getInstance().getModule(Repository.NAME);
+        final IRepository repository = Admin.getInstance().get(Repository.NAME);
         if (repository != null) {
             return repository.getDbProvider();
         }
@@ -339,7 +339,7 @@ public class AdminUtils {
      * @return сетевой провайдер
      */
     public static INetProvider getNetProvider() {
-        final IRepository repository = Admin.getInstance().getModule(Repository.NAME);
+        final IRepository repository = Admin.getInstance().get(Repository.NAME);
         if (repository != null) {
             return repository.getNetProvider();
         }

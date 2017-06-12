@@ -62,8 +62,8 @@ public class Repository implements IRepository, IModuleSubscriber {
 
     @Override
     public synchronized Serializable getFromCache(final String key, final int cacheType) {
-        final IStorage diskCache = Admin.getInstance().getModule(DiskCache.NAME);
-        final IStorage memoryCache = Admin.getInstance().getModule(MemoryCache.NAME);
+        final IStorage diskCache = Admin.getInstance().get(DiskCache.NAME);
+        final IStorage memoryCache = Admin.getInstance().get(MemoryCache.NAME);
 
         switch (cacheType) {
             case USE_NO_CACHE:

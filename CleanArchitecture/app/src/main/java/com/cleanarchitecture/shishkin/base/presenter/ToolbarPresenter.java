@@ -487,7 +487,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     @Override
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onToolbarOnClickEvent(OnToolbarClickEvent event) {
-        final INavigationController controller = Admin.getInstance().getModule(NavigationController.NAME);
+        final INavigationController controller = Admin.getInstance().get(NavigationController.NAME);
         if (controller != null) {
             final AbstractContentFragment fragment = controller.getContentFragment(AbstractContentFragment.class);
             if (fragment != null) {
