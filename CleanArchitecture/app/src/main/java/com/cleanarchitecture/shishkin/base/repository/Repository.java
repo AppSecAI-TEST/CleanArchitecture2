@@ -78,7 +78,7 @@ public class Repository implements IRepository, IModuleSubscriber {
 
             case USE_ONLY_DISK_CACHE:
             case USE_DISK_CACHE:
-                if(diskCache != null) {
+                if (diskCache != null) {
                     return diskCache.get(key);
                 }
                 break;
@@ -90,7 +90,7 @@ public class Repository implements IRepository, IModuleSubscriber {
                     ser = memoryCache.get(key);
                 }
                 if (ser == null) {
-                    if(diskCache != null) {
+                    if (diskCache != null) {
                         ser = diskCache.get(key);
                     }
                 }

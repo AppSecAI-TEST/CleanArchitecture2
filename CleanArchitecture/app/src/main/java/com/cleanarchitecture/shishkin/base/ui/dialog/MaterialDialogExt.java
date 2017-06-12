@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.cleanarchitecture.shishkin.base.event.OnUserIteractionEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
@@ -62,6 +63,7 @@ public class MaterialDialogExt {
                 bundle.putInt(ID, mId);
                 bundle.putString(BUTTON, POSITIVE);
                 AdminUtils.postEvent(new DialogResultEvent(bundle));
+                AdminUtils.postEvent(new OnUserIteractionEvent());
             }
         });
         builder.onNegative((dialog, which) -> {
@@ -70,6 +72,7 @@ public class MaterialDialogExt {
                 bundle.putInt(ID, mId);
                 bundle.putString(BUTTON, NEGATIVE);
                 AdminUtils.postEvent(new DialogResultEvent(bundle));
+                AdminUtils.postEvent(new OnUserIteractionEvent());
             }
         });
         builder.onNeutral((dialog, which) -> {
@@ -78,6 +81,7 @@ public class MaterialDialogExt {
                 bundle.putInt(ID, mId);
                 bundle.putString(BUTTON, NEUTRAL);
                 AdminUtils.postEvent(new DialogResultEvent(bundle));
+                AdminUtils.postEvent(new OnUserIteractionEvent());
             }
         });
         builder.cancelable(setCancelable);
@@ -112,6 +116,7 @@ public class MaterialDialogExt {
                     list.add(text.toString());
                     bundle.putStringArrayList("list", list);
                     AdminUtils.postEvent(new DialogResultEvent(bundle));
+                    AdminUtils.postEvent(new OnUserIteractionEvent());
                 }
                 dialog.dismiss();
                 return true;
@@ -139,6 +144,7 @@ public class MaterialDialogExt {
                     }
                     bundle.putStringArrayList("list", list);
                     AdminUtils.postEvent(new DialogResultEvent(bundle));
+                    AdminUtils.postEvent(new OnUserIteractionEvent());
                 }
             });
         }
@@ -148,6 +154,7 @@ public class MaterialDialogExt {
                 bundle.putInt(ID, mId);
                 bundle.putString(BUTTON, NEGATIVE);
                 AdminUtils.postEvent(new DialogResultEvent(bundle));
+                AdminUtils.postEvent(new OnUserIteractionEvent());
             }
         });
         builder.cancelable(setCancelable);
@@ -187,6 +194,7 @@ public class MaterialDialogExt {
                 bundle.putString(BUTTON, POSITIVE);
                 bundle.putString("object", dialog.getInputEditText().getText().toString());
                 AdminUtils.postEvent(new DialogResultEvent(bundle));
+                AdminUtils.postEvent(new OnUserIteractionEvent());
             }
         });
         builder.onNegative((dialog, which) -> {
@@ -195,6 +203,7 @@ public class MaterialDialogExt {
                 bundle.putInt(ID, mId);
                 bundle.putString(BUTTON, NEGATIVE);
                 AdminUtils.postEvent(new DialogResultEvent(bundle));
+                AdminUtils.postEvent(new OnUserIteractionEvent());
             }
         });
         builder.cancelable(setCancelable);
@@ -204,6 +213,7 @@ public class MaterialDialogExt {
 
     public void show() {
         if (mMaterialDialog != null) {
+            AdminUtils.postEvent(new OnUserIteractionEvent());
             mMaterialDialog.show();
         }
     }

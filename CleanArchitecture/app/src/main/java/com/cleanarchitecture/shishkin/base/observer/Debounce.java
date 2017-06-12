@@ -2,8 +2,6 @@ package com.cleanarchitecture.shishkin.base.observer;
 
 import android.os.Handler;
 
-import java.lang.ref.WeakReference;
-
 /**
  * Класс, устраняющий дребезг (частое повторение) события
  */
@@ -36,7 +34,6 @@ public class Debounce implements Runnable {
 
     /**
      * Событие
-     *
      */
     public void onEvent() {
         if (mSkip >= 0) {

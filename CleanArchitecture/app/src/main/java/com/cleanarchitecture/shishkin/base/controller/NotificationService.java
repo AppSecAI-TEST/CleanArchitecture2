@@ -5,7 +5,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.annotation.WorkerThread;
 import android.support.v4.app.NotificationCompat;
 
@@ -14,7 +13,6 @@ import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.ui.activity.MainActivity;
 import com.cleanarchitecture.shishkin.base.storage.DiskStorage;
 import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
-import com.cleanarchitecture.shishkin.base.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.base.utils.IntentUtils;
 import com.cleanarchitecture.shishkin.base.utils.SerializableUtil;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;

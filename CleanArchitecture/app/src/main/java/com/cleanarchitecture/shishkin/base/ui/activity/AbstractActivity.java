@@ -34,6 +34,7 @@ import com.cleanarchitecture.shishkin.base.event.FinishActivityEvent;
 import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionDeniedEvent;
 import com.cleanarchitecture.shishkin.base.event.OnPermisionGrantedEvent;
+import com.cleanarchitecture.shishkin.base.event.OnUserIteractionEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.base.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.base.lifecycle.StateMachine;
@@ -72,6 +73,11 @@ public abstract class AbstractActivity extends LifecycleActivity
         mStateMachine.setState(Lifecycle.STATE_CREATE);
     }
 
+    @Override
+    public void onUserInteraction() {
+        AdminUtils.postEvent(new OnUserIteractionEvent());
+    }
+
     /**
      * Finds a view that was identified by the id attribute from the XML that
      * was processed in {@link #onCreate}.
@@ -89,6 +95,7 @@ public abstract class AbstractActivity extends LifecycleActivity
 
         mStateMachine.setState(Lifecycle.STATE_READY);
 
+        AdminUtils.postEvent(new OnUserIteractionEvent());
     }
 
     @Override
@@ -176,6 +183,8 @@ public abstract class AbstractActivity extends LifecycleActivity
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        AdminUtils.postEvent(new OnUserIteractionEvent());
 
         for (int i = 0; i < permissions.length; i++) {
             AppPreferences.putInt(this, permissions[i], grantResults[i]);
