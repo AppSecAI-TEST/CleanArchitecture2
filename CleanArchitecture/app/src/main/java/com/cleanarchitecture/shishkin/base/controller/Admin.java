@@ -50,7 +50,6 @@ public class Admin extends AbstractAdmin {
         registerModule(new UseCasesController());
         registerModule(new MailController());
 
-
         final IRepository repository = new Repository();
         registerModule(repository);
         registerModule(repository.getDbProvider());
