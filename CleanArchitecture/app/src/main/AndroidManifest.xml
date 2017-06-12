@@ -41,6 +41,7 @@
         <service android:name=".base.controller.NotificationService"/>
         <service android:name=".base.storage.DiskCacheService"/>
         <service android:name=".base.storage.MemoryCacheService"/>
+        <service android:name=".base.aidl.AidlService"/>
 
     </application>
 

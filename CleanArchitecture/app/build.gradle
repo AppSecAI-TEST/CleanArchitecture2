@@ -33,6 +33,7 @@ android {
         javaMaxHeapSize "3g"
         dexInProcess = true
     }
+
 }
 
 dependencies {

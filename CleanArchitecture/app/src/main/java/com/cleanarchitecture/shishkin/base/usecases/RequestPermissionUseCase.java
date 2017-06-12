@@ -28,7 +28,7 @@ public class RequestPermissionUseCase extends AbstractUseCase {
             return;
         }
 
-        final IActivityController controller = Admin.getInstance().getModule(ActivityController.NAME);
+        final IActivityController controller = Admin.getInstance().get(ActivityController.NAME);
         if (controller != null) {
             final int status = AdminUtils.getStatusPermission(permission);
             switch (permission) {

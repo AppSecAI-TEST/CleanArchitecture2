@@ -113,7 +113,7 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
                 return (LifecycleActivity) activity;
             }
         } else {
-            final IActivityController controller = Admin.getInstance().getModule(ActivityController.NAME);
+            final IActivityController controller = Admin.getInstance().get(ActivityController.NAME);
             if (controller != null) {
                 final IActivity subscriber = controller.getSubscriber();
                 if (subscriber != null && subscriber instanceof LifecycleActivity) {
@@ -130,7 +130,7 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
         if (activity != null && activity instanceof IActivity) {
             return (IActivity) activity;
         }
-        final IActivityController controller = Admin.getInstance().getModule(ActivityController.NAME);
+        final IActivityController controller = Admin.getInstance().get(ActivityController.NAME);
         if (controller != null) {
             return controller.getSubscriber();
         }
