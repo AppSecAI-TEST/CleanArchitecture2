@@ -1,5 +1,6 @@
 package com.cleanarchitecture.shishkin.base.controller;
 
+@SuppressWarnings("unused")
 public interface IDesktopController<T> extends ISmallController<T> {
 
     String getDesktop();

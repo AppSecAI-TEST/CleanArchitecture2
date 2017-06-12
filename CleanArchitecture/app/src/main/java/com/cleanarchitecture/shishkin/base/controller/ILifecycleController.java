@@ -7,6 +7,7 @@ import com.cleanarchitecture.shishkin.base.ui.activity.AbstractContentActivity;
 /**
  * Интерфейс контроллера Lifecycle приложения.
  */
+@SuppressWarnings("unused")
 public interface ILifecycleController extends IController<ILifecycleSubscriber> {
 
     /**

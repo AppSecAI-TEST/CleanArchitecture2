@@ -3,6 +3,7 @@ package com.cleanarchitecture.shishkin.base.controller;
 /**
  * Итерфейс администратора
  */
+@SuppressWarnings("unused")
 public interface IAdmin extends ISubscriber {
 
     /**

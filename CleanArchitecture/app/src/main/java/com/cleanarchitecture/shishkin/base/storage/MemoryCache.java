@@ -1,6 +1,7 @@
 package com.cleanarchitecture.shishkin.base.storage;
 
 import com.cleanarchitecture.shishkin.base.controller.ErrorController;
+import com.cleanarchitecture.shishkin.base.controller.IModule;
 import com.cleanarchitecture.shishkin.base.controller.ISubscriber;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 import com.google.common.cache.CacheBuilder;
@@ -12,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 
-public class MemoryCache implements ISubscriber, IStorage {
+public class MemoryCache implements ISubscriber, IStorage, IModule {
     public static final String NAME = "MemoryCache";
     private static final long MAX_SIZE = 1000L;
     private static final long DURATION = 2;
@@ -150,5 +151,10 @@ public class MemoryCache implements ISubscriber, IStorage {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String getSubscriberType() {
+        return null;
     }
 }

@@ -8,6 +8,7 @@ import java.util.Map;
  *
  * @param <T> the type parameter
  */
+@SuppressWarnings("unused")
 public interface IController<T> extends ISmallController<T> {
 
     /**

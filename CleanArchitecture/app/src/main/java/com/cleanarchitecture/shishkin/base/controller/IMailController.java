@@ -4,6 +4,7 @@ import com.cleanarchitecture.shishkin.base.mail.IMail;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public interface IMailController extends IController<IMailSubscriber> {
 
     /**
