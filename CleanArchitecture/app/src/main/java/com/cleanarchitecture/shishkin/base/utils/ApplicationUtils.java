@@ -47,6 +47,18 @@ public class ApplicationUtils {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     }
 
+    public static boolean hasN() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
+    }
+
+    public static boolean hasNMR1() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1;
+    }
+
+    public static boolean hasO() {
+        return Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1;
+    }
+
     public static boolean hasNougat() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
     }
