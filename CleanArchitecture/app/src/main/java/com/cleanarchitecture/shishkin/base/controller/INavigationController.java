@@ -7,6 +7,7 @@ import com.cleanarchitecture.shishkin.base.event.SwitchToFragmentEvent;
 /**
  * Контроллер навигации приложения.
  */
+@SuppressWarnings("unused")
 public interface INavigationController extends IController<INavigationSubscriber> {
 
     /**

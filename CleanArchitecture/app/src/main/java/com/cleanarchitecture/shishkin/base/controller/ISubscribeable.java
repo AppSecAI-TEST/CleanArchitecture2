@@ -5,6 +5,7 @@ import android.content.Context;
 /**
  * Интерфейс объекта - подписчика, использующего Context
  */
+@SuppressWarnings("unused")
 public interface ISubscribeable {
 
     /**

@@ -37,7 +37,6 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import java.io.File;
 import java.util.List;
 
-@SuppressWarnings("unused")
 public class AdminUtils {
 
     private static final String LOG_TAG = "AdminUtils:";

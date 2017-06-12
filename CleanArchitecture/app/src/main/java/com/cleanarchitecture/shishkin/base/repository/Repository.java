@@ -5,6 +5,7 @@ import android.content.Context;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.ui.activity.MainActivity;
+import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.controller.AppPreferences;
 import com.cleanarchitecture.shishkin.base.controller.EventBusController;
 import com.cleanarchitecture.shishkin.base.controller.IModuleSubscriber;
@@ -14,6 +15,7 @@ import com.cleanarchitecture.shishkin.base.event.database.DbUpdatedEvent;
 import com.cleanarchitecture.shishkin.base.mail.ShowToastMail;
 import com.cleanarchitecture.shishkin.base.storage.DiskCache;
 import com.cleanarchitecture.shishkin.base.storage.DiskCacheService;
+import com.cleanarchitecture.shishkin.base.storage.IStorage;
 import com.cleanarchitecture.shishkin.base.storage.MemoryCache;
 import com.cleanarchitecture.shishkin.base.storage.MemoryCacheService;
 import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
@@ -60,10 +62,8 @@ public class Repository implements IRepository, IModuleSubscriber {
 
     @Override
     public synchronized Serializable getFromCache(final String key, final int cacheType) {
-        final Context context = AdminUtils.getContext();
-        if (context == null) {
-            return null;
-        }
+        final IStorage diskCache = Admin.getInstance().getModule(DiskCache.NAME);
+        final IStorage memoryCache = Admin.getInstance().getModule(MemoryCache.NAME);
 
         switch (cacheType) {
             case USE_NO_CACHE:
@@ -71,17 +71,28 @@ public class Repository implements IRepository, IModuleSubscriber {
 
             case USE_ONLY_MEMORY_CACHE:
             case USE_MEMORY_CACHE:
-                return MemoryCache.getInstance().get(key);
+                if (memoryCache != null) {
+                    return memoryCache.get(key);
+                }
+                break;
 
             case USE_ONLY_DISK_CACHE:
             case USE_DISK_CACHE:
-                return DiskCache.getInstance(context).get(key);
+                if(diskCache != null) {
+                    return diskCache.get(key);
+                }
+                break;
 
             case USE_ONLY_CACHE:
             case USE_MEMORY_AND_DISK_CACHE:
-                Serializable ser = MemoryCache.getInstance().get(key);
+                Serializable ser = null;
+                if (memoryCache != null) {
+                    ser = memoryCache.get(key);
+                }
                 if (ser == null) {
-                    ser = DiskCache.getInstance(context).get(key);
+                    if(diskCache != null) {
+                        ser = diskCache.get(key);
+                    }
                 }
                 return ser;
         }

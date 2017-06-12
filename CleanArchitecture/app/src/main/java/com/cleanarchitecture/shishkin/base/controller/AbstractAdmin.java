@@ -21,7 +21,11 @@ public abstract class AbstractAdmin implements IAdmin {
 
         try {
             if (mModules.containsKey(controllerName)) {
-                return (C) mModules.get(controllerName);
+                if (mModules.get(controllerName) != null) {
+                    return (C) mModules.get(controllerName);
+                } else {
+                    mModules.remove(controllerName);
+                }
             }
         } catch (Exception e) {
             ErrorController.getInstance().onError(NAME, e);

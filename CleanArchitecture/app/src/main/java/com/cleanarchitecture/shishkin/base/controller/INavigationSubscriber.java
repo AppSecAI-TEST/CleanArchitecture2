@@ -2,6 +2,7 @@ package com.cleanarchitecture.shishkin.base.controller;
 
 import android.support.v4.app.Fragment;
 
+@SuppressWarnings("unused")
 public interface INavigationSubscriber extends ISubscriber {
 
     /**

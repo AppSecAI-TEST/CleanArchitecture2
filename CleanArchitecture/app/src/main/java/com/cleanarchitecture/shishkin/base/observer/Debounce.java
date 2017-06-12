@@ -12,7 +12,6 @@ public class Debounce implements Runnable {
     private long mDelay = 5000; //5 sec
     private int mSkip = 0;
     private Handler mHandler = null;
-    private WeakReference<Object> mObject;
 
     /**
      * Конструктор
@@ -38,15 +37,8 @@ public class Debounce implements Runnable {
     /**
      * Событие
      *
-     * @param object объект события
      */
-    public void onEvent(final Object object) {
-        if (object != null) {
-            mObject = new WeakReference<>(object);
-        } else {
-            mObject = null;
-        }
-
+    public void onEvent() {
         if (mSkip >= 0) {
             mSkip--;
         }
@@ -65,22 +57,8 @@ public class Debounce implements Runnable {
      * остановить объект
      */
     public void finish() {
-        mObject = null;
-
         mHandler.removeCallbacks(this);
         mHandler = null;
-    }
-
-    /**
-     * Получить объект события
-     *
-     * @return the object
-     */
-    public Object getObject() {
-        if (mObject != null) {
-            return mObject.get();
-        }
-        return null;
     }
 
 }

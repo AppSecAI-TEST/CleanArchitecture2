@@ -32,7 +32,7 @@ public abstract class AbstractContentProviderLiveData<T> extends LiveData<T> imp
                 if (mDebounce == null || getValue() == null) {
                     getData();
                 } else {
-                    mDebounce.onEvent(this);
+                    mDebounce.onEvent();
                 }
             } else {
                 isChanged = true;

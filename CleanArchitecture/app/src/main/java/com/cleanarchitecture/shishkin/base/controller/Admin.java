@@ -1,7 +1,12 @@
 package com.cleanarchitecture.shishkin.base.controller;
 
+import android.content.Context;
+
+import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.base.repository.IRepository;
 import com.cleanarchitecture.shishkin.base.repository.Repository;
+import com.cleanarchitecture.shishkin.base.storage.DiskCache;
+import com.cleanarchitecture.shishkin.base.storage.MemoryCache;
 import com.cleanarchitecture.shishkin.base.usecases.UseCasesController;
 
 @SuppressWarnings("unused")
@@ -28,8 +33,15 @@ public class Admin extends AbstractAdmin {
     }
 
     private Admin() {
+        final Context context = ApplicationController.getInstance();
+
         registerModule(ErrorController.getInstance());
         registerModule(EventBusController.getInstance());
+        registerModule(MemoryCache.getInstance());
+        if (context != null) {
+            registerModule(DiskCache.getInstance(context));
+        }
+
         registerModule(new CrashController());
         registerModule(new ActivityController());
         registerModule(new LifecycleController());
@@ -37,6 +49,7 @@ public class Admin extends AbstractAdmin {
         registerModule(new NavigationController());
         registerModule(new UseCasesController());
         registerModule(new MailController());
+
 
         final IRepository repository = new Repository();
         registerModule(repository);

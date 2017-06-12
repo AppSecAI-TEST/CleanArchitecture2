@@ -3,6 +3,7 @@ package com.cleanarchitecture.shishkin.base.storage;
 import android.content.Context;
 
 import com.cleanarchitecture.shishkin.base.controller.ErrorController;
+import com.cleanarchitecture.shishkin.base.controller.IModule;
 import com.cleanarchitecture.shishkin.base.utils.StringUtils;
 
 import java.io.Serializable;
@@ -10,7 +11,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import io.paperdb.Paper;
 
-public class DiskCache implements IStorage {
+public class DiskCache implements IStorage, IModule {
 
     public static final String NAME = "DiskCache";
 
@@ -130,4 +131,8 @@ public class DiskCache implements IStorage {
         }
     }
 
+    @Override
+    public String getSubscriberType() {
+        return null;
+    }
 }
