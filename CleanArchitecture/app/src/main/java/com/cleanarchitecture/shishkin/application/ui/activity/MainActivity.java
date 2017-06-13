@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.application.ui.fragment.HomeFragment;
 import com.cleanarchitecture.shishkin.api.controller.NotificationService;
 import com.cleanarchitecture.shishkin.api.event.ClearDiskCacheEvent;
@@ -19,6 +20,8 @@ public class MainActivity extends AbstractContentActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
+
+        Admin.getInstance().register();
 
         super.onCreate(savedInstanceState);
 

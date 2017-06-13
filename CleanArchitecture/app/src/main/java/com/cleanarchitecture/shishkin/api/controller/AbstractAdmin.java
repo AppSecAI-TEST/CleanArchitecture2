@@ -15,17 +15,15 @@ public abstract class AbstractAdmin implements IAdmin {
 
     @Override
     public synchronized <C> C get(final String controllerName) {
-        if (StringUtils.isNullOrEmpty(controllerName)) {
+        if (!containsModule(controllerName)) {
             return null;
         }
 
         try {
-            if (mModules.containsKey(controllerName)) {
-                if (mModules.get(controllerName) != null) {
-                    return (C) mModules.get(controllerName);
-                } else {
-                    mModules.remove(controllerName);
-                }
+            if (mModules.get(controllerName) != null) {
+                return (C) mModules.get(controllerName);
+            } else {
+                mModules.remove(controllerName);
             }
         } catch (Exception e) {
             ErrorController.getInstance().onError(NAME, e);
@@ -34,8 +32,21 @@ public abstract class AbstractAdmin implements IAdmin {
     }
 
     @Override
+    public synchronized boolean containsModule(final String controllerName) {
+        if (StringUtils.isNullOrEmpty(controllerName)) {
+            return false;
+        }
+
+        return mModules.containsKey(controllerName);
+    }
+
+    @Override
     public synchronized void registerModule(final IModule controller) {
         if (controller != null && !StringUtils.isNullOrEmpty(controller.getName())) {
+            if (mModules.containsKey(controller.getName())) {
+                return;
+            }
+
             try {
                 // регистрируем модуль в других модулях
                 if (controller instanceof IModuleSubscriber) {
@@ -80,28 +91,42 @@ public abstract class AbstractAdmin implements IAdmin {
     public synchronized void unregister(final String nameController) {
         if (!StringUtils.isNullOrEmpty(nameController)) {
             try {
-                // отменяем регистрацию в других модулях
                 if (mModules.containsKey(nameController)) {
-                    final IModule module = mModules.get(nameController);
-                    if (module != null && module instanceof IModuleSubscriber) {
-                        final List<String> subscribers = ((IModuleSubscriber) module).hasSubscriberType();
-                        for (String subscriber : subscribers) {
-                            final IModule moduleSubscriber = mModules.get(subscriber);
-                            if (moduleSubscriber != null && moduleSubscriber instanceof ISmallController) {
-                                //Log.i(NAME, module.getName() + " исключен в " + moduleSubscriber.getName());
-                                ((ISmallController) moduleSubscriber).unregister(module);
+                    IModule module = mModules.get(nameController);
+                    if (module != null) {
+                        if (module instanceof IController) {
+                            if (((IController) module).hasSubscribers()) {
+                                return;
                             }
                         }
-                    }
 
-                    //Log.i(NAME, nameController + " исключен");
-                    mModules.remove(nameController);
+                        // отменяем регистрацию в других модулях
+                        if (module instanceof IModuleSubscriber) {
+                            final List<String> subscribers = ((IModuleSubscriber) module).hasSubscriberType();
+                            for (String subscriber : subscribers) {
+                                final IModule moduleSubscriber = mModules.get(subscriber);
+                                if (moduleSubscriber != null && moduleSubscriber instanceof ISmallController) {
+                                    //Log.i(NAME, module.getName() + " исключен в " + moduleSubscriber.getName());
+                                    ((ISmallController) moduleSubscriber).unregister(module);
+                                }
+                            }
+                        }
+
+                        //Log.i(NAME, nameController + " исключен");
+                        mModules.remove(nameController);
+                    }
                 }
             } catch (Exception e) {
                 ErrorController.getInstance().onError(NAME, e);
             }
         }
     }
+
+    @Override
+    public abstract void unregister();
+
+    @Override
+    public abstract void register();
 
     @Override
     public synchronized void register(final IModuleSubscriber subscriber) {

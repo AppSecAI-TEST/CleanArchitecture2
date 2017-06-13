@@ -30,6 +30,16 @@ public interface IAdmin extends ISubscriber {
     void unregister(String name);
 
     /**
+     * Отменить регистрацию всех модулей
+     */
+    void unregister();
+
+    /**
+     * Зарегистрировать модули по умолчанию
+     */
+    void register();
+
+    /**
      * Зарегистрировать подписчика модуля
      *
      * @param subscriber подписчик модуля
@@ -49,4 +59,6 @@ public interface IAdmin extends ISubscriber {
      * @param subscriber подписчик
      */
     void setCurrentSubscriber(IModuleSubscriber subscriber);
+
+    boolean containsModule(String name);
 }

@@ -56,4 +56,9 @@ public abstract class AbstractController<T> extends AbstractSmallController<T> i
         return null;
     }
 
+    @Override
+    public synchronized boolean hasSubscribers() {
+        return !mSubscribers.isEmpty();
+    }
+
 }
