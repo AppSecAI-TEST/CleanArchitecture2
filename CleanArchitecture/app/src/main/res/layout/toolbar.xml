@@ -23,7 +23,7 @@
             android:paddingLeft="@dimen/padding_4dp"
             android:paddingRight="@dimen/padding_4dp" />
 
-        <com.cleanarchitecture.shishkin.base.ui.widget.AutoResizeTextView
+        <com.cleanarchitecture.shishkin.common.ui.widget.AutoResizeTextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

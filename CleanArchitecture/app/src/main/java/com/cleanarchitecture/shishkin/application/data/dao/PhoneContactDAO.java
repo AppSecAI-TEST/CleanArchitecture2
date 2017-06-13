@@ -10,13 +10,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
-import com.cleanarchitecture.shishkin.base.content.dao.AbstractReadOnlyDAO;
-import com.cleanarchitecture.shishkin.base.utils.StringUtils;
+import com.cleanarchitecture.shishkin.common.content.dao.AbstractReadOnlyDAO;
+import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
 public class PhoneContactDAO extends AbstractReadOnlyDAO<PhoneContactItem> {
 
     public static final Uri CONTENT_URI = ContactsContract.Contacts.CONTENT_URI;
-    public static final Uri CONTENT_DATA_URI = ContactsContract.Data.CONTENT_URI;
 
     private ContentResolver mContentResolver;
 
