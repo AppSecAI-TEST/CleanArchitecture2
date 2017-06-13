@@ -3,17 +3,17 @@ package com.cleanarchitecture.shishkin.api.repository;
 import android.content.Context;
 
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.api.event.OnNetworkConnectedEvent;
 import com.cleanarchitecture.shishkin.api.event.OnNetworkDisconnectedEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowMessageEvent;
-import com.cleanarchitecture.shishkin.common.net.Connectivity;
 import com.cleanarchitecture.shishkin.api.net.ConnectivityMonitor;
 import com.cleanarchitecture.shishkin.api.repository.requests.IRequest;
 import com.cleanarchitecture.shishkin.api.task.IPhonePausableThreadPoolExecutor;
 import com.cleanarchitecture.shishkin.api.task.PhonePausableThreadPoolExecutor;
-import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.common.net.Connectivity;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -22,8 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+@SuppressWarnings("unused")
 public class NetProvider implements INetProvider, IModuleSubscriber {
-    public static final String NAME = "NetProvider";
+    public static final String NAME = NetProvider.class.getName();
 
     private boolean mConnected = false;
     private ConnectivityMonitor mConnectivityMonitor;

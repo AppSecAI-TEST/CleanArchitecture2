@@ -20,8 +20,8 @@ import java.util.List;
 public class LifecycleController extends AbstractController<ILifecycleSubscriber>
         implements ILifecycleController, IModuleSubscriber {
 
-    public static final String NAME = "LifecycleController";
-    public static final String SUBSCRIBER_TYPE = "ILifecycleSubscriber";
+    public static final String NAME = LifecycleController.class.getName();
+    public static final String SUBSCRIBER_TYPE = ILifecycleSubscriber.class.getName();
 
     public LifecycleController() {
         super();

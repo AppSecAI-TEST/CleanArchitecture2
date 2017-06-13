@@ -5,11 +5,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 
-import com.cleanarchitecture.shishkin.common.lifecycle.Lifecycle;
-import com.cleanarchitecture.shishkin.common.net.Connectivity;
+import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.repository.requests.AbstractRequest;
 import com.cleanarchitecture.shishkin.api.repository.requests.IRequest;
-import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.common.lifecycle.Lifecycle;
+import com.cleanarchitecture.shishkin.common.net.Connectivity;
 import com.cleanarchitecture.shishkin.common.task.PausableThreadPoolExecutor;
 
 import java.util.concurrent.BlockingQueue;

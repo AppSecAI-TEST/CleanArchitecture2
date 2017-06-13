@@ -8,10 +8,10 @@ import android.net.Uri;
 import android.os.Handler;
 
 import com.cleanarchitecture.shishkin.api.controller.Admin;
+import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.api.observer.LivingDataDebounce;
-import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 
 import java.util.ArrayList;
 import java.util.List;

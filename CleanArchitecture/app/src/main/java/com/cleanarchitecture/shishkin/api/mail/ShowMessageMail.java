@@ -2,9 +2,9 @@ package com.cleanarchitecture.shishkin.api.mail;
 
 import android.support.design.widget.Snackbar;
 
+import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.IMailSubscriber;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowMessageEvent;
-import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 
 public class ShowMessageMail extends AbstractMail {
 

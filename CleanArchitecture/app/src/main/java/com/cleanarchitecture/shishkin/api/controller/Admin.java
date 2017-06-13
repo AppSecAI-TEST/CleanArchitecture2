@@ -6,13 +6,11 @@ import com.cleanarchitecture.shishkin.api.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.repository.ContentProvider;
 import com.cleanarchitecture.shishkin.api.repository.DbProvider;
 import com.cleanarchitecture.shishkin.api.repository.NetProvider;
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
-import com.cleanarchitecture.shishkin.api.repository.IRepository;
 import com.cleanarchitecture.shishkin.api.repository.Repository;
 import com.cleanarchitecture.shishkin.api.storage.DiskCache;
 import com.cleanarchitecture.shishkin.api.storage.MemoryCache;
 import com.cleanarchitecture.shishkin.api.usecases.UseCasesController;
-import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
+import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -53,13 +51,11 @@ public class Admin extends AbstractAdmin {
         return NAME;
     }
 
-    @Override
     public synchronized void unregister() {
-        unregister(ContentProvider.NAME);
+        unregister(Repository.NAME);
         unregister(NetProvider.NAME);
         unregister(DbProvider.NAME);
-        unregister(Repository.NAME);
-
+        unregister(ContentProvider.NAME);
         unregister(UserIteractionController.NAME);
         unregister(MailController.NAME);
         unregister(UseCasesController.NAME);
@@ -68,68 +64,34 @@ public class Admin extends AbstractAdmin {
         unregister(LifecycleController.NAME);
         unregister(ActivityController.NAME);
         unregister(CrashController.NAME);
-
-        unregister(DiskCache.NAME);
-        unregister(MemoryCache.NAME);
     }
 
-    @Override
     public synchronized void register() {
         isFinishApplication = false;
 
         final Context context = ApplicationController.getInstance();
 
-        // default controllers
-        if (!containsModule(ErrorController.NAME)) {
-            registerModule(ErrorController.getInstance());
-        }
-
-        if (!containsModule(EventBusController.NAME)) {
-            registerModule(EventBusController.getInstance());
+        // default Singleton controllers
+        registerModule(ErrorController.getInstance());
+        registerModule(EventBusController.getInstance());
+        registerModule(MemoryCache.getInstance());
+        if (context != null) {
+            registerModule(DiskCache.getInstance(context));
         }
 
         // other controllers
-        if (!containsModule(MemoryCache.NAME)) {
-            registerModule(MemoryCache.getInstance());
-        }
-        if (!containsModule(DiskCache.NAME)) {
-            if (context != null) {
-                registerModule(DiskCache.getInstance(context));
-            }
-        }
-
-        if (!containsModule(CrashController.NAME)) {
-            registerModule(new CrashController());
-        }
-        if (!containsModule(ActivityController.NAME)) {
-            registerModule(new ActivityController());
-        }
-        if (!containsModule(LifecycleController.NAME)) {
-            registerModule(new LifecycleController());
-        }
-        if (!containsModule(PresenterController.NAME)) {
-            registerModule(new PresenterController());
-        }
-        if (!containsModule(NavigationController.NAME)) {
-            registerModule(new NavigationController());
-        }
-        if (!containsModule(UseCasesController.NAME)) {
-            registerModule(new UseCasesController());
-        }
-        if (!containsModule(MailController.NAME)) {
-            registerModule(new MailController());
-        }
-        if (!containsModule(UserIteractionController.NAME)) {
-            registerModule(new UserIteractionController());
-        }
-
-        if (!containsModule(Repository.NAME)) {
-            final IRepository repository = new Repository();
-            registerModule(repository);
-            registerModule(repository.getDbProvider());
-            registerModule(repository.getNetProvider());
-            registerModule(repository.getContentProvider());
-        }
+        registerModule(CrashController.NAME);
+        registerModule(ActivityController.NAME);
+        registerModule(LifecycleController.NAME);
+        registerModule(PresenterController.NAME);
+        registerModule(NavigationController.NAME);
+        registerModule(UseCasesController.NAME);
+        registerModule(MailController.NAME);
+        registerModule(UserIteractionController.NAME);
+        registerModule(ContentProvider.NAME);
+        registerModule(DbProvider.NAME);
+        registerModule(NetProvider.NAME);
+        registerModule(Repository.NAME);
 
     }
 

@@ -7,8 +7,8 @@ import android.support.multidex.MultiDexApplication;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.api.controller.Admin;
-import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseOnLowMemoryEvent;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseOnLowMemoryEvent;
 import com.squareup.leakcanary.LeakCanary;
 
 import java.io.File;

@@ -16,7 +16,7 @@ import java.io.File;
  * Контроллер ошибок
  */
 public class ErrorController implements IErrorController {
-    public static final String NAME = "ErrorController";
+    public static final String NAME = ErrorController.class.getName();
     private static final long MAX_LOG_LENGTH = 2000000;//2Mb
 
     private static volatile ErrorController sInstance;

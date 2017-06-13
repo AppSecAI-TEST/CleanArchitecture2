@@ -7,11 +7,11 @@ import android.content.pm.PackageManager;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.ActivityController;
 import com.cleanarchitecture.shishkin.api.controller.Admin;
+import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.IActivityController;
 import com.cleanarchitecture.shishkin.api.event.OnPermisionDeniedEvent;
 import com.cleanarchitecture.shishkin.api.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseRequestPermissionEvent;
-import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.github.snowdream.android.util.Log;
 
 /**

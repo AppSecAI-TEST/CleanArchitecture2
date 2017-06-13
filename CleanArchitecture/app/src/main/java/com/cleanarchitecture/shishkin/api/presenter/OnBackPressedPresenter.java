@@ -3,9 +3,9 @@ package com.cleanarchitecture.shishkin.api.presenter;
 import android.content.Context;
 
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowMessageEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseFinishApplicationEvent;
-import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 
 import java.util.Timer;
 import java.util.TimerTask;

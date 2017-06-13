@@ -16,8 +16,8 @@ import java.util.List;
 public class NavigationController extends AbstractController<INavigationSubscriber>
         implements INavigationController, IModuleSubscriber {
 
-    public static final String NAME = "NavigationController";
-    public static final String SUBSCRIBER_TYPE = "INavigationSubscriber";
+    public static final String NAME = NavigationController.class.getName();
+    public static final String SUBSCRIBER_TYPE = INavigationSubscriber.class.getName();
 
     public NavigationController() {
         super();

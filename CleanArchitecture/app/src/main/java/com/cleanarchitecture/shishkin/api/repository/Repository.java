@@ -3,9 +3,8 @@ package com.cleanarchitecture.shishkin.api.repository;
 import android.content.Context;
 
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
-import com.cleanarchitecture.shishkin.application.ui.activity.MainActivity;
 import com.cleanarchitecture.shishkin.api.controller.Admin;
+import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.AppPreferences;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
@@ -18,7 +17,8 @@ import com.cleanarchitecture.shishkin.api.storage.DiskCacheService;
 import com.cleanarchitecture.shishkin.api.storage.IStorage;
 import com.cleanarchitecture.shishkin.api.storage.MemoryCache;
 import com.cleanarchitecture.shishkin.api.storage.MemoryCacheService;
-import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
+import com.cleanarchitecture.shishkin.application.ui.activity.MainActivity;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -30,8 +30,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class Repository implements IRepository, IModuleSubscriber {
-    public static final String NAME = "Repository";
+    public static final String NAME = Repository.class.getName();
 
     // информация об источниках данных
     public static final int FROM_CONTENT_PROVIDER = 0; // данные получены из content provider
@@ -50,14 +51,7 @@ public class Repository implements IRepository, IModuleSubscriber {
     public static final int USE_SAVE_DISK_CACHE = 8; // сохранять только в кеше на диске после получения данных. Не использовать кеш для чтения
     public static final int USE_SAVE_CACHE = 9; // сохранять в кеш в памяти и на диске после получения данных. Не использовать кеш для чтения
 
-    private INetProvider mNetProvider;
-    private IContentProvider mContentProvider;
-    private IDbProvider mDbProvider;
-
     public Repository() {
-        mNetProvider = new NetProvider();
-        mContentProvider = new ContentProvider();
-        mDbProvider = new DbProvider();
     }
 
     @Override
@@ -146,21 +140,6 @@ public class Repository implements IRepository, IModuleSubscriber {
         final ArrayList<String> list = new ArrayList<>();
         list.add(EventBusController.SUBSCRIBER_TYPE);
         return list;
-    }
-
-    @Override
-    public INetProvider getNetProvider() {
-        return mNetProvider;
-    }
-
-    @Override
-    public IContentProvider getContentProvider() {
-        return mContentProvider;
-    }
-
-    @Override
-    public IDbProvider getDbProvider() {
-        return mDbProvider;
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)

@@ -47,8 +47,8 @@ import es.dmoral.toasty.Toasty;
 @SuppressWarnings("unused")
 public class ActivityController extends AbstractController<IActivity> implements IActivityController, IModuleSubscriber {
 
-    public static final String NAME = "ActivityController";
-    public static final String SUBSCRIBER_TYPE = "IActivity";
+    public static final String NAME = ActivityController.class.getName();
+    public static final String SUBSCRIBER_TYPE = IActivity.class.getName();
 
     public static final int TOAST_TYPE_INFO = 0;
     public static final int TOAST_TYPE_ERROR = 1;

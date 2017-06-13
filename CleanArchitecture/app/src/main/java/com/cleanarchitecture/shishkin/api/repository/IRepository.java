@@ -27,25 +27,4 @@ public interface IRepository extends IModule {
      */
     void putToCache(String key, int cacheType, Serializable value);
 
-    /**
-     * Получить net provider.
-     *
-     * @return net provider
-     */
-    INetProvider getNetProvider();
-
-    /**
-     * Получить content provider.
-     *
-     * @return content provider
-     */
-    IContentProvider getContentProvider();
-
-    /**
-     * Получить db provider.
-     *
-     * @return db provider
-     */
-    IDbProvider getDbProvider();
-
 }

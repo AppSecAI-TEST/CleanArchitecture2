@@ -4,9 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.event.OnUserIteractionEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.DialogResultEvent;
-import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
 import java.util.ArrayList;

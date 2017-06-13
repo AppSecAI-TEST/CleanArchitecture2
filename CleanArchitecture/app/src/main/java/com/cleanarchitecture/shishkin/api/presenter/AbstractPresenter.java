@@ -1,12 +1,12 @@
 package com.cleanarchitecture.shishkin.api.presenter;
 
 import com.cleanarchitecture.shishkin.api.controller.Admin;
+import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.IMailSubscriber;
 import com.cleanarchitecture.shishkin.api.controller.MailController;
 import com.cleanarchitecture.shishkin.api.controller.PresenterController;
-import com.cleanarchitecture.shishkin.common.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.api.mail.UpdateViewPresenterMail;
-import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.common.lifecycle.Lifecycle;
 
 import java.util.ArrayList;
 import java.util.List;

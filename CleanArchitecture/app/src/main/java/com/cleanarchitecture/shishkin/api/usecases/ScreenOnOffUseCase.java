@@ -1,7 +1,7 @@
 package com.cleanarchitecture.shishkin.api.usecases;
 
-import com.cleanarchitecture.shishkin.api.event.OnScreenOffEvent;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.api.event.OnScreenOffEvent;
 
 /**
  * Команда - блокировка/разблокировка экрана
