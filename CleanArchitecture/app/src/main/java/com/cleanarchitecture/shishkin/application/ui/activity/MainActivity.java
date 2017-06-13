@@ -6,11 +6,11 @@ import android.os.Bundle;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.ui.fragment.HomeFragment;
-import com.cleanarchitecture.shishkin.base.controller.NotificationService;
-import com.cleanarchitecture.shishkin.base.event.ClearDiskCacheEvent;
-import com.cleanarchitecture.shishkin.base.ui.activity.AbstractContentActivity;
-import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
-import com.cleanarchitecture.shishkin.base.utils.ViewUtils;
+import com.cleanarchitecture.shishkin.api.controller.NotificationService;
+import com.cleanarchitecture.shishkin.api.event.ClearDiskCacheEvent;
+import com.cleanarchitecture.shishkin.api.ui.activity.AbstractContentActivity;
+import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 
 public class MainActivity extends AbstractContentActivity {
 

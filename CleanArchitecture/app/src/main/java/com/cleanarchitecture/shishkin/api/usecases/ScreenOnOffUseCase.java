@@ -1,0 +1,25 @@
+package com.cleanarchitecture.shishkin.api.usecases;
+
+import com.cleanarchitecture.shishkin.api.event.OnScreenOffEvent;
+import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+
+/**
+ * Команда - блокировка/разблокировка экрана
+ */
+public class ScreenOnOffUseCase extends AbstractUseCase {
+
+    public static final String NAME = "ScreenOnOffUseCase";
+
+    public static synchronized void onScreenOff() {
+        // остановить все LiveLongBackgroundIntentService
+        AdminUtils.postEvent(new OnScreenOffEvent());
+    }
+
+    public static synchronized void onScreenOn() {
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
+    }
+}

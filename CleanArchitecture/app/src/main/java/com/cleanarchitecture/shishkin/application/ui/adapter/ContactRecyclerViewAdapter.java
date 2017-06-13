@@ -11,11 +11,11 @@ import android.widget.TextView;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.event.searchpresenter.OnSearchPresenterItemClick;
-import com.cleanarchitecture.shishkin.base.ui.recyclerview.AbstractRecyclerViewAdapter;
-import com.cleanarchitecture.shishkin.base.ui.recyclerview.AbstractViewHolder;
-import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
-import com.cleanarchitecture.shishkin.base.utils.StringUtils;
-import com.cleanarchitecture.shishkin.base.utils.ViewUtils;
+import com.cleanarchitecture.shishkin.api.ui.recyclerview.AbstractRecyclerViewAdapter;
+import com.cleanarchitecture.shishkin.api.ui.recyclerview.AbstractViewHolder;
+import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.common.utils.StringUtils;
+import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 import com.pkmmte.view.CircularImageView;
 
 public class ContactRecyclerViewAdapter extends AbstractRecyclerViewAdapter<PhoneContactItem, ContactRecyclerViewAdapter.ViewHolder> {

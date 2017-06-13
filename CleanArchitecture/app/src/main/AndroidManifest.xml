@@ -32,15 +32,15 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".base.controller.NotificationBroadcastReceiver" >
+        <receiver android:name=".api.controller.NotificationBroadcastReceiver" >
             <intent-filter>
                 <action android:name="${applicationId}.action.NotificationBroadcastReceiver.ACTION_DELETE_MESSAGES" />
             </intent-filter>
         </receiver>
 
-        <service android:name=".base.controller.NotificationService"/>
-        <service android:name=".base.storage.DiskCacheService"/>
-        <service android:name=".base.storage.MemoryCacheService"/>
+        <service android:name=".api.controller.NotificationService"/>
+        <service android:name=".api.storage.DiskCacheService"/>
+        <service android:name=".api.storage.MemoryCacheService"/>
 
     </application>
 

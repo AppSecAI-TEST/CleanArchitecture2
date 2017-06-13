@@ -1,7 +1,7 @@
 package com.cleanarchitecture.shishkin.application.event.repository;
 
-import com.cleanarchitecture.shishkin.base.event.AbstractEvent;
-import com.cleanarchitecture.shishkin.base.repository.Repository;
+import com.cleanarchitecture.shishkin.api.event.AbstractEvent;
+import com.cleanarchitecture.shishkin.api.repository.Repository;
 
 public class RepositoryRequestGetContactsEvent extends AbstractEvent {
 

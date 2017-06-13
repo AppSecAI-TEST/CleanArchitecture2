@@ -6,9 +6,10 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
-import com.cleanarchitecture.shishkin.base.controller.Admin;
-import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseOnLowMemoryEvent;
-import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
+import com.cleanarchitecture.shishkin.api.controller.Admin;
+import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseOnLowMemoryEvent;
+import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.squareup.leakcanary.LeakCanary;
 
 import java.io.File;
 
@@ -25,9 +26,9 @@ public class ApplicationController extends MultiDexApplication {
 
         super.onCreate();
 
-        //if (!LeakCanary.isInAnalyzerProcess(this)) {
-        //    LeakCanary.install(this);
-        //}
+        if (!LeakCanary.isInAnalyzerProcess(this)) {
+            LeakCanary.install(this);
+        }
 
         Admin.instantiate();
     }

@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 
 import com.cleanarchitecture.shishkin.application.data.dao.PhoneContactDAO;
-import com.cleanarchitecture.shishkin.base.utils.StringUtils;
+import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
 public class PhoneContactCursor {
 
