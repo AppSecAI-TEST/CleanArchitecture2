@@ -12,7 +12,6 @@ public abstract class AbstractAdmin implements IAdmin {
     private static final String NAME = "AbstractAdmin";
 
     private Map<String, IModule> mModules = Collections.synchronizedMap(new HashMap<String, IModule>());
-    private Map<String, Object> mObjects = Collections.synchronizedMap(new HashMap<String, Object>());
 
     @Override
     public synchronized <C> C get(final String controllerName) {
@@ -26,12 +25,6 @@ public abstract class AbstractAdmin implements IAdmin {
                     return (C) mModules.get(controllerName);
                 } else {
                     mModules.remove(controllerName);
-                }
-            } else if (mObjects.containsKey(controllerName)) {
-                if (mObjects.get(controllerName) != null) {
-                    return (C) mObjects.get(controllerName);
-                } else {
-                    mObjects.remove(controllerName);
                 }
             }
         } catch (Exception e) {
@@ -84,14 +77,6 @@ public abstract class AbstractAdmin implements IAdmin {
     }
 
     @Override
-    public synchronized void registerObject(final String name,final Object object) {
-        if (object != null && !StringUtils.isNullOrEmpty(name)) {
-                mObjects.put(name, object);
-        }
-    }
-
-
-    @Override
     public synchronized void unregister(final String nameController) {
         if (!StringUtils.isNullOrEmpty(nameController)) {
             try {
@@ -111,8 +96,6 @@ public abstract class AbstractAdmin implements IAdmin {
 
                     //Log.i(NAME, nameController + " исключен");
                     mModules.remove(nameController);
-                } else if (mObjects.containsKey(nameController)) {
-                    mObjects.remove(nameController);
                 }
             } catch (Exception e) {
                 ErrorController.getInstance().onError(NAME, e);
