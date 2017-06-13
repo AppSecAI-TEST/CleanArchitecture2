@@ -23,14 +23,6 @@ public interface IAdmin extends ISubscriber {
     void registerModule(IModule module);
 
     /**
-     * Зарегистрировать объект
-     *
-     * @param name имя объекта
-     * @param object объект
-     */
-    void registerObject(final String name,final Object object);
-
-    /**
      * Отменить регистрацию модуля или объекта
      *
      * @param name имя модуля/объекта
