@@ -1,6 +1,7 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
+import com.github.snowdream.android.util.Log;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -111,10 +112,9 @@ public abstract class AbstractAdmin implements IAdmin {
                                 }
                             }
                         }
-
-                        //Log.i(NAME, nameController + " исключен");
-                        mModules.remove(nameController);
                     }
+                    //Log.i(NAME, nameController + " исключен");
+                    mModules.remove(nameController);
                 }
             } catch (Exception e) {
                 ErrorController.getInstance().onError(NAME, e);
