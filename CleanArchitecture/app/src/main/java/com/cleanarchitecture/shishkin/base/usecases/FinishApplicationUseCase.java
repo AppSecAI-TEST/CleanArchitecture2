@@ -1,7 +1,9 @@
 package com.cleanarchitecture.shishkin.base.usecases;
 
+import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.event.ui.HideKeyboardEvent;
+import com.cleanarchitecture.shishkin.base.storage.IStorage;
 import com.cleanarchitecture.shishkin.base.storage.MemoryCache;
 import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
 
@@ -19,7 +21,10 @@ public class FinishApplicationUseCase extends AbstractUseCase {
         AdminUtils.postEvent(new FinishApplicationEvent());
 
         // очистить кэш в памяти
-        MemoryCache.getInstance().clearAll();
+        final IStorage memoryCache = Admin.getInstance().get(MemoryCache.NAME);
+        if (memoryCache != null) {
+            memoryCache.clearAll();
+        }
     }
 
     @Override

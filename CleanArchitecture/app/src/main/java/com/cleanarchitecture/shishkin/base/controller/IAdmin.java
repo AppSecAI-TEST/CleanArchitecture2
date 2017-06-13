@@ -9,7 +9,7 @@ public interface IAdmin extends ISubscriber {
     /**
      * Получить объект
      *
-     * @param <C>        тип объекта
+     * @param <C>  тип объекта
      * @param name имя объекта
      * @return модуль
      */

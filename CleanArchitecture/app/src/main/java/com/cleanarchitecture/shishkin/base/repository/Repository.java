@@ -176,7 +176,10 @@ public class Repository implements IRepository, IModuleSubscriber {
         final int day = StringUtils.toInt(AppPreferences.getLastDayStart(context));
         if (currentDay > day) {
             AppPreferences.setLastDayStart(context, String.valueOf(currentDay));
-            DiskCache.getInstance(context).clearAll();
+            final IStorage diskCache = Admin.getInstance().get(DiskCache.NAME);
+            if (diskCache != null) {
+                diskCache.clearAll();
+            }
         }
     }
 

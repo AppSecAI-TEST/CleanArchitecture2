@@ -5,15 +5,16 @@ import android.content.Intent;
 import android.support.annotation.WorkerThread;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
+import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.controller.LiveLongBackgroundIntentService;
 import com.cleanarchitecture.shishkin.base.utils.IntentUtils;
 
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
+@SuppressWarnings("unused")
 public class DiskCacheService extends LiveLongBackgroundIntentService {
 
-    private static final String LOG_TAG = "DiskCacheService:";
     private static final String NAME = "DiskCacheService";
 
     private static final String EXTRA_SERIALIZABLE = "EXTRA_SERIALIZABLE";
@@ -35,7 +36,7 @@ public class DiskCacheService extends LiveLongBackgroundIntentService {
         setShutdownTimeout(TIMEUNIT.toMillis(TIMEUNIT_DURATION));
     }
 
-    public synchronized static void put(final Context context, final String key, final Serializable object) {
+    public static synchronized void put(final Context context, final String key, final Serializable object) {
         if (context != null) {
             final Intent intent = IntentUtils.createActionIntent(context, DiskCacheService.class,
                     ACTION_PUT);
@@ -45,7 +46,7 @@ public class DiskCacheService extends LiveLongBackgroundIntentService {
         }
     }
 
-    public synchronized static void clear(final Context context, final String key) {
+    public static synchronized void clear(final Context context, final String key) {
         if (context != null) {
             final Intent intent = IntentUtils.createActionIntent(context, DiskCacheService.class,
                     ACTION_CLEAR);
@@ -54,7 +55,7 @@ public class DiskCacheService extends LiveLongBackgroundIntentService {
         }
     }
 
-    public synchronized static void clearAll(final Context context) {
+    public static synchronized void clearAll(final Context context) {
         if (context != null) {
             final Intent intent = IntentUtils.createActionIntent(context, DiskCacheService.class,
                     ACTION_CLEAR_ALL);
@@ -88,17 +89,26 @@ public class DiskCacheService extends LiveLongBackgroundIntentService {
 
     @WorkerThread
     private void onHandlePutAction(final String key, final Serializable object) {
-        DiskCache.getInstance(getApplicationContext()).put(key, object);
+        final IStorage diskCache = Admin.getInstance().get(DiskCache.NAME);
+        if (diskCache != null) {
+            diskCache.put(key, object);
+        }
     }
 
     @WorkerThread
     private void onHandleClearAction(final String key) {
-        DiskCache.getInstance(getApplicationContext()).clear(key);
+        final IStorage diskCache = Admin.getInstance().get(DiskCache.NAME);
+        if (diskCache != null) {
+            diskCache.clear(key);
+        }
     }
 
     @WorkerThread
     private void onHandleClearAllAction() {
-        DiskCache.getInstance(getApplicationContext()).clearAll();
+        final IStorage diskCache = Admin.getInstance().get(DiskCache.NAME);
+        if (diskCache != null) {
+            diskCache.clearAll();
+        }
     }
 
     @Override

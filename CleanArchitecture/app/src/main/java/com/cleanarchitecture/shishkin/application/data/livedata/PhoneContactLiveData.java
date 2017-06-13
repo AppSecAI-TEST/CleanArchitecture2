@@ -1,17 +1,17 @@
 package com.cleanarchitecture.shishkin.application.data.livedata;
 
-import android.content.Context;
-
 import com.cleanarchitecture.shishkin.application.app.Constant;
 import com.cleanarchitecture.shishkin.application.data.dao.PhoneContactDAO;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryResponseGetContactsEvent;
+import com.cleanarchitecture.shishkin.base.controller.Admin;
 import com.cleanarchitecture.shishkin.base.data.AbstractContentProviderLiveData;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarHideProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.event.toolbar.ToolbarShowProgressBarEvent;
 import com.cleanarchitecture.shishkin.base.repository.Repository;
 import com.cleanarchitecture.shishkin.base.storage.DiskCache;
+import com.cleanarchitecture.shishkin.base.storage.IStorage;
 import com.cleanarchitecture.shishkin.base.storage.MemoryCache;
 import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
 
@@ -40,10 +40,15 @@ public class PhoneContactLiveData extends AbstractContentProviderLiveData<List<P
 
     @Override
     public void onChanged() {
-        MemoryCache.getInstance().clear(String.valueOf(Constant.REPOSITORY_GET_CONTACTS));
-        final Context context = AdminUtils.getContext();
-        if (context != null) {
-            DiskCache.getInstance(context).clear(String.valueOf(Constant.REPOSITORY_GET_CONTACTS));
+        final IStorage memoryCache = Admin.getInstance().get(MemoryCache.NAME);
+        if (memoryCache != null) {
+            memoryCache.clear(String.valueOf(Constant.REPOSITORY_GET_CONTACTS));
+
+        }
+
+        final IStorage diskCache = Admin.getInstance().get(DiskCache.NAME);
+        if (diskCache != null) {
+            diskCache.clear(String.valueOf(Constant.REPOSITORY_GET_CONTACTS));
         }
     }
 
