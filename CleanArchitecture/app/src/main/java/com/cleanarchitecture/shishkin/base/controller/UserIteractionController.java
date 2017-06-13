@@ -1,5 +1,6 @@
 package com.cleanarchitecture.shishkin.base.controller;
 
+import com.cleanarchitecture.shishkin.base.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.event.OnUserIteractionEvent;
 import com.cleanarchitecture.shishkin.base.event.usecase.UseCaseFinishApplicationEvent;
 import com.cleanarchitecture.shishkin.base.utils.AdminUtils;
@@ -9,20 +10,43 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-public class UserIteractionController implements IModule, IModuleSubscriber, AutoCompleteHandler.OnHandleEventListener<OnUserIteractionEvent>, AutoCompleteHandler.OnShutdownListener {
+public class UserIteractionController implements IModule, IModuleSubscriber {
     public static final String NAME = "UserIteractionController";
     private static final long TIMEOUT = TimeUnit.MINUTES.toMillis(10);
 
-    private AutoCompleteHandler<OnUserIteractionEvent> mServiceHandler = null;
+    private Timer mTimer = null;
+    private boolean isStoped = false;
 
     public UserIteractionController() {
-        mServiceHandler = new AutoCompleteHandler<OnUserIteractionEvent>("LiveLongAndProsperIntentService [" + NAME + "]");
-        mServiceHandler.setOnHandleEventListener(this);
-        mServiceHandler.setOnShutdownListener(this);
-        mServiceHandler.setShutdownTimeout(TIMEOUT);
-        mServiceHandler.post(new OnUserIteractionEvent());
+        startTimer();
+    }
+
+    private synchronized void startTimer() {
+        stopTimer();
+
+        if (!isStoped) {
+            mTimer = new Timer();
+            mTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    stopTimer();
+                    isStoped = true;
+
+                    AdminUtils.postEvent(new UseCaseFinishApplicationEvent());
+                }
+            }, TIMEOUT);
+        }
+    }
+
+    private synchronized void stopTimer() {
+        if (mTimer != null) {
+            mTimer.cancel();
+            mTimer = null;
+        }
     }
 
     @Override
@@ -42,17 +66,19 @@ public class UserIteractionController implements IModule, IModuleSubscriber, Aut
         return list;
     }
 
+    public void setStoped(boolean stoped) {
+        isStoped = stoped;
+    }
+
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onUserIteractionEvent(final OnUserIteractionEvent event) {
-        mServiceHandler.post(event);
+        startTimer();
     }
 
-    @Override
-    public void onHandleEvent(OnUserIteractionEvent event) {
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public synchronized void onFinishApplicationEvent(FinishApplicationEvent event) {
+        stopTimer();
+        isStoped = true;
     }
 
-    @Override
-    public void onShutdown(AutoCompleteHandler handler) {
-        AdminUtils.postEvent(new UseCaseFinishApplicationEvent());
-    }
 }
