@@ -1,8 +1,8 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
 import com.annimon.stream.Stream;
-import com.cleanarchitecture.shishkin.common.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.api.mail.IMail;
+import com.cleanarchitecture.shishkin.common.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.common.task.BaseAsyncTask;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
@@ -17,8 +17,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class MailController extends AbstractController<IMailSubscriber> implements IMailController {
 
-    public static final String NAME = "MailController";
-    public static final String SUBSCRIBER_TYPE = "IMailSubscriber";
+    public static final String NAME = MailController.class.getName();
+    public static final String SUBSCRIBER_TYPE = IMailSubscriber.class.getName();
     private Map<Long, IMail> mMail = Collections.synchronizedMap(new HashMap<Long, IMail>());
     private AtomicLong mId = new AtomicLong(0L);
 

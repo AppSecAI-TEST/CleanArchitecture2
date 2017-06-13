@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 import com.cleanarchitecture.shishkin.api.controller.AbstractController;
+import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.api.event.OnPermisionDeniedEvent;
@@ -16,7 +17,6 @@ import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseOnLowMemoryEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseOnScreenOffEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseOnScreenOnEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseRequestPermissionEvent;
-import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -29,7 +29,7 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public class UseCasesController extends AbstractController implements IUseCasesController, IModuleSubscriber {
-    public static final String NAME = "UseCasesController";
+    public static final String NAME = UseCasesController.class.getName();
 
     public UseCasesController() {
     }

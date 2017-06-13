@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.application.presenter.SearchPresenter;
+import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.OnToolbarMenuItemClickEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBackNavigationEvent;
@@ -21,7 +21,7 @@ import com.cleanarchitecture.shishkin.api.presenter.OnBackPressedPresenter;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewIdleEvent;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewScrolledEvent;
-import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.application.presenter.SearchPresenter;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 

@@ -13,7 +13,7 @@ import io.paperdb.Paper;
 
 public class DiskCache implements IStorage, IModule {
 
-    public static final String NAME = "DiskCache";
+    public static final String NAME = DiskCache.class.getName();
 
     private static volatile DiskCache sInstance;
     private ReentrantLock mLock;

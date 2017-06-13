@@ -1,11 +1,11 @@
 package com.cleanarchitecture.shishkin.api.usecases;
 
 import com.cleanarchitecture.shishkin.api.controller.Admin;
+import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.HideKeyboardEvent;
 import com.cleanarchitecture.shishkin.api.storage.IStorage;
 import com.cleanarchitecture.shishkin.api.storage.MemoryCache;
-import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 
 import java.util.Timer;
 import java.util.TimerTask;

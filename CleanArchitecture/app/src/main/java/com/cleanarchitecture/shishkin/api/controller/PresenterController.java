@@ -12,8 +12,8 @@ import java.util.Map;
 public class PresenterController extends AbstractController<IPresenter>
         implements IPresenterController {
 
-    public static final String NAME = "PresenterController";
-    public static final String SUBSCRIBER_TYPE = "IPresenter";
+    public static final String NAME = PresenterController.class.getName();
+    public static final String SUBSCRIBER_TYPE = IPresenter.class.getName();
 
     public PresenterController() {
         super();

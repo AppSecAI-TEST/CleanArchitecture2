@@ -3,9 +3,9 @@ package com.cleanarchitecture.shishkin.application.data.viewmodel;
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 
+import com.cleanarchitecture.shishkin.api.data.AbstractViewModel;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.data.livedata.PhoneContactLiveData;
-import com.cleanarchitecture.shishkin.api.data.AbstractViewModel;
 
 import java.util.List;
 

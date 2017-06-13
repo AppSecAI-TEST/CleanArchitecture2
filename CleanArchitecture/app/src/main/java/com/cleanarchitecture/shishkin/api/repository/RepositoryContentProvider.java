@@ -1,9 +1,9 @@
 package com.cleanarchitecture.shishkin.api.repository;
 
+import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryResponseGetContactsEvent;
-import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.common.utils.SerializableUtil;
 
 import java.io.Serializable;
@@ -22,7 +22,7 @@ public class RepositoryContentProvider {
                         .setResponse(list)
                         .setFrom(Repository.FROM_CACHE));
             } else {
-                final RepositoryResponseGetContactsEvent responseEvent = (RepositoryResponseGetContactsEvent) repository.getContentProvider().getContacts();
+                final RepositoryResponseGetContactsEvent responseEvent = (RepositoryResponseGetContactsEvent) AdminUtils.getContentProvider().getContacts();
                 responseEvent.setFrom(Repository.FROM_CONTENT_PROVIDER);
 
                 if (!responseEvent.hasError()) {

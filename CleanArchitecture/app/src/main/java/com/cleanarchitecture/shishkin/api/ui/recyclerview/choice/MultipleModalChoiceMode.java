@@ -10,9 +10,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.cleanarchitecture.shishkin.common.collections.LongArrayList;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.ActionModeCompat;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.ChoiceMode;
+import com.cleanarchitecture.shishkin.common.collections.LongArrayList;
 
 /**
  * {@link ChoiceMode} that allows multiple choices in a modal selection mode.

@@ -5,7 +5,7 @@ package com.cleanarchitecture.shishkin.api.controller;
  */
 public class CrashController implements Thread.UncaughtExceptionHandler, IModule {
 
-    public static final String NAME = "CrashController";
+    public static final String NAME = CrashController.class.getName();
     private static Thread.UncaughtExceptionHandler mHandler = Thread.getDefaultUncaughtExceptionHandler();
 
     public CrashController() {

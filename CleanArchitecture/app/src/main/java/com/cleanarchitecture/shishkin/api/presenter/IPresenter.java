@@ -1,8 +1,8 @@
 package com.cleanarchitecture.shishkin.api.presenter;
 
 import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
-import com.cleanarchitecture.shishkin.common.lifecycle.ILifecycle;
 import com.cleanarchitecture.shishkin.api.ui.IView;
+import com.cleanarchitecture.shishkin.common.lifecycle.ILifecycle;
 
 public interface IPresenter<M> extends ILifecycle, IView, IModuleSubscriber {
 

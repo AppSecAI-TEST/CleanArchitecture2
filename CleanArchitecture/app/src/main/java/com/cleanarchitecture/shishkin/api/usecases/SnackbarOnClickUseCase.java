@@ -3,8 +3,8 @@ package com.cleanarchitecture.shishkin.api.usecases;
 import android.content.Context;
 
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.api.event.ui.OnSnackBarClickEvent;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.api.event.ui.OnSnackBarClickEvent;
 
 /**
  * Команда - нажатие на кнопку в панели Snackbar

@@ -10,17 +10,20 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.api.event.IEvent;
 import com.cleanarchitecture.shishkin.api.mail.IMail;
+import com.cleanarchitecture.shishkin.api.repository.ContentProvider;
+import com.cleanarchitecture.shishkin.api.repository.DbProvider;
 import com.cleanarchitecture.shishkin.api.repository.IContentProvider;
 import com.cleanarchitecture.shishkin.api.repository.IDbProvider;
 import com.cleanarchitecture.shishkin.api.repository.INetProvider;
 import com.cleanarchitecture.shishkin.api.repository.IRepository;
+import com.cleanarchitecture.shishkin.api.repository.NetProvider;
 import com.cleanarchitecture.shishkin.api.repository.Repository;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractActivity;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractContentActivity;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
+import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.SafeUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
@@ -31,6 +34,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import java.io.File;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class AdminUtils {
 
     private static final String LOG_TAG = "AdminUtils:";
@@ -307,11 +311,7 @@ public class AdminUtils {
      * @return content провайдер
      */
     public static IContentProvider getContentProvider() {
-        final IRepository repository = Admin.getInstance().get(Repository.NAME);
-        if (repository != null) {
-            return repository.getContentProvider();
-        }
-        return null;
+        return Admin.getInstance().get(ContentProvider.NAME);
     }
 
     /**
@@ -320,11 +320,7 @@ public class AdminUtils {
      * @return провайдер БД
      */
     public static IDbProvider getDbProvider() {
-        final IRepository repository = Admin.getInstance().get(Repository.NAME);
-        if (repository != null) {
-            return repository.getDbProvider();
-        }
-        return null;
+        return Admin.getInstance().get(DbProvider.NAME);
     }
 
     /**
@@ -333,11 +329,7 @@ public class AdminUtils {
      * @return сетевой провайдер
      */
     public static INetProvider getNetProvider() {
-        final IRepository repository = Admin.getInstance().get(Repository.NAME);
-        if (repository != null) {
-            return repository.getNetProvider();
-        }
-        return null;
+        return Admin.getInstance().get(NetProvider.NAME);
     }
 
     /**

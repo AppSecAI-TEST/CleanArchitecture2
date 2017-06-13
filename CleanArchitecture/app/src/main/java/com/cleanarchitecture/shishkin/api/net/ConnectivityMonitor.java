@@ -7,10 +7,10 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 
+import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.ISubscribeable;
 import com.cleanarchitecture.shishkin.api.event.OnNetworkConnectedEvent;
 import com.cleanarchitecture.shishkin.api.event.OnNetworkDisconnectedEvent;
-import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.common.net.Connectivity;
 
 /**

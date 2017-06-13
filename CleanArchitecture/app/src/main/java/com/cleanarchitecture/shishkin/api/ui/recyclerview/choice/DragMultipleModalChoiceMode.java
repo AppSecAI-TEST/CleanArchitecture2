@@ -19,10 +19,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.common.collections.LongArrayList;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.ActionModeCompat;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.ChoiceMode;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.ObservableRecyclerView;
+import com.cleanarchitecture.shishkin.common.collections.LongArrayList;
 
 
 /**

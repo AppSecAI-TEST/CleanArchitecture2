@@ -1,12 +1,13 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
-import com.github.snowdream.android.util.Log;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+//import com.github.snowdream.android.util.Log;
 
 @SuppressWarnings("unused")
 public abstract class AbstractAdmin implements IAdmin {
@@ -89,6 +90,23 @@ public abstract class AbstractAdmin implements IAdmin {
     }
 
     @Override
+    public void registerModule(String name) {
+        if (!StringUtils.isNullOrEmpty(name)) {
+            if (mModules.containsKey(name)) {
+                return;
+            }
+
+            IModule object = null;
+            try {
+                object = (IModule) Class.forName(name).newInstance();
+                registerModule(object);
+            } catch (Exception e) {
+                ErrorController.getInstance().onError(NAME, e);
+            }
+        }
+    }
+
+    @Override
     public synchronized void unregister(final String nameController) {
         if (!StringUtils.isNullOrEmpty(nameController)) {
             try {
@@ -121,12 +139,6 @@ public abstract class AbstractAdmin implements IAdmin {
             }
         }
     }
-
-    @Override
-    public abstract void unregister();
-
-    @Override
-    public abstract void register();
 
     @Override
     public synchronized void register(final IModuleSubscriber subscriber) {

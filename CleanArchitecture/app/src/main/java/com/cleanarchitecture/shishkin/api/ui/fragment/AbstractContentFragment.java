@@ -10,13 +10,13 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarInitEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarPrepareEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarResetEvent;
 import com.cleanarchitecture.shishkin.api.ui.activity.OnBackPressListener;
-import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 

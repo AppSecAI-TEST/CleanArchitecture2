@@ -3,9 +3,9 @@ package com.cleanarchitecture.shishkin.api.mail;
 import android.widget.Toast;
 
 import com.cleanarchitecture.shishkin.api.controller.ActivityController;
+import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.IMailSubscriber;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowToastEvent;
-import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 
 public class ShowToastMail extends AbstractMail {
 

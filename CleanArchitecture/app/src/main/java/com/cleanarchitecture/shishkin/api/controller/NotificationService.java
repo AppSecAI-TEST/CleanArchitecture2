@@ -10,8 +10,8 @@ import android.support.v4.app.NotificationCompat;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.application.ui.activity.MainActivity;
 import com.cleanarchitecture.shishkin.api.storage.DiskStorage;
+import com.cleanarchitecture.shishkin.application.ui.activity.MainActivity;
 import com.cleanarchitecture.shishkin.common.utils.IntentUtils;
 import com.cleanarchitecture.shishkin.common.utils.SerializableUtil;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;

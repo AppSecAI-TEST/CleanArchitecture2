@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
 import com.cleanarchitecture.shishkin.api.controller.INavigationSubscriber;
 import com.cleanarchitecture.shishkin.api.controller.ISubscriber;
@@ -17,7 +18,6 @@ import com.cleanarchitecture.shishkin.api.event.ui.HideKeyboardEvent;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractFragment;
 import com.cleanarchitecture.shishkin.api.ui.fragment.ToolbarFragment;
-import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.SafeUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;

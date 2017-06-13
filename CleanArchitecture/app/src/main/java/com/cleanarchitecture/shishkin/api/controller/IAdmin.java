@@ -23,21 +23,18 @@ public interface IAdmin extends ISubscriber {
     void registerModule(IModule module);
 
     /**
+     * Зарегистрировать модуль
+     *
+     * @param name имя класса модуля
+     */
+    void registerModule(String name);
+
+    /**
      * Отменить регистрацию модуля или объекта
      *
      * @param name имя модуля/объекта
      */
     void unregister(String name);
-
-    /**
-     * Отменить регистрацию всех модулей
-     */
-    void unregister();
-
-    /**
-     * Зарегистрировать модули по умолчанию
-     */
-    void register();
 
     /**
      * Зарегистрировать подписчика модуля

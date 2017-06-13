@@ -9,13 +9,13 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
+import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.api.data.AbstractViewModel;
 import com.cleanarchitecture.shishkin.api.data.ViewModelDebounce;
 import com.cleanarchitecture.shishkin.api.event.FinishApplicationEvent;
-import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.SafeUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DbProvider<H extends AbstractViewModel> implements IDbProvider, LifecycleOwner, IModuleSubscriber {
-    public static final String NAME = "DbProvider";
+    public static final String NAME = DbProvider.class.getName();
 
     private Map<String, Object> mDb;
     private Map<String, H> mViewModel;
