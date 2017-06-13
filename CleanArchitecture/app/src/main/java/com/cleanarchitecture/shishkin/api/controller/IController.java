@@ -38,4 +38,11 @@ public interface IController<T> extends ISmallController<T> {
      * @return подписчик
      */
     T getSubscriber();
+
+    /**
+     * Проверить наличие подписчиков
+     *
+     * @return true - подписчиrb есть
+     */
+    boolean hasSubscribers();
 }

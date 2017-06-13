@@ -7,6 +7,10 @@ import com.cleanarchitecture.shishkin.api.storage.IStorage;
 import com.cleanarchitecture.shishkin.api.storage.MemoryCache;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+
 /**
  * Команда - выход из приложения
  */
@@ -25,6 +29,16 @@ public class FinishApplicationUseCase extends AbstractUseCase {
         if (memoryCache != null) {
             memoryCache.clearAll();
         }
+
+        // очистить админа через 30 сек
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (Admin.getInstance().isFinishApplication()) {
+                    Admin.getInstance().unregister();
+                }
+            }
+        }, TimeUnit.SECONDS.toMillis(30));
     }
 
     @Override
