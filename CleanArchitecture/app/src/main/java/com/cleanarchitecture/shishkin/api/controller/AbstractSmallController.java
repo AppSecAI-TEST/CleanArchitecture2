@@ -52,5 +52,9 @@ public abstract class AbstractSmallController<T> implements ISmallController<T> 
     @Override
     public abstract String getSubscriberType();
 
+    @Override
+    public boolean isPersistent() {
+        return false;
+    };
 
 }

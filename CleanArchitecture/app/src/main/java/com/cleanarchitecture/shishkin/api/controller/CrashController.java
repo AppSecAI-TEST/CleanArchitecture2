@@ -32,5 +32,10 @@ public class CrashController implements Thread.UncaughtExceptionHandler, IModule
         return null;
     }
 
+    @Override
+    public boolean isPersistent() {
+        return false;
+    }
+
 }
 

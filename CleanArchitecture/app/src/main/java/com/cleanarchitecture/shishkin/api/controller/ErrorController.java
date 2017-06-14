@@ -134,4 +134,9 @@ public class ErrorController implements IErrorController {
     public String getSubscriberType() {
         return null;
     }
+
+    @Override
+    public boolean isPersistent() {
+        return true;
+    }
 }
