@@ -20,6 +20,9 @@ import com.cleanarchitecture.shishkin.api.repository.INetProvider;
 import com.cleanarchitecture.shishkin.api.repository.IRepository;
 import com.cleanarchitecture.shishkin.api.repository.NetProvider;
 import com.cleanarchitecture.shishkin.api.repository.Repository;
+import com.cleanarchitecture.shishkin.api.storage.DiskCache;
+import com.cleanarchitecture.shishkin.api.storage.IStorage;
+import com.cleanarchitecture.shishkin.api.storage.MemoryCache;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractActivity;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractContentActivity;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
@@ -27,7 +30,6 @@ import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.SafeUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
-import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
@@ -365,16 +367,33 @@ public class AdminUtils {
     }
 
     /**
-     * Установить цвет status bar телефона у текущей activity
-     *
-     * @param color_res цвет
+     * Получить кэш диска
      */
-    public static void setStatusBarColor(final int color_res) {
-        final AbstractActivity activity = getCurrentActivity();
-        if (activity != null) {
-            ViewUtils.setStatusBarColor(activity, color_res);
+    public static IStorage getDiskCache() {
+        final IStorage cache = Admin.getInstance().get(DiskCache.NAME);
+        if (cache != null) {
+            return cache;
+        } else {
+            final Context context = getContext();
+            if (context != null) {
+                return DiskCache.getInstance(context);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Получить кэш памяти
+     */
+    public static IStorage getMemoryCache() {
+        final IStorage cache = Admin.getInstance().get(MemoryCache.NAME);
+        if (cache != null) {
+            return cache;
+        } else {
+            return MemoryCache.getInstance();
         }
     }
+
 
     private AdminUtils() {
     }

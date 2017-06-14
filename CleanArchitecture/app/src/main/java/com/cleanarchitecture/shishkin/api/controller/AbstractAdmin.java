@@ -19,7 +19,9 @@ public abstract class AbstractAdmin implements IAdmin {
     @Override
     public synchronized <C> C get(final String controllerName) {
         if (!containsModule(controllerName)) {
-            return null;
+            if (!registerModule(controllerName)) {
+                return null;
+            }
         }
 
         try {
@@ -91,20 +93,22 @@ public abstract class AbstractAdmin implements IAdmin {
     }
 
     @Override
-    public void registerModule(String name) {
+    public boolean registerModule(String name) {
         if (!StringUtils.isNullOrEmpty(name)) {
             if (mModules.containsKey(name)) {
-                return;
+                return true;
             }
 
             IModule object = null;
             try {
                 object = (IModule) Class.forName(name).newInstance();
                 registerModule(object);
+                return true;
             } catch (Exception e) {
                 ErrorController.getInstance().onError(LOG_TAG, e);
             }
         }
+        return false;
     }
 
     @Override

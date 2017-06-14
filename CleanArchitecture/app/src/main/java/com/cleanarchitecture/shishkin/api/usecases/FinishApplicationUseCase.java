@@ -5,7 +5,6 @@ import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.HideKeyboardEvent;
 import com.cleanarchitecture.shishkin.api.storage.IStorage;
-import com.cleanarchitecture.shishkin.api.storage.MemoryCache;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -25,7 +24,7 @@ public class FinishApplicationUseCase extends AbstractUseCase {
         AdminUtils.postEvent(new FinishApplicationEvent());
 
         // очистить кэш в памяти
-        final IStorage memoryCache = Admin.getInstance().get(MemoryCache.NAME);
+        final IStorage memoryCache = AdminUtils.getMemoryCache();
         if (memoryCache != null) {
             memoryCache.clearAll();
         }

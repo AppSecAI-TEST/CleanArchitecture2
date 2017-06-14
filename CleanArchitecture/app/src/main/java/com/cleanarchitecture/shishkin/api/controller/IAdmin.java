@@ -27,7 +27,7 @@ public interface IAdmin extends ISubscriber {
      *
      * @param name имя класса модуля
      */
-    void registerModule(String name);
+    boolean registerModule(String name);
 
     /**
      * Отменить регистрацию модуля или объекта
