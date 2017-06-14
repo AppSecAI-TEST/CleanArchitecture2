@@ -14,6 +14,7 @@ import java.util.Map;
 public class AppPreferences {
     public static final String VERSION_APPLICATION = "version_application";
     public static final String LAST_DAY_START = "last_day_start";
+    public static final String DESKTOP = "desktop";
 
     /**
      * Получить версию приложения.
@@ -31,6 +32,24 @@ public class AppPreferences {
      */
     public static void setApplicationVersion(final Context context, final String version) {
         putString(context, VERSION_APPLICATION, version);
+    }
+
+    /**
+     * Получить рабочий стол
+     *
+     * @return рабочий стол
+     */
+    public static String getDesktop(final Context context) {
+        return getString(context, DESKTOP, "");
+    }
+
+    /**
+     * Установить рабочий стол
+     *
+     * @param desktop рабочий стол
+     */
+    public static void setDesktop(final Context context, final String desktop) {
+        putString(context, DESKTOP, desktop);
     }
 
     /**
