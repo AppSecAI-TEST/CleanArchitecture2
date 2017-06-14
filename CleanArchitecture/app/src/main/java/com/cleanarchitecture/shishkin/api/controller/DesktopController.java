@@ -30,6 +30,8 @@ public class DesktopController implements IDesktopController, IModuleSubscriber 
     public DesktopController() {
         final Context context = AdminUtils.getContext();
         if (context != null) {
+            mDesktop = AppPreferences.getDesktop(context);
+
             String[] keys = context.getResources().getStringArray(R.array.desktop_key);
             String[] values = context.getResources().getStringArray(R.array.desktop_value);
             if (keys.length == values.length) {
@@ -93,17 +95,23 @@ public class DesktopController implements IDesktopController, IModuleSubscriber 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDialogResultEvent(DialogResultEvent event) {
-        final Bundle bundle = event.getResult();
-        if (bundle != null && bundle.getInt("id", -1) == R.id.dialog_select_desktop) {
-            final ArrayList<String> list = bundle.getStringArrayList("list");
-            if (list != null && list.size() > 0) {
-                if (mDesktops.containsKey(list.get(0))) {
-                    mDesktop = mDesktops.get(list.get(0));
-                    final ILifecycleController controller = Admin.getInstance().get(LifecycleController.NAME);
-                    if (controller != null) {
-                        final Map<String, WeakReference<ILifecycleSubscriber>> map = controller.getSubscribers();
-                        for (WeakReference<ILifecycleSubscriber> ref : map.values()) {
-                            AdminUtils.addMail(new RecreateMail(ref.get().getName()));
+        final Context context = AdminUtils.getContext();
+        if (context != null) {
+            final Bundle bundle = event.getResult();
+            if (bundle != null && bundle.getInt("id", -1) == R.id.dialog_select_desktop) {
+                final ArrayList<String> list = bundle.getStringArrayList("list");
+                if (list != null && list.size() > 0) {
+                    if (mDesktops.containsKey(list.get(0))) {
+                        mDesktop = mDesktops.get(list.get(0));
+                        AppPreferences.setDesktop(context, mDesktop);
+                        final ILifecycleController controller = Admin.getInstance().get(LifecycleController.NAME);
+                        if (controller != null) {
+                            final Map<String, WeakReference<ILifecycleSubscriber>> map = controller.getSubscribers();
+                            for (WeakReference<ILifecycleSubscriber> ref : map.values()) {
+                                if (ref != null && ref.get() != null) {
+                                    AdminUtils.addMail(new RecreateMail(ref.get().getName()));
+                                }
+                            }
                         }
                     }
                 }
