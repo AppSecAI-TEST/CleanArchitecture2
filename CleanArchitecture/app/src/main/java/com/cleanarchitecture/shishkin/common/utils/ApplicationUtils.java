@@ -134,6 +134,14 @@ public class ApplicationUtils {
         return null;
     }
 
+    public static int getResourceId(final Context context, final String typeResource, final String nameResource) {
+        // Example: context.getResources().getIdentifier("widget_blue", "layout", context.getPackageName())
+        if (context != null) {
+            return context.getResources().getIdentifier(nameResource, typeResource, context.getPackageName());
+        }
+        return -1;
+    }
+
     private ApplicationUtils() {
     }
 

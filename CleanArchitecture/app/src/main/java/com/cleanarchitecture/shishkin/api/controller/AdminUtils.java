@@ -214,7 +214,7 @@ public class AdminUtils {
     public static void addMail(final IMail mail) {
         final IMailController controller = Admin.getInstance().get(MailController.NAME);
         if (controller != null) {
-            addMail(mail);
+            controller.addMail(mail);
         }
     }
 
@@ -303,6 +303,22 @@ public class AdminUtils {
      */
     public static IRepository getRepository() {
         return Admin.getInstance().get(Repository.NAME);
+    }
+
+    /**
+     * Получить layout id рабочего стола
+     *
+     * @param name      имя layout
+     * @param defaultId id ресурса по умолчанию
+     * @return layout id
+     */
+    public static int getDesktop(String name, int defaultId) {
+        final IDesktopController module = Admin.getInstance().get(DesktopController.NAME);
+        if (module != null) {
+            return module.getLayoutId(name, defaultId);
+        }
+        return defaultId;
+
     }
 
     /**

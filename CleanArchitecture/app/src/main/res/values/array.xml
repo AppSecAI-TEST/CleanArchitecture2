@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="caching_type">
-        <item>Без кэширования</item>
-        <item>Кэширование в памяти</item>
-        <item>Кэширование на диске</item>
-        <item>Кэширование в памяти и на диске</item>
+    <string-array name="desktop_key">
+        <item>По умолчанию</item>
+        <item>Темный</item>
     </string-array>
-    <string-array name="caching_value">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
+    <string-array name="desktop_value">
+        <item></item>
+        <item>dark</item>
     </string-array>
 </resources>
