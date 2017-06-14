@@ -136,4 +136,9 @@ public class DiskCache implements IStorage, IModule {
     public String getSubscriberType() {
         return null;
     }
+
+    @Override
+    public boolean isPersistent() {
+        return true;
+    }
 }

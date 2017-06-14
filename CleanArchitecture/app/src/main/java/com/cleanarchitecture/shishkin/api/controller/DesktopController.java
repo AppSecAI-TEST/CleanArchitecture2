@@ -87,6 +87,11 @@ public class DesktopController implements IDesktopController, IModuleSubscriber 
     }
 
     @Override
+    public boolean isPersistent() {
+        return false;
+    }
+
+    @Override
     public List<String> hasSubscriberType() {
         final ArrayList<String> list = new ArrayList<>();
         list.add(EventBusController.SUBSCRIBER_TYPE);

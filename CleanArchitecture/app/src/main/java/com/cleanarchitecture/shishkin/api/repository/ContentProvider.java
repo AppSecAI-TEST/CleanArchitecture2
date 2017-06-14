@@ -73,4 +73,9 @@ public class ContentProvider implements IContentProvider {
         return null;
     }
 
+    @Override
+    public boolean isPersistent() {
+        return false;
+    }
+
 }

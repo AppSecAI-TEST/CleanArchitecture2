@@ -9,4 +9,11 @@ public interface IModule extends ISubscriber {
      */
     String getSubscriberType();
 
+    /**
+     * Получить тип модуля
+     *
+     * @return true - не будет удаляться администратором
+     */
+    boolean isPersistent();
+
 }

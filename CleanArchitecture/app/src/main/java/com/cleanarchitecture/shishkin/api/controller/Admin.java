@@ -51,19 +51,7 @@ public class Admin extends AbstractAdmin {
     }
 
     public synchronized void unregister() {
-        unregister(DesktopController.NAME);
-        unregister(Repository.NAME);
-        unregister(NetProvider.NAME);
-        unregister(DbProvider.NAME);
-        unregister(ContentProvider.NAME);
-        unregister(UserIteractionController.NAME);
-        unregister(MailController.NAME);
-        unregister(UseCasesController.NAME);
-        unregister(NavigationController.NAME);
-        unregister(PresenterController.NAME);
-        unregister(LifecycleController.NAME);
-        unregister(ActivityController.NAME);
-        unregister(CrashController.NAME);
+        unregisterAll();
     }
 
     public synchronized void register() {
@@ -71,7 +59,7 @@ public class Admin extends AbstractAdmin {
 
         final Context context = AdminUtils.getContext();
 
-        // default Singleton controllers
+        // default persistent (Singleton) controllers
         registerModule(ErrorController.getInstance());
         registerModule(EventBusController.getInstance());
         registerModule(MemoryCache.getInstance());

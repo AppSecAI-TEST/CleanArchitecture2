@@ -108,4 +108,9 @@ public class EventBusController implements IEventBusController {
         return SUBSCRIBER_TYPE;
     }
 
+    @Override
+    public boolean isPersistent() {
+        return true;
+    }
+
 }

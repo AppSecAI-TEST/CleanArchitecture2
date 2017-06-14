@@ -114,30 +114,43 @@ public abstract class AbstractAdmin implements IAdmin {
                 if (mModules.containsKey(nameController)) {
                     IModule module = mModules.get(nameController);
                     if (module != null) {
-                        if (module instanceof IController) {
-                            if (((IController) module).hasSubscribers()) {
-                                return;
-                            }
-                        }
-
-                        // отменяем регистрацию в других модулях
-                        if (module instanceof IModuleSubscriber) {
-                            final List<String> subscribers = ((IModuleSubscriber) module).hasSubscriberType();
-                            for (String subscriber : subscribers) {
-                                final IModule moduleSubscriber = mModules.get(subscriber);
-                                if (moduleSubscriber != null && moduleSubscriber instanceof ISmallController) {
-                                    //Log.i(NAME, module.getName() + " исключен в " + moduleSubscriber.getName());
-                                    ((ISmallController) moduleSubscriber).unregister(module);
+                        if (!module.isPersistent()) {
+                            if (module instanceof IController) {
+                                if (((IController) module).hasSubscribers()) {
+                                    return;
                                 }
                             }
+
+                            // отменяем регистрацию в других модулях
+                            if (module instanceof IModuleSubscriber) {
+                                final List<String> subscribers = ((IModuleSubscriber) module).hasSubscriberType();
+                                for (String subscriber : subscribers) {
+                                    final IModule moduleSubscriber = mModules.get(subscriber);
+                                    if (moduleSubscriber != null && moduleSubscriber instanceof ISmallController) {
+                                        //Log.i(NAME, module.getName() + " исключен в " + moduleSubscriber.getName());
+                                        ((ISmallController) moduleSubscriber).unregister(module);
+                                    }
+                                }
+                            }
+
+                            //Log.i(NAME, nameController + " исключен");
+                            mModules.remove(nameController);
                         }
+                    } else {
+                        //Log.i(NAME, nameController + " исключен");
+                        mModules.remove(nameController);
                     }
-                    //Log.i(NAME, nameController + " исключен");
-                    mModules.remove(nameController);
                 }
             } catch (Exception e) {
                 ErrorController.getInstance().onError(LOG_TAG, e);
             }
+        }
+    }
+
+    @Override
+    public synchronized void unregisterAll() {
+        for (IModule module: mModules.values()) {
+            unregister(module.getName());
         }
     }
 

@@ -158,4 +158,9 @@ public class MemoryCache implements ISubscriber, IStorage, IModule {
     public String getSubscriberType() {
         return null;
     }
+
+    @Override
+    public boolean isPersistent() {
+        return true;
+    }
 }
