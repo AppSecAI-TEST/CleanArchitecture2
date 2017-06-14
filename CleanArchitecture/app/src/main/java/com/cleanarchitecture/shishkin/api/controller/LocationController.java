@@ -3,7 +3,6 @@ package com.cleanarchitecture.shishkin.api.controller;
 import android.Manifest;
 import android.content.Context;
 import android.location.Location;
-import android.support.annotation.NonNull;
 
 import com.cleanarchitecture.shishkin.api.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.event.OnPermisionGrantedEvent;
@@ -12,7 +11,6 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnFailureListener;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -22,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+@SuppressWarnings("unused")
 public class LocationController extends AbstractController<ILocationSubscriber> implements IModuleSubscriber {
     public static final String NAME = LocationController.class.getName();
     public static final String SUBSCRIBER_TYPE = ILocationSubscriber.class.getName();
@@ -64,12 +63,7 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
                 if (context != null) {
                     mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
                     mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null)
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    ErrorController.getInstance().onError(LOG_TAG, e.getMessage());
-                                }
-                            });
+                            .addOnFailureListener(e -> ErrorController.getInstance().onError(LOG_TAG, e.getMessage()));
                 }
             }
         }
