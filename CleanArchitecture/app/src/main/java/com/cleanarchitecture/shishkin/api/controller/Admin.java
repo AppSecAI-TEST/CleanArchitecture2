@@ -81,6 +81,7 @@ public class Admin extends AbstractAdmin {
         registerModule(NetProvider.NAME);
         registerModule(Repository.NAME);
         registerModule(DesktopController.NAME);
+        registerModule(LocationController.NAME);
 
     }
 

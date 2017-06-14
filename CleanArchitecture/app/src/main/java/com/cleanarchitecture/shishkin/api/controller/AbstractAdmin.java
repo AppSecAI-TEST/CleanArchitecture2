@@ -153,7 +153,7 @@ public abstract class AbstractAdmin implements IAdmin {
 
     @Override
     public synchronized void unregisterAll() {
-        for (IModule module: mModules.values()) {
+        for (IModule module : mModules.values()) {
             unregister(module.getName());
         }
     }

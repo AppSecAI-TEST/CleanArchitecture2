@@ -70,6 +70,18 @@ public class RequestPermissionUseCase extends AbstractUseCase {
                     }
                     break;
 
+                case Manifest.permission.ACCESS_FINE_LOCATION:
+                    switch (status) {
+                        case PackageManager.PERMISSION_GRANTED:
+                            break;
+
+                        case PackageManager.PERMISSION_DENIED:
+                            controller.grantPermission(permission, context.getString(R.string.permission_call_phone));
+                            break;
+
+                    }
+                    break;
+
             }
         }
     }
