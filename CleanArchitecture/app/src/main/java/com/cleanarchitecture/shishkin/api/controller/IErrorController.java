@@ -35,7 +35,7 @@ public interface IErrorController extends IModule {
      *
      * @param source    источник ошибки
      * @param e         Exception
-     * @param errorCode код ошибки
+     * @param errorCode код ошибки пользователю
      */
     void onError(String source, Exception e, int errorCode);
 
@@ -43,7 +43,7 @@ public interface IErrorController extends IModule {
      * Ошибка
      *
      * @param source    источник ошибки
-     * @param errorCode код ошибки
+     * @param errorCode код ошибки пользователю
      */
     void onError(String source, int errorCode);
 
