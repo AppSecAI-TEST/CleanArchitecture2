@@ -10,7 +10,6 @@ import com.cleanarchitecture.shishkin.api.repository.Repository;
 import com.cleanarchitecture.shishkin.api.storage.DiskCache;
 import com.cleanarchitecture.shishkin.api.storage.MemoryCache;
 import com.cleanarchitecture.shishkin.api.usecases.UseCasesController;
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -70,7 +69,7 @@ public class Admin extends AbstractAdmin {
     public synchronized void register() {
         isFinishApplication = false;
 
-        final Context context = ApplicationController.getInstance();
+        final Context context = AdminUtils.getContext();
 
         // default Singleton controllers
         registerModule(ErrorController.getInstance());
