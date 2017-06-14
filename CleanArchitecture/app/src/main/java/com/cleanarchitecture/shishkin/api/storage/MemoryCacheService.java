@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings("unused")
 public class MemoryCacheService extends LiveLongBackgroundIntentService {
 
-    private static final String NAME = "MemoryCacheService";
+    private static final String NAME = MemoryCacheService.class.getName();
 
     private static final String EXTRA_SERIALIZABLE = "EXTRA_SERIALIZABLE";
     private static final String ACTION_PUT = BuildConfig.APPLICATION_ID + ".MemoryCacheService.PUT";

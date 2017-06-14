@@ -9,7 +9,7 @@ import com.cleanarchitecture.shishkin.api.storage.MemoryCache;
  */
 public class LowMemoryUseCase extends AbstractUseCase {
 
-    public static final String NAME = "LowMemoryUseCase";
+    public static final String NAME = LowMemoryUseCase.class.getName();
 
     public static synchronized void onLowMemory() {
         final IStorage memoryCache = Admin.getInstance().get(MemoryCache.NAME);

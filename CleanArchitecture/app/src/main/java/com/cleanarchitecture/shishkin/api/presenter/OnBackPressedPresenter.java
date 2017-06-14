@@ -11,7 +11,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class OnBackPressedPresenter extends AbstractPresenter<Void> {
-    private static final String NAME = "onBackPressedPresenter";
+    private static final String NAME = OnBackPressedPresenter.class.getName();
 
     private boolean mDoubleBackPressedOnce = false;
     private Timer mTimer;

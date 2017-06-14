@@ -11,7 +11,8 @@ import java.util.Map;
 
 @SuppressWarnings("unused")
 public abstract class AbstractAdmin implements IAdmin {
-    private static final String NAME = "AbstractAdmin";
+    private static final String NAME = AbstractAdmin.class.getName();
+    private static final String LOG_TAG = "AbstractAdmin:";
 
     private Map<String, IModule> mModules = Collections.synchronizedMap(new HashMap<String, IModule>());
 
@@ -28,7 +29,7 @@ public abstract class AbstractAdmin implements IAdmin {
                 mModules.remove(controllerName);
             }
         } catch (Exception e) {
-            ErrorController.getInstance().onError(NAME, e);
+            ErrorController.getInstance().onError(LOG_TAG, e);
         }
         return null;
     }
@@ -84,7 +85,7 @@ public abstract class AbstractAdmin implements IAdmin {
                 //Log.i(NAME, controller.getName() + " зарегестрирован");
                 mModules.put(controller.getName(), controller);
             } catch (Exception e) {
-                ErrorController.getInstance().onError(NAME, e);
+                ErrorController.getInstance().onError(LOG_TAG, e);
             }
         }
     }
@@ -101,7 +102,7 @@ public abstract class AbstractAdmin implements IAdmin {
                 object = (IModule) Class.forName(name).newInstance();
                 registerModule(object);
             } catch (Exception e) {
-                ErrorController.getInstance().onError(NAME, e);
+                ErrorController.getInstance().onError(LOG_TAG, e);
             }
         }
     }
@@ -135,7 +136,7 @@ public abstract class AbstractAdmin implements IAdmin {
                     mModules.remove(nameController);
                 }
             } catch (Exception e) {
-                ErrorController.getInstance().onError(NAME, e);
+                ErrorController.getInstance().onError(LOG_TAG, e);
             }
         }
     }
@@ -158,7 +159,7 @@ public abstract class AbstractAdmin implements IAdmin {
                     }
                 }
             } catch (Exception e) {
-                ErrorController.getInstance().onError(NAME, e);
+                ErrorController.getInstance().onError(LOG_TAG, e);
             }
         }
     }
@@ -178,7 +179,7 @@ public abstract class AbstractAdmin implements IAdmin {
                 }
                 //Log.i(NAME, subscriber.getName() + " исключен");
             } catch (Exception e) {
-                ErrorController.getInstance().onError(NAME, e);
+                ErrorController.getInstance().onError(LOG_TAG, e);
             }
         }
     }
@@ -197,7 +198,7 @@ public abstract class AbstractAdmin implements IAdmin {
                 }
             }
         } catch (Exception e) {
-            ErrorController.getInstance().onError(NAME, e);
+            ErrorController.getInstance().onError(LOG_TAG, e);
         }
     }
 

@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  * Команда - выход из приложения
  */
 public class FinishApplicationUseCase extends AbstractUseCase {
-    public static final String NAME = "FinishApplicationUseCase";
+    public static final String NAME = FinishApplicationUseCase.class.getName();
 
     public static synchronized void onFinishApplication() {
 

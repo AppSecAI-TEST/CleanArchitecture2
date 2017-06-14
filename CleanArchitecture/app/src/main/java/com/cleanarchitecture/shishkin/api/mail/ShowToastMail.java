@@ -9,7 +9,7 @@ import com.cleanarchitecture.shishkin.api.event.ui.ShowToastEvent;
 
 public class ShowToastMail extends AbstractMail {
 
-    private static final String NAME = "ShowToastMail";
+    private static final String NAME = ShowToastMail.class.getName();
 
     private String mMessage;
     private int mDuration = Toast.LENGTH_LONG;

@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class PhoneContactLiveData extends AbstractContentProviderLiveData<List<PhoneContactItem>> {
-    public static final String NAME = "PhoneContactLiveData";
+    public static final String NAME = PhoneContactLiveData.class.getName();
 
     public PhoneContactLiveData() {
         super(PhoneContactDAO.CONTENT_URI);

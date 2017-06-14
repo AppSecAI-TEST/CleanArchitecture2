@@ -12,7 +12,8 @@ import io.paperdb.Paper;
 
 public class DiskStorage implements IStorage {
 
-    public static final String NAME = "DiskStorage";
+    public static final String NAME = DiskStorage.class.getName();
+    private static final String LOG_TAG = "DiskStorage:";
 
     private static volatile DiskStorage sInstance;
     private ReentrantLock mLock;
@@ -56,7 +57,7 @@ public class DiskStorage implements IStorage {
                 Paper.book(NAME).write(key, value);
             }
         } catch (Exception e) {
-            ErrorController.getInstance().onError(NAME, e);
+            ErrorController.getInstance().onError(LOG_TAG, e);
         } finally {
             mLock.unlock();
         }
@@ -75,7 +76,7 @@ public class DiskStorage implements IStorage {
                 return Paper.book(NAME).read(key);
             }
         } catch (Exception e) {
-            ErrorController.getInstance().onError(NAME, e);
+            ErrorController.getInstance().onError(LOG_TAG, e);
         } finally {
             mLock.unlock();
         }
@@ -93,7 +94,7 @@ public class DiskStorage implements IStorage {
         try {
             return Paper.book(NAME).read(key, defaultValue);
         } catch (Exception e) {
-            ErrorController.getInstance().onError(NAME, e);
+            ErrorController.getInstance().onError(LOG_TAG, e);
         } finally {
             mLock.unlock();
         }
@@ -111,7 +112,7 @@ public class DiskStorage implements IStorage {
         try {
             Paper.book(NAME).delete(key);
         } catch (Exception e) {
-            ErrorController.getInstance().onError(NAME, e);
+            ErrorController.getInstance().onError(LOG_TAG, e);
         } finally {
             mLock.unlock();
         }
@@ -124,7 +125,7 @@ public class DiskStorage implements IStorage {
         try {
             Paper.book(NAME).destroy();
         } catch (Exception e) {
-            ErrorController.getInstance().onError(NAME, e);
+            ErrorController.getInstance().onError(LOG_TAG, e);
         } finally {
             mLock.unlock();
         }

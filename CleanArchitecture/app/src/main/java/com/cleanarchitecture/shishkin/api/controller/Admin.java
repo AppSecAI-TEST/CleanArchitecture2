@@ -17,7 +17,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 @SuppressWarnings("unused")
 public class Admin extends AbstractAdmin {
-    public static final String NAME = "Admin";
+    public static final String NAME = Admin.class.getName();
 
     private static volatile Admin sInstance;
 

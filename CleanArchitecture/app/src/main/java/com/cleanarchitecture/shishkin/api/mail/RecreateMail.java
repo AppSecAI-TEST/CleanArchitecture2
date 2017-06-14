@@ -6,7 +6,7 @@ import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 
 public class RecreateMail extends AbstractMail {
 
-    private static final String NAME = "RecreateMail";
+    private static final String NAME = RecreateMail.class.getName();
 
     public RecreateMail(final String address) {
         super(address);

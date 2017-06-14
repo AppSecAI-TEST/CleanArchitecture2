@@ -12,7 +12,7 @@ import com.cleanarchitecture.shishkin.api.presenter.ToolbarPresenter;
 @SuppressWarnings("unused")
 public class ToolbarFragment extends AbstractFragment {
 
-    public static final String NAME = "ToolbarFragment";
+    public static final String NAME = ToolbarFragment.class.getName();
 
     private ToolbarPresenter mToolbarPresenter = new ToolbarPresenter();
 

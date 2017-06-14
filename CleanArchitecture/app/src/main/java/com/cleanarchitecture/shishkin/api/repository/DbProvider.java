@@ -33,6 +33,7 @@ import java.util.Map;
 
 public class DbProvider<H extends AbstractViewModel> implements IDbProvider, LifecycleOwner, IModuleSubscriber {
     public static final String NAME = DbProvider.class.getName();
+    private static final String LOG_TAG = "DbProvider:";
 
     private Map<String, Object> mDb;
     private Map<String, H> mViewModel;
@@ -63,7 +64,7 @@ public class DbProvider<H extends AbstractViewModel> implements IDbProvider, Lif
                     .build();
             mDb.put(databaseName, db);
         } catch (Exception e) {
-            ErrorController.getInstance().onError(NAME, e, ErrorController.ERROR_DB);
+            ErrorController.getInstance().onError(LOG_TAG, e, ErrorController.ERROR_DB);
         }
         return isConnected(databaseName);
     }
@@ -83,7 +84,7 @@ public class DbProvider<H extends AbstractViewModel> implements IDbProvider, Lif
                 db.close();
                 mDb.remove(databaseName);
             } catch (Exception e) {
-                ErrorController.getInstance().onError(NAME, e, ErrorController.ERROR_DB);
+                ErrorController.getInstance().onError(LOG_TAG, e, ErrorController.ERROR_DB);
             }
         }
         return !isConnected(databaseName);
@@ -145,7 +146,7 @@ public class DbProvider<H extends AbstractViewModel> implements IDbProvider, Lif
                 }
             }
         } catch (Exception e) {
-            ErrorController.getInstance().onError(NAME, e, ErrorController.ERROR_DB);
+            ErrorController.getInstance().onError(LOG_TAG, e, ErrorController.ERROR_DB);
         }
 
         connect(klass, nameDb);
@@ -185,7 +186,7 @@ public class DbProvider<H extends AbstractViewModel> implements IDbProvider, Lif
                     }
                 }
             } catch (Exception e) {
-                ErrorController.getInstance().onError(NAME, e, ErrorController.ERROR_DB);
+                ErrorController.getInstance().onError(LOG_TAG, e, ErrorController.ERROR_DB);
             }
         }
 
@@ -212,7 +213,7 @@ public class DbProvider<H extends AbstractViewModel> implements IDbProvider, Lif
                 viewModel.getLiveData().observe(this, observer);
             }
         } catch (Exception e) {
-            ErrorController.getInstance().onError(NAME, e, ErrorController.ERROR_GET_DATA);
+            ErrorController.getInstance().onError(LOG_TAG, e, ErrorController.ERROR_GET_DATA);
         }
     }
 
@@ -228,7 +229,7 @@ public class DbProvider<H extends AbstractViewModel> implements IDbProvider, Lif
                     }
                 }
             } catch (Exception e) {
-                ErrorController.getInstance().onError(NAME, e, ErrorController.ERROR_GET_DATA);
+                ErrorController.getInstance().onError(LOG_TAG, e, ErrorController.ERROR_GET_DATA);
             }
         });
     }
@@ -251,7 +252,7 @@ public class DbProvider<H extends AbstractViewModel> implements IDbProvider, Lif
                 }
             }
         } catch (Exception e) {
-            ErrorController.getInstance().onError(NAME, e, ErrorController.ERROR_GET_DATA);
+            ErrorController.getInstance().onError(LOG_TAG, e, ErrorController.ERROR_GET_DATA);
         }
     }
 

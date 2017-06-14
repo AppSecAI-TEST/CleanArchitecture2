@@ -15,6 +15,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class MemoryCache implements ISubscriber, IStorage, IModule {
     public static final String NAME = MemoryCache.class.getName();
+    private static final String LOG_TAG = "MemoryCache:";
     private static final long MAX_SIZE = 1000L;
     private static final long DURATION = 3;
     private static final TimeUnit DURATION_TIMEUNIT = TimeUnit.MINUTES;
@@ -68,7 +69,7 @@ public class MemoryCache implements ISubscriber, IStorage, IModule {
                 mCache.put(key, value);
             }
         } catch (Exception e) {
-            ErrorController.getInstance().onError(NAME, e);
+            ErrorController.getInstance().onError(LOG_TAG, e);
         } finally {
             mLock.unlock();
         }
@@ -85,7 +86,7 @@ public class MemoryCache implements ISubscriber, IStorage, IModule {
         try {
             return mCache.getIfPresent(key);
         } catch (Exception e) {
-            ErrorController.getInstance().onError(NAME, e);
+            ErrorController.getInstance().onError(LOG_TAG, e);
         } finally {
             mLock.unlock();
         }
@@ -107,7 +108,7 @@ public class MemoryCache implements ISubscriber, IStorage, IModule {
             }
             return value;
         } catch (Exception e) {
-            ErrorController.getInstance().onError(NAME, e);
+            ErrorController.getInstance().onError(LOG_TAG, e);
         } finally {
             mLock.unlock();
         }
@@ -125,7 +126,7 @@ public class MemoryCache implements ISubscriber, IStorage, IModule {
         try {
             mCache.invalidate(key);
         } catch (Exception e) {
-            ErrorController.getInstance().onError(NAME, e);
+            ErrorController.getInstance().onError(LOG_TAG, e);
         } finally {
             mLock.unlock();
         }
@@ -138,7 +139,7 @@ public class MemoryCache implements ISubscriber, IStorage, IModule {
         try {
             mCache.invalidateAll();
         } catch (Exception e) {
-            ErrorController.getInstance().onError(NAME, e);
+            ErrorController.getInstance().onError(LOG_TAG, e);
         } finally {
             mLock.unlock();
         }

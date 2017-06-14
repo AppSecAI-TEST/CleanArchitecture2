@@ -18,7 +18,7 @@ import com.github.snowdream.android.util.Log;
  * Команда - запрос прав приложением
  */
 public class RequestPermissionUseCase extends AbstractUseCase {
-    public static final String NAME = "RequestPermissionUseCase";
+    public static final String NAME = RequestPermissionUseCase.class.getName();
 
     public static synchronized void request(final UseCaseRequestPermissionEvent event) {
         final String permission = event.getPermission();

@@ -9,13 +9,12 @@ import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseOnLowMemoryEvent;
-import com.squareup.leakcanary.LeakCanary;
 
 import java.io.File;
 
 public class ApplicationController extends MultiDexApplication {
 
-    public static final String NAME = "ApplicationController";
+    public static final String NAME = ApplicationController.class.getName();
     public static final String EXTERNAL_STORAGE_APPLICATION_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() +
             File.separator + BuildConfig.APPLICATION_ID + File.separator;
     private static volatile ApplicationController sInstance;
@@ -26,9 +25,9 @@ public class ApplicationController extends MultiDexApplication {
 
         super.onCreate();
 
-        if (!LeakCanary.isInAnalyzerProcess(this)) {
-            LeakCanary.install(this);
-        }
+        //if (!LeakCanary.isInAnalyzerProcess(this)) {
+        //    LeakCanary.install(this);
+        //}
 
         Admin.instantiate();
     }

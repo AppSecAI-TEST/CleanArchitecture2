@@ -5,7 +5,7 @@ import com.cleanarchitecture.shishkin.api.presenter.IPresenter;
 
 public class UpdateViewPresenterMail extends AbstractMail {
 
-    private static final String NAME = "UpdateViewPresenterMail";
+    private static final String NAME = UpdateViewPresenterMail.class.getName();
 
     public UpdateViewPresenterMail(final String address) {
         super(address);
