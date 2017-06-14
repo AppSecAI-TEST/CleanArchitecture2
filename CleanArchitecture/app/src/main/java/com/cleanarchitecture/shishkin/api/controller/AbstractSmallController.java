@@ -2,12 +2,12 @@ package com.cleanarchitecture.shishkin.api.controller;
 
 import java.lang.ref.WeakReference;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class AbstractSmallController<T> implements ISmallController<T> {
 
-    protected Map<String, WeakReference<T>> mSubscribers = Collections.synchronizedMap(new HashMap<String, WeakReference<T>>());
+    protected Map<String, WeakReference<T>> mSubscribers = Collections.synchronizedMap(new ConcurrentHashMap<String, WeakReference<T>>());
 
     @Override
     public abstract String getName();
