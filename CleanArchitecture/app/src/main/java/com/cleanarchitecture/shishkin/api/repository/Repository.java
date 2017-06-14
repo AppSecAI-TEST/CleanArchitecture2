@@ -15,7 +15,6 @@ import com.cleanarchitecture.shishkin.api.mail.ShowToastMail;
 import com.cleanarchitecture.shishkin.api.storage.DiskCache;
 import com.cleanarchitecture.shishkin.api.storage.DiskCacheService;
 import com.cleanarchitecture.shishkin.api.storage.IStorage;
-import com.cleanarchitecture.shishkin.api.storage.MemoryCache;
 import com.cleanarchitecture.shishkin.api.storage.MemoryCacheService;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.ui.activity.MainActivity;
@@ -56,8 +55,8 @@ public class Repository implements IRepository, IModuleSubscriber {
 
     @Override
     public synchronized Serializable getFromCache(final String key, final int cacheType) {
-        final IStorage diskCache = Admin.getInstance().get(DiskCache.NAME);
-        final IStorage memoryCache = Admin.getInstance().get(MemoryCache.NAME);
+        final IStorage diskCache = AdminUtils.getDiskCache();
+        final IStorage memoryCache = AdminUtils.getMemoryCache();
 
         switch (cacheType) {
             case USE_NO_CACHE:

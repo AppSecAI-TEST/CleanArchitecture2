@@ -8,7 +8,6 @@ import com.cleanarchitecture.shishkin.api.event.ui.ShowHorizontalProgressBarEven
 import com.cleanarchitecture.shishkin.api.repository.Repository;
 import com.cleanarchitecture.shishkin.api.storage.DiskCache;
 import com.cleanarchitecture.shishkin.api.storage.IStorage;
-import com.cleanarchitecture.shishkin.api.storage.MemoryCache;
 import com.cleanarchitecture.shishkin.application.app.Constant;
 import com.cleanarchitecture.shishkin.application.data.dao.PhoneContactDAO;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
@@ -40,7 +39,7 @@ public class PhoneContactLiveData extends AbstractContentProviderLiveData<List<P
 
     @Override
     public void onChanged() {
-        final IStorage memoryCache = Admin.getInstance().get(MemoryCache.NAME);
+        final IStorage memoryCache = AdminUtils.getMemoryCache();
         if (memoryCache != null) {
             memoryCache.clear(String.valueOf(Constant.REPOSITORY_GET_CONTACTS));
 
