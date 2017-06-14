@@ -49,16 +49,16 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import butterknife.Unbinder;
 
 public abstract class AbstractActivity extends LifecycleActivity
         implements IActivity, ILifecycleSubscriber, IBackStack, IMailSubscriber {
 
-    private Map<String, IPresenter> mPresenters = Collections.synchronizedMap(new HashMap<String, IPresenter>());
+    private Map<String, IPresenter> mPresenters = Collections.synchronizedMap(new ConcurrentHashMap<String, IPresenter>());
     private StateMachine mStateMachine = new StateMachine(Lifecycle.STATE_CREATE);
     private Unbinder mUnbinder = null;
 

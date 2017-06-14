@@ -17,15 +17,15 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DesktopController implements IDesktopController, IModuleSubscriber {
     public static final String NAME = DesktopController.class.getName();
 
     private String mDesktop = ""; // default desktop
-    private Map<String, String> mDesktops = Collections.synchronizedMap(new HashMap<String, String>());
+    private Map<String, String> mDesktops = Collections.synchronizedMap(new ConcurrentHashMap<String, String>());
 
     public DesktopController() {
         final Context context = AdminUtils.getContext();

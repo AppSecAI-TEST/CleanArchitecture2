@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DbProvider<H extends AbstractViewModel> implements IDbProvider, LifecycleOwner, IModuleSubscriber {
     public static final String NAME = DbProvider.class.getName();
@@ -44,7 +45,7 @@ public class DbProvider<H extends AbstractViewModel> implements IDbProvider, Lif
         mLifecycleRegistry.markState(Lifecycle.State.CREATED);
 
         mDb = Collections.synchronizedMap(new HashMap<String, Object>());
-        mViewModel = Collections.synchronizedMap(new HashMap<String, H>());
+        mViewModel = Collections.synchronizedMap(new ConcurrentHashMap<String, H>());
 
         mLifecycleRegistry.markState(Lifecycle.State.STARTED);
     }

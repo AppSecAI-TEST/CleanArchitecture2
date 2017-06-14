@@ -13,13 +13,14 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class MailController extends AbstractController<IMailSubscriber> implements IMailController {
 
     public static final String NAME = MailController.class.getName();
     public static final String SUBSCRIBER_TYPE = IMailSubscriber.class.getName();
-    private Map<Long, IMail> mMail = Collections.synchronizedMap(new HashMap<Long, IMail>());
+    private Map<Long, IMail> mMail = Collections.synchronizedMap(new ConcurrentHashMap<Long, IMail>());
     private AtomicLong mId = new AtomicLong(0L);
 
     public MailController() {

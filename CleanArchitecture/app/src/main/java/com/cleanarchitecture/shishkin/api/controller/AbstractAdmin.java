@@ -3,9 +3,9 @@ package com.cleanarchitecture.shishkin.api.controller;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 //import com.github.snowdream.android.util.Log;
 
@@ -14,7 +14,7 @@ public abstract class AbstractAdmin implements IAdmin {
     private static final String NAME = AbstractAdmin.class.getName();
     private static final String LOG_TAG = "AbstractAdmin:";
 
-    private Map<String, IModule> mModules = Collections.synchronizedMap(new HashMap<String, IModule>());
+    private Map<String, IModule> mModules = Collections.synchronizedMap(new ConcurrentHashMap<String, IModule>());
 
     @Override
     public synchronized <C> C get(final String controllerName) {
