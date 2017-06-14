@@ -21,7 +21,6 @@ public abstract class AbstractSmallController<T> implements ISmallController<T> 
                 mSubscribers.put(((ISubscriber) subscriber).getName(), new WeakReference<T>(subscriber));
             }
         }
-
     }
 
     private synchronized void checkNullSubscriber() {
@@ -55,6 +54,6 @@ public abstract class AbstractSmallController<T> implements ISmallController<T> 
     @Override
     public boolean isPersistent() {
         return false;
-    };
+    }
 
 }

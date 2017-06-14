@@ -32,6 +32,7 @@ import com.cleanarchitecture.shishkin.common.utils.SafeUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import java.io.File;
 import java.util.List;
@@ -101,6 +102,18 @@ public class AdminUtils {
             }
         }
     }
+
+    public static boolean isGooglePlayServices() {
+        final Context context = getContext();
+        if (context != null) {
+            int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
+            if (ConnectionResult.SUCCESS == resultCode) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     /**
      * Добавить в список приложений, которым разрешен вывод поверх других окон

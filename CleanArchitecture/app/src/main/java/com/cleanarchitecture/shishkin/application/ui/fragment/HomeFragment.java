@@ -74,6 +74,8 @@ public class HomeFragment extends AbstractContentFragment {
 
         if (!AdminUtils.checkPermission(Manifest.permission.READ_CONTACTS)) {
             AdminUtils.postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.READ_CONTACTS));
+        } else if (!AdminUtils.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
+            AdminUtils.postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.ACCESS_FINE_LOCATION));
         } else if (!AdminUtils.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             AdminUtils.postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.WRITE_EXTERNAL_STORAGE));
         }
