@@ -27,13 +27,15 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
     public static final String SUBSCRIBER_TYPE = ILocationSubscriber.class.getName();
     private static final String LOG_TAG = "LocationController:";
 
-    private static final long POLLING_FREQ = TimeUnit.MINUTES.toMillis(5);
-    private static final long FASTEST_UPDATE_FREQ = TimeUnit.SECONDS.toMillis(30);
+    private static final long POLLING_FREQ = TimeUnit.MINUTES.toMillis(1);
+    private static final long FASTEST_UPDATE_FREQ = TimeUnit.SECONDS.toMillis(10);
+    private static final float SMALLEST_DISPLACEMENT = 100F;
 
     private FusedLocationProviderClient mFusedLocationClient;
     private Location mLocation = null;
     private LocationCallback mLocationCallback = null;
     private LocationRequest mLocationRequest = null;
+
 
     public LocationController() {
         mLocationCallback = new LocationCallback() {
@@ -50,6 +52,7 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         mLocationRequest.setInterval(POLLING_FREQ);
         mLocationRequest.setFastestInterval(FASTEST_UPDATE_FREQ);
+        mLocationRequest.setSmallestDisplacement(SMALLEST_DISPLACEMENT);
 
         startLocation();
     }
