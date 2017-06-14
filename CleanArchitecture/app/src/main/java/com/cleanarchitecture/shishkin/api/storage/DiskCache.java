@@ -14,6 +14,7 @@ import io.paperdb.Paper;
 public class DiskCache implements IStorage, IModule {
 
     public static final String NAME = DiskCache.class.getName();
+    private static final String LOG_TAG = "DiskCache:";
 
     private static volatile DiskCache sInstance;
     private ReentrantLock mLock;
@@ -57,7 +58,7 @@ public class DiskCache implements IStorage, IModule {
                 Paper.book(NAME).write(key, value);
             }
         } catch (Exception e) {
-            ErrorController.getInstance().onError(NAME, e);
+            ErrorController.getInstance().onError(LOG_TAG, e);
         } finally {
             mLock.unlock();
         }
@@ -76,7 +77,7 @@ public class DiskCache implements IStorage, IModule {
                 return Paper.book(NAME).read(key);
             }
         } catch (Exception e) {
-            ErrorController.getInstance().onError(NAME, e);
+            ErrorController.getInstance().onError(LOG_TAG, e);
         } finally {
             mLock.unlock();
         }
@@ -94,7 +95,7 @@ public class DiskCache implements IStorage, IModule {
         try {
             return Paper.book(NAME).read(key, defaultValue);
         } catch (Exception e) {
-            ErrorController.getInstance().onError(NAME, e);
+            ErrorController.getInstance().onError(LOG_TAG, e);
         } finally {
             mLock.unlock();
         }
@@ -112,7 +113,7 @@ public class DiskCache implements IStorage, IModule {
         try {
             Paper.book(NAME).delete(key);
         } catch (Exception e) {
-            ErrorController.getInstance().onError(NAME, e);
+            ErrorController.getInstance().onError(LOG_TAG, e);
         } finally {
             mLock.unlock();
         }
@@ -125,7 +126,7 @@ public class DiskCache implements IStorage, IModule {
         try {
             Paper.book(NAME).destroy();
         } catch (Exception e) {
-            ErrorController.getInstance().onError(NAME, e);
+            ErrorController.getInstance().onError(LOG_TAG, e);
         } finally {
             mLock.unlock();
         }

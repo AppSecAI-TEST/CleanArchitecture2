@@ -37,7 +37,7 @@ import butterknife.ButterKnife;
 @SuppressWarnings("unused")
 public class HomeFragment extends AbstractContentFragment {
 
-    public static final String NAME = "HomeFragment";
+    public static final String NAME = HomeFragment.class.getName();
 
     public static HomeFragment newInstance() {
         return new HomeFragment();

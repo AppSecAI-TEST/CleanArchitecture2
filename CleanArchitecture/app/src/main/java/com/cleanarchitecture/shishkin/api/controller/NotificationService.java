@@ -27,7 +27,8 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings("unused")
 public class NotificationService extends LiveLongBackgroundIntentService {
 
-    private static final String NAME = "NotificationService";
+    private static final String NAME = NotificationService.class.getName();
+    private static final String LOG_TAG = "NotificationService:";
     private static final String CANAL_ID = "CANAL_" + BuildConfig.APPLICATION_ID;
     private static final String CANAL_NAME = "Notification Service Canal";
 
@@ -238,7 +239,7 @@ public class NotificationService extends LiveLongBackgroundIntentService {
                 nm.notify(R.id.notification_service, notification);
             }
         } catch (Exception e) {
-            ErrorController.getInstance().onError(NAME, e);
+            ErrorController.getInstance().onError(LOG_TAG, e);
         }
     }
 

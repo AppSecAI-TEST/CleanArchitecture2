@@ -60,7 +60,7 @@ import io.reactivex.functions.Consumer;
 @SuppressWarnings("unused")
 public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
         implements Consumer<TextViewAfterTextChangeEvent>, IObserver<List<PhoneContactItem>> {
-    public static final String NAME = "SearchPresenter";
+    public static final String NAME = SearchPresenter.class.getName();
 
     private WeakReference<EditText> mSearchView;
     private WeakReference<FastScrollRecyclerView> mRecyclerView;

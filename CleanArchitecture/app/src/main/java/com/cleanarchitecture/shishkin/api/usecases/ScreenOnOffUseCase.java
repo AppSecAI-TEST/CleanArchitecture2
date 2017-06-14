@@ -8,7 +8,7 @@ import com.cleanarchitecture.shishkin.api.event.OnScreenOffEvent;
  */
 public class ScreenOnOffUseCase extends AbstractUseCase {
 
-    public static final String NAME = "ScreenOnOffUseCase";
+    public static final String NAME = ScreenOnOffUseCase.class.getName();
 
     public static synchronized void onScreenOff() {
         // остановить все LiveLongBackgroundIntentService

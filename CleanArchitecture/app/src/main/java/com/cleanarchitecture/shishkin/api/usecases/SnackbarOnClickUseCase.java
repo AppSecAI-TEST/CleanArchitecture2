@@ -11,7 +11,7 @@ import com.cleanarchitecture.shishkin.api.event.ui.OnSnackBarClickEvent;
  */
 public class SnackbarOnClickUseCase extends AbstractUseCase {
 
-    public static final String NAME = "SnackbarOnClickUseCase";
+    public static final String NAME = SnackbarOnClickUseCase.class.getName();
 
     public static synchronized void onClick(final OnSnackBarClickEvent event) {
 

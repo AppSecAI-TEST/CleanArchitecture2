@@ -15,7 +15,7 @@ import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 
 public class MainActivity extends AbstractContentActivity {
 
-    public static final String NAME = "MainActivity";
+    public static final String NAME = MainActivity.class.getName();
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {

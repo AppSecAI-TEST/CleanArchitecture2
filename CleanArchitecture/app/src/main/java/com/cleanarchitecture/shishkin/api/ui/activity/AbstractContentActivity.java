@@ -27,7 +27,7 @@ import java.util.List;
 public abstract class AbstractContentActivity extends AbstractActivity
         implements ActivityResultListener, INavigationSubscriber {
 
-    private static final String NAME = "AbstractContentActivity";
+    private static final String LOG_TAG = "AbstractContentActivity:";
 
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
@@ -118,7 +118,7 @@ public abstract class AbstractContentActivity extends AbstractActivity
                 }
             }
         } catch (Exception e) {
-            ErrorController.getInstance().onError(NAME, e);
+            ErrorController.getInstance().onError(LOG_TAG, e);
         }
         return false;
     }
@@ -239,7 +239,7 @@ public abstract class AbstractContentActivity extends AbstractActivity
                     replace(R.id.toolbar, mToolbar, ToolbarFragment.NAME).
                     commitAllowingStateLoss();
         } catch (Exception e) {
-            ErrorController.getInstance().onError(NAME, e);
+            ErrorController.getInstance().onError(LOG_TAG, e);
         }
     }
 

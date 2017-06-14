@@ -8,7 +8,7 @@ import com.cleanarchitecture.shishkin.api.event.ui.ShowMessageEvent;
 
 public class ShowMessageMail extends AbstractMail {
 
-    private static final String NAME = "ShowMessageMail";
+    private static final String NAME = ShowMessageMail.class.getName();
 
     private String mMessage;
     private String mAction;

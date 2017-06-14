@@ -10,7 +10,7 @@ import com.cleanarchitecture.shishkin.application.data.livedata.PhoneContactLive
 import java.util.List;
 
 public class PhoneContactViewModel extends AbstractViewModel<List<PhoneContactItem>> {
-    public static final String NAME = "PhoneContactViewModel";
+    public static final String NAME = PhoneContactViewModel.class.getName();
 
     private PhoneContactLiveData mData;
 

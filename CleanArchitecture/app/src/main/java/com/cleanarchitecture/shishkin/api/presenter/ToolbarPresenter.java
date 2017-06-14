@@ -51,7 +51,7 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 @SuppressWarnings("unused")
 public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolbarPresenter {
-    public static final String NAME = "ToolbarPresenter";
+    public static final String NAME = ToolbarPresenter.class.getName();
 
     private WeakReference<Context> mContext;
     private WeakReference<View> mToolbarLL;

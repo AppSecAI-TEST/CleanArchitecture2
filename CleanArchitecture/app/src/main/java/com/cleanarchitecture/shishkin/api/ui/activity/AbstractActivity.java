@@ -55,11 +55,9 @@ import java.util.Map;
 
 import butterknife.Unbinder;
 
-@SuppressWarnings("unused")
 public abstract class AbstractActivity extends LifecycleActivity
         implements IActivity, ILifecycleSubscriber, IBackStack, IMailSubscriber {
 
-    private static final String NAME = "AbstractActivity";
     private Map<String, IPresenter> mPresenters = Collections.synchronizedMap(new HashMap<String, IPresenter>());
     private StateMachine mStateMachine = new StateMachine(Lifecycle.STATE_CREATE);
     private Unbinder mUnbinder = null;
