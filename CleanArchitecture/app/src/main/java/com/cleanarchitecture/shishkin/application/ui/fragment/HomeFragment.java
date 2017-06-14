@@ -9,7 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.api.controller.DesktopController;
+import com.cleanarchitecture.shishkin.api.controller.IDesktopController;
 import com.cleanarchitecture.shishkin.api.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.OnToolbarMenuItemClickEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBackNavigationEvent;
@@ -52,7 +55,7 @@ public class HomeFragment extends AbstractContentFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        final View root = inflater.inflate(R.layout.fragment_home, container, false);
+        final View root = inflater.inflate(AdminUtils.getDesktop("fragment_home", R.layout.fragment_home), container, false);
         setUnbinder(ButterKnife.bind(this, root));
 
         return root;
@@ -120,8 +123,13 @@ public class HomeFragment extends AbstractContentFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public synchronized void onToolbarMenuItemClickEvent(OnToolbarMenuItemClickEvent event) {
         final MenuItem item = event.getMenuItem();
-        if (item != null && item.getItemId() == R.id.exit) {
+        if (item.getItemId() == R.id.exit) {
             AdminUtils.postEvent(new UseCaseFinishApplicationEvent());
+        } else if (item.getItemId() == R.id.desktop) {
+            final IDesktopController controller = Admin.getInstance().get(DesktopController.NAME);
+            if (controller != null) {
+                controller.getDesktop();
+            }
         }
     }
 

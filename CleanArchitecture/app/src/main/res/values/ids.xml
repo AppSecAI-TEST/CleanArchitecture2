@@ -9,4 +9,6 @@
 
     <item name="dialog_call_phone" type="id" />
 
+    <item name="dialog_select_desktop" type="id" />
+
 </resources>

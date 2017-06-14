@@ -52,6 +52,7 @@ public class Admin extends AbstractAdmin {
     }
 
     public synchronized void unregister() {
+        unregister(DesktopController.NAME);
         unregister(Repository.NAME);
         unregister(NetProvider.NAME);
         unregister(DbProvider.NAME);
@@ -92,6 +93,7 @@ public class Admin extends AbstractAdmin {
         registerModule(DbProvider.NAME);
         registerModule(NetProvider.NAME);
         registerModule(Repository.NAME);
+        registerModule(DesktopController.NAME);
 
     }
 
