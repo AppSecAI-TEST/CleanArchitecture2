@@ -222,5 +222,4 @@ public abstract class AbstractAdmin implements IAdmin {
             ErrorController.getInstance().onError(LOG_TAG, e);
         }
     }
-
 }
