@@ -9,8 +9,6 @@ import com.cleanarchitecture.shishkin.api.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.api.event.OnScreenOffEvent;
 import com.cleanarchitecture.shishkin.api.event.OnScreenOnEvent;
 import com.cleanarchitecture.shishkin.api.mail.SetLocationMail;
-import com.cleanarchitecture.shishkin.common.lifecycle.IStateable;
-import com.cleanarchitecture.shishkin.common.lifecycle.Lifecycle;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
