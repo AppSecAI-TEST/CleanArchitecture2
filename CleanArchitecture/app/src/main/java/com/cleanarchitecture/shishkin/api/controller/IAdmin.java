@@ -62,5 +62,4 @@ public interface IAdmin extends ISubscriber {
      */
     void setCurrentSubscriber(IModuleSubscriber subscriber);
 
-    boolean containsModule(String name);
 }
