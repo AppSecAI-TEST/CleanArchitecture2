@@ -6,6 +6,8 @@ import android.location.Location;
 
 import com.cleanarchitecture.shishkin.api.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.event.OnPermisionGrantedEvent;
+import com.cleanarchitecture.shishkin.common.lifecycle.IStateable;
+import com.cleanarchitecture.shishkin.common.lifecycle.Lifecycle;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -21,7 +23,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("unused")
-public class LocationController extends AbstractController<ILocationSubscriber> implements IModuleSubscriber {
+public class LocationController extends AbstractController<ILocationSubscriber> implements ILocationController, IModuleSubscriber {
     public static final String NAME = LocationController.class.getName();
     public static final String SUBSCRIBER_TYPE = ILocationSubscriber.class.getName();
     private static final String LOG_TAG = "LocationController:";
@@ -34,7 +36,6 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
     private Location mLocation = null;
     private LocationCallback mLocationCallback = null;
     private LocationRequest mLocationRequest = null;
-
 
     public LocationController() {
         mLocationCallback = new LocationCallback() {
@@ -52,8 +53,6 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
         mLocationRequest.setInterval(POLLING_FREQ);
         mLocationRequest.setFastestInterval(FASTEST_UPDATE_FREQ);
         mLocationRequest.setSmallestDisplacement(SMALLEST_DISPLACEMENT);
-
-        startLocation();
     }
 
     private void startLocation() {
@@ -69,16 +68,31 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
         }
     }
 
-    public void setLocation(final Location mLocation) {
+    private void stopLocation() {
+        if (mFusedLocationClient != null) {
+            mFusedLocationClient.removeLocationUpdates(mLocationCallback);
+        }
+    }
+
+    private void setLocation(final Location mLocation) {
         this.mLocation = mLocation;
 
-        for (WeakReference<ILocationSubscriber> ref : getSubscribers().values()) {
-            if (ref != null && ref.get() != null) {
-                ref.get().setLocation(mLocation);
+        if (hasSubscribers()) {
+            for (WeakReference<ILocationSubscriber> ref : getSubscribers().values()) {
+                if (ref != null && ref.get() != null) {
+                    if (ref.get() instanceof IStateable) {
+                        if (((IStateable) ref.get()).getState() == Lifecycle.STATE_RESUME) {
+                            ref.get().setLocation(mLocation);
+                        }
+                    } else {
+                        ref.get().setLocation(mLocation);
+                    }
+                }
             }
         }
     }
 
+    @Override
     public Location getLocation() {
         return mLocation;
     }
@@ -87,8 +101,17 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
     public synchronized void register(final ILocationSubscriber subscriber) {
         super.register(subscriber);
 
-        if (subscriber != null && mLocation != null) {
-            subscriber.setLocation(mLocation);
+        if (getSubscribers().size() == 1) {
+            startLocation();
+        }
+    }
+
+    @Override
+    public synchronized void unregister(final ILocationSubscriber subscriber) {
+        super.unregister(subscriber);
+
+        if (!hasSubscribers()) {
+            stopLocation();
         }
     }
 
@@ -123,7 +146,7 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public synchronized void onFinishApplicationEvent(FinishApplicationEvent event) {
-        mFusedLocationClient.removeLocationUpdates(mLocationCallback);
+        stopLocation();
     }
 
 
