@@ -9,6 +9,7 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
+import com.cleanarchitecture.shishkin.api.controller.AbstractModule;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
@@ -32,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class DbProvider<H extends AbstractViewModel> implements IDbProvider, LifecycleOwner, IModuleSubscriber {
+public class DbProvider<H extends AbstractViewModel> extends AbstractModule implements IDbProvider, LifecycleOwner, IModuleSubscriber {
     public static final String NAME = DbProvider.class.getName();
     private static final String LOG_TAG = "DbProvider:";
 
@@ -265,11 +266,6 @@ public class DbProvider<H extends AbstractViewModel> implements IDbProvider, Lif
     @Override
     public String getSubscriberType() {
         return null;
-    }
-
-    @Override
-    public boolean isPersistent() {
-        return false;
     }
 
     @Override

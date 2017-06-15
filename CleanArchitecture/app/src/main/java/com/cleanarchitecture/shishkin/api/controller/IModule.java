@@ -16,4 +16,9 @@ public interface IModule extends ISubscriber {
      */
     boolean isPersistent();
 
+    /**
+     * Событие - отключить регистрацию
+     */
+    void onUnRegister();
+
 }

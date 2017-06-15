@@ -139,4 +139,9 @@ public class ErrorController implements IErrorController {
     public boolean isPersistent() {
         return true;
     }
+
+    @Override
+    public void onUnRegister() {
+    }
+
 }

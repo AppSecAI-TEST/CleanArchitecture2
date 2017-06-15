@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.api.controller.AbstractModule;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
 import com.cleanarchitecture.shishkin.api.event.IEvent;
@@ -20,7 +21,7 @@ import com.cleanarchitecture.shishkin.common.utils.CloseUtils;
 
 import java.util.LinkedList;
 
-public class ContentProvider implements IContentProvider {
+public class ContentProvider extends AbstractModule implements IContentProvider {
     public static final String NAME = ContentProvider.class.getName();
 
     public ContentProvider() {
@@ -71,11 +72,6 @@ public class ContentProvider implements IContentProvider {
     @Override
     public String getSubscriberType() {
         return null;
-    }
-
-    @Override
-    public boolean isPersistent() {
-        return false;
     }
 
 }
