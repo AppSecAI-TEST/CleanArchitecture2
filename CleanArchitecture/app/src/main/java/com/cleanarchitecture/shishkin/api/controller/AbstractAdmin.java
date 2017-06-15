@@ -36,8 +36,7 @@ public abstract class AbstractAdmin implements IAdmin {
         return null;
     }
 
-    @Override
-    public synchronized boolean containsModule(final String controllerName) {
+    private synchronized boolean containsModule(final String controllerName) {
         if (StringUtils.isNullOrEmpty(controllerName)) {
             return false;
         }
