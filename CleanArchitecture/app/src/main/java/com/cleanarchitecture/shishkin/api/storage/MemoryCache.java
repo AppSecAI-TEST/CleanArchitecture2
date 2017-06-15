@@ -2,7 +2,6 @@ package com.cleanarchitecture.shishkin.api.storage;
 
 import com.cleanarchitecture.shishkin.api.controller.AbstractModule;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
-import com.cleanarchitecture.shishkin.api.controller.IModule;
 import com.cleanarchitecture.shishkin.api.controller.ISubscriber;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import com.google.common.cache.CacheBuilder;

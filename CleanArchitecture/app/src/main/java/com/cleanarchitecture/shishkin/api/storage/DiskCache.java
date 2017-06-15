@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.cleanarchitecture.shishkin.api.controller.AbstractModule;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
-import com.cleanarchitecture.shishkin.api.controller.IModule;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
 import java.io.Serializable;
