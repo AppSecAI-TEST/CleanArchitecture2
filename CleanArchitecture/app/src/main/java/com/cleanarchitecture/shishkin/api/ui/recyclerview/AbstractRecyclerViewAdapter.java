@@ -237,7 +237,7 @@ public abstract class AbstractRecyclerViewAdapter<E, VH extends AbstractViewHold
      */
     @Override
     public int getItemCount() {
-        return mItems.size();
+        return (mItems == null ? 0 : mItems.size());
     }
 
     /**
