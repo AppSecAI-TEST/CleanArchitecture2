@@ -208,8 +208,11 @@ public abstract class AbstractAdmin implements IAdmin {
                 final List<String> types = subscriber.hasSubscriberType();
                 for (IModule module : mModules.values()) {
                     if (module instanceof IController) {
-                        if (types.contains(module.getSubscriberType())) {
-                            ((IController) module).setCurrentSubscriber(subscriber);
+                        final String moduleSubscriberType = module.getSubscriberType();
+                        if (!StringUtils.isNullOrEmpty(moduleSubscriberType)) {
+                            if (types.contains(moduleSubscriberType)) {
+                                ((IController) module).setCurrentSubscriber(subscriber);
+                            }
                         }
                     }
                 }
