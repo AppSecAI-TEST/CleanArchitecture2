@@ -2,6 +2,7 @@ package com.cleanarchitecture.shishkin.api.storage;
 
 import android.content.Context;
 
+import com.cleanarchitecture.shishkin.api.controller.AbstractModule;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
 import com.cleanarchitecture.shishkin.api.controller.IModule;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
@@ -11,7 +12,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import io.paperdb.Paper;
 
-public class DiskCache implements IStorage, IModule {
+public class DiskCache extends AbstractModule implements IStorage {
 
     public static final String NAME = DiskCache.class.getName();
     private static final String LOG_TAG = "DiskCache:";

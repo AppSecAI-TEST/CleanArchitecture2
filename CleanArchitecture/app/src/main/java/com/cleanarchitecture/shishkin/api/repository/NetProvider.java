@@ -3,6 +3,7 @@ package com.cleanarchitecture.shishkin.api.repository;
 import android.content.Context;
 
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.api.controller.AbstractModule;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
@@ -23,7 +24,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("unused")
-public class NetProvider implements INetProvider, IModuleSubscriber {
+public class NetProvider extends AbstractModule implements INetProvider, IModuleSubscriber {
     public static final String NAME = NetProvider.class.getName();
 
     private boolean mConnected = false;
@@ -66,11 +67,6 @@ public class NetProvider implements INetProvider, IModuleSubscriber {
     @Override
     public String getSubscriberType() {
         return null;
-    }
-
-    @Override
-    public boolean isPersistent() {
-        return false;
     }
 
     @Override

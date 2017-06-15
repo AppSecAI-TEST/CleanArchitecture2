@@ -31,7 +31,10 @@ import java.util.List;
 public class UseCasesController extends AbstractController implements IUseCasesController, IModuleSubscriber {
     public static final String NAME = UseCasesController.class.getName();
 
+    private BroadcastReceiver mScreenOnOffReceiver;
+
     public UseCasesController() {
+        registerScreenOnOffBroadcastReceiver();
     }
 
     private void registerScreenOnOffBroadcastReceiver() {
@@ -41,7 +44,7 @@ public class UseCasesController extends AbstractController implements IUseCasesC
             intentFilter.addAction(Intent.ACTION_SCREEN_ON);
             intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
 
-            final BroadcastReceiver screenOnOffReceiver = new BroadcastReceiver() {
+            mScreenOnOffReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     final String strAction = intent.getAction();
@@ -54,9 +57,18 @@ public class UseCasesController extends AbstractController implements IUseCasesC
                 }
             };
 
-            context.registerReceiver(screenOnOffReceiver, intentFilter);
+            context.registerReceiver(mScreenOnOffReceiver, intentFilter);
         }
+    }
 
+    @Override
+    public void onUnRegister() {
+        if (mScreenOnOffReceiver != null) {
+            final Context context = AdminUtils.getContext();
+            if (context != null) {
+                context.unregisterReceiver(mScreenOnOffReceiver);
+            }
+        }
     }
 
     @Override

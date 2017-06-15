@@ -13,7 +13,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-public class UserIteractionController implements IModule, IModuleSubscriber {
+public class UserIteractionController extends AbstractModule implements IModuleSubscriber {
     public static final String NAME = UserIteractionController.class.getName();
     private static final long TIMEOUT = TimeUnit.MINUTES.toMillis(10);
 
@@ -56,11 +56,6 @@ public class UserIteractionController implements IModule, IModuleSubscriber {
     @Override
     public String getSubscriberType() {
         return null;
-    }
-
-    @Override
-    public boolean isPersistent() {
-        return false;
     }
 
     @Override

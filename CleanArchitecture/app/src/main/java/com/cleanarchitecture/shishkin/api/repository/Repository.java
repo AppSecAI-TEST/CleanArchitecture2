@@ -3,6 +3,7 @@ package com.cleanarchitecture.shishkin.api.repository;
 import android.content.Context;
 
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.api.controller.AbstractModule;
 import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.AppPreferences;
@@ -30,7 +31,7 @@ import java.util.Date;
 import java.util.List;
 
 @SuppressWarnings("unused")
-public class Repository implements IRepository, IModuleSubscriber {
+public class Repository extends AbstractModule implements IRepository, IModuleSubscriber {
     public static final String NAME = Repository.class.getName();
 
     // информация об источниках данных
@@ -132,11 +133,6 @@ public class Repository implements IRepository, IModuleSubscriber {
     @Override
     public String getSubscriberType() {
         return null;
-    }
-
-    @Override
-    public boolean isPersistent() {
-        return false;
     }
 
     @Override

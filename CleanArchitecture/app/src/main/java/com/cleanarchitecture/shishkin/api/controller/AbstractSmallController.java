@@ -56,4 +56,8 @@ public abstract class AbstractSmallController<T> implements ISmallController<T> 
         return false;
     }
 
+    @Override
+    public void onUnRegister() {
+    }
+
 }

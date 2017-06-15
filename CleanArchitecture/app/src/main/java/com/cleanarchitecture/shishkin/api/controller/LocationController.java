@@ -6,6 +6,9 @@ import android.location.Location;
 
 import com.cleanarchitecture.shishkin.api.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.event.OnPermisionGrantedEvent;
+import com.cleanarchitecture.shishkin.api.event.OnScreenOffEvent;
+import com.cleanarchitecture.shishkin.api.event.OnScreenOnEvent;
+import com.cleanarchitecture.shishkin.api.mail.SetLocationMail;
 import com.cleanarchitecture.shishkin.common.lifecycle.IStateable;
 import com.cleanarchitecture.shishkin.common.lifecycle.Lifecycle;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -32,7 +35,7 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
     private static final long FASTEST_UPDATE_FREQ = TimeUnit.SECONDS.toMillis(10);
     private static final float SMALLEST_DISPLACEMENT = 100F;
 
-    private FusedLocationProviderClient mFusedLocationClient;
+    private FusedLocationProviderClient mFusedLocationClient = null;
     private Location mLocation = null;
     private LocationCallback mLocationCallback = null;
     private LocationRequest mLocationRequest = null;
@@ -56,21 +59,38 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
     }
 
     private void startLocation() {
-        if (AdminUtils.isGooglePlayServices()) {
-            if (AdminUtils.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                final Context context = AdminUtils.getContext();
-                if (context != null) {
-                    mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
-                    mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null)
-                            .addOnFailureListener(e -> ErrorController.getInstance().onError(LOG_TAG, e.getMessage()));
-                }
-            }
+        if (mFusedLocationClient != null) {
+            return;
         }
+
+        if (!hasSubscribers()) {
+            return;
+        }
+
+        if (!AdminUtils.isGooglePlayServices()) {
+            return;
+        }
+
+        if (!AdminUtils.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
+            return;
+        }
+
+        final Context context = AdminUtils.getContext();
+        if (context == null) {
+            return;
+        }
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
+        mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null)
+                .addOnFailureListener(e -> ErrorController.getInstance().onError(LOG_TAG, e.getMessage()));
     }
 
-    private void stopLocation() {
-        if (mFusedLocationClient != null) {
-            mFusedLocationClient.removeLocationUpdates(mLocationCallback);
+    private void stopLocation(boolean isforce) {
+        if (isforce || (!isforce && !hasSubscribers())) {
+            if (mFusedLocationClient != null) {
+                mFusedLocationClient.removeLocationUpdates(mLocationCallback);
+                mFusedLocationClient = null;
+            }
         }
     }
 
@@ -80,10 +100,8 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
         if (hasSubscribers()) {
             for (WeakReference<ILocationSubscriber> ref : getSubscribers().values()) {
                 if (ref != null && ref.get() != null) {
-                    if (ref.get() instanceof IStateable) {
-                        if (((IStateable) ref.get()).getState() == Lifecycle.STATE_RESUME) {
-                            ref.get().setLocation(mLocation);
-                        }
+                    if (ref.get() instanceof IMailSubscriber) {
+                        AdminUtils.addMail(new SetLocationMail(ref.get().getName(), mLocation));
                     } else {
                         ref.get().setLocation(mLocation);
                     }
@@ -101,18 +119,14 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
     public synchronized void register(final ILocationSubscriber subscriber) {
         super.register(subscriber);
 
-        if (getSubscribers().size() == 1) {
-            startLocation();
-        }
+        startLocation();
     }
 
     @Override
     public synchronized void unregister(final ILocationSubscriber subscriber) {
         super.unregister(subscriber);
 
-        if (!hasSubscribers()) {
-            stopLocation();
-        }
+        stopLocation(false);
     }
 
     @Override
@@ -137,6 +151,11 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
         return false;
     }
 
+    @Override
+    public void onUnRegister() {
+        stopLocation(true);
+    }
+
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public synchronized void onPermisionGrantedEvent(OnPermisionGrantedEvent event) {
         if (event.getPermission().equals(Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -146,8 +165,16 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public synchronized void onFinishApplicationEvent(FinishApplicationEvent event) {
-        stopLocation();
+        stopLocation(true);
     }
 
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onScreenOffEvent(final OnScreenOffEvent event) {
+        stopLocation(true);
+    }
 
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onScreenOnEvent(final OnScreenOnEvent event) {
+        startLocation();
+    }
 }
