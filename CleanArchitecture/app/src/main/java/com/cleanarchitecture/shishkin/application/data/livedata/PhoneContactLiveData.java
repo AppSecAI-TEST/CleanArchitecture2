@@ -42,13 +42,17 @@ public class PhoneContactLiveData extends AbstractContentProviderLiveData<List<P
         final IStorage memoryCache = AdminUtils.getMemoryCache();
         if (memoryCache != null) {
             memoryCache.clear(String.valueOf(Constant.REPOSITORY_GET_CONTACTS));
-
         }
 
-        final IStorage diskCache = Admin.getInstance().get(DiskCache.NAME);
+        final IStorage diskCache = AdminUtils.getDiskCache();
         if (diskCache != null) {
             diskCache.clear(String.valueOf(Constant.REPOSITORY_GET_CONTACTS));
         }
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -59,8 +63,4 @@ public class PhoneContactLiveData extends AbstractContentProviderLiveData<List<P
         }
     }
 
-    @Override
-    public String getName() {
-        return NAME;
-    }
 }

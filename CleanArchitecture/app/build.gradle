@@ -84,11 +84,11 @@ dependencies {
     compile 'com.pkmmte.view:circularimageview:1.1'
     compile 'com.balysv:material-ripple:1.0.2'
 
-    compile 'android.arch.persistence.room:runtime:1.0.0-alpha2';
-    annotationProcessor 'android.arch.persistence.room:compiler:1.0.0-alpha2';
+    compile 'android.arch.persistence.room:runtime:1.0.0-alpha3';
+    annotationProcessor 'android.arch.persistence.room:compiler:1.0.0-alpha3';
 
-    compile 'android.arch.lifecycle:extensions:1.0.0-alpha2';
-    annotationProcessor 'android.arch.lifecycle:compiler:1.0.0-alpha2';
+    compile 'android.arch.lifecycle:extensions:1.0.0-alpha3';
+    annotationProcessor 'android.arch.lifecycle:compiler:1.0.0-alpha3';
 
     compile 'com.android.support:multidex:1.0.1'
 
