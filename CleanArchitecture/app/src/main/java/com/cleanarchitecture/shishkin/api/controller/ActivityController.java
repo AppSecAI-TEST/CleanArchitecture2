@@ -222,9 +222,7 @@ public class ActivityController extends AbstractController<IActivity> implements
     public void onShowKeyboardEvent(ShowKeyboardEvent event) {
         final IActivity subscriber = getSubscriber();
         if (subscriber != null && subscriber.validate()) {
-            if (subscriber.validate()) {
-                subscriber.getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-            }
+            subscriber.getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
     }
 
