@@ -424,7 +424,7 @@ public class AdminUtils {
      */
     public static String getErrorText(final int errorCode) {
         final Context context = getContext();
-        if (context != null) {
+        if (context == null) {
             return "Error get context";
         }
 
@@ -440,6 +440,9 @@ public class AdminUtils {
 
             case ErrorController.ERROR_NOT_FOUND_ACTIVITY:
                 return context.getString(R.string.error_not_found_activity);
+
+            case ErrorController.ERROR_ACTIVITY_NOT_VALID:
+                return context.getString(R.string.error_activity_not_valid);
 
             default:
                 return context.getString(R.string.error_application);

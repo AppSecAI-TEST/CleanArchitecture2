@@ -64,54 +64,47 @@ public class ActivityController extends AbstractController<IActivity> implements
     public synchronized boolean checkPermission(String permission) {
         if (ApplicationUtils.hasMarshmallow()) {
             final IActivity subscriber = getSubscriber();
-            if (subscriber != null) {
+            if (subscriber != null && subscriber.validate()) {
                 if (ActivityCompat.checkSelfPermission(subscriber.getActivity(), permission) != PackageManager.PERMISSION_GRANTED) {
                     return false;
                 }
-            } else {
-                ErrorController.getInstance().onError(LOG_TAG + "checkPermission", ErrorController.ERROR_NOT_FOUND_ACTIVITY, false);
             }
         }
         return true;
     }
 
     @Override
-    public boolean checkGooglePlayServices() {
-        final IActivity subscriber = getCurrentSubscriber();
-        if (subscriber != null && subscriber.validate()) {
-            final GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
-            final int result = googleAPI.isGooglePlayServicesAvailable(subscriber.getActivity());
-            if (result != ConnectionResult.SUCCESS) {
-                if (googleAPI.isUserResolvableError(result)) {
-                    ApplicationUtils.runOnUiThread(() -> {
+    public void checkGooglePlayServices() {
+        ApplicationUtils.runOnUiThread(() -> {
+            final IActivity subscriber = getSubscriber();
+            if (subscriber != null && subscriber.validate()) {
+                final GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
+                final int result = googleAPI.isGooglePlayServicesAvailable(subscriber.getActivity());
+                if (result != ConnectionResult.SUCCESS) {
+                    if (googleAPI.isUserResolvableError(result)) {
                         final Dialog dialog = googleAPI.getErrorDialog(subscriber.getActivity(), result, AdminUtils.REQUEST_GOOGLE_PLAY_SERVICES);
                         dialog.setOnCancelListener(dialogInterface -> subscriber.getActivity().finish());
                         dialog.show();
-                    });
+                    }
                 }
             }
-        } else {
-            ErrorController.getInstance().onError(LOG_TAG + "checkGooglePlayServices", ErrorController.ERROR_NOT_FOUND_ACTIVITY, false);
-        }
-        return false;
+        });
     }
 
     @Override
     public synchronized void grantPermission(String permission, String helpMessage) {
-        if (ApplicationUtils.hasMarshmallow()) {
-            final IActivity subscriber = getCurrentSubscriber();
-            if (subscriber != null && subscriber.validate()) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(subscriber.getActivity(), permission)) {
-                    AdminUtils.postEvent(new ShowDialogEvent(R.id.dialog_request_permissions, -1, helpMessage, R.string.setting, R.string.cancel, false));
-                } else {
-                    subscriber.getActivity().runOnUiThread(() -> {
+        ApplicationUtils.runOnUiThread(() -> {
+            if (ApplicationUtils.hasMarshmallow()) {
+                final IActivity subscriber = getSubscriber();
+                if (subscriber != null && subscriber.validate()) {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(subscriber.getActivity(), permission)) {
+                        AdminUtils.postEvent(new ShowDialogEvent(R.id.dialog_request_permissions, -1, helpMessage, R.string.setting, R.string.cancel, false));
+                    } else {
                         ActivityCompat.requestPermissions(subscriber.getActivity(), new String[]{permission}, AdminUtils.REQUEST_PERMISSIONS);
-                    });
+                    }
                 }
-            } else {
-                ErrorController.getInstance().onError(LOG_TAG + "grantPermission", ErrorController.ERROR_NOT_FOUND_ACTIVITY, false);
             }
-        }
+        });
     }
 
     @Override
@@ -132,32 +125,28 @@ public class ActivityController extends AbstractController<IActivity> implements
     }
 
     @Override
-    @Subscribe(threadMode = ThreadMode.ASYNC)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onShowMessageEvent(ShowMessageEvent event) {
-        final IActivity subscriber = getCurrentSubscriber();
+        final IActivity subscriber = getSubscriber();
         if (subscriber != null && subscriber.validate()) {
             final String action = event.getAction();
             if (StringUtils.isNullOrEmpty(action)) {
-                subscriber.getActivity().runOnUiThread(() -> BaseSnackbar.make(subscriber.getActivity().findView(android.R.id.content), event.getMessage(), event.getDuration())
-                        .show());
+                BaseSnackbar.make(subscriber.getActivity().findView(android.R.id.content), event.getMessage(), event.getDuration())
+                        .show();
             } else {
-                subscriber.getActivity().runOnUiThread(() -> BaseSnackbar.make(subscriber.getActivity().findView(android.R.id.content), event.getMessage(), event.getDuration())
+                BaseSnackbar.make(subscriber.getActivity().findView(android.R.id.content), event.getMessage(), event.getDuration())
                         .setAction(action, this::onSnackbarClick)
-                        .show());
+                        .show();
             }
-        } else {
-            ErrorController.getInstance().onError(LOG_TAG + "onShowMessageEvent", ErrorController.ERROR_NOT_FOUND_ACTIVITY, false);
         }
     }
 
     @Override
-    @Subscribe(threadMode = ThreadMode.ASYNC)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onShowErrorMessageEvent(ShowErrorMessageEvent event) {
-        final IActivity subscriber = getCurrentSubscriber();
+        final IActivity subscriber = getSubscriber();
         if (subscriber != null && subscriber.validate()) {
-            subscriber.getActivity().runOnUiThread(() -> new MaterialDialogExt(subscriber.getActivity(), event.getId(), R.string.error, event.getMessage(), R.string.ok_upper, MaterialDialogExt.NO_BUTTON, false).show());
-        } else {
-            ErrorController.getInstance().onError(LOG_TAG + "onShowErrorMessageEvent", ErrorController.ERROR_NOT_FOUND_ACTIVITY, false);
+            new MaterialDialogExt(subscriber.getActivity(), event.getId(), R.string.error, event.getMessage(), R.string.ok_upper, MaterialDialogExt.NO_BUTTON, false).show();
         }
     }
 
@@ -174,7 +163,7 @@ public class ActivityController extends AbstractController<IActivity> implements
     }
 
     @Override
-    @Subscribe(threadMode = ThreadMode.ASYNC)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onShowToastEvent(ShowToastEvent event) {
         final Context context = AdminUtils.getContext();
         if (context == null) {
@@ -185,72 +174,62 @@ public class ActivityController extends AbstractController<IActivity> implements
         final int duration = event.getDuration();
         final String message = event.getMessage();
 
-        ApplicationUtils.runOnUiThread(() -> {
-            switch (type) {
-                case TOAST_TYPE_INFO:
-                    Toasty.info(context, message, duration).show();
-                    break;
+        switch (type) {
+            case TOAST_TYPE_INFO:
+                Toasty.info(context, message, duration).show();
+                break;
 
-                case TOAST_TYPE_ERROR:
-                    Toasty.error(context, message, duration).show();
-                    break;
+            case TOAST_TYPE_ERROR:
+                Toasty.error(context, message, duration).show();
+                break;
 
-                case TOAST_TYPE_WARNING:
-                    Toasty.warning(context, message, duration).show();
-                    break;
+            case TOAST_TYPE_WARNING:
+                Toasty.warning(context, message, duration).show();
+                break;
 
-                case TOAST_TYPE_SUCCESS:
-                    Toasty.success(context, message, duration).show();
-                    break;
+            case TOAST_TYPE_SUCCESS:
+                Toasty.success(context, message, duration).show();
+                break;
 
-                default:
-                    Toasty.info(context, message, duration).show();
-                    break;
+            default:
+                Toasty.info(context, message, duration).show();
+                break;
 
-            }
+        }
 
-            Toasty.info(AdminUtils.getContext(), event.getMessage(), event.getDuration()).show();
-        });
+        Toasty.info(context, event.getMessage(), event.getDuration()).show();
     }
 
     @Override
-    @Subscribe(threadMode = ThreadMode.ASYNC)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onHideKeyboardEvent(HideKeyboardEvent event) {
-        final IActivity subscriber = getCurrentSubscriber();
+        final IActivity subscriber = getSubscriber();
         if (subscriber != null && subscriber.validate()) {
-            subscriber.getActivity().runOnUiThread(() -> {
-                subscriber.getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-                InputMethodManager imm = (InputMethodManager) subscriber.getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
-                if (imm != null) {
-                    View view = subscriber.getActivity().getCurrentFocus();
-                    if (view == null) {
-                        view = new View(subscriber.getActivity());
-                    }
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            subscriber.getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+            InputMethodManager imm = (InputMethodManager) subscriber.getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                View view = subscriber.getActivity().getCurrentFocus();
+                if (view == null) {
+                    view = new View(subscriber.getActivity());
                 }
-            });
-        } else {
-            ErrorController.getInstance().onError(LOG_TAG + "onHideKeyboardEvent", ErrorController.ERROR_NOT_FOUND_ACTIVITY, false);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
         }
     }
 
     @Override
-    @Subscribe(threadMode = ThreadMode.ASYNC)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onShowKeyboardEvent(ShowKeyboardEvent event) {
-        final IActivity subscriber = getCurrentSubscriber();
+        final IActivity subscriber = getSubscriber();
         if (subscriber != null && subscriber.validate()) {
-            subscriber.getActivity().runOnUiThread(() -> {
-                subscriber.getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-            });
-        } else {
-            ErrorController.getInstance().onError(LOG_TAG + "onShowKeyboardEvent", ErrorController.ERROR_NOT_FOUND_ACTIVITY, false);
+            subscriber.getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
     }
 
     @Override
-    @Subscribe(threadMode = ThreadMode.ASYNC)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onShowProgressBarEvent(ShowProgressBarEvent event) {
-        final IActivity subscriber = getCurrentSubscriber();
+        final IActivity subscriber = getSubscriber();
         if (subscriber != null && subscriber.validate()) {
             if (subscriber instanceof AbstractContentActivity) {
                 final AbstractContentActivity activity = (AbstractContentActivity) subscriber;
@@ -259,15 +238,13 @@ public class ActivityController extends AbstractController<IActivity> implements
                     fragment.showProgressBar();
                 }
             }
-        } else {
-            ErrorController.getInstance().onError(LOG_TAG + "onShowProgressBarEvent", ErrorController.ERROR_NOT_FOUND_ACTIVITY, false);
         }
     }
 
     @Override
-    @Subscribe(threadMode = ThreadMode.ASYNC)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onHideProgressBarEvent(HideProgressBarEvent event) {
-        final IActivity subscriber = getCurrentSubscriber();
+        final IActivity subscriber = getSubscriber();
         if (subscriber != null && subscriber.validate()) {
             if (subscriber instanceof AbstractContentActivity) {
                 final AbstractContentActivity activity = (AbstractContentActivity) subscriber;
@@ -276,44 +253,36 @@ public class ActivityController extends AbstractController<IActivity> implements
                     fragment.hideProgressBar();
                 }
             }
-        } else {
-            ErrorController.getInstance().onError(LOG_TAG + "onHideProgressBarEvent", ErrorController.ERROR_NOT_FOUND_ACTIVITY, false);
         }
     }
 
     @Override
-    @Subscribe(threadMode = ThreadMode.ASYNC)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onShowListDialogEvent(ShowListDialogEvent event) {
-        final IActivity subscriber = getCurrentSubscriber();
+        final IActivity subscriber = getSubscriber();
         if (subscriber != null && subscriber.validate()) {
-            subscriber.getActivity().runOnUiThread(() -> new MaterialDialogExt(subscriber.getActivity(), event.getId(),
+            new MaterialDialogExt(subscriber.getActivity(), event.getId(),
                     event.getTitle(), event.getMessage(), event.getList(), event.getSelected(), event.isMultiselect(), event.getButtonPositive(),
-                    event.getButtonNegative(), event.isCancelable()).show());
-        } else {
-            ErrorController.getInstance().onError(LOG_TAG + "onShowListDialogEvent", ErrorController.ERROR_NOT_FOUND_ACTIVITY, false);
+                    event.getButtonNegative(), event.isCancelable()).show();
         }
     }
 
     @Override
-    @Subscribe(threadMode = ThreadMode.ASYNC)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onShowEditDialogEvent(ShowEditDialogEvent event) {
-        final IActivity subscriber = getCurrentSubscriber();
+        final IActivity subscriber = getSubscriber();
         if (subscriber != null && subscriber.validate()) {
-            subscriber.getActivity().runOnUiThread(() -> new MaterialDialogExt(subscriber.getActivity(), event.getId(), event.getTitle(), event.getMessage(), event.getEditText(), event.getHint(), event.getInputType(), event.getButtonPositive(),
-                    event.getButtonNegative(), event.isCancelable()).show());
-        } else {
-            ErrorController.getInstance().onError(LOG_TAG + "onShowEditDialogEvent", ErrorController.ERROR_NOT_FOUND_ACTIVITY, false);
+            new MaterialDialogExt(subscriber.getActivity(), event.getId(), event.getTitle(), event.getMessage(), event.getEditText(), event.getHint(), event.getInputType(), event.getButtonPositive(),
+                    event.getButtonNegative(), event.isCancelable()).show();
         }
     }
 
     @Override
-    @Subscribe(threadMode = ThreadMode.ASYNC)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onShowDialogEvent(ShowDialogEvent event) {
-        final IActivity subscriber = getCurrentSubscriber();
+        final IActivity subscriber = getSubscriber();
         if (subscriber != null && subscriber.validate()) {
-            subscriber.getActivity().runOnUiThread(() -> new MaterialDialogExt(subscriber.getActivity(), event.getId(), event.getTitle(), event.getMessage(), event.getButtonPositive(), event.getButtonNegative(), event.isCancelable()).show());
-        } else {
-            ErrorController.getInstance().onError(LOG_TAG + "onShowDialogEvent", ErrorController.ERROR_NOT_FOUND_ACTIVITY, false);
+            new MaterialDialogExt(subscriber.getActivity(), event.getId(), event.getTitle(), event.getMessage(), event.getButtonPositive(), event.getButtonNegative(), event.isCancelable()).show();
         }
     }
 }
