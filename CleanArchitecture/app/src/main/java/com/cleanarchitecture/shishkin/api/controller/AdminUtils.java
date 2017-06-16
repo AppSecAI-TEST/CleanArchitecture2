@@ -44,6 +44,25 @@ public class AdminUtils {
     public static final int REQUEST_PERMISSIONS = 10000;
     public static final int REQUEST_GOOGLE_PLAY_SERVICES = 10001;
 
+
+    /**
+     * Зарегистрировать подписчика модуля
+     *
+     * @param subscriber подписчик модуля
+     */
+    public static void register(final IModuleSubscriber subscriber) {
+        Admin.getInstance().register(subscriber);
+    }
+
+    /**
+     * Отменить регистрацию подписчика модуля
+     *
+     * @param subscriber подписчик модуля
+     */
+    public static void unregister(final IModuleSubscriber subscriber) {
+        Admin.getInstance().unregister(subscriber);
+    }
+
     /**
      * Получить системный сервис
      *

@@ -6,7 +6,7 @@ import android.content.Intent;
 /**
  * Callback to receive result of activity launch.
  */
-public interface ActivityResultListener {
+public interface IActivityResultListener {
 
     /**
      * Called when an activity you launched exits, giving you the requestCode

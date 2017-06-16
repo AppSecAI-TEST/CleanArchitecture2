@@ -66,7 +66,7 @@ public abstract class AbstractActivity extends LifecycleActivity
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Admin.getInstance().register(this);
+        AdminUtils.register(this);
 
         mStateMachine.setState(Lifecycle.STATE_CREATE);
     }
@@ -102,7 +102,7 @@ public abstract class AbstractActivity extends LifecycleActivity
             mUnbinder.unbind();
         }
 
-        Admin.getInstance().unregister(this);
+        AdminUtils.unregister(this);
 
         mStateMachine.setState(Lifecycle.STATE_DESTROY);
         mStateMachine.clear();
@@ -150,9 +150,9 @@ public abstract class AbstractActivity extends LifecycleActivity
         if (children != null) {
             for (final Fragment child : children) {
                 if (child != null && child.getView() != null &&
-                        DispatchTouchEventListener.class.isInstance(child)
+                        IDispatchTouchEventListener.class.isInstance(child)
                         && child.getUserVisibleHint()) {
-                    childRes |= ((DispatchTouchEventListener) child).dispatchTouchEvent(ev);
+                    childRes |= ((IDispatchTouchEventListener) child).dispatchTouchEvent(ev);
                 }
             }
         }

@@ -55,7 +55,7 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
 
         mStateMachine.setState(Lifecycle.STATE_READY);
 
-        Admin.getInstance().register(this);
+        AdminUtils.register(this);
     }
 
     @Override
@@ -83,7 +83,7 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
 
         mPresenters.clear();
 
-        Admin.getInstance().unregister(this);
+        AdminUtils.unregister(this);
     }
 
     @Override

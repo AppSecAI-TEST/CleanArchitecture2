@@ -7,7 +7,6 @@ import android.database.ContentObserver;
 import android.net.Uri;
 import android.os.Handler;
 
-import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
@@ -69,8 +68,7 @@ public abstract class AbstractContentProviderLiveData<T> extends LiveData<T> imp
 
     @Override
     protected void onActive() {
-        Admin.getInstance().register(this);
-
+        AdminUtils.register(this);
         final Context context = AdminUtils.getContext();
         if (context != null) {
             final ContentResolver contentResolver = context.getContentResolver();
@@ -84,8 +82,7 @@ public abstract class AbstractContentProviderLiveData<T> extends LiveData<T> imp
 
     @Override
     protected void onInactive() {
-        Admin.getInstance().unregister(this);
-
+        AdminUtils.unregister(this);
         final Context context = AdminUtils.getContext();
         if (context != null) {
             context.getContentResolver().unregisterContentObserver(mContentObserver);

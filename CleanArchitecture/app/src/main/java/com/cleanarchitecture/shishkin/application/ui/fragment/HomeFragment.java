@@ -114,7 +114,6 @@ public class HomeFragment extends AbstractContentFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public synchronized void onRecyclerViewIdleEvent(final OnRecyclerViewIdleEvent event) {
         mFloatingActionMenu.setVisibility(View.VISIBLE);
-
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
