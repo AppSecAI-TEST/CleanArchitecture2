@@ -63,18 +63,33 @@ public class AdminUtils {
      * Добавить в список приложений, которые будут игнорироваться системой оптимизации питания
      */
     public static void isIgnoringBatteryOptimizations() {
-        final ILifecycleController controller = Admin.getInstance().get(LifecycleController.NAME);
-        if (controller != null) {
-            final AbstractActivity activity = controller.getCurrentActivity();
-            if (activity != null) {
-                if (ApplicationUtils.hasMarshmallow()) {
-                    final PowerManager pm = (PowerManager) activity.getSystemService(Context.POWER_SERVICE);
-                    if (pm != null) {
-                        if (!pm.isIgnoringBatteryOptimizations(BuildConfig.APPLICATION_ID)) {
-                            final Intent myIntent = new Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
-                            activity.startActivity(myIntent);
-                        }
-                    }
+        final AbstractActivity activity = getCurrentActivity();
+        if (activity != null) {
+            if (ApplicationUtils.hasMarshmallow()) {
+                final PowerManager pm = getSystemService(Context.POWER_SERVICE);
+                if (pm != null && !pm.isIgnoringBatteryOptimizations(BuildConfig.APPLICATION_ID)) {
+                    final Intent myIntent = new Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+                    activity.startActivity(myIntent);
+                }
+            }
+        }
+    }
+
+    /**
+     * Контролировать наличие и версию Google Play Services, с показом диалога обновления
+     */
+    public static void checkGooglePlayServices() {
+        final AbstractActivity activity = getCurrentActivity();
+        if (activity != null) {
+            final GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
+            final int result = googleAPI.isGooglePlayServicesAvailable(activity);
+            if (result != ConnectionResult.SUCCESS) {
+                if (googleAPI.isUserResolvableError(result)) {
+                    ApplicationUtils.runOnUiThread(() -> {
+                        final Dialog dialog = googleAPI.getErrorDialog(activity, result, AdminUtils.REQUEST_GOOGLE_PLAY_SERVICES);
+                        dialog.setOnCancelListener(dialogInterface -> activity.finish());
+                        dialog.show();
+                    });
                 }
             }
         }
@@ -83,26 +98,6 @@ public class AdminUtils {
     /**
      * Контролировать наличие и версию Google Play Services
      */
-    public static void checkGooglePlayServices() {
-        final ILifecycleController controller = Admin.getInstance().get(LifecycleController.NAME);
-        if (controller != null) {
-            final AbstractActivity activity = controller.getCurrentActivity();
-            if (activity != null) {
-                final GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
-                final int result = googleAPI.isGooglePlayServicesAvailable(activity);
-                if (result != ConnectionResult.SUCCESS) {
-                    if (googleAPI.isUserResolvableError(result)) {
-                        ApplicationUtils.runOnUiThread(() -> {
-                            final Dialog dialog = googleAPI.getErrorDialog(activity, result, AdminUtils.REQUEST_GOOGLE_PLAY_SERVICES);
-                            dialog.setOnCancelListener(dialogInterface -> activity.finish());
-                            dialog.show();
-                        });
-                    }
-                }
-            }
-        }
-    }
-
     public static boolean isGooglePlayServices() {
         final Context context = getContext();
         if (context != null) {
@@ -119,16 +114,11 @@ public class AdminUtils {
      * Добавить в список приложений, которым разрешен вывод поверх других окон
      */
     public static void canDrawOverlays() {
-        final ILifecycleController controller = Admin.getInstance().get(LifecycleController.NAME);
-        if (controller != null) {
-            final AbstractActivity activity = controller.getCurrentActivity();
-            if (activity != null) {
-                if (ApplicationUtils.hasMarshmallow()) {
-                    if (!Settings.canDrawOverlays(activity)) {
-                        final Intent myIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-                        activity.startActivity(myIntent);
-                    }
-                }
+        final AbstractActivity activity = getCurrentActivity();
+        if (activity != null) {
+            if (ApplicationUtils.hasMarshmallow() && !Settings.canDrawOverlays(activity)) {
+                final Intent myIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                activity.startActivity(myIntent);
             }
         }
     }
@@ -327,7 +317,7 @@ public class AdminUtils {
      * @param defaultId id ресурса по умолчанию
      * @return layout id
      */
-    public static int getDesktop(String name, int defaultId) {
+    public static int getLayoutId(String name, int defaultId) {
         final IDesktopController module = Admin.getInstance().get(DesktopController.NAME);
         if (module != null) {
             return module.getLayoutId(name, defaultId);
@@ -406,7 +396,6 @@ public class AdminUtils {
             return MemoryCache.getInstance();
         }
     }
-
 
     private AdminUtils() {
     }
