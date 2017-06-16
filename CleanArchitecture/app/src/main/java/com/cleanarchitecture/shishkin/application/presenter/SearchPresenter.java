@@ -116,6 +116,7 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
             mDbProvider.removeObserver(PhoneContactViewModel.NAME, this);
         }
         mSearchView = null;
+        mRecyclerView.get().clearOnScrollListeners();
         mRecyclerView.get().setAdapter(null);
         mRecyclerView = null;
         if (!mDisposableSearchView.isDisposed()) {
