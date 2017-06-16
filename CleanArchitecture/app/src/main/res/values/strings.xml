@@ -46,5 +46,6 @@
     <string name="error_read_phone_contacts">Ошибка чтения телефонных контактов</string>
     <string name="error_application">Ошибка в приложении</string>
     <string name="error_not_found_activity">Не могу получить текущую activity</string>
+    <string name="error_activity_not_valid">Activity уже уничтожена</string>
 
 </resources>

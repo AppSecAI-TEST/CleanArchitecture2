@@ -27,6 +27,7 @@ public class ErrorController implements IErrorController {
     public static final int ERROR_GET_DATA = 2;
     public static final int ERROR_DB = 3;
     public static final int ERROR_NOT_FOUND_ACTIVITY = 4;
+    public static final int ERROR_ACTIVITY_NOT_VALID = 5;
 
     public static ErrorController getInstance() {
         if (sInstance == null) {

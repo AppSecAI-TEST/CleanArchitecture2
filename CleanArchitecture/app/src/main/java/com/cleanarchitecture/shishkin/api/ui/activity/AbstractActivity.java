@@ -98,18 +98,18 @@ public abstract class AbstractActivity extends LifecycleActivity
 
     @Override
     protected void onDestroy() {
+        super.onDestroy();
+
         if (mUnbinder != null) {
             mUnbinder.unbind();
         }
-
-        AdminUtils.unregister(this);
 
         mStateMachine.setState(Lifecycle.STATE_DESTROY);
         mStateMachine.clear();
 
         mPresenters.clear();
 
-        super.onDestroy();
+        AdminUtils.unregister(this);
     }
 
     @Override
