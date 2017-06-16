@@ -34,7 +34,7 @@ public class ContactRecyclerViewAdapter extends AbstractRecyclerViewAdapter<Phon
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent, int viewType) {
-        final View view = inflater.inflate(AdminUtils.getDesktop("list_contact_item", R.layout.list_contact_item), parent, false);
+        final View view = inflater.inflate(AdminUtils.getLayoutId("list_contact_item", R.layout.list_contact_item), parent, false);
         return new ViewHolder(view);
     }
 

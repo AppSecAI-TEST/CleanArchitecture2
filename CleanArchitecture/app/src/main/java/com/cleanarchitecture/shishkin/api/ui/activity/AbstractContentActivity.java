@@ -25,7 +25,7 @@ import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import java.util.List;
 
 public abstract class AbstractContentActivity extends AbstractActivity
-        implements ActivityResultListener, INavigationSubscriber {
+        implements IActivityResultListener, INavigationSubscriber {
 
     private static final String LOG_TAG = "AbstractContentActivity:";
 
@@ -127,7 +127,7 @@ public abstract class AbstractContentActivity extends AbstractActivity
     /**
      * Take care of popping the fragment back stack or finishing the activity
      * as appropriate. Notice that you should add any {@link Fragment} that implements
-     * {@link OnBackPressListener} to the back stack if you want {@link OnBackPressListener#onBackPressed()}
+     * {@link IOnBackPressListener} to the back stack if you want {@link IOnBackPressListener#onBackPressed()}
      * to be invoked.
      */
     @Override
@@ -140,8 +140,8 @@ public abstract class AbstractContentActivity extends AbstractActivity
                         .getBackStackEntryAt(backStackEntryCount - 1);
                 final Fragment fragment = fragmentManager.findFragmentByTag(backStackEntry.getName());
 
-                final OnBackPressListener onBackPressListener;
-                if (OnBackPressListener.class.isInstance(fragment)) {
+                final IOnBackPressListener onBackPressListener;
+                if (IOnBackPressListener.class.isInstance(fragment)) {
                     onBackPressListener = SafeUtils.cast(fragment);
                 } else {
                     onBackPressListener = null;
@@ -231,7 +231,7 @@ public abstract class AbstractContentActivity extends AbstractActivity
         }
     }
 
-    public synchronized void addToolbar() {
+    private void addToolbar() {
         try {
             final ToolbarFragment mToolbar = new ToolbarFragment();
             final FragmentManager fm = getSupportFragmentManager();

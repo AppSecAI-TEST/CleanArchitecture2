@@ -6,7 +6,7 @@ import android.view.MotionEvent;
 /**
  * Interface indicates classes responsible for dispatching touch event.
  */
-public interface DispatchTouchEventListener {
+public interface IDispatchTouchEventListener {
 
     /**
      * Called to process touch screen events. You can override this to

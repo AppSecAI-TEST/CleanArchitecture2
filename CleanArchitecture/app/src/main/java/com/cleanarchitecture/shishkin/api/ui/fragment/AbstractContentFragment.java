@@ -16,7 +16,7 @@ import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarInitEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarPrepareEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarResetEvent;
-import com.cleanarchitecture.shishkin.api.ui.activity.OnBackPressListener;
+import com.cleanarchitecture.shishkin.api.ui.activity.IOnBackPressListener;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 
@@ -28,7 +28,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 public abstract class AbstractContentFragment extends AbstractFragment implements
         IContentFragment,
-        OnBackPressListener, IModuleSubscriber {
+        IOnBackPressListener, IModuleSubscriber {
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -64,8 +64,8 @@ public abstract class AbstractContentFragment extends AbstractFragment implement
         final List<Fragment> children = fragmentManager.getFragments();
         if (children != null) {
             for (final Fragment child : children) {
-                if (child != null && OnBackPressListener.class.isInstance(child) && child.getUserVisibleHint()) {
-                    backPressedHandled |= ((OnBackPressListener) child).onBackPressed();
+                if (child != null && IOnBackPressListener.class.isInstance(child) && child.getUserVisibleHint()) {
+                    backPressedHandled |= ((IOnBackPressListener) child).onBackPressed();
                 }
             }
         }

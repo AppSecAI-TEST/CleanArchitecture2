@@ -1,6 +1,5 @@
 package com.cleanarchitecture.shishkin.api.presenter;
 
-import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.IMailSubscriber;
 import com.cleanarchitecture.shishkin.api.controller.MailController;
@@ -32,7 +31,7 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IMailSubscr
 
     @Override
     public void onReadyLifecycle() {
-        Admin.getInstance().register(this);
+        AdminUtils.register(this);
         updateView();
     }
 
@@ -47,7 +46,7 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IMailSubscr
 
     @Override
     public void onDestroyLifecycle() {
-        Admin.getInstance().unregister(this);
+        AdminUtils.unregister(this);
     }
 
     @Override

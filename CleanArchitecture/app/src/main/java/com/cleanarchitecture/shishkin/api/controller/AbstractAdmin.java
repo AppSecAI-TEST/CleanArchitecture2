@@ -98,9 +98,8 @@ public abstract class AbstractAdmin implements IAdmin {
                 return true;
             }
 
-            IModule object = null;
             try {
-                object = (IModule) Class.forName(name).newInstance();
+                final IModule object = (IModule) Class.forName(name).newInstance();
                 registerModule(object);
                 return true;
             } catch (Exception e) {
@@ -115,7 +114,7 @@ public abstract class AbstractAdmin implements IAdmin {
         if (!StringUtils.isNullOrEmpty(nameController)) {
             try {
                 if (mModules.containsKey(nameController)) {
-                    IModule module = mModules.get(nameController);
+                    final IModule module = mModules.get(nameController);
                     if (module != null) {
                         if (!module.isPersistent()) {
                             if (module instanceof IController) {
