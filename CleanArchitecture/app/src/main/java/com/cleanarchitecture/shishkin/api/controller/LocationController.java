@@ -80,7 +80,7 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
         mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null)
-                .addOnFailureListener(e -> ErrorController.getInstance().onError(LOG_TAG, e.getMessage()));
+                .addOnFailureListener(e -> ErrorController.getInstance().onError(LOG_TAG, e.getMessage(), false));
     }
 
     private void stopLocation(boolean isforce) {
