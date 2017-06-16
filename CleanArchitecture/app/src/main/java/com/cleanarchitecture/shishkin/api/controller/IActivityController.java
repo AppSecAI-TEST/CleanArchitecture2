@@ -39,7 +39,7 @@ public interface IActivityController extends IController<IActivity> {
      *
      * @return the boolean
      */
-    boolean checkGooglePlayServices();
+    void checkGooglePlayServices();
 
     /**
      * Обрабатывает событие - показать сообщение на экран

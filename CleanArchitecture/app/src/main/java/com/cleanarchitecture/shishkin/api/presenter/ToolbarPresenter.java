@@ -255,10 +255,12 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
 
     @Override
     public void setHome(final int iconId, final boolean isVisible) {
-        if (validate()) {
-            mHome.get().setImageResource(iconId);
-            mHome.get().setVisibility(isVisible ? View.VISIBLE : View.GONE);
-        }
+        ApplicationUtils.runOnUiThread(() -> {
+            if (validate()) {
+                mHome.get().setImageResource(iconId);
+                mHome.get().setVisibility(isVisible ? View.VISIBLE : View.GONE);
+            }
+        });
     }
 
     private void resetToolbarTask() {
@@ -417,17 +419,13 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
 
     private void onNetworkConnected() {
         if (validate()) {
-            ApplicationUtils.runOnUiThread(() -> {
-                setBackground(ViewUtils.getDrawable(mContext.get(), R.color.blue));
-            });
+            setBackground(ViewUtils.getDrawable(mContext.get(), R.color.blue));
         }
     }
 
     private void onNetworkDisconnected() {
         if (validate()) {
-            ApplicationUtils.runOnUiThread(() -> {
-                setBackground(ViewUtils.getDrawable(mContext.get(), R.color.orange));
-            });
+            setBackground(ViewUtils.getDrawable(mContext.get(), R.color.orange));
         }
     }
 
@@ -485,13 +483,13 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     }
 
     @Override
-    @Subscribe(threadMode = ThreadMode.ASYNC)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onToolbarOnClickEvent(OnToolbarClickEvent event) {
         final INavigationController controller = Admin.getInstance().get(NavigationController.NAME);
         if (controller != null) {
             final AbstractContentFragment fragment = controller.getContentFragment(AbstractContentFragment.class);
             if (fragment != null) {
-                ApplicationUtils.runOnUiThread(() -> fragment.onClick(event.getView()));
+                fragment.onClick(event.getView());
             }
         }
     }
@@ -503,13 +501,13 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     }
 
     @Override
-    @Subscribe(threadMode = ThreadMode.ASYNC)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onNetworkConnectedEvent(OnNetworkConnectedEvent event) {
         onNetworkConnected();
     }
 
     @Override
-    @Subscribe(threadMode = ThreadMode.ASYNC)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onNetworkDisconnectedEvent(OnNetworkDisconnectedEvent event) {
         onNetworkDisconnected();
     }
