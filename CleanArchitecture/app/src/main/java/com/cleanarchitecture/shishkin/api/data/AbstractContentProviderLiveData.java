@@ -88,10 +88,7 @@ public abstract class AbstractContentProviderLiveData<T> extends LiveData<T> imp
 
         final Context context = AdminUtils.getContext();
         if (context != null) {
-            final ContentResolver contentResolver = context.getContentResolver();
-            for (final Uri uri : mUris) {
-                contentResolver.unregisterContentObserver(mContentObserver);
-            }
+            context.getContentResolver().unregisterContentObserver(mContentObserver);
         }
 
         if (mDebounce != null) {
@@ -119,6 +116,5 @@ public abstract class AbstractContentProviderLiveData<T> extends LiveData<T> imp
      * Получить данные
      */
     public abstract void getData();
-
 
 }
