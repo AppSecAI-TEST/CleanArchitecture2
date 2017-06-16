@@ -15,13 +15,8 @@ public class ShowErrorMessageEvent extends AbstractEvent {
     private String mMessage;
 
     public ShowErrorMessageEvent(final IEvent event) {
-        if (getErrorCode() == 1) {
-            final Context context = AdminUtils.getContext();
-            if (context != null) {
-                mMessage = context.getString(R.string.error_db_app_not_loaded);
-            } else {
-                mMessage = "Application not loaded";
-            }
+        if (getErrorCode() != 0) {
+            mMessage = AdminUtils.getErrorText(getErrorCode());
         } else {
             mMessage = event.getErrorText();
         }
@@ -32,29 +27,7 @@ public class ShowErrorMessageEvent extends AbstractEvent {
     }
 
     public ShowErrorMessageEvent(final int errorCode) {
-        final Context context = AdminUtils.getContext();
-        if (context != null) {
-            return;
-        }
-
-        switch (errorCode) {
-            case ErrorController.ERROR_LOST_AAPLICATION_CONTEXT:
-                mMessage = context.getString(R.string.error_db_app_not_loaded);
-                break;
-
-            case ErrorController.ERROR_GET_DATA:
-                mMessage = context.getString(R.string.error_get_data);
-                break;
-
-            case ErrorController.ERROR_DB:
-                mMessage = context.getString(R.string.error_db);
-                break;
-
-            default:
-                mMessage = context.getString(R.string.error_application);
-                break;
-
-        }
+        mMessage = AdminUtils.getErrorText(errorCode);
     }
 
     public String getMessage() {

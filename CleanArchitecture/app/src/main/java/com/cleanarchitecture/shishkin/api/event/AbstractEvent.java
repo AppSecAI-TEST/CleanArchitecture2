@@ -19,7 +19,7 @@ public abstract class AbstractEvent implements IEvent {
     public IEvent setErrorText(final String sender, final String error) {
         mSender = sender;
         mErrorText = error;
-        ErrorController.getInstance().onError(sender, error);
+        ErrorController.getInstance().onError(sender, error, true);
         return this;
     }
 
@@ -40,7 +40,7 @@ public abstract class AbstractEvent implements IEvent {
     public IEvent setErrorCode(final String sender, final int code) {
         mSender = sender;
         mErrorCode = code;
-        ErrorController.getInstance().onError(sender, code);
+        ErrorController.getInstance().onError(sender, code, true);
         return this;
     }
 

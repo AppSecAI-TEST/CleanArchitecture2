@@ -1,6 +1,8 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
 import android.Manifest;
+import android.content.Context;
+import android.os.Build;
 import android.os.Environment;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
@@ -24,6 +26,7 @@ public class ErrorController implements IErrorController {
     public static final int ERROR_LOST_AAPLICATION_CONTEXT = 1;
     public static final int ERROR_GET_DATA = 2;
     public static final int ERROR_DB = 3;
+    public static final int ERROR_NOT_FOUND_ACTIVITY = 4;
 
     public static ErrorController getInstance() {
         if (sInstance == null) {
@@ -93,12 +96,20 @@ public class ErrorController implements IErrorController {
 
     @Override
     public synchronized void onError(final String source, final Exception e) {
-        Log.e(source, e.getMessage());
+        if (BuildConfig.DEBUG) {
+            Log.e(source, e);
+        } else {
+            Log.e(source, e.getMessage());
+        }
     }
 
     @Override
     public synchronized void onError(final String source, final Throwable throwable) {
-        Log.e(source, throwable.getMessage());
+        if (BuildConfig.DEBUG) {
+            Log.e(source, throwable);
+        } else {
+            Log.e(source, throwable.getMessage());
+        }
     }
 
     @Override
@@ -116,13 +127,21 @@ public class ErrorController implements IErrorController {
     }
 
     @Override
-    public synchronized void onError(final String source, final String displayMessage) {
-        AdminUtils.postEvent(new ShowErrorMessageEvent(displayMessage));
+    public synchronized void onError(final String source, final String message, final boolean isDisplay) {
+        if (isDisplay){
+            AdminUtils.postEvent(new ShowErrorMessageEvent(message));
+        } else {
+            Log.e(source, message);
+        }
     }
 
     @Override
-    public synchronized void onError(final String source, final int errorCode) {
-        AdminUtils.postEvent(new ShowErrorMessageEvent(errorCode));
+    public synchronized void onError(final String source, final int errorCode, final boolean isDisplay) {
+        if (isDisplay) {
+            AdminUtils.postEvent(new ShowErrorMessageEvent(errorCode));
+        } else {
+            Log.e(source, AdminUtils.getErrorText(errorCode));
+        }
     }
 
     @Override

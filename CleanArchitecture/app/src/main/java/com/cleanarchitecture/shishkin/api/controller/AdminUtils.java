@@ -10,6 +10,7 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
+import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.event.IEvent;
 import com.cleanarchitecture.shishkin.api.mail.IMail;
 import com.cleanarchitecture.shishkin.api.repository.ContentProvider;
@@ -414,6 +415,37 @@ public class AdminUtils {
         } else {
             return MemoryCache.getInstance();
         }
+    }
+
+    /**
+     * Получить текст ошибки по его коду
+     *
+     * @param errorCode код ошибки
+     */
+    public static String getErrorText(final int errorCode) {
+        final Context context = getContext();
+        if (context != null) {
+            return "Error get context";
+        }
+
+        switch (errorCode) {
+            case ErrorController.ERROR_LOST_AAPLICATION_CONTEXT:
+                return context.getString(R.string.error_db_app_not_loaded);
+
+            case ErrorController.ERROR_GET_DATA:
+                return context.getString(R.string.error_get_data);
+
+            case ErrorController.ERROR_DB:
+                return context.getString(R.string.error_db);
+
+            case ErrorController.ERROR_NOT_FOUND_ACTIVITY:
+                return context.getString(R.string.error_not_found_activity);
+
+            default:
+                return context.getString(R.string.error_application);
+
+        }
+
     }
 
     private AdminUtils() {
