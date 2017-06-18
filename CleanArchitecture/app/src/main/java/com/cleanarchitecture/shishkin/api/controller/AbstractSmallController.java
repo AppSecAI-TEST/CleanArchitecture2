@@ -28,7 +28,8 @@ public abstract class AbstractSmallController<T> implements ISmallController<T> 
         }
     }
 
-    private synchronized void checkNullSubscriber() {
+    @Override
+    public synchronized void checkNullSubscriber() {
         for (Map.Entry<String, WeakReference<T>> entry : mSubscribers.entrySet()) {
             if (entry.getValue() == null || entry.getValue().get() == null) {
                 mSubscribers.remove(entry.getKey());
@@ -36,6 +37,7 @@ public abstract class AbstractSmallController<T> implements ISmallController<T> 
         }
     }
 
+    @Override
     public synchronized Map<String, WeakReference<T>> getSubscribers() {
         return mSubscribers;
     }
@@ -68,4 +70,14 @@ public abstract class AbstractSmallController<T> implements ISmallController<T> 
     public void onUnRegister() {
     }
 
+    @Override
+    public boolean isRegistered(final T subscriber) {
+        if (subscriber == null) {
+            return false;
+        }
+
+        checkNullSubscriber();
+
+        return (mSubscribers.containsKey(((ISubscriber) subscriber).getName()));
+    }
 }

@@ -36,6 +36,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,15 +59,6 @@ public class ActivityController extends AbstractController<IActivity> implements
 
     public ActivityController() {
         super();
-    }
-
-    @Override
-    public synchronized IActivity getSubscriber() {
-        final IActivity activity = super.getSubscriber();
-        if (activity == null) {
-            ErrorController.getInstance().onError(LOG_TAG, "Not found any activity", false);
-        }
-        return activity;
     }
 
     @Override
