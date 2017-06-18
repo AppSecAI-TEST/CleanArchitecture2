@@ -56,7 +56,6 @@ public class Debounce implements Runnable {
     public void finish() {
         if (mHandler != null) {
             mHandler.removeCallbacks(this);
-            mHandler = null;
         }
     }
 

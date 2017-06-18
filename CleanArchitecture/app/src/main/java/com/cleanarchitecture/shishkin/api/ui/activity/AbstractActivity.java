@@ -76,12 +76,6 @@ public abstract class AbstractActivity extends LifecycleActivity
         AdminUtils.postEvent(new OnUserIteractionEvent());
     }
 
-    /**
-     * Finds a view that was identified by the id attribute from the XML that
-     * was processed in {@link #onCreate}.
-     *
-     * @return The casted view if found or null otherwise.
-     */
     @Override
     public <V extends View> V findView(@IdRes final int id) {
         return ViewUtils.findView(this, id);
@@ -90,6 +84,8 @@ public abstract class AbstractActivity extends LifecycleActivity
     @Override
     protected void onStart() {
         super.onStart();
+
+        AdminUtils.registerActivity(this);
 
         mStateMachine.setState(Lifecycle.STATE_READY);
 
@@ -270,21 +266,6 @@ public abstract class AbstractActivity extends LifecycleActivity
         return (getState() != Lifecycle.STATE_DESTROY);
     }
 
-    /**
-     * Sets the color of the status bar to {@code color}.
-     * <p>
-     * For this to take effect,
-     * the window must be drawing the system bar backgrounds with
-     * {@link android.view.WindowManager.LayoutParams#FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS} and
-     * {@link android.view.WindowManager.LayoutParams#FLAG_TRANSLUCENT_STATUS} must not be set.
-     * <p>
-     * If {@code color} is not opaque, consider setting
-     * {@link android.view.View#SYSTEM_UI_FLAG_LAYOUT_STABLE} and
-     * {@link android.view.View#SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN}.
-     * <p>
-     * The transitionName for the view background will be "android:status:background".
-     * </p>
-     */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void setStatusBarColor(final int color) {

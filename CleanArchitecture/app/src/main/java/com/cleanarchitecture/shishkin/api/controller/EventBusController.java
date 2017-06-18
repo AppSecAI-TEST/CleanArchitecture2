@@ -4,6 +4,9 @@ import com.cleanarchitecture.shishkin.api.event.IEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.lang.ref.WeakReference;
+import java.util.Map;
+
 /**
  * Контроллер шины событий приложения
  */
@@ -16,6 +19,7 @@ public class EventBusController implements IEventBusController {
     public static final int MIN_RANK = 0;
 
     public static final String NAME = EventBusController.class.getName();
+    private static final String LOG_TAG = "EventBusController:";
     public static final String SUBSCRIBER_TYPE = "IEventbusSubscriber";
     private static volatile EventBusController sInstance;
 
@@ -81,6 +85,9 @@ public class EventBusController implements IEventBusController {
             if (!EventBus.getDefault().isRegistered(subscriber)) {
                 EventBus.getDefault().register(subscriber);
             }
+            if (!EventBus.getDefault().isRegistered(subscriber)) {
+                ErrorController.getInstance().onError(LOG_TAG, "Subscriber is not register", false);
+            }
         }
     }
 
@@ -96,6 +103,20 @@ public class EventBusController implements IEventBusController {
                 EventBus.getDefault().unregister(subscriber);
             }
         }
+    }
+
+    @Override
+    public Map<String, WeakReference<Object>> getSubscribers() {
+        return null;
+    }
+
+    @Override
+    public void checkNullSubscriber() {
+    }
+
+    @Override
+    public boolean isRegistered(Object subscriber) {
+        return EventBus.getDefault().isRegistered(subscriber);
     }
 
     @Override

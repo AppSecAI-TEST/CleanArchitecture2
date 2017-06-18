@@ -1,5 +1,8 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
+import java.lang.ref.WeakReference;
+import java.util.Map;
+
 /**
  * Интерфейс малого контроллера
  *
@@ -20,5 +23,26 @@ public interface ISmallController<T> extends IModule {
      * @param subscriber подписчик
      */
     void unregister(T subscriber);
+
+
+    /**
+     * Получить список подписчиков
+     *
+     * @return список подписчиков
+     */
+    Map<String, WeakReference<T>> getSubscribers();
+
+    /**
+     * Очистить спиок подписчиков от несуществующих
+     */
+    void checkNullSubscriber();
+
+    /**
+     * Проверить наличие подписчика
+     *
+     * @param subscriber подписчик
+     * @return true - подписчик найден
+     */
+    boolean isRegistered(T subscriber);
 
 }

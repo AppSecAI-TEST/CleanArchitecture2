@@ -7,6 +7,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class AbstractSmallController<T> implements ISmallController<T> {
 
+    private static final String LOG_TAG = "AbstractSmallController:";
+
     private Map<String, WeakReference<T>> mSubscribers = Collections.synchronizedMap(new ConcurrentHashMap<String, WeakReference<T>>());
 
     @Override
@@ -14,37 +16,45 @@ public abstract class AbstractSmallController<T> implements ISmallController<T> 
 
     @Override
     public synchronized void register(T subscriber) {
-        if (subscriber != null) {
-            checkNullSubscriber();
+        if (subscriber == null) {
+            return;
+        }
 
-            if (subscriber instanceof ISubscriber) {
-                mSubscribers.put(((ISubscriber) subscriber).getName(), new WeakReference<T>(subscriber));
-            }
+        checkNullSubscriber();
+
+        if (subscriber instanceof ISubscriber) {
+            //Log.i(LOG_TAG, ((ISubscriber) subscriber).getName() + " зарегистрирован в " + getName());
+            mSubscribers.put(((ISubscriber) subscriber).getName(), new WeakReference<T>(subscriber));
         }
     }
 
-    private synchronized void checkNullSubscriber() {
+    @Override
+    public synchronized void checkNullSubscriber() {
         for (Map.Entry<String, WeakReference<T>> entry : mSubscribers.entrySet()) {
-            if (entry.getValue().get() == null) {
+            if (entry.getValue() == null || entry.getValue().get() == null) {
                 mSubscribers.remove(entry.getKey());
             }
         }
     }
 
+    @Override
     public synchronized Map<String, WeakReference<T>> getSubscribers() {
         return mSubscribers;
     }
 
     @Override
     public synchronized void unregister(final T subscriber) {
-        if (subscriber != null) {
-            if (subscriber instanceof ISubscriber) {
-                if (mSubscribers.containsKey(((ISubscriber) subscriber).getName())) {
-                    mSubscribers.remove(((ISubscriber) subscriber).getName());
-                }
-            }
+        if (subscriber == null) {
+            return;
+        }
 
-            checkNullSubscriber();
+        checkNullSubscriber();
+
+        if (subscriber instanceof ISubscriber) {
+            if (mSubscribers.containsKey(((ISubscriber) subscriber).getName())) {
+                //Log.i(LOG_TAG, ((ISubscriber) subscriber).getName() + " исключен в " + getName());
+                mSubscribers.remove(((ISubscriber) subscriber).getName());
+            }
         }
     }
 
@@ -60,4 +70,14 @@ public abstract class AbstractSmallController<T> implements ISmallController<T> 
     public void onUnRegister() {
     }
 
+    @Override
+    public boolean isRegistered(final T subscriber) {
+        if (subscriber == null) {
+            return false;
+        }
+
+        checkNullSubscriber();
+
+        return (mSubscribers.containsKey(((ISubscriber) subscriber).getName()));
+    }
 }
