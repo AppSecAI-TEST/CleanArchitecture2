@@ -1,10 +1,6 @@
 package com.cleanarchitecture.shishkin.api.event.ui;
 
-import android.content.Context;
-
-import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
-import com.cleanarchitecture.shishkin.api.controller.ErrorController;
 import com.cleanarchitecture.shishkin.api.event.AbstractEvent;
 import com.cleanarchitecture.shishkin.api.event.IEvent;
 

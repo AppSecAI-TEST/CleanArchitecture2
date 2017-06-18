@@ -32,7 +32,7 @@ public class PhoneContactLiveData extends AbstractContentProviderLiveData<List<P
     public void getData() {
         AdminUtils.postEvent(new ShowHorizontalProgressBarEvent());
         AdminUtils.postEvent(new RepositoryRequestGetContactsEvent()
-                .setCacheType(Repository.USE_ONLY_CACHE)
+                .setCacheType(Repository.USE_CACHE)
                 .setId(Constant.REPOSITORY_GET_CONTACTS));
     }
 
