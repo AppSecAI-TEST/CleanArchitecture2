@@ -23,6 +23,10 @@ public class OnScrollListener extends RecyclerView.OnScrollListener {
 
     @Override
     public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+        if (recyclerView == null) {
+            return;
+        }
+
         if (mSwipeRefreshLayout != null) {
             if (recyclerView.getAdapter().getItemCount() == 0) {
                 mSwipeRefreshLayout.setEnabled(true);
