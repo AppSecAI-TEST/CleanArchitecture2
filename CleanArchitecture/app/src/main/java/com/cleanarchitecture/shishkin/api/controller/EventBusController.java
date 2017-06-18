@@ -83,7 +83,7 @@ public class EventBusController implements IEventBusController {
                 EventBus.getDefault().register(subscriber);
             }
             if (!EventBus.getDefault().isRegistered(subscriber)) {
-                ErrorController.getInstance().onError(LOG_TAG, "Subscriber not register", false);
+                ErrorController.getInstance().onError(LOG_TAG, "Subscriber is not register", false);
             }
         }
     }
