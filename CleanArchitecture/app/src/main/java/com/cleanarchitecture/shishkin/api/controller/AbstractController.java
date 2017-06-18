@@ -3,6 +3,7 @@ package com.cleanarchitecture.shishkin.api.controller;
 import java.lang.ref.WeakReference;
 
 public abstract class AbstractController<T> extends AbstractSmallController<T> implements IController<T> {
+    private static final String LOG_TAG = "AbstractController:";
 
     private WeakReference<T> mCurrentSubscriber;
 
@@ -47,12 +48,15 @@ public abstract class AbstractController<T> extends AbstractSmallController<T> i
             return currentSubscriber;
         }
 
-        for (WeakReference<T> weakReference : getSubscribers().values()) {
-            final T subscriber = weakReference.get();
-            if (subscriber != null) {
-                return subscriber;
+        if (!getSubscribers().isEmpty()) {
+            for (WeakReference<T> weakReference : getSubscribers().values()) {
+                final T subscriber = weakReference.get();
+                if (subscriber != null) {
+                    return subscriber;
+                }
             }
         }
+        ErrorController.getInstance().onError(LOG_TAG, "Subscriber controller(" + getName() + ") not found", false);
         return null;
     }
 
