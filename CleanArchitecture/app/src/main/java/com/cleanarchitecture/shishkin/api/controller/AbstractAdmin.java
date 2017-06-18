@@ -167,7 +167,8 @@ public abstract class AbstractAdmin implements IAdmin {
                 // регистрируемся subscriber в модулях
                 for (IModule module : mModules.values()) {
                     if (module instanceof ISmallController) {
-                        if (types.contains(module.getSubscriberType())) {
+                        final String subscriberType = module.getSubscriberType();
+                        if (!StringUtils.isNullOrEmpty(subscriberType) && types.contains(subscriberType)) {
                             if (!module.getName().equalsIgnoreCase(subscriber.getName())) {
                                 //Log.i("Admin", subscriber.getName() + " зарегестрирован в " + module.getName());
                                 ((ISmallController) module).register(subscriber);
@@ -188,7 +189,8 @@ public abstract class AbstractAdmin implements IAdmin {
                 final List<String> types = subscriber.hasSubscriberType();
                 for (IModule module : mModules.values()) {
                     if (module instanceof ISmallController) {
-                        if (types.contains(module.getSubscriberType())) {
+                        final String subscriberType = module.getSubscriberType();
+                        if (!StringUtils.isNullOrEmpty(subscriberType) && types.contains(subscriberType)) {
                             //Log.i(NAME, subscriber.getName() + " исключен в " + module.getName());
                             ((ISmallController) module).unregister(subscriber);
                         }

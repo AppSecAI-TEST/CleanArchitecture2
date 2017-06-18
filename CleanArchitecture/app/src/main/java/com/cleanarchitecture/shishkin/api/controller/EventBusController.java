@@ -16,6 +16,7 @@ public class EventBusController implements IEventBusController {
     public static final int MIN_RANK = 0;
 
     public static final String NAME = EventBusController.class.getName();
+    private static final String LOG_TAG = "EventBusController:";
     public static final String SUBSCRIBER_TYPE = "IEventbusSubscriber";
     private static volatile EventBusController sInstance;
 
@@ -80,6 +81,9 @@ public class EventBusController implements IEventBusController {
         if (subscriber != null) {
             if (!EventBus.getDefault().isRegistered(subscriber)) {
                 EventBus.getDefault().register(subscriber);
+            }
+            if (!EventBus.getDefault().isRegistered(subscriber)) {
+                ErrorController.getInstance().onError(LOG_TAG, "Subscriber not register", false);
             }
         }
     }
