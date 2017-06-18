@@ -43,7 +43,7 @@ public class Repository extends AbstractModule implements IRepository, IModuleSu
     public static final int USE_NO_CACHE = 0; // не использовать кеш ни при чтении ни при сохранении данных
     public static final int USE_MEMORY_CACHE = 1; // использовать кеш в памяти при чтении и при сохранении данных - данные будут прочитаны позднее
     public static final int USE_DISK_CACHE = 2; // использовать кеш на диске при чтении и при сохранении данных - данные будут прочитаны позднее
-    public static final int USE_MEMORY_AND_DISK_CACHE = 3; // использовать кеш в памяти и на диске при чтении и при сохранении данных - данные будут прочитаны позднее
+    public static final int USE_CACHE = 3; // использовать кеш в памяти и на диске при чтении и при сохранении данных - данные будут прочитаны позднее
     public static final int USE_ONLY_MEMORY_CACHE = 4; // использовать только кеш в памяти для получения данных
     public static final int USE_ONLY_DISK_CACHE = 5; // использовать только кеш на диске для получения данных
     public static final int USE_ONLY_CACHE = 6; // использовать только кеш в памяти и на диске для получения данных
@@ -78,7 +78,7 @@ public class Repository extends AbstractModule implements IRepository, IModuleSu
                 break;
 
             case USE_ONLY_CACHE:
-            case USE_MEMORY_AND_DISK_CACHE:
+            case USE_CACHE:
                 Serializable ser = null;
                 if (memoryCache != null) {
                     ser = memoryCache.get(key);
@@ -118,7 +118,7 @@ public class Repository extends AbstractModule implements IRepository, IModuleSu
 
             case USE_ONLY_CACHE:
             case USE_SAVE_CACHE:
-            case USE_MEMORY_AND_DISK_CACHE:
+            case USE_CACHE:
                 MemoryCacheService.put(context, key, value);
                 DiskCacheService.put(context, key, value);
                 break;
