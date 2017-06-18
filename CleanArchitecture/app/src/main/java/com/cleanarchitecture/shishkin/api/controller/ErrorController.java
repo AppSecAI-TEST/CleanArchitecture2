@@ -1,8 +1,6 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
 import android.Manifest;
-import android.content.Context;
-import android.os.Build;
 import android.os.Environment;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
@@ -129,7 +127,7 @@ public class ErrorController implements IErrorController {
 
     @Override
     public synchronized void onError(final String source, final String message, final boolean isDisplay) {
-        if (isDisplay){
+        if (isDisplay) {
             AdminUtils.postEvent(new ShowErrorMessageEvent(message));
         } else {
             Log.e(source, message);

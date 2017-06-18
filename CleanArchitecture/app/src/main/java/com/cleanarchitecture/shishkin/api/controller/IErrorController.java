@@ -51,8 +51,8 @@ public interface IErrorController extends IModule {
     /**
      * Ошибка
      *
-     * @param source         источник ошибки
-     * @param message текст ошибки пользователю
+     * @param source    источник ошибки
+     * @param message   текст ошибки пользователю
      * @param isDisplay true - отображать на сообщение на дисплее, false - сохранять в журнале
      */
     void onError(final String source, final String message, final boolean isDisplay);
