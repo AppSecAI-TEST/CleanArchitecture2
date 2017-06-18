@@ -85,7 +85,7 @@ public abstract class AbstractActivity extends LifecycleActivity
     protected void onStart() {
         super.onStart();
 
-        AdminUtils.registerActivity(this);
+        AdminUtils.register(this);
 
         mStateMachine.setState(Lifecycle.STATE_READY);
 
