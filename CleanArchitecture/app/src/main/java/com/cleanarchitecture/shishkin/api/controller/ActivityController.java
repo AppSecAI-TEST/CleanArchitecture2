@@ -61,6 +61,15 @@ public class ActivityController extends AbstractController<IActivity> implements
     }
 
     @Override
+    public synchronized IActivity getSubscriber() {
+        final IActivity activity = super.getSubscriber();
+        if (activity == null) {
+            ErrorController.getInstance().onError(LOG_TAG, "Not found any activity", false);
+        }
+        return activity;
+    }
+
+    @Override
     public synchronized boolean checkPermission(String permission) {
         if (ApplicationUtils.hasMarshmallow()) {
             final IActivity subscriber = getSubscriber();
