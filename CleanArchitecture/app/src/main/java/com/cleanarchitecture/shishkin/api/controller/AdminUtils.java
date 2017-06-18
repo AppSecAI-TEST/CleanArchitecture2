@@ -26,6 +26,7 @@ import com.cleanarchitecture.shishkin.api.storage.IStorage;
 import com.cleanarchitecture.shishkin.api.storage.MemoryCache;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractActivity;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractContentActivity;
+import com.cleanarchitecture.shishkin.api.ui.activity.IActivity;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
@@ -53,6 +54,18 @@ public class AdminUtils {
      */
     public static void register(final IModuleSubscriber subscriber) {
         Admin.getInstance().register(subscriber);
+    }
+
+    /**
+     * Зарегистрировать activity
+     *
+     * @param activity activity
+     */
+    public static void registerActivity(final IActivity activity) {
+        final ActivityController controller = Admin.getInstance().get(ActivityController.NAME);
+        if (controller != null) {
+            controller.register(activity);
+        }
     }
 
     /**
