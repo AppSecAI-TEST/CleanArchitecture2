@@ -2,8 +2,7 @@ package com.cleanarchitecture.shishkin.api.controller;
 
 import java.lang.ref.WeakReference;
 
-public abstract class AbstractController<T> extends AbstractSmallController<T> implements IController<T> {
-    private static final String LOG_TAG = "AbstractController:";
+public abstract class AbstractController<T extends ISubscriber> extends AbstractSmallController<T> implements IController<T> {
 
     private WeakReference<T> mCurrentSubscriber;
 
@@ -19,11 +18,9 @@ public abstract class AbstractController<T> extends AbstractSmallController<T> i
         super.unregister(subscriber);
 
         if (subscriber != null && mCurrentSubscriber != null && mCurrentSubscriber.get() != null) {
-            if (subscriber instanceof ISubscriber) {
-                if (((ISubscriber) subscriber).getName().equalsIgnoreCase(((ISubscriber) mCurrentSubscriber.get()).getName())) {
-                    mCurrentSubscriber.clear();
-                    mCurrentSubscriber = null;
-                }
+            if (subscriber.getName().equalsIgnoreCase(mCurrentSubscriber.get().getName())) {
+                mCurrentSubscriber.clear();
+                mCurrentSubscriber = null;
             }
         }
     }
@@ -43,25 +40,16 @@ public abstract class AbstractController<T> extends AbstractSmallController<T> i
 
     @Override
     public synchronized T getSubscriber() {
-        final T currentSubscriber = getCurrentSubscriber();
-        if (currentSubscriber != null) {
-            return currentSubscriber;
+        T subscriber = getCurrentSubscriber();
+        if (subscriber != null) {
+            return subscriber;
         }
 
-        for (WeakReference<T> weakReference : getSubscribers().values()) {
-            final T subscriber = weakReference.get();
-            if (subscriber != null) {
-                return subscriber;
-            }
+        subscriber = super.getSubscriber();
+        if (subscriber == null) {
+            ErrorController.getInstance().onError(getName(), "Subscriber not found", false);
         }
-
-        ErrorController.getInstance().onError(LOG_TAG, "Subscriber controller(" + getName() + ") not found", false);
-        return null;
-    }
-
-    @Override
-    public synchronized boolean hasSubscribers() {
-        return !getSubscribers().isEmpty();
+        return subscriber;
     }
 
 }

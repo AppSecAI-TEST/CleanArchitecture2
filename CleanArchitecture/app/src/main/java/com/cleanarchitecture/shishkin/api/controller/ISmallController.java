@@ -24,6 +24,8 @@ public interface ISmallController<T> extends IModule {
      */
     void unregister(T subscriber);
 
+    T getSubscriber();
+
     /**
      * Получить список подписчиков
      *
@@ -32,11 +34,9 @@ public interface ISmallController<T> extends IModule {
     Map<String, WeakReference<T>> getSubscribers();
 
     /**
-     * Проверить наличие подписчика
+     * Проверить наличие подписчиков
      *
-     * @param subscriber подписчик
-     * @return true - подписчик найден
+     * @return true - подписчиrb есть
      */
-    boolean isRegistered(T subscriber);
-
+    boolean hasSubscribers();
 }

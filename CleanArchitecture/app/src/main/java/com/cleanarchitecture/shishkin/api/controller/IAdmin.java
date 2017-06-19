@@ -37,11 +37,6 @@ public interface IAdmin extends ISubscriber {
     void unregister(String name);
 
     /**
-     * Отменить регистрацию всех непостоянных модулей
-     */
-    void unregisterAll();
-
-    /**
      * Зарегистрировать подписчика модуля
      *
      * @param subscriber подписчик модуля

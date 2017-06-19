@@ -1,8 +1,5 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
-import java.lang.ref.WeakReference;
-import java.util.Map;
-
 /**
  * Интерфейс абстрактного контроллера
  *
@@ -26,23 +23,9 @@ public interface IController<T> extends ISmallController<T> {
     T getCurrentSubscriber();
 
     /**
-     * Получить список подписчиков
-     *
-     * @return список подписчиков
-     */
-    Map<String, WeakReference<T>> getSubscribers();
-
-    /**
      * Получить текущего подписчика, а если не указан текущий - первого по списку
      *
      * @return подписчик
      */
     T getSubscriber();
-
-    /**
-     * Проверить наличие подписчиков
-     *
-     * @return true - подписчиrb есть
-     */
-    boolean hasSubscribers();
 }

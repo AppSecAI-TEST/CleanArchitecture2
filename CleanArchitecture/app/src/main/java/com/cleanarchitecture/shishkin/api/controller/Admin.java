@@ -2,7 +2,6 @@ package com.cleanarchitecture.shishkin.api.controller;
 
 import android.content.Context;
 
-import com.cleanarchitecture.shishkin.api.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.repository.ContentProvider;
 import com.cleanarchitecture.shishkin.api.repository.DbProvider;
 import com.cleanarchitecture.shishkin.api.repository.NetProvider;
@@ -11,16 +10,11 @@ import com.cleanarchitecture.shishkin.api.storage.DiskCache;
 import com.cleanarchitecture.shishkin.api.storage.MemoryCache;
 import com.cleanarchitecture.shishkin.api.usecases.UseCasesController;
 
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 @SuppressWarnings("unused")
 public class Admin extends AbstractAdmin {
     public static final String NAME = Admin.class.getName();
 
     private static volatile Admin sInstance;
-
-    private boolean isFinishApplication = false;
 
     public static void instantiate() {
         if (sInstance == null) {
@@ -40,9 +34,7 @@ public class Admin extends AbstractAdmin {
     }
 
     private Admin() {
-        EventBusController.getInstance().register(this);
-
-        register();
+        init();
     }
 
     @Override
@@ -50,13 +42,7 @@ public class Admin extends AbstractAdmin {
         return NAME;
     }
 
-    public synchronized void unregister() {
-        unregisterAll();
-    }
-
-    public synchronized void register() {
-        isFinishApplication = false;
-
+    public void init() {
         final Context context = AdminUtils.getContext();
 
         // default persistent (Singleton) controllers
@@ -82,16 +68,6 @@ public class Admin extends AbstractAdmin {
         registerModule(Repository.NAME);
         registerModule(DesktopController.NAME);
         registerModule(LocationController.NAME);
-
-    }
-
-    public boolean isFinishApplication() {
-        return isFinishApplication;
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public synchronized void onFinishApplicationEvent(FinishApplicationEvent event) {
-        isFinishApplication = true;
     }
 
 }

@@ -27,6 +27,13 @@ public class PresenterController extends AbstractController<IPresenter>
     }
 
     @Override
+    public synchronized void unregister(final IPresenter subscriber) {
+        if (subscriber != null && subscriber.isRegister()) {
+            super.unregister(subscriber);
+        }
+    }
+
+    @Override
     public synchronized IPresenter getPresenter(final String name) {
         if (getSubscribers().containsKey(name)) {
             for (Map.Entry<String, WeakReference<IPresenter>> entry : getSubscribers().entrySet()) {
