@@ -14,7 +14,9 @@ public class RecreateMail extends AbstractMail {
 
     @Override
     public void read(final IMailSubscriber subscriber) {
-        ApplicationUtils.runOnUiThread(() -> ((AbstractActivity) subscriber).recreate());
+        if (subscriber instanceof AbstractActivity) {
+            ApplicationUtils.runOnUiThread(() -> ((AbstractActivity) subscriber).recreate());
+        }
     }
 
     @Override
