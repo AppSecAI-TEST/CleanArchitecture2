@@ -20,6 +20,11 @@ public class UpdateViewPresenterMail extends AbstractMail {
     }
 
     @Override
+    public IMail copy() {
+        return new UpdateViewPresenterMail(getAddress());
+    }
+
+    @Override
     public String getName() {
         return NAME;
     }

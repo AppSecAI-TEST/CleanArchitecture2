@@ -18,6 +18,11 @@ public class RecreateMail extends AbstractMail {
     }
 
     @Override
+    public IMail copy() {
+        return new RecreateMail(getAddress());
+    }
+
+    @Override
     public String getName() {
         return NAME;
     }

@@ -8,6 +8,7 @@ import com.cleanarchitecture.shishkin.api.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.api.event.OnScreenOffEvent;
 import com.cleanarchitecture.shishkin.api.event.OnScreenOnEvent;
+import com.cleanarchitecture.shishkin.api.mail.LocationMail;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -91,13 +92,17 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
         }
     }
 
-    private void setLocation(final Location mLocation) {
-        this.mLocation = mLocation;
+    private void setLocation(final Location location) {
+        this.mLocation = location;
 
         if (hasSubscribers()) {
             for (WeakReference<ILocationSubscriber> ref : getSubscribers().values()) {
                 if (ref != null && ref.get() != null) {
-                    ref.get().setLocation(mLocation);
+                    if (ref.get() instanceof IMailSubscriber) {
+                        AdminUtils.addMail(new LocationMail(ref.get().getName(), mLocation));
+                    } else {
+                        ref.get().setLocation(mLocation);
+                    }
                 }
             }
         }

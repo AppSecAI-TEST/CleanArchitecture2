@@ -21,9 +21,21 @@ public class ShowToastMail extends AbstractMail {
         mMessage = message;
     }
 
+    public String getMessage() {
+        return mMessage;
+    }
+
+    public int getDuration() {
+        return mDuration;
+    }
+
     public ShowToastMail setDuration(int duration) {
         this.mDuration = duration;
         return this;
+    }
+
+    public int getType() {
+        return mType;
     }
 
     public ShowToastMail setType(int type) {
@@ -36,6 +48,13 @@ public class ShowToastMail extends AbstractMail {
         AdminUtils.postEvent(new ShowToastEvent(mMessage)
                 .setDuration(mDuration)
                 .setType(mType));
+    }
+
+    @Override
+    public IMail copy() {
+        return new ShowToastMail(getAddress(), getMessage())
+                .setDuration(getDuration())
+                .setType(getType());
     }
 
     @Override
