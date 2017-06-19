@@ -38,7 +38,7 @@ public abstract class AbstractSmallController<T> implements ISmallController<T> 
     private synchronized void checkNullSubscriber() {
         for (Map.Entry<String, WeakReference<T>> entry : mSubscribers.entrySet()) {
             if (entry.getValue() == null || entry.getValue().get() == null) {
-                Log.i(LOG_TAG, entry.getKey() + " отключен в " + getName());
+                //Log.i(LOG_TAG, entry.getKey() + " отключен в " + getName());
                 mSubscribers.remove(entry.getKey());
             }
         }
