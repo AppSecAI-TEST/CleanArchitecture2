@@ -1,5 +1,7 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
+import com.github.snowdream.android.util.Log;
+
 import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.Map;
@@ -29,9 +31,14 @@ public abstract class AbstractSmallController<T> implements ISmallController<T> 
     }
 
     @Override
-    public synchronized void checkNullSubscriber() {
+    public synchronized void unregister(final T subscriber) {
+        checkNullSubscriber();
+    }
+
+    private synchronized void checkNullSubscriber() {
         for (Map.Entry<String, WeakReference<T>> entry : mSubscribers.entrySet()) {
             if (entry.getValue() == null || entry.getValue().get() == null) {
+                Log.i(LOG_TAG, entry.getKey() + " отключен в " + getName());
                 mSubscribers.remove(entry.getKey());
             }
         }
@@ -39,23 +46,9 @@ public abstract class AbstractSmallController<T> implements ISmallController<T> 
 
     @Override
     public synchronized Map<String, WeakReference<T>> getSubscribers() {
-        return mSubscribers;
-    }
-
-    @Override
-    public synchronized void unregister(final T subscriber) {
-        if (subscriber == null) {
-            return;
-        }
-
         checkNullSubscriber();
 
-        if (subscriber instanceof ISubscriber) {
-            if (mSubscribers.containsKey(((ISubscriber) subscriber).getName())) {
-                //Log.i(LOG_TAG, ((ISubscriber) subscriber).getName() + " исключен в " + getName());
-                mSubscribers.remove(((ISubscriber) subscriber).getName());
-            }
-        }
+        return mSubscribers;
     }
 
     @Override

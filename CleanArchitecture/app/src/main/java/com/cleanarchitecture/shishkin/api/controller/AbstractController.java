@@ -11,10 +11,6 @@ public abstract class AbstractController<T> extends AbstractSmallController<T> i
     public synchronized void setCurrentSubscriber(final T subscriber) {
         if (subscriber != null) {
             mCurrentSubscriber = new WeakReference<>(subscriber);
-
-            if (!isRegistered(subscriber)) {
-                register(subscriber);
-            }
         }
     }
 
@@ -52,16 +48,13 @@ public abstract class AbstractController<T> extends AbstractSmallController<T> i
             return currentSubscriber;
         }
 
-        checkNullSubscriber();
-
-        if (!getSubscribers().isEmpty()) {
-            for (WeakReference<T> weakReference : getSubscribers().values()) {
-                final T subscriber = weakReference.get();
-                if (subscriber != null) {
-                    return subscriber;
-                }
+        for (WeakReference<T> weakReference : getSubscribers().values()) {
+            final T subscriber = weakReference.get();
+            if (subscriber != null) {
+                return subscriber;
             }
         }
+
         ErrorController.getInstance().onError(LOG_TAG, "Subscriber controller(" + getName() + ") not found", false);
         return null;
     }

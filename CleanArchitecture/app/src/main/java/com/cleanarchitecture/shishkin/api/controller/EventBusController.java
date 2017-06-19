@@ -108,10 +108,6 @@ public class EventBusController implements IEventBusController {
     }
 
     @Override
-    public void checkNullSubscriber() {
-    }
-
-    @Override
     public boolean isRegistered(Object subscriber) {
         return EventBus.getDefault().isRegistered(subscriber);
     }

@@ -24,18 +24,12 @@ public interface ISmallController<T> extends IModule {
      */
     void unregister(T subscriber);
 
-
     /**
      * Получить список подписчиков
      *
      * @return список подписчиков
      */
     Map<String, WeakReference<T>> getSubscribers();
-
-    /**
-     * Очистить спиок подписчиков от несуществующих
-     */
-    void checkNullSubscriber();
 
     /**
      * Проверить наличие подписчика
