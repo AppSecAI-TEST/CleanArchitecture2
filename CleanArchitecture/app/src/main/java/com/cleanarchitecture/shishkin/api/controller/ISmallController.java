@@ -24,6 +24,11 @@ public interface ISmallController<T> extends IModule {
      */
     void unregister(T subscriber);
 
+    /**
+     * Получить подписчика
+     *
+     * @return подписчик
+     */
     T getSubscriber();
 
     /**
