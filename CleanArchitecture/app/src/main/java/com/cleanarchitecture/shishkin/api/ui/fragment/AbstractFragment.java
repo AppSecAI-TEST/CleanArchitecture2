@@ -139,9 +139,7 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
 
     @Override
     public synchronized void registerPresenter(final IPresenter presenter) {
-        if (mPresenters.containsKey(presenter.getName())) {
-            mPresenters.remove(presenter);
-        }
+        AdminUtils.register(presenter);
         mPresenters.put(presenter.getName(), presenter);
         mStateMachine.addObserver(presenter);
     }

@@ -28,7 +28,7 @@ public interface IPresenter<M> extends ILifecycle, IView, IModuleSubscriber {
     /**
      * Флаг - регистрировать презентер в контроллере презентеров
      *
-     * @return the boolean
+     * @return true - регистрировать (презентер - глобальный)
      */
     boolean isRegister();
 

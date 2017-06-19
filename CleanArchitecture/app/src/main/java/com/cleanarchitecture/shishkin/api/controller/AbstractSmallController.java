@@ -5,41 +5,55 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class AbstractSmallController<T> implements ISmallController<T> {
-
-    private static final String LOG_TAG = "AbstractSmallController:";
+public abstract class AbstractSmallController<T extends ISubscriber> implements ISmallController<T> {
 
     private Map<String, WeakReference<T>> mSubscribers = Collections.synchronizedMap(new ConcurrentHashMap<String, WeakReference<T>>());
 
     @Override
-    public abstract String getName();
-
-    @Override
     public synchronized void register(T subscriber) {
+        checkNullSubscriber();
+
         if (subscriber == null) {
             return;
         }
 
-        checkNullSubscriber();
-
-        if (subscriber instanceof ISubscriber) {
-            //Log.i(LOG_TAG, ((ISubscriber) subscriber).getName() + " зарегистрирован в " + getName());
-            mSubscribers.put(((ISubscriber) subscriber).getName(), new WeakReference<T>(subscriber));
-        }
+        mSubscribers.put(subscriber.getName(), new WeakReference<>(subscriber));
     }
 
     @Override
     public synchronized void unregister(final T subscriber) {
         checkNullSubscriber();
+
+        if (subscriber == null) {
+            return;
+        }
+
+        if (mSubscribers.containsKey(subscriber.getName())) {
+            mSubscribers.remove(subscriber.getName());
+        }
     }
 
     private synchronized void checkNullSubscriber() {
         for (Map.Entry<String, WeakReference<T>> entry : mSubscribers.entrySet()) {
             if (entry.getValue() == null || entry.getValue().get() == null) {
-                //Log.i(LOG_TAG, entry.getKey() + " отключен в " + getName());
                 mSubscribers.remove(entry.getKey());
             }
         }
+    }
+
+    /**
+     * Получить подписчика
+     *
+     * @return подписчик
+     */
+    @Override
+    public synchronized T getSubscriber() {
+        checkNullSubscriber();
+
+        for (Map.Entry<String, WeakReference<T>> entry : mSubscribers.entrySet()) {
+            return entry.getValue().get();
+        }
+        return null;
     }
 
     @Override
@@ -48,9 +62,6 @@ public abstract class AbstractSmallController<T> implements ISmallController<T> 
 
         return mSubscribers;
     }
-
-    @Override
-    public abstract String getSubscriberType();
 
     @Override
     public boolean isPersistent() {
@@ -62,13 +73,8 @@ public abstract class AbstractSmallController<T> implements ISmallController<T> 
     }
 
     @Override
-    public boolean isRegistered(final T subscriber) {
-        if (subscriber == null) {
-            return false;
-        }
-
-        checkNullSubscriber();
-
-        return (mSubscribers.containsKey(((ISubscriber) subscriber).getName()));
+    public synchronized boolean hasSubscribers() {
+        return (!mSubscribers.isEmpty());
     }
+
 }

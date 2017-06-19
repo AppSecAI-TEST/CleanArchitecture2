@@ -69,6 +69,7 @@ public abstract class AbstractActivity extends LifecycleActivity
         AdminUtils.register(this);
 
         mStateMachine.setState(Lifecycle.STATE_CREATE);
+
     }
 
     @Override
@@ -84,8 +85,6 @@ public abstract class AbstractActivity extends LifecycleActivity
     @Override
     protected void onStart() {
         super.onStart();
-
-        AdminUtils.register(this);
 
         mStateMachine.setState(Lifecycle.STATE_READY);
 
@@ -157,9 +156,6 @@ public abstract class AbstractActivity extends LifecycleActivity
     }
 
     @Override
-    public abstract String getName();
-
-    @Override
     public List<String> hasSubscriberType() {
         ArrayList<String> list = new ArrayList<>();
         list.add(EventBusController.SUBSCRIBER_TYPE);
@@ -197,9 +193,7 @@ public abstract class AbstractActivity extends LifecycleActivity
 
     @Override
     public synchronized void registerPresenter(final IPresenter presenter) {
-        if (mPresenters.containsKey(presenter.getName())) {
-            mPresenters.remove(presenter);
-        }
+        AdminUtils.register(presenter);
         mPresenters.put(presenter.getName(), presenter);
         mStateMachine.addObserver(presenter);
     }
@@ -324,5 +318,4 @@ public abstract class AbstractActivity extends LifecycleActivity
             }
         }
     }
-
 }

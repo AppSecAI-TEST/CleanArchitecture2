@@ -5,6 +5,7 @@ import com.cleanarchitecture.shishkin.api.event.IEvent;
 import org.greenrobot.eventbus.EventBus;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -103,13 +104,18 @@ public class EventBusController implements IEventBusController {
     }
 
     @Override
-    public Map<String, WeakReference<Object>> getSubscribers() {
+    public Object getSubscriber() {
         return null;
     }
 
     @Override
-    public boolean isRegistered(Object subscriber) {
-        return EventBus.getDefault().isRegistered(subscriber);
+    public Map<String, WeakReference<Object>> getSubscribers() {
+        return new HashMap<>();
+    }
+
+    @Override
+    public boolean hasSubscribers() {
+        return true;
     }
 
     @Override
