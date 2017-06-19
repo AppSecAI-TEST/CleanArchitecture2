@@ -30,11 +30,30 @@ public class ShowMessageMail extends AbstractMail {
         return this;
     }
 
+    public String getMessage() {
+        return mMessage;
+    }
+
+    public String getAction() {
+        return mAction;
+    }
+
+    public int getDuration() {
+        return mDuration;
+    }
+
     @Override
     public void read(final IMailSubscriber subscriber) {
         AdminUtils.postEvent(new ShowMessageEvent(mMessage)
                 .setDuration(mDuration)
                 .setAction(mAction));
+    }
+
+    @Override
+    public IMail copy() {
+        return new ShowMessageMail(getAddress(), getMessage())
+                .setDuration(getDuration())
+                .setAction(getAction());
     }
 
     @Override

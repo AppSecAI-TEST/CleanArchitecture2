@@ -1,24 +1,17 @@
 package com.cleanarchitecture.shishkin.api.mail;
 
-import com.cleanarchitecture.shishkin.api.controller.IMailSubscriber;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
-import org.apache.commons.lang3.SerializationUtils;
-
-import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class AbstractMail implements IMail, Serializable {
+public abstract class AbstractMail implements IMail {
 
     private String mAddress;
     private String mSender;
-    private List<String> mCopyTo = new LinkedList<String>();
+    private List<String> mCopyTo = new LinkedList<>();
     private long mId = 0;
     private long mEndTime = -1;
-
-    public AbstractMail() {
-    }
 
     public AbstractMail(final String address) {
         mAddress = address;
@@ -45,8 +38,6 @@ public abstract class AbstractMail implements IMail, Serializable {
         this.mCopyTo = copyTo;
         return this;
     }
-
-    public abstract void read(IMailSubscriber subscriber);
 
     @Override
     public boolean contains(final String address) {
@@ -88,11 +79,6 @@ public abstract class AbstractMail implements IMail, Serializable {
     public IMail setEndTime(final long endTime) {
         mEndTime = endTime;
         return this;
-    }
-
-    @Override
-    public IMail copy() {
-        return SerializationUtils.clone(this);
     }
 
     @Override
