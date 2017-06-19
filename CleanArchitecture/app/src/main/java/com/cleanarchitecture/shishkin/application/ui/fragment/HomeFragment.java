@@ -1,6 +1,7 @@
 package com.cleanarchitecture.shishkin.application.ui.fragment;
 
 import android.Manifest;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -13,11 +14,15 @@ import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.DesktopController;
 import com.cleanarchitecture.shishkin.api.controller.IDesktopController;
+import com.cleanarchitecture.shishkin.api.controller.ILocationSubscriber;
+import com.cleanarchitecture.shishkin.api.controller.LocationController;
+import com.cleanarchitecture.shishkin.api.controller.MailController;
 import com.cleanarchitecture.shishkin.api.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.OnToolbarMenuItemClickEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBackNavigationEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetMenuEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetTitleEvent;
+import com.cleanarchitecture.shishkin.api.event.ui.ShowMessageEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseFinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseRequestPermissionEvent;
 import com.cleanarchitecture.shishkin.api.presenter.OnBackPressedPresenter;
@@ -31,11 +36,14 @@ import com.github.clans.fab.FloatingActionMenu;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 @SuppressWarnings("unused")
-public class HomeFragment extends AbstractContentFragment {
+public class HomeFragment extends AbstractContentFragment implements ILocationSubscriber{
 
     public static final String NAME = HomeFragment.class.getName();
 
@@ -51,6 +59,14 @@ public class HomeFragment extends AbstractContentFragment {
 
     @BindView(R.id.fab_btn_exit)
     FloatingActionButton mFloatingActionButtonExit;
+
+    @Override
+    public List<String> hasSubscriberType() {
+        final List<String> list = super.hasSubscriberType();
+        list.add(LocationController.SUBSCRIBER_TYPE);
+        return list;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -134,5 +150,9 @@ public class HomeFragment extends AbstractContentFragment {
         }
     }
 
+    @Override
+    public void setLocation(Location location) {
+        AdminUtils.postEvent(new ShowMessageEvent(location.toString()));
+    }
 }
 
