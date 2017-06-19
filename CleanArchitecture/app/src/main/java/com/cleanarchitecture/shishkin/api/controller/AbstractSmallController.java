@@ -1,7 +1,5 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
-import com.github.snowdream.android.util.Log;
-
 import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.Map;
