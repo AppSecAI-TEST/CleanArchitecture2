@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.api.observer;
+package com.cleanarchitecture.shishkin.api.debounce;
 
 import android.os.Handler;
 
