@@ -1,6 +1,7 @@
 package com.cleanarchitecture.shishkin.application.ui.fragment;
 
 import android.Manifest;
+import android.content.res.Configuration;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -32,6 +33,7 @@ import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewId
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewScrolledEvent;
 import com.cleanarchitecture.shishkin.application.presenter.PhoneContactPresenter;
 import com.cleanarchitecture.shishkin.common.utils.ShareUtil;
+import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
@@ -119,7 +121,9 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
     @Override
     public void prepareToolbar() {
         AdminUtils.postEvent(new ToolbarSetTitleEvent(0, getString(R.string.app_name)));
-        AdminUtils.postEvent(new ToolbarSetMenuEvent(AdminUtils.getMenuId("main_menu", R.menu.main_menu), true));
+        if (ViewUtils.getOrientation(getContext()) != Configuration.ORIENTATION_LANDSCAPE) {
+            AdminUtils.postEvent(new ToolbarSetMenuEvent(AdminUtils.getMenuId("main_menu", R.menu.main_menu), true));
+        }
         AdminUtils.postEvent(new ToolbarSetBackNavigationEvent(true));
         AdminUtils.postEvent(new ToolbarSetItemEvent(R.mipmap.ic_share_variant, true));
     }

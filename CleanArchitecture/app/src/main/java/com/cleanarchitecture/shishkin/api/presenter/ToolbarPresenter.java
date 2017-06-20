@@ -113,8 +113,6 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         if (progresBar != null) {
             mPogressBar = new WeakReference<>(progresBar);
         }
-
-        checkNetStatus(context);
     }
 
     @Override
@@ -272,6 +270,10 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         setMenu(0, false);
         setItem(0, false);
         setBackNavigation(false);
+
+        if(mContext != null && mContext.get() != null) {
+            checkNetStatus(mContext.get());
+        }
 
         AdminUtils.postEvent(new ToolbarPrepareEvent());
     }
