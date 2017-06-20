@@ -4,7 +4,7 @@
     android:id="@+id/sidemenu_ll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_dark"
+    android:background="@color/black"
     android:orientation="vertical">
 
     <LinearLayout
@@ -23,7 +23,7 @@
 
 
         <com.balysv.materialripple.MaterialRippleLayout
-            android:background="@color/divider_color"
+            android:background="@color/gray_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -45,7 +45,7 @@
                     android:layout_height="@dimen/dimen_32dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/dimen_16dp"
-                    android:src="@mipmap/ic_brush_grey600_48dp" />
+                    android:src="@mipmap/ic_brush_white_48dp" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -56,7 +56,7 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:text="@string/desktop"
-                    android:textColor="@color/text_dark"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/text_size_large" />
             </LinearLayout>
 
@@ -67,7 +67,7 @@
         android:id="@+id/sidemenu_footer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/divider_color"
+        android:background="@color/gray_text"
         android:orientation="vertical">
 
         <com.balysv.materialripple.MaterialRippleLayout
@@ -92,7 +92,7 @@
                     android:layout_height="@dimen/dimen_32dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/dimen_16dp"
-                    android:src="@mipmap/ic_home_dark" />
+                    android:src="@mipmap/ic_home" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -103,7 +103,7 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:text="@string/exit"
-                    android:textColor="@color/text_dark"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/text_size_large" />
             </LinearLayout>
 

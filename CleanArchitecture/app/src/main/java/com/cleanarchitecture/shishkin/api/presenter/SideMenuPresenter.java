@@ -5,12 +5,17 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.api.controller.Admin;
+import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.api.controller.DesktopController;
+import com.cleanarchitecture.shishkin.api.controller.IDesktopController;
+import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseFinishApplicationEvent;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 
 import java.lang.ref.WeakReference;
 
 @SuppressWarnings("unused")
-public class SideMenuPresenter extends AbstractPresenter<Void> {
+public class SideMenuPresenter extends AbstractPresenter<Void> implements View.OnClickListener {
     public static final String NAME = SideMenuPresenter.class.getName();
 
     private WeakReference<Context> mContext;
@@ -46,6 +51,9 @@ public class SideMenuPresenter extends AbstractPresenter<Void> {
         if (footer != null) {
             mFooter = new WeakReference<>(footer);
         }
+
+        ViewUtils.findView(root, R.id.exit).setOnClickListener(this);
+        ViewUtils.findView(root, R.id.desktop).setOnClickListener(this);
 
         fillSideMenu();
     }
@@ -85,4 +93,20 @@ public class SideMenuPresenter extends AbstractPresenter<Void> {
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.exit:
+                AdminUtils.postEvent(new UseCaseFinishApplicationEvent());
+                break;
+
+            case R.id.desktop:
+                final IDesktopController controller = Admin.getInstance().get(DesktopController.NAME);
+                if (controller != null) {
+                    controller.getDesktop();
+                }
+                break;
+
+        }
+    }
 }

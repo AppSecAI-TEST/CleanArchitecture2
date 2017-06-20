@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.presenter.SideMenuPresenter;
 import com.cleanarchitecture.shishkin.api.presenter.ToolbarPresenter;
 
@@ -19,7 +20,7 @@ public class SideMenuFragment extends AbstractFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.sidemenu, container, false);
+        return inflater.inflate(AdminUtils.getLayoutId("sidemenu", R.layout.sidemenu), container, false);
     }
 
     @Override

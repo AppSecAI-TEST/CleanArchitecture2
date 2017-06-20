@@ -271,7 +271,9 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         setItem(0, false);
         setBackNavigation(false);
 
-        checkNetStatus(mContext.get());
+        if(mContext != null && mContext.get() != null) {
+            checkNetStatus(mContext.get());
+        }
 
         AdminUtils.postEvent(new ToolbarPrepareEvent());
     }
