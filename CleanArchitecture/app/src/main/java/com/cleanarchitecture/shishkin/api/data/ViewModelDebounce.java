@@ -1,7 +1,7 @@
 package com.cleanarchitecture.shishkin.api.data;
 
 import com.cleanarchitecture.shishkin.api.controller.Admin;
-import com.cleanarchitecture.shishkin.api.observer.Debounce;
+import com.cleanarchitecture.shishkin.api.debounce.Debounce;
 import com.cleanarchitecture.shishkin.api.repository.DbProvider;
 import com.cleanarchitecture.shishkin.api.repository.IDbProvider;
 
