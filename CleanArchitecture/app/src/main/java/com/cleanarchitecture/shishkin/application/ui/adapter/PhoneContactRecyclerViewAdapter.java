@@ -13,7 +13,7 @@ import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.AbstractRecyclerViewAdapter;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.AbstractViewHolder;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
-import com.cleanarchitecture.shishkin.application.event.searchpresenter.OnSearchPresenterItemClick;
+import com.cleanarchitecture.shishkin.application.event.phonecontactpresenter.OnPhoneContactPresenterItemClick;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 import com.pkmmte.view.CircularImageView;
@@ -73,7 +73,7 @@ public class PhoneContactRecyclerViewAdapter extends AbstractRecyclerViewAdapter
         }
 
         private void onClick(View v) {
-            AdminUtils.postEvent(new OnSearchPresenterItemClick((PhoneContactItem) v.getTag()));
+            AdminUtils.postEvent(new OnPhoneContactPresenterItemClick((PhoneContactItem) v.getTag()));
         }
     }
 

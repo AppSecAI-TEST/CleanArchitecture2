@@ -33,7 +33,7 @@ import com.cleanarchitecture.shishkin.application.app.Constant;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.data.viewmodel.PhoneContactViewModel;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
-import com.cleanarchitecture.shishkin.application.event.searchpresenter.OnSearchPresenterItemClick;
+import com.cleanarchitecture.shishkin.application.event.phonecontactpresenter.OnPhoneContactPresenterItemClick;
 import com.cleanarchitecture.shishkin.application.ui.adapter.PhoneContactRecyclerViewAdapter;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.PhoneUtils;
@@ -195,7 +195,7 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
-    public synchronized void onSearchPresenterItemClick(OnSearchPresenterItemClick event) {
+    public synchronized void onSearchPresenterItemClick(OnPhoneContactPresenterItemClick event) {
         if (AdminUtils.checkPermission(Manifest.permission.CALL_PHONE)) {
             if (event.getContactItem() != null) {
                 final PhoneContactItem item = event.getContactItem();
