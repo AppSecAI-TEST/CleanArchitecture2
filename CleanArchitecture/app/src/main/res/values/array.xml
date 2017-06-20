@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="desktop_key">
-        <item>По умолчанию</item>
+        <item>Светлый</item>
         <item>Темный</item>
     </string-array>
     <string-array name="desktop_value">

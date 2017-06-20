@@ -28,15 +28,13 @@ public class MainActivity extends AbstractContentActivity {
 
         if (ViewUtils.isPhone(this)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            lockOrientation();
         } else {
-            if (ViewUtils.is7inchTablet(this)) {
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            } else {
+            if (ViewUtils.is10inchTablet(this)) {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                lockOrientation();
             }
         }
-
-        lockOrientation();
 
         onNewIntent(getIntent());
     }

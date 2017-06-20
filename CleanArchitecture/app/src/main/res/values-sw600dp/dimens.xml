@@ -15,5 +15,6 @@
     <dimen name="info_item_min_height">48dp</dimen>
 
     <dimen name="toolbar_progressbar_size">36dp</dimen>
+    <dimen name="sidemenu_width">250dp</dimen>
 
 </resources>

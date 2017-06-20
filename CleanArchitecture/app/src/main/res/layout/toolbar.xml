@@ -27,8 +27,8 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/dimen_56dp"
-            android:layout_marginRight="@dimen/dimen_56dp"
+            android:layout_marginLeft="@dimen/dimen_64dp"
+            android:layout_marginRight="@dimen/dimen_64dp"
             android:layout_marginBottom="@dimen/dimen_2dp"
             android:ellipsize="end"
             android:gravity="center"
@@ -36,36 +36,43 @@
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_xxlarge" />
 
-        <ImageView
-            android:id="@+id/menu"
+        <LinearLayout
+            android:id="@+id/right_group"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_gravity="center_vertical"
-            android:paddingRight="@dimen/padding_4dp"
-            android:src="@mipmap/ic_dots_vertical"
-            android:visibility="gone" />
+            android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/item"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_gravity="center_vertical"
-            android:visibility="gone"
-            android:layout_toLeftOf="@+id/menu" />
+            <com.wang.avi.AVLoadingIndicatorView
+                android:id="@+id/presenterProgressBar"
+                android:layout_width="@dimen/toolbar_progressbar_size"
+                android:layout_height="@dimen/toolbar_progressbar_size"
+                android:layout_centerVertical="true"
+                android:visibility="gone"
+                app:indicatorColor="@color/white_light"
+                app:indicatorName="LineSpinFadeLoaderIndicator" />
 
-        <com.wang.avi.AVLoadingIndicatorView
-            android:id="@+id/presenterProgressBar"
-            android:layout_width="@dimen/toolbar_progressbar_size"
-            android:layout_height="@dimen/toolbar_progressbar_size"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/item"
-            android:visibility="gone"
-            app:indicatorColor="@color/white_light"
-            app:indicatorName="LineSpinFadeLoaderIndicator" />
+            <ImageView
+                android:id="@+id/item"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingRight="@dimen/padding_4dp"
+                android:layout_gravity="center_vertical"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/menu"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:paddingRight="@dimen/padding_4dp"
+                android:src="@mipmap/ic_dots_vertical"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
 
         <me.zhanghai.android.materialprogressbar.MaterialProgressBar
             android:id="@+id/horizontalprogressbar"
