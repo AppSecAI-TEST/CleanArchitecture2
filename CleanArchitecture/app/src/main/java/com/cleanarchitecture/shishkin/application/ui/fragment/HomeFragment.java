@@ -119,7 +119,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
     @Override
     public void prepareToolbar() {
         AdminUtils.postEvent(new ToolbarSetTitleEvent(0, getString(R.string.app_name)));
-        AdminUtils.postEvent(new ToolbarSetMenuEvent(R.menu.main_menu, true));
+        AdminUtils.postEvent(new ToolbarSetMenuEvent(AdminUtils.getMenuId("main_menu", R.menu.main_menu), true));
         AdminUtils.postEvent(new ToolbarSetBackNavigationEvent(true));
         AdminUtils.postEvent(new ToolbarSetItemEvent(R.mipmap.ic_share_variant, true));
     }
@@ -128,7 +128,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
     public void setLocation(Location location) {
         AdminUtils.postEvent(new ShowMessageEvent(location.toString()));
     }
-    
+
     @Override
     public String getName() {
         return NAME;
@@ -161,7 +161,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
     public synchronized void onToolbarClickEvent(OnToolbarClickEvent event) {
         if (event.getView() != null && event.getView().getId() == R.id.item) {
             final ShareUtil.ShareData shareData = new ShareUtil.ShareData(null, getString(R.string.test_mesage));
-            ShareUtil.performShare(shareData, AdminUtils.getActivity(), null);
+            ShareUtil.share(shareData, AdminUtils.getActivity());
         }
     }
 

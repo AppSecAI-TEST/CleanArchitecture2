@@ -3,6 +3,7 @@ package com.cleanarchitecture.shishkin.api.presenter;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.PopupMenu;
 import android.view.MenuItem;
@@ -205,7 +206,8 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     private void showPopupMenu(final View view) {
         try {
             mPopupMenuShow = true;
-            mPopupMenu = new PopupMenu(mContext.get(), view);
+            final Context wrapper = new ContextThemeWrapper(mContext.get(), AdminUtils.getStyleId("PopupMenu", R.style.PopupMenu));
+            mPopupMenu = new PopupMenu(wrapper, view);
             final Field mFieldPopup = mPopupMenu.getClass().getDeclaredField("mPopup");
             mFieldPopup.setAccessible(true);
             final MenuPopupHelper mPopup = (MenuPopupHelper) mFieldPopup.get(mPopupMenu);

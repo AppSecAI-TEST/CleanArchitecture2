@@ -29,7 +29,11 @@ public class ShareUtil {
     private ShareUtil() {
     }
 
-    public static void performShare(final ShareData shareData, final Activity activity, final Uri uri) {
+    public static void share(final ShareData shareData, final Activity activity) {
+        share(shareData, activity, null);
+    }
+
+    private static void share(final ShareData shareData, final Activity activity, final Uri uri) {
         try {
             if (activity != null && shareData != null && (!(activity.isFinishing()))) {
                 final Intent intent = new Intent();
@@ -175,7 +179,7 @@ public class ShareUtil {
         }
     }
 
-    public static void performShareWithImage(final ShareData shareData, final Activity activity, final String imageFileName) {
+    public static void shareWithImage(final ShareData shareData, final Activity activity, final String imageFileName) {
         if (StringUtils.isNullOrEmpty(imageFileName)) {
             return;
         }
@@ -184,7 +188,7 @@ public class ShareUtil {
             final File file = new File(imageFileName);
             if (file.exists()) {
                 final Uri uri = Uri.fromFile(file);
-                performShare(shareData, activity, uri);
+                share(shareData, activity, uri);
             }
         } catch (Exception e) {
             Log.e("ShareUtil", e.getMessage());
