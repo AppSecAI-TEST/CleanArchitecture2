@@ -161,7 +161,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
     public synchronized void onToolbarClickEvent(OnToolbarClickEvent event) {
         if (event.getView() != null && event.getView().getId() == R.id.item) {
             final ShareUtil.ShareData shareData = new ShareUtil.ShareData(null, getString(R.string.test_mesage));
-            ShareUtil.performShareWithImage(shareData, AdminUtils.getActivity(), null);
+            ShareUtil.performShare(shareData, AdminUtils.getActivity(), null);
         }
     }
 
