@@ -1,13 +1,9 @@
 package com.cleanarchitecture.shishkin.api.mail;
 
 import android.location.Location;
-import android.widget.Toast;
 
-import com.cleanarchitecture.shishkin.api.controller.ActivityController;
-import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.ILocationSubscriber;
 import com.cleanarchitecture.shishkin.api.controller.IMailSubscriber;
-import com.cleanarchitecture.shishkin.api.event.ui.ShowToastEvent;
 
 public class LocationMail extends AbstractMail {
 

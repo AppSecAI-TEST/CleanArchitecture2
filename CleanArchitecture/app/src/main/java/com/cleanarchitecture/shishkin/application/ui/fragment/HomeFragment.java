@@ -41,7 +41,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 @SuppressWarnings("unused")
-public class HomeFragment extends AbstractContentFragment implements ILocationSubscriber{
+public class HomeFragment extends AbstractContentFragment implements ILocationSubscriber {
 
     public static final String NAME = HomeFragment.class.getName();
 

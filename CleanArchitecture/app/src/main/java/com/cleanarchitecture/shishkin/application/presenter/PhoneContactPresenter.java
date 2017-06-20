@@ -34,7 +34,7 @@ import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.data.viewmodel.PhoneContactViewModel;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.event.searchpresenter.OnSearchPresenterItemClick;
-import com.cleanarchitecture.shishkin.application.ui.adapter.ContactRecyclerViewAdapter;
+import com.cleanarchitecture.shishkin.application.ui.adapter.PhoneContactRecyclerViewAdapter;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.PhoneUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
@@ -64,7 +64,7 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
 
     private WeakReference<EditText> mSearchView;
     private WeakReference<FastScrollRecyclerView> mRecyclerView;
-    private ContactRecyclerViewAdapter mContactAdapter;
+    private PhoneContactRecyclerViewAdapter mContactAdapter;
     private String mCurrentFilter = null;
     private Disposable mDisposableSearchView;
     private IDbProvider mDbProvider = AdminUtils.getDbProvider();
@@ -80,7 +80,7 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
             final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(AdminUtils.getActivity());
             recyclerView.setLayoutManager(linearLayoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
-            mContactAdapter = new ContactRecyclerViewAdapter(root.getContext());
+            mContactAdapter = new PhoneContactRecyclerViewAdapter(root.getContext());
             recyclerView.setAdapter(mContactAdapter);
 
             final ItemTouchHelper.Callback callback = new SwipeTouchHelper(mContactAdapter);

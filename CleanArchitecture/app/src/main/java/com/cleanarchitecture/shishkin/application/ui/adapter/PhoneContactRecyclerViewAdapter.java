@@ -18,9 +18,9 @@ import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 import com.pkmmte.view.CircularImageView;
 
-public class ContactRecyclerViewAdapter extends AbstractRecyclerViewAdapter<PhoneContactItem, ContactRecyclerViewAdapter.ViewHolder> {
+public class PhoneContactRecyclerViewAdapter extends AbstractRecyclerViewAdapter<PhoneContactItem, PhoneContactRecyclerViewAdapter.ViewHolder> {
 
-    public ContactRecyclerViewAdapter(@NonNull Context context) {
+    public PhoneContactRecyclerViewAdapter(@NonNull Context context) {
         super(context);
 
         setHasStableIds(true);
