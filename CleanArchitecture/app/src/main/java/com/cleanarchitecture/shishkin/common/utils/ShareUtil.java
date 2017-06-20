@@ -23,9 +23,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.jar.Manifest;
 
 public class ShareUtil {
+
+    private ShareUtil() {
+    }
 
     public static void performShare(final ShareData shareData, final Activity activity, final Uri uri) {
         try {
@@ -244,6 +246,22 @@ public class ShareUtil {
             } catch (Exception e) {
                 Log.e("ShareUtil", e.getMessage());
             }
+        }
+    }
+
+    public static void performShareWithImage(final ShareData shareData, final Activity activity, final String fileName) {
+        if (StringUtils.isNullOrEmpty(fileName)) {
+            return;
+        }
+
+        try {
+            final File file = new File(fileName);
+            if (file.exists()) {
+                final Uri uri = Uri.fromFile(file);
+                performShare(shareData, activity, uri);
+            }
+        } catch (Exception e) {
+            Log.e("ShareUtil", e.getMessage());
         }
     }
 
