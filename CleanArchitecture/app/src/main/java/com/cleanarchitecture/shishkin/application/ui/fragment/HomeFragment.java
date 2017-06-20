@@ -16,7 +16,6 @@ import com.cleanarchitecture.shishkin.api.controller.DesktopController;
 import com.cleanarchitecture.shishkin.api.controller.IDesktopController;
 import com.cleanarchitecture.shishkin.api.controller.ILocationSubscriber;
 import com.cleanarchitecture.shishkin.api.controller.LocationController;
-import com.cleanarchitecture.shishkin.api.controller.MailController;
 import com.cleanarchitecture.shishkin.api.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.OnToolbarMenuItemClickEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBackNavigationEvent;
@@ -29,14 +28,13 @@ import com.cleanarchitecture.shishkin.api.presenter.OnBackPressedPresenter;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewIdleEvent;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewScrolledEvent;
-import com.cleanarchitecture.shishkin.application.presenter.SearchPresenter;
+import com.cleanarchitecture.shishkin.application.presenter.PhoneContactPresenter;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -52,7 +50,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
     }
 
     private OnBackPressedPresenter mOnBackPressedPresenter = new OnBackPressedPresenter();
-    private SearchPresenter mSearchPresenter = new SearchPresenter();
+    private PhoneContactPresenter mSearchPresenter = new PhoneContactPresenter();
 
     @BindView(R.id.fab_menu)
     FloatingActionMenu mFloatingActionMenu;

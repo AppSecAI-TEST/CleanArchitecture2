@@ -58,9 +58,9 @@ import io.reactivex.functions.Consumer;
 
 
 @SuppressWarnings("unused")
-public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
+public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactItem>>
         implements Consumer<TextViewAfterTextChangeEvent>, IObserver<List<PhoneContactItem>> {
-    public static final String NAME = SearchPresenter.class.getName();
+    public static final String NAME = PhoneContactPresenter.class.getName();
 
     private WeakReference<EditText> mSearchView;
     private WeakReference<FastScrollRecyclerView> mRecyclerView;
@@ -69,7 +69,7 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
     private Disposable mDisposableSearchView;
     private IDbProvider mDbProvider = AdminUtils.getDbProvider();
 
-    public SearchPresenter() {
+    public PhoneContactPresenter() {
         super();
     }
 
