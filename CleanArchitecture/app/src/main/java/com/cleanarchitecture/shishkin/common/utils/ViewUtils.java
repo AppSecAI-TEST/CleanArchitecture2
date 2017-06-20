@@ -24,6 +24,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.github.snowdream.android.util.Log;
+
 import java.lang.reflect.Field;
 import java.util.Locale;
 
@@ -47,6 +49,7 @@ public class ViewUtils {
             popupMenu.setOnDismissListener(onDismissListener);
             popupMenu.show();
         } catch (Exception e) {
+            Log.e("ViewUtils", e.getMessage());
         }
     }
 
