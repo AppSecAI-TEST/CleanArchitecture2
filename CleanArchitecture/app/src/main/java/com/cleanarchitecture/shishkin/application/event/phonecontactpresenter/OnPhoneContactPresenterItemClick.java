@@ -1,12 +1,12 @@
-package com.cleanarchitecture.shishkin.application.event.searchpresenter;
+package com.cleanarchitecture.shishkin.application.event.phonecontactpresenter;
 
 import com.cleanarchitecture.shishkin.api.event.AbstractEvent;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 
-public class OnSearchPresenterItemClick extends AbstractEvent {
+public class OnPhoneContactPresenterItemClick extends AbstractEvent {
     private PhoneContactItem mContactItem;
 
-    public OnSearchPresenterItemClick(final PhoneContactItem contactItem) {
+    public OnPhoneContactPresenterItemClick(final PhoneContactItem contactItem) {
         mContactItem = contactItem;
     }
 

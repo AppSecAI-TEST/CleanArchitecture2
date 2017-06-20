@@ -33,8 +33,8 @@ import com.cleanarchitecture.shishkin.application.app.Constant;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.data.viewmodel.PhoneContactViewModel;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
-import com.cleanarchitecture.shishkin.application.event.searchpresenter.OnSearchPresenterItemClick;
-import com.cleanarchitecture.shishkin.application.ui.adapter.ContactRecyclerViewAdapter;
+import com.cleanarchitecture.shishkin.application.event.phonecontactpresenter.OnPhoneContactPresenterItemClick;
+import com.cleanarchitecture.shishkin.application.ui.adapter.PhoneContactRecyclerViewAdapter;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.PhoneUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
@@ -58,18 +58,18 @@ import io.reactivex.functions.Consumer;
 
 
 @SuppressWarnings("unused")
-public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
+public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactItem>>
         implements Consumer<TextViewAfterTextChangeEvent>, IObserver<List<PhoneContactItem>> {
-    public static final String NAME = SearchPresenter.class.getName();
+    public static final String NAME = PhoneContactPresenter.class.getName();
 
     private WeakReference<EditText> mSearchView;
     private WeakReference<FastScrollRecyclerView> mRecyclerView;
-    private ContactRecyclerViewAdapter mContactAdapter;
+    private PhoneContactRecyclerViewAdapter mContactAdapter;
     private String mCurrentFilter = null;
     private Disposable mDisposableSearchView;
     private IDbProvider mDbProvider = AdminUtils.getDbProvider();
 
-    public SearchPresenter() {
+    public PhoneContactPresenter() {
         super();
     }
 
@@ -80,7 +80,7 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
             final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(AdminUtils.getActivity());
             recyclerView.setLayoutManager(linearLayoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
-            mContactAdapter = new ContactRecyclerViewAdapter(root.getContext());
+            mContactAdapter = new PhoneContactRecyclerViewAdapter(root.getContext());
             recyclerView.setAdapter(mContactAdapter);
 
             final ItemTouchHelper.Callback callback = new SwipeTouchHelper(mContactAdapter);
@@ -195,7 +195,7 @@ public class SearchPresenter extends AbstractPresenter<List<PhoneContactItem>>
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
-    public synchronized void onSearchPresenterItemClick(OnSearchPresenterItemClick event) {
+    public synchronized void onSearchPresenterItemClick(OnPhoneContactPresenterItemClick event) {
         if (AdminUtils.checkPermission(Manifest.permission.CALL_PHONE)) {
             if (event.getContactItem() != null) {
                 final PhoneContactItem item = event.getContactItem();

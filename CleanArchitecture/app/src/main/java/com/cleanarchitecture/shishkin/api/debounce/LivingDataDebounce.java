@@ -1,7 +1,6 @@
 package com.cleanarchitecture.shishkin.api.debounce;
 
 import com.cleanarchitecture.shishkin.api.data.AbstractContentProviderLiveData;
-import com.cleanarchitecture.shishkin.api.debounce.Debounce;
 
 public class LivingDataDebounce<T extends AbstractContentProviderLiveData> extends Debounce {
 
