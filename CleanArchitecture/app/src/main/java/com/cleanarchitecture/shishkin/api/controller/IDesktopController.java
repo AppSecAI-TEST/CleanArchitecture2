@@ -30,6 +30,16 @@ public interface IDesktopController extends IModule {
     int getMenuId(final String name, final int defaultId);
 
     /**
+     * Получить ресурс id.
+     *
+     * @param name      имя ресурса
+     * @param type тип ресурса
+     * @param defaultId id ресурса по умолчанию
+     * @return id ресурса
+     */
+    int getResourceId(final String name, final String type, final int defaultId);
+
+    /**
      * Установить рабочий стол
      *
      * @param desktop имя рабочего стола

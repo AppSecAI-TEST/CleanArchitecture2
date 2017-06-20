@@ -57,7 +57,8 @@ public class DesktopController implements IDesktopController, IModuleSubscriber 
         return getResourceId(name, "menu", defaultId);
     }
 
-    private int getResourceId(final String name, final String type, final int defaultId) {
+    @Override
+    public int getResourceId(final String name, final String type, final int defaultId) {
         if (!StringUtils.isNullOrEmpty(name) && !StringUtils.isNullOrEmpty(type)) {
             final Context context = AdminUtils.getContext();
             if (context != null) {
@@ -66,7 +67,7 @@ public class DesktopController implements IDesktopController, IModuleSubscriber 
                     resource += "_" + mDesktop;
                 }
                 int resId = ApplicationUtils.getResourceId(context, type, resource);
-                if (resId != -1) {
+                if (resId != 0) {
                     return resId;
                 }
             }

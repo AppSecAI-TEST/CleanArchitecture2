@@ -154,7 +154,7 @@ public class ApplicationUtils {
         if (context != null) {
             return context.getResources().getIdentifier(nameResource, typeResource, context.getPackageName());
         }
-        return -1;
+        return 0;
     }
 
     private ApplicationUtils() {
