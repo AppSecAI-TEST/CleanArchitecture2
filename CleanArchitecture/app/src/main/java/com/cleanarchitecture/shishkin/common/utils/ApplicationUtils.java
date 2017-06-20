@@ -93,6 +93,21 @@ public class ApplicationUtils {
         new Handler(Looper.getMainLooper()).post(action);
     }
 
+    public static int getStatusPermission(final Context context, final String permission) {
+        if (context != null) {
+            if (ApplicationUtils.hasMarshmallow()) {
+                return ActivityCompat.checkSelfPermission(context, permission);
+            }
+            return PackageManager.PERMISSION_GRANTED;
+        } else {
+            return PackageManager.PERMISSION_DENIED;
+        }
+    }
+
+    public static boolean checkPermission(final Context context, final String permission) {
+        return getStatusPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
+    }
+
     public static boolean grantPermisions(final String[] permissions, final Activity activity) {
         if (activity != null && permissions != null) {
             if (hasMarshmallow()) {

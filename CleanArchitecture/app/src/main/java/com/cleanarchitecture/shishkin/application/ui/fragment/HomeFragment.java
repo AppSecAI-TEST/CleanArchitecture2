@@ -17,8 +17,10 @@ import com.cleanarchitecture.shishkin.api.controller.IDesktopController;
 import com.cleanarchitecture.shishkin.api.controller.ILocationSubscriber;
 import com.cleanarchitecture.shishkin.api.controller.LocationController;
 import com.cleanarchitecture.shishkin.api.event.FinishApplicationEvent;
+import com.cleanarchitecture.shishkin.api.event.toolbar.OnToolbarClickEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.OnToolbarMenuItemClickEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBackNavigationEvent;
+import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetItemEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetMenuEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetTitleEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowMessageEvent;
@@ -29,6 +31,7 @@ import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewIdleEvent;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewScrolledEvent;
 import com.cleanarchitecture.shishkin.application.presenter.PhoneContactPresenter;
+import com.cleanarchitecture.shishkin.common.utils.ShareUtil;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
@@ -118,8 +121,14 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
         AdminUtils.postEvent(new ToolbarSetTitleEvent(0, getString(R.string.app_name)));
         AdminUtils.postEvent(new ToolbarSetMenuEvent(R.menu.main_menu, true));
         AdminUtils.postEvent(new ToolbarSetBackNavigationEvent(true));
+        AdminUtils.postEvent(new ToolbarSetItemEvent(R.mipmap.ic_share_variant, true));
     }
 
+    @Override
+    public void setLocation(Location location) {
+        AdminUtils.postEvent(new ShowMessageEvent(location.toString()));
+    }
+    
     @Override
     public String getName() {
         return NAME;
@@ -148,9 +157,13 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
         }
     }
 
-    @Override
-    public void setLocation(Location location) {
-        AdminUtils.postEvent(new ShowMessageEvent(location.toString()));
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public synchronized void onToolbarClickEvent(OnToolbarClickEvent event) {
+        if (event.getView() != null && event.getView().getId() == R.id.item) {
+            final ShareUtil.ShareData shareData = new ShareUtil.ShareData(null, getString(R.string.test_mesage));
+            ShareUtil.performShareWithImage(shareData, AdminUtils.getActivity(), null);
+        }
     }
+
 }
 
