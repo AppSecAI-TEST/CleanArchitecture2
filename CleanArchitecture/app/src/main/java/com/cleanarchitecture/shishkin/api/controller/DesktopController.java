@@ -44,14 +44,28 @@ public class DesktopController implements IDesktopController, IModuleSubscriber 
 
     @Override
     public int getLayoutId(final String name, final int defaultId) {
-        if (!StringUtils.isNullOrEmpty(name)) {
+        return getResourceId(name, "layout", defaultId);
+    }
+
+    @Override
+    public int getStyleId(final String name, final int defaultId) {
+        return getResourceId(name, "style", defaultId);
+    }
+
+    @Override
+    public int getMenuId(final String name, final int defaultId) {
+        return getResourceId(name, "menu", defaultId);
+    }
+
+    private int getResourceId(final String name, final String type, final int defaultId) {
+        if (!StringUtils.isNullOrEmpty(name) && !StringUtils.isNullOrEmpty(type)) {
             final Context context = AdminUtils.getContext();
             if (context != null) {
-                String desktop = name;
+                String resource = name;
                 if (!StringUtils.isNullOrEmpty(mDesktop)) {
-                    desktop += "_" + mDesktop;
+                    resource += "_" + mDesktop;
                 }
-                int resId = ApplicationUtils.getResourceId(context, "layout", desktop);
+                int resId = ApplicationUtils.getResourceId(context, type, resource);
                 if (resId != -1) {
                     return resId;
                 }

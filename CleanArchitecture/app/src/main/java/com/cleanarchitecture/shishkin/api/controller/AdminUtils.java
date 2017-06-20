@@ -356,7 +356,22 @@ public class AdminUtils {
             return module.getLayoutId(name, defaultId);
         }
         return defaultId;
+    }
 
+    public static int getStyleId(String name, int defaultId) {
+        final IDesktopController module = Admin.getInstance().get(DesktopController.NAME);
+        if (module != null) {
+            return module.getStyleId(name, defaultId);
+        }
+        return defaultId;
+    }
+
+    public static int getMenuId(String name, int defaultId) {
+        final IDesktopController module = Admin.getInstance().get(DesktopController.NAME);
+        if (module != null) {
+            return module.getMenuId(name, defaultId);
+        }
+        return defaultId;
     }
 
     /**
