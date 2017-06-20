@@ -175,87 +175,13 @@ public class ShareUtil {
         }
     }
 
-    private static Bitmap takeScreenShot(@NonNull final Activity activity, final View myView) {
-        Bitmap bitmap = null;
-        try {
-            View view;
-            if (myView != null) {
-                view = myView;
-            } else {
-                view = activity.getWindow().getDecorView();
-            }
-            view.setDrawingCacheEnabled(true);
-            view.buildDrawingCache();
-            final Bitmap bitmap1 = view.getDrawingCache();
-            if (myView != null) {
-                bitmap =
-                        Bitmap.createBitmap(bitmap1, 0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
-                Bitmap bitmap2 =
-                        BitmapFactory.decodeResource(activity.getResources(), R.mipmap.ic_launcher);
-                bitmap = combineImages(bitmap, bitmap2);
-            } else {
-                final Rect frame = new Rect();
-                activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
-                int statusBarHeight = frame.top;
-                int width = activity.getWindowManager().getDefaultDisplay().getWidth();
-                int height = activity.getWindowManager().getDefaultDisplay().getHeight();
-                bitmap = Bitmap.createBitmap(bitmap1, 0, statusBarHeight, width, height - statusBarHeight);
-            }
-            view.destroyDrawingCache();
-        } catch (Exception e) {
-            Log.e("ShareUtil", e.getMessage());
-        }
-        return bitmap;
-    }
-
-    private static boolean savePic(final Bitmap bitmap, final File strFileName) {
-        FileOutputStream fos = null;
-        boolean isFileSaved = false;
-        try {
-            fos = new FileOutputStream(strFileName);
-            if (fos != null && bitmap != null) {
-                bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos);
-                fos.flush();
-                fos.close();
-                isFileSaved = true;
-            }
-        } catch (Exception e) {
-            isFileSaved = false;
-            Log.e("ShareUtil", e.getMessage());
-        } finally {
-            CloseUtils.close(fos);
-        }
-        return isFileSaved;
-    }
-
-    public static void performShareWithImage(final ShareData shareData, final Activity activity, final View myView) {
-        if (ApplicationUtils.checkPermission(activity, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) && ApplicationUtils.checkPermission(activity, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            final String file_path =
-                    Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + activity.getPackageName();
-            try {
-                final File dir = new File(file_path);
-                if (!dir.exists()) dir.mkdirs();
-                final File file = new File(dir, "product.jpg");
-                final Uri uri = Uri.fromFile(file);
-                final boolean isPicSaved = savePic(takeScreenShot(activity, myView), file);
-                if (!isPicSaved) {
-                    performShare(shareData, activity, null);
-                } else {
-                    performShare(shareData, activity, uri);
-                }
-            } catch (Exception e) {
-                Log.e("ShareUtil", e.getMessage());
-            }
-        }
-    }
-
-    public static void performShareWithImage(final ShareData shareData, final Activity activity, final String fileName) {
-        if (StringUtils.isNullOrEmpty(fileName)) {
+    public static void performShareWithImage(final ShareData shareData, final Activity activity, final String imageFileName) {
+        if (StringUtils.isNullOrEmpty(imageFileName)) {
             return;
         }
 
         try {
-            final File file = new File(fileName);
+            final File file = new File(imageFileName);
             if (file.exists()) {
                 final Uri uri = Uri.fromFile(file);
                 performShare(shareData, activity, uri);
@@ -265,18 +191,4 @@ public class ShareUtil {
         }
     }
 
-    private static Bitmap combineImages(final Bitmap c, final Bitmap s) {
-        Bitmap cs = null;
-
-        int width = c.getWidth(), height = c.getHeight();
-
-        cs = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-
-        final Canvas comboImage = new Canvas(cs);
-
-        comboImage.drawBitmap(c, 0f, 0f, null);
-        comboImage.drawBitmap(s, c.getWidth() - s.getWidth(), 0f, null);
-
-        return cs;
-    }
 }
