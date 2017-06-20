@@ -10,7 +10,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.cleanarchitecture.shishkin.common.content.IBaseColumns;
-import com.cleanarchitecture.shishkin.common.utils.TextUtilsExt;
+import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -373,7 +373,7 @@ public abstract class AbstractIdentifyDAO<K, E extends IIdentify<K>> extends Abs
         String selection = null;
         String[] selectionArgs = null;
         final String normalizedId = (id == null ? null : normalizeId(String.valueOf(id)));
-        if (!TextUtilsExt.isEmpty(normalizedId)) {
+        if (!StringUtils.isNullOrEmpty(normalizedId)) {
             selection = QueryUtils.in(IBaseColumns._ID, 1, in);
             selectionArgs = prepareArguments(normalizedId);
         }

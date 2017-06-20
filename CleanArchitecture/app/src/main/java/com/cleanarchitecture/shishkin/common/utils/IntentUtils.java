@@ -83,7 +83,7 @@ public class IntentUtils {
     }
 
     public static void openWebBrowser(final Context context, @Nullable final String url) {
-        if (TextUtilsExt.isEmpty(url)) {
+        if (StringUtils.isNullOrEmpty(url)) {
             return;
         }
 
