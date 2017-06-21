@@ -25,7 +25,7 @@ public class ToolbarFragment extends AbstractFragment {
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mToolbarPresenter.bindView(view, getContext());
+        mToolbarPresenter.bindView(view);
         registerPresenter(mToolbarPresenter);
     }
 
