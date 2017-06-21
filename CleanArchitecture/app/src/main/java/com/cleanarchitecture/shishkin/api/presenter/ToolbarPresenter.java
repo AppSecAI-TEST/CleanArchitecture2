@@ -54,7 +54,6 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolbarPresenter {
     public static final String NAME = ToolbarPresenter.class.getName();
 
-    private WeakReference<Context> mContext;
     private WeakReference<View> mToolbarLL;
     private WeakReference<RelativeLayout> mToolbar;
     private WeakReference<AutoResizeTextView> mTitle;
@@ -70,9 +69,9 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     private boolean mBackNavigation = false;
     private boolean mShow = true;
 
-    public void bindView(final View root, final Context context) {
+    public void bindView(final View root) {
 
-        if (root == null || context == null) {
+        if (root == null) {
             return;
         }
 
@@ -97,7 +96,6 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
             home.setOnClickListener(this::onClick);
             mHome = new WeakReference<>(home);
         }
-        mContext = new WeakReference<>(context);
         if (toolbarLL != null) {
             mToolbarLL = new WeakReference<>(toolbarLL);
         }
@@ -120,7 +118,6 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         super.onDestroyLifecycle();
 
         dismissMenu();
-        mContext = null;
         mToolbarLL = null;
         mToolbar = null;
         mTitle = null;
@@ -136,7 +133,6 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     @Override
     public boolean validate() {
         return (super.validate()
-                && mContext != null && mContext.get() != null
                 && mToolbarLL != null && mToolbarLL.get() != null
                 && mToolbar != null && mToolbar.get() != null
                 && mTitle != null && mTitle.get() != null
@@ -203,17 +199,20 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
 
     private void showPopupMenu(final View view) {
         try {
-            mPopupMenuShow = true;
-            final Context wrapper = new ContextThemeWrapper(mContext.get(), AdminUtils.getStyleId("PopupMenu", R.style.PopupMenu));
-            mPopupMenu = new PopupMenu(wrapper, view);
-            final Field mFieldPopup = mPopupMenu.getClass().getDeclaredField("mPopup");
-            mFieldPopup.setAccessible(true);
-            final MenuPopupHelper mPopup = (MenuPopupHelper) mFieldPopup.get(mPopupMenu);
-            mPopup.setForceShowIcon(true);
-            mPopupMenu.inflate(mMenuId);
-            mPopupMenu.setOnMenuItemClickListener(this::onMenuItemClick);
-            mPopupMenu.setOnDismissListener(this::onDismiss);
-            mPopupMenu.show();
+            final Context context = AdminUtils.getContext();
+            if (context != null) {
+                mPopupMenuShow = true;
+                final Context wrapper = new ContextThemeWrapper(context, AdminUtils.getStyleId("PopupMenu", R.style.PopupMenu));
+                mPopupMenu = new PopupMenu(wrapper, view);
+                final Field mFieldPopup = mPopupMenu.getClass().getDeclaredField("mPopup");
+                mFieldPopup.setAccessible(true);
+                final MenuPopupHelper mPopup = (MenuPopupHelper) mFieldPopup.get(mPopupMenu);
+                mPopup.setForceShowIcon(true);
+                mPopupMenu.inflate(mMenuId);
+                mPopupMenu.setOnMenuItemClickListener(this::onMenuItemClick);
+                mPopupMenu.setOnDismissListener(this::onDismiss);
+                mPopupMenu.show();
+            }
         } catch (Exception e) {
         }
     }
@@ -237,12 +236,15 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     public void setBackNavigation(final boolean backNavigation) {
         ApplicationUtils.runOnUiThread(() -> {
             if (validate()) {
-                mBackNavigation = backNavigation;
-                mHome.get().setVisibility(mBackNavigation ? View.VISIBLE : View.INVISIBLE);
-                if (!mBackNavigation) {
-                    mHome.get().setImageDrawable(ViewUtils.getDrawable(mContext.get(), R.mipmap.ic_menu));
-                } else {
-                    mHome.get().setImageDrawable(ViewUtils.getDrawable(mContext.get(), R.mipmap.ic_arrow_left_bold_circle_outline));
+                final Context context = AdminUtils.getContext();
+                if (context != null) {
+                    mBackNavigation = backNavigation;
+                    mHome.get().setVisibility(mBackNavigation ? View.VISIBLE : View.INVISIBLE);
+                    if (!mBackNavigation) {
+                        mHome.get().setImageDrawable(ViewUtils.getDrawable(context, R.mipmap.ic_menu));
+                    } else {
+                        mHome.get().setImageDrawable(ViewUtils.getDrawable(context, R.mipmap.ic_arrow_left_bold_circle_outline));
+                    }
                 }
             }
         });
@@ -271,9 +273,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         setItem(0, false);
         setBackNavigation(false);
 
-        if(mContext != null && mContext.get() != null) {
-            checkNetStatus(mContext.get());
-        }
+        checkNetStatus();
 
         AdminUtils.postEvent(new ToolbarPrepareEvent());
     }
@@ -370,10 +370,13 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     public void setItem(final int itemId, final boolean isVisible) {
         ApplicationUtils.runOnUiThread(() -> {
             if (validate()) {
-                if (itemId > 0) {
-                    mItem.get().setImageDrawable(ViewUtils.getDrawable(mContext.get(), itemId));
+                final Context context = AdminUtils.getContext();
+                if (context != null) {
+                    if (itemId > 0) {
+                        mItem.get().setImageDrawable(ViewUtils.getDrawable(context, itemId));
+                    }
+                    mItem.get().setVisibility(isVisible ? View.VISIBLE : View.GONE);
                 }
-                mItem.get().setVisibility(isVisible ? View.VISIBLE : View.GONE);
             }
         });
     }
@@ -411,7 +414,8 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         });
     }
 
-    private void checkNetStatus(final Context context) {
+    private void checkNetStatus() {
+        final Context context = AdminUtils.getContext();
         if (context != null) {
             if (Connectivity.isNetworkConnected(context)) {
                 onNetworkConnected();
@@ -422,14 +426,16 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     }
 
     private void onNetworkConnected() {
-        if (validate()) {
-            setBackground(ViewUtils.getDrawable(mContext.get(), R.color.blue));
+        final Context context = AdminUtils.getContext();
+        if (context != null) {
+            setBackground(ViewUtils.getDrawable(context, R.color.blue));
         }
     }
 
     private void onNetworkDisconnected() {
-        if (validate()) {
-            setBackground(ViewUtils.getDrawable(mContext.get(), R.color.orange));
+        final Context context = AdminUtils.getContext();
+        if (context != null) {
+            setBackground(ViewUtils.getDrawable(context, R.color.orange));
         }
     }
 
