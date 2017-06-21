@@ -33,7 +33,7 @@ public interface IDesktopController extends IModule {
      * Получить ресурс id.
      *
      * @param name      имя ресурса
-     * @param type тип ресурса
+     * @param type      тип ресурса
      * @param defaultId id ресурса по умолчанию
      * @return id ресурса
      */
