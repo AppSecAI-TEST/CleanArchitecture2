@@ -1,6 +1,5 @@
 package com.cleanarchitecture.shishkin.api.presenter;
 
-import android.content.Context;
 import android.view.View;
 import android.widget.LinearLayout;
 

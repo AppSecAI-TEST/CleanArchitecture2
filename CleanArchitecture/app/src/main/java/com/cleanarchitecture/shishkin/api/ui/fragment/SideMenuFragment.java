@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.presenter.SideMenuPresenter;
-import com.cleanarchitecture.shishkin.api.presenter.ToolbarPresenter;
 
 @SuppressWarnings("unused")
 public class SideMenuFragment extends AbstractFragment {

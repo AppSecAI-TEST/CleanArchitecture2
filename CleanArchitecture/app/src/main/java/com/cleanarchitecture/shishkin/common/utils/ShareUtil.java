@@ -6,21 +6,13 @@ import android.content.Intent;
 import android.content.pm.LabeledIntent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.net.Uri;
-import android.os.Environment;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.view.View;
 
 import com.cleanarchitecture.shishkin.R;
 import com.github.snowdream.android.util.Log;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
