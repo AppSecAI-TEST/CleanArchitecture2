@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.api.controller.ErrorController;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.INavigationController;
 import com.cleanarchitecture.shishkin.api.controller.NavigationController;
@@ -33,6 +34,7 @@ import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetTitleEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarShowProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.HideHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowHorizontalProgressBarEvent;
+import com.cleanarchitecture.shishkin.api.ui.activity.AbstractActivity;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.common.net.Connectivity;
 import com.cleanarchitecture.shishkin.common.ui.widget.AutoResizeTextView;
@@ -53,6 +55,7 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 @SuppressWarnings("unused")
 public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolbarPresenter {
     public static final String NAME = ToolbarPresenter.class.getName();
+    private static final String LOG_TAG = "ToolbarPresenter";
 
     private WeakReference<View> mToolbarLL;
     private WeakReference<RelativeLayout> mToolbar;
@@ -198,11 +201,11 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     }
 
     private void showPopupMenu(final View view) {
-        try {
-            final Context context = AdminUtils.getContext();
-            if (context != null) {
+        final AbstractActivity activity = AdminUtils.getActivity();
+        if (activity != null) {
+            try {
                 mPopupMenuShow = true;
-                final Context wrapper = new ContextThemeWrapper(context, AdminUtils.getStyleId("PopupMenu", R.style.PopupMenu));
+                final Context wrapper = new ContextThemeWrapper(activity, AdminUtils.getStyleId("PopupMenu", R.style.PopupMenu));
                 mPopupMenu = new PopupMenu(wrapper, view);
                 final Field mFieldPopup = mPopupMenu.getClass().getDeclaredField("mPopup");
                 mFieldPopup.setAccessible(true);
@@ -212,8 +215,9 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
                 mPopupMenu.setOnMenuItemClickListener(this::onMenuItemClick);
                 mPopupMenu.setOnDismissListener(this::onDismiss);
                 mPopupMenu.show();
+            } catch (Exception e) {
+                ErrorController.getInstance().onError(LOG_TAG, e);
             }
-        } catch (Exception e) {
         }
     }
 
