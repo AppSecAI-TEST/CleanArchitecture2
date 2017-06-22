@@ -35,6 +35,7 @@ import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarShowProgressBarEv
 import com.cleanarchitecture.shishkin.api.event.ui.HideHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractActivity;
+import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentDrawerFragment;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.common.net.Connectivity;
 import com.cleanarchitecture.shishkin.common.ui.widget.AutoResizeTextView;
@@ -245,7 +246,13 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
                     mBackNavigation = backNavigation;
                     mHome.get().setVisibility(mBackNavigation ? View.VISIBLE : View.INVISIBLE);
                     if (!mBackNavigation) {
-                        mHome.get().setImageDrawable(ViewUtils.getDrawable(context, R.mipmap.ic_menu));
+                        final AbstractContentDrawerFragment fragment = ((NavigationController)Admin.getInstance().get(NavigationController.NAME)).getContentFragment(AbstractContentDrawerFragment.class);
+                        if (fragment != null) {
+                            mHome.get().setVisibility(View.VISIBLE);
+                            mHome.get().setImageDrawable(ViewUtils.getDrawable(context, R.mipmap.ic_menu));
+                        } else {
+                            mHome.get().setImageDrawable(ViewUtils.getDrawable(context, R.mipmap.ic_arrow_left_bold_circle_outline));
+                        }
                     } else {
                         mHome.get().setImageDrawable(ViewUtils.getDrawable(context, R.mipmap.ic_arrow_left_bold_circle_outline));
                     }
