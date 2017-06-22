@@ -35,14 +35,7 @@ public class PresenterController extends AbstractController<IPresenter>
 
     @Override
     public synchronized IPresenter getPresenter(final String name) {
-        if (getSubscribers().containsKey(name)) {
-            for (Map.Entry<String, WeakReference<IPresenter>> entry : getSubscribers().entrySet()) {
-                if (entry.getValue().get().getName().equalsIgnoreCase(name)) {
-                    return entry.getValue().get();
-                }
-            }
-        }
-        return null;
+        return getSubscriber(name);
     }
 
     @Override
