@@ -17,10 +17,12 @@ import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.DialogResultEvent;
+import com.cleanarchitecture.shishkin.api.event.ui.EditTextAfterTextChangedEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.HideKeyboardEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowListDialogEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowToastEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseRequestPermissionEvent;
+import com.cleanarchitecture.shishkin.api.observer.EditTextDebouncedObserver;
 import com.cleanarchitecture.shishkin.api.presenter.AbstractPresenter;
 import com.cleanarchitecture.shishkin.api.repository.IDbProvider;
 import com.cleanarchitecture.shishkin.api.repository.IObserver;
@@ -39,8 +41,6 @@ import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.PhoneUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
-import com.jakewharton.rxbinding2.widget.RxTextView;
-import com.jakewharton.rxbinding2.widget.TextViewAfterTextChangeEvent;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -50,23 +50,17 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 
 
 @SuppressWarnings("unused")
 public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactItem>>
-        implements Consumer<TextViewAfterTextChangeEvent>, IObserver<List<PhoneContactItem>> {
+        implements IObserver<List<PhoneContactItem>> {
     public static final String NAME = PhoneContactPresenter.class.getName();
 
     private WeakReference<EditText> mSearchView;
     private WeakReference<FastScrollRecyclerView> mRecyclerView;
     private PhoneContactRecyclerViewAdapter mContactAdapter;
     private String mCurrentFilter = null;
-    private Disposable mDisposableSearchView;
     private IDbProvider mDbProvider = AdminUtils.getDbProvider();
 
     public PhoneContactPresenter() {
@@ -94,11 +88,7 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
 
         final EditText searchView = ViewUtils.findView(root, R.id.search);
         if (searchView != null) {
-            mDisposableSearchView = RxTextView.afterTextChangeEvents(searchView)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .debounce(1000, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
-                    .subscribe(this);
-
+            new EditTextDebouncedObserver(searchView, 1000, R.id.edittext_phone_contact_presenter);
             mSearchView = new WeakReference<>(searchView);
             searchView.setText(mCurrentFilter);
         }
@@ -119,9 +109,6 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
         mRecyclerView.get().clearOnScrollListeners();
         mRecyclerView.get().setAdapter(null);
         mRecyclerView = null;
-        if (!mDisposableSearchView.isDisposed()) {
-            mDisposableSearchView.dispose();
-        }
 
     }
 
@@ -159,14 +146,6 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
                 .setCacheType(Repository.USE_SAVE_CACHE)
                 .setId(Constant.REPOSITORY_GET_CONTACTS)
         );
-    }
-
-    @Override
-    public void accept(@io.reactivex.annotations.NonNull TextViewAfterTextChangeEvent event) {
-        if (validate()) {
-            mCurrentFilter = event.view().getText().toString();
-            updateView();
-        }
     }
 
     @Override
@@ -241,4 +220,11 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public synchronized void onEditTextAfterTextChangedEvent(EditTextAfterTextChangedEvent event) {
+        if (event.getId() == R.id.edittext_phone_contact_presenter) {
+            mCurrentFilter = event.getText();
+            updateView();
+        }
+    }
 }

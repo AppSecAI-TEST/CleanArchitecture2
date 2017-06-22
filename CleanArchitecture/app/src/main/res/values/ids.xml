@@ -11,4 +11,6 @@
 
     <item name="dialog_select_desktop" type="id" />
 
+    <item name="edittext_phone_contact_presenter" type="id" />
+
 </resources>

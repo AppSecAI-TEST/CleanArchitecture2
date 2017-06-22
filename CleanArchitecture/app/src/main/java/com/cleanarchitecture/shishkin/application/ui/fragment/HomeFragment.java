@@ -1,6 +1,5 @@
 package com.cleanarchitecture.shishkin.application.ui.fragment;
 
-import android.Manifest;
 import android.content.res.Configuration;
 import android.location.Location;
 import android.os.Bundle;
@@ -26,7 +25,6 @@ import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetMenuEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetTitleEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowMessageEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseFinishApplicationEvent;
-import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseRequestPermissionEvent;
 import com.cleanarchitecture.shishkin.api.presenter.OnBackPressedPresenter;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewIdleEvent;
