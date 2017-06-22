@@ -1,5 +1,6 @@
 package com.cleanarchitecture.shishkin.application.app;
 
+import android.Manifest;
 import android.content.Context;
 import android.os.Environment;
 import android.support.multidex.MultiDex;
@@ -17,6 +18,7 @@ public class ApplicationController extends MultiDexApplication {
     public static final String NAME = ApplicationController.class.getName();
     public static final String EXTERNAL_STORAGE_APPLICATION_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() +
             File.separator + BuildConfig.APPLICATION_ID + File.separator;
+    public static String[] PERMISIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CONTACTS, Manifest.permission.CALL_PHONE, Manifest.permission.ACCESS_FINE_LOCATION};
     private static volatile ApplicationController sInstance;
 
     @Override

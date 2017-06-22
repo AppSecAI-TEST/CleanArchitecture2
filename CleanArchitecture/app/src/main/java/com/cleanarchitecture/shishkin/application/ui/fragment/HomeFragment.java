@@ -31,7 +31,9 @@ import com.cleanarchitecture.shishkin.api.presenter.OnBackPressedPresenter;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewIdleEvent;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewScrolledEvent;
+import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.application.presenter.PhoneContactPresenter;
+import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.ShareUtil;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 import com.github.clans.fab.FloatingActionButton;
@@ -91,6 +93,9 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
         mSearchPresenter.bindView(view, this);
         registerPresenter(mSearchPresenter);
 
+        ApplicationUtils.grantPermisions(ApplicationController.PERMISIONS, AdminUtils.getActivity());
+
+        /*
         if (!AdminUtils.checkPermission(Manifest.permission.READ_CONTACTS)) {
             AdminUtils.postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.READ_CONTACTS));
         } else if (!AdminUtils.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -98,6 +103,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
         } else if (!AdminUtils.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             AdminUtils.postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.WRITE_EXTERNAL_STORAGE));
         }
+        */
     }
 
     private void onClickFab(View view) {
