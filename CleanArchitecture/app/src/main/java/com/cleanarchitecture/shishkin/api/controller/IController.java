@@ -21,11 +21,4 @@ public interface IController<T> extends ISmallController<T> {
      * @return текущий подписчик
      */
     T getCurrentSubscriber();
-
-    /**
-     * Получить текущего подписчика, а если не указан текущий - первого по списку
-     *
-     * @return подписчик
-     */
-    T getSubscriber();
 }

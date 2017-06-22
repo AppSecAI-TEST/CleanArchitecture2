@@ -12,7 +12,7 @@ public class ShowToastMail extends AbstractMail {
     private static final String NAME = ShowToastMail.class.getName();
 
     private String mMessage;
-    private int mDuration = Toast.LENGTH_LONG;
+    private int mDuration = Toast.LENGTH_SHORT;
     private int mType = ActivityController.TOAST_TYPE_INFO;
 
     public ShowToastMail(final String address, final String message) {

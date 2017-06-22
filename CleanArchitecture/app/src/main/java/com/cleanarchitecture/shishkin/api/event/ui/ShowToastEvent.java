@@ -10,7 +10,7 @@ import com.cleanarchitecture.shishkin.api.event.AbstractEvent;
  */
 public class ShowToastEvent extends AbstractEvent {
     private String mMessage;
-    private int mDuration = Toast.LENGTH_LONG;
+    private int mDuration = Toast.LENGTH_SHORT;
     private int mType = ActivityController.TOAST_TYPE_INFO;
 
     public ShowToastEvent(final String message) {

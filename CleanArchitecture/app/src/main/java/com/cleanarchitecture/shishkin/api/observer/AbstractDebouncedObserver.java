@@ -32,6 +32,8 @@ public abstract class AbstractDebouncedObserver extends AbstractObserver impleme
     @Override
     public void finish() {
         mHandler.removeCallbacks(this);
+        mHandler = null;
+
         super.finish();
     }
 

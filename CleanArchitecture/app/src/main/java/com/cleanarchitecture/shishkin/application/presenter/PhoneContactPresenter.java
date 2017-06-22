@@ -62,6 +62,7 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
     private PhoneContactRecyclerViewAdapter mContactAdapter;
     private String mCurrentFilter = null;
     private IDbProvider mDbProvider = AdminUtils.getDbProvider();
+    private EditTextDebouncedObserver mEditTextDebouncedObserver;
 
     public PhoneContactPresenter() {
         super();
@@ -88,7 +89,7 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
 
         final EditText searchView = ViewUtils.findView(root, R.id.search);
         if (searchView != null) {
-            new EditTextDebouncedObserver(searchView, 1000, R.id.edittext_phone_contact_presenter);
+            mEditTextDebouncedObserver = new EditTextDebouncedObserver(searchView, 1000, R.id.edittext_phone_contact_presenter);
             mSearchView = new WeakReference<>(searchView);
             searchView.setText(mCurrentFilter);
         }
@@ -105,6 +106,8 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
         if (mDbProvider != null) {
             mDbProvider.removeObserver(PhoneContactViewModel.NAME, this);
         }
+
+        mEditTextDebouncedObserver.finish();
         mSearchView = null;
         mRecyclerView.get().clearOnScrollListeners();
         mRecyclerView.get().setAdapter(null);
