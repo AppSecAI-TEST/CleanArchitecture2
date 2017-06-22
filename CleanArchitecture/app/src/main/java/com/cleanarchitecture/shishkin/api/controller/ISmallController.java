@@ -32,6 +32,14 @@ public interface ISmallController<T> extends IModule {
     T getSubscriber();
 
     /**
+     * Получить подписчика по его имени
+     *
+     * @param name имя подписчика
+     * @return подписчик
+     */
+    T getSubscriber(final String name);
+
+    /**
      * Получить список подписчиков
      *
      * @return список подписчиков
@@ -41,7 +49,7 @@ public interface ISmallController<T> extends IModule {
     /**
      * Проверить наличие подписчиков
      *
-     * @return true - подписчиrb есть
+     * @return true - подписчики есть
      */
     boolean hasSubscribers();
 }
