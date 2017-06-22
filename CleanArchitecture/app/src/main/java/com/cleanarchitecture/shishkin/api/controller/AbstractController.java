@@ -40,16 +40,12 @@ public abstract class AbstractController<T extends ISubscriber> extends Abstract
 
     @Override
     public synchronized T getSubscriber() {
-        T subscriber = getCurrentSubscriber();
+        final T subscriber = getCurrentSubscriber();
         if (subscriber != null) {
             return subscriber;
         }
 
-        subscriber = super.getSubscriber();
-        if (subscriber == null) {
-            ErrorController.getInstance().onError(getName(), "Subscriber not found", false);
-        }
-        return subscriber;
+        return super.getSubscriber();
     }
 
 }
