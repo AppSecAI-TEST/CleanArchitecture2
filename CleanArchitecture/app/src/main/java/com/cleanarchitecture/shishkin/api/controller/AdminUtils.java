@@ -13,6 +13,7 @@ import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.event.IEvent;
 import com.cleanarchitecture.shishkin.api.mail.IMail;
+import com.cleanarchitecture.shishkin.api.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.api.repository.ContentProvider;
 import com.cleanarchitecture.shishkin.api.repository.DbProvider;
 import com.cleanarchitecture.shishkin.api.repository.IContentProvider;
@@ -305,6 +306,20 @@ public class AdminUtils {
      */
     public static Context getContext() {
         return ApplicationController.getInstance();
+    }
+
+    /**
+     * Получить prsenter
+     *
+     * @param name имя presenter
+     * @return presenter
+     */
+    public static IPresenter getPresenter(final String name) {
+        final PresenterController controller = Admin.getInstance().get(PresenterController.NAME);
+        if (controller != null) {
+            return controller.getPresenter(name);
+        }
+        return null;
     }
 
     /**
