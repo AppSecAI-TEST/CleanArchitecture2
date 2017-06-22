@@ -1,8 +1,7 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
-import com.cleanarchitecture.shishkin.common.lifecycle.IStateable;
-import com.cleanarchitecture.shishkin.common.lifecycle.Lifecycle;
-import com.github.snowdream.android.util.Log;
+import com.cleanarchitecture.shishkin.api.ui.activity.AbstractActivity;
+import com.cleanarchitecture.shishkin.api.ui.activity.IActivity;
 
 import java.lang.ref.WeakReference;
 import java.util.Collections;
@@ -10,7 +9,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class AbstractSmallController<T extends ISubscriber> implements ISmallController<T> {
-
 
     private Map<String, WeakReference<T>> mSubscribers = Collections.synchronizedMap(new ConcurrentHashMap<String, WeakReference<T>>());
 
@@ -33,9 +31,10 @@ public abstract class AbstractSmallController<T extends ISubscriber> implements 
             return;
         }
 
-        if (mSubscribers.containsKey(subscriber.getName())) {
-            // Удаление Activity происходить только при вызове checkNullSubscriber
-            //mSubscribers.remove(subscriber.getName());
+        if (!(subscriber instanceof AbstractActivity)) {
+            if (mSubscribers.containsKey(subscriber.getName())) {
+                mSubscribers.remove(subscriber.getName());
+            }
         }
     }
 
