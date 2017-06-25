@@ -97,7 +97,7 @@ public class AdminUtils {
      * Добавить в список приложений, которые будут игнорироваться системой оптимизации питания
      */
     public static void isIgnoringBatteryOptimizations() {
-        final AbstractActivity activity = getCurrentActivity();
+        final AbstractActivity activity = getActivity();
         if (activity != null) {
             if (ApplicationUtils.hasMarshmallow()) {
                 final PowerManager pm = getSystemService(Context.POWER_SERVICE);
@@ -113,7 +113,7 @@ public class AdminUtils {
      * Контролировать наличие и версию Google Play Services, с показом диалога обновления
      */
     public static void checkGooglePlayServices() {
-        final AbstractActivity activity = getCurrentActivity();
+        final AbstractActivity activity = getActivity();
         if (activity != null) {
             final GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
             final int result = googleAPI.isGooglePlayServicesAvailable(activity);
@@ -148,7 +148,7 @@ public class AdminUtils {
      * Добавить в список приложений, которым разрешен вывод поверх других окон
      */
     public static void canDrawOverlays() {
-        final AbstractActivity activity = getCurrentActivity();
+        final AbstractActivity activity = getActivity();
         if (activity != null) {
             if (ApplicationUtils.hasMarshmallow() && !Settings.canDrawOverlays(activity)) {
                 final Intent myIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
@@ -263,22 +263,9 @@ public class AdminUtils {
      * @return the activity
      */
     public static AbstractActivity getActivity() {
-        final ILifecycleController controller = Admin.getInstance().get(LifecycleController.NAME);
+        final INavigationController controller = Admin.getInstance().get(NavigationController.NAME);
         if (controller != null) {
             return controller.getActivity();
-        }
-        return null;
-    }
-
-    /**
-     * Получить текущую активную(onResume) activity
-     *
-     * @return the current activity
-     */
-    public static AbstractActivity getCurrentActivity() {
-        final ILifecycleController controller = Admin.getInstance().get(LifecycleController.NAME);
-        if (controller != null) {
-            return controller.getCurrentActivity();
         }
         return null;
     }
@@ -289,9 +276,9 @@ public class AdminUtils {
      * @return the content fragment
      */
     public static AbstractContentFragment getContentFragment() {
-        final ILifecycleController controller = Admin.getInstance().get(LifecycleController.NAME);
+        final INavigationController controller = Admin.getInstance().get(NavigationController.NAME);
         if (controller != null) {
-            final AbstractContentActivity activity = controller.getCurrentContentActivity();
+            final AbstractContentActivity activity = controller.getContentActivity();
             if (activity != null) {
                 return activity.getContentFragment(AbstractContentFragment.class);
             }

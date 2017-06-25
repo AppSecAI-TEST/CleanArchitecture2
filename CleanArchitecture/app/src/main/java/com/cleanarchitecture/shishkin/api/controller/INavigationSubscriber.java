@@ -62,4 +62,9 @@ public interface INavigationSubscriber extends ISubscriber {
      */
     <F> F getContentFragment(Class<F> cls);
 
+    /**
+     * закрыть activity
+     */
+    void finish();
+
 }

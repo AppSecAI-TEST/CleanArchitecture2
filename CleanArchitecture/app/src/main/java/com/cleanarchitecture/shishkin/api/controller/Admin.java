@@ -56,7 +56,6 @@ public class Admin extends AbstractAdmin {
         // other controllers
         registerModule(CrashController.NAME);
         registerModule(ActivityController.NAME);
-        registerModule(LifecycleController.NAME);
         registerModule(PresenterController.NAME);
         registerModule(NavigationController.NAME);
         registerModule(UseCasesController.NAME);

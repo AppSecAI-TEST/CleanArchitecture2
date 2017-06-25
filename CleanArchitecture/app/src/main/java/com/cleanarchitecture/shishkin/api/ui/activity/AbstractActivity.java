@@ -25,9 +25,7 @@ import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.AppPreferences;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
-import com.cleanarchitecture.shishkin.api.controller.ILifecycleSubscriber;
 import com.cleanarchitecture.shishkin.api.controller.IMailSubscriber;
-import com.cleanarchitecture.shishkin.api.controller.LifecycleController;
 import com.cleanarchitecture.shishkin.api.controller.MailController;
 import com.cleanarchitecture.shishkin.api.event.BackpressActivityEvent;
 import com.cleanarchitecture.shishkin.api.event.ClearBackStackEvent;
@@ -56,7 +54,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import butterknife.Unbinder;
 
 public abstract class AbstractActivity extends LifecycleActivity
-        implements IActivity, ILifecycleSubscriber, IBackStack, IMailSubscriber {
+        implements IActivity, IBackStack, IMailSubscriber {
 
     private Map<String, IPresenter> mPresenters = Collections.synchronizedMap(new ConcurrentHashMap<String, IPresenter>());
     private StateMachine mStateMachine = new StateMachine(Lifecycle.STATE_CREATE);
@@ -160,7 +158,6 @@ public abstract class AbstractActivity extends LifecycleActivity
         ArrayList<String> list = new ArrayList<>();
         list.add(EventBusController.SUBSCRIBER_TYPE);
         list.add(ActivityController.SUBSCRIBER_TYPE);
-        list.add(LifecycleController.SUBSCRIBER_TYPE);
         list.add(MailController.SUBSCRIBER_TYPE);
         return list;
     }
