@@ -57,17 +57,14 @@ public abstract class AbstractSmallController<T extends ISubscriber> implements 
         checkNullSubscriber();
 
         if (!mSubscribers.isEmpty()) {
-            final T subscriber = mSubscribers.entrySet().iterator().next().getValue().get();
-            if (subscriber instanceof IStateable) {
-                for (WeakReference<T> ref : mSubscribers.values()) {
-                    if (ref.get() instanceof IStateable) {
-                        if (((IStateable) ref.get()).getState() == Lifecycle.STATE_RESUME) {
-                            return ref.get();
-                        }
+            for (WeakReference<T> ref : mSubscribers.values()) {
+                if (ref.get() instanceof IStateable) {
+                    if (((IStateable) ref.get()).getState() == Lifecycle.STATE_RESUME) {
+                        return ref.get();
                     }
                 }
             }
-            return subscriber;
+            return mSubscribers.entrySet().iterator().next().getValue().get();
         } else {
             ErrorController.getInstance().onError(getName(), "Subscribers not found", false);
         }
