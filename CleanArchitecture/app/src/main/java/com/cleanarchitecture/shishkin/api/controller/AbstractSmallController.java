@@ -1,8 +1,6 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
-import com.cleanarchitecture.shishkin.api.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractActivity;
-import com.cleanarchitecture.shishkin.api.ui.activity.IActivity;
 import com.cleanarchitecture.shishkin.common.lifecycle.IStateable;
 import com.cleanarchitecture.shishkin.common.lifecycle.Lifecycle;
 
@@ -61,7 +59,7 @@ public abstract class AbstractSmallController<T extends ISubscriber> implements 
         if (!mSubscribers.isEmpty()) {
             final T subscriber = mSubscribers.entrySet().iterator().next().getValue().get();
             if (subscriber instanceof IStateable) {
-                for (WeakReference<T> ref: mSubscribers.values()) {
+                for (WeakReference<T> ref : mSubscribers.values()) {
                     if (ref.get() instanceof IStateable) {
                         if (((IStateable) ref.get()).getState() == Lifecycle.STATE_RESUME) {
                             return ref.get();

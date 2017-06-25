@@ -128,10 +128,10 @@ public class DesktopController implements IDesktopController, IModuleSubscriber 
                     if (mDesktops.containsKey(list.get(0))) {
                         mDesktop = mDesktops.get(list.get(0));
                         AppPreferences.setDesktop(context, mDesktop);
-                        final ILifecycleController controller = Admin.getInstance().get(LifecycleController.NAME);
+                        final INavigationController controller = Admin.getInstance().get(NavigationController.NAME);
                         if (controller != null) {
-                            final Map<String, WeakReference<ILifecycleSubscriber>> map = controller.getSubscribers();
-                            for (WeakReference<ILifecycleSubscriber> ref : map.values()) {
+                            final Map<String, WeakReference<INavigationSubscriber>> map = controller.getSubscribers();
+                            for (WeakReference<INavigationSubscriber> ref : map.values()) {
                                 if (ref != null && ref.get() != null) {
                                     AdminUtils.addMail(new RecreateMail(ref.get().getName()));
                                 }

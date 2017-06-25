@@ -246,7 +246,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
                     mBackNavigation = backNavigation;
                     mHome.get().setVisibility(mBackNavigation ? View.VISIBLE : View.INVISIBLE);
                     if (!mBackNavigation) {
-                        final AbstractContentDrawerFragment fragment = ((NavigationController)Admin.getInstance().get(NavigationController.NAME)).getContentFragment(AbstractContentDrawerFragment.class);
+                        final AbstractContentDrawerFragment fragment = ((NavigationController) Admin.getInstance().get(NavigationController.NAME)).getContentFragment(AbstractContentDrawerFragment.class);
                         if (fragment != null) {
                             mHome.get().setVisibility(View.VISIBLE);
                             mHome.get().setImageDrawable(ViewUtils.getDrawable(context, R.mipmap.ic_menu));

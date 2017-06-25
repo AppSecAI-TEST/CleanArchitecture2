@@ -1,8 +1,13 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
+import android.content.Context;
+
 import com.cleanarchitecture.shishkin.api.event.OnActivityBackPressedEvent;
 import com.cleanarchitecture.shishkin.api.event.ShowFragmentEvent;
+import com.cleanarchitecture.shishkin.api.event.StartActivityEvent;
 import com.cleanarchitecture.shishkin.api.event.SwitchToFragmentEvent;
+import com.cleanarchitecture.shishkin.api.ui.activity.AbstractActivity;
+import com.cleanarchitecture.shishkin.api.ui.activity.AbstractContentActivity;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -59,6 +64,33 @@ public class NavigationController extends AbstractController<INavigationSubscrib
     }
 
     @Override
+    public synchronized AbstractContentActivity getContentActivity() {
+        final INavigationSubscriber subscriber = getSubscriber();
+        if (subscriber != null && subscriber instanceof AbstractContentActivity) {
+            return (AbstractContentActivity) subscriber;
+        }
+        return null;
+    }
+
+    @Override
+    public synchronized AbstractActivity getActivity() {
+        final INavigationSubscriber subscriber = getSubscriber();
+        if (subscriber != null && subscriber instanceof AbstractActivity) {
+            return (AbstractActivity) subscriber;
+        }
+        return null;
+    }
+
+    private synchronized void startActivity(final StartActivityEvent event) {
+        if (event != null) {
+            final Context context = AdminUtils.getContext();
+            if (context != null) {
+                context.startActivity(event.getIntent());
+            }
+        }
+    }
+
+    @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onShowFragmentEvent(ShowFragmentEvent event) {
         final INavigationSubscriber subscriber = getSubscriber();
@@ -83,6 +115,12 @@ public class NavigationController extends AbstractController<INavigationSubscrib
         if (subscriber != null) {
             subscriber.onActivityBackPressed();
         }
+    }
+
+    @Override
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onStartActivityEvent(final StartActivityEvent event) {
+        startActivity(event);
     }
 
 }

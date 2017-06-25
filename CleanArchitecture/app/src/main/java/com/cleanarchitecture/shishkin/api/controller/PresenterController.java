@@ -2,9 +2,6 @@ package com.cleanarchitecture.shishkin.api.controller;
 
 import com.cleanarchitecture.shishkin.api.presenter.IPresenter;
 
-import java.lang.ref.WeakReference;
-import java.util.Map;
-
 /**
  * Контроллер презенторов приложения
  */
