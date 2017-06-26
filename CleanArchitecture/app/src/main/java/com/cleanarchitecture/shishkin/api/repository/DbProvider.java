@@ -205,14 +205,16 @@ public class DbProvider<H extends AbstractViewModel> extends AbstractModule impl
     @Override
     public synchronized <T, E extends AbstractViewModel> void observe(final LifecycleActivity activity, final String nameViewModel, final Class<E> klass, final IObserver<T> observer) {
         try {
-            E viewModel;
-            if (!mViewModel.containsKey(nameViewModel)) {
-                viewModel = ViewModelProviders.of(activity).get(klass);
-                viewModel.getLiveData().observe(this, observer);
-                mViewModel.put(viewModel.getName(), (H) viewModel);
-            } else {
-                viewModel = (E) mViewModel.get(nameViewModel);
-                viewModel.getLiveData().observe(this, observer);
+            if (activity != null) {
+                E viewModel;
+                if (!mViewModel.containsKey(nameViewModel)) {
+                    viewModel = ViewModelProviders.of(activity).get(klass);
+                    viewModel.getLiveData().observe(this, observer);
+                    mViewModel.put(viewModel.getName(), (H) viewModel);
+                } else {
+                    viewModel = (E) mViewModel.get(nameViewModel);
+                    viewModel.getLiveData().observe(this, observer);
+                }
             }
         } catch (Exception e) {
             ErrorController.getInstance().onError(LOG_TAG, e, ErrorController.ERROR_GET_DATA);

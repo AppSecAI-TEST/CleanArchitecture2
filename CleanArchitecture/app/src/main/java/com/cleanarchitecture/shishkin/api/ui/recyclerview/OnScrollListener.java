@@ -18,7 +18,6 @@ public class OnScrollListener extends RecyclerView.OnScrollListener {
         mRecyclerView = recyclerView;
         mLinearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         mSwipeRefreshLayout = swipeRefreshLayout;
-
     }
 
     @Override
@@ -34,6 +33,7 @@ public class OnScrollListener extends RecyclerView.OnScrollListener {
                 mSwipeRefreshLayout.setEnabled(mLinearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0);
             }
         }
+
         if (newState == RecyclerView.SCROLL_STATE_IDLE) {
             AdminUtils.postEvent(new OnRecyclerViewIdleEvent(recyclerView));
         } else {
