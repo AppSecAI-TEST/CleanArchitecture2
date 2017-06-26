@@ -70,7 +70,6 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
         return list;
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
