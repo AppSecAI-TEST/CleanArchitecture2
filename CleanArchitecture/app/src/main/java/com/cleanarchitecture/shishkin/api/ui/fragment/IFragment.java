@@ -9,8 +9,6 @@ import com.cleanarchitecture.shishkin.api.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.api.ui.IView;
 import com.cleanarchitecture.shishkin.api.ui.activity.IActivity;
 
-import butterknife.Unbinder;
-
 /**
  * Интерфейс фрагмента
  */
@@ -53,20 +51,6 @@ public interface IFragment extends ISubscriber, IView {
      * @return the LifecycleActivity activity
      */
     LifecycleActivity getLifecycleActivity();
-
-    /**
-     * Получить Butter Knife Unbinder
-     *
-     * @return Unbinder the unbinder
-     */
-    Unbinder getUnbinder();
-
-    /**
-     * Установить Butter Knife Unbinder
-     *
-     * @param unbinder the unbinder
-     */
-    void setUnbinder(Unbinder unbinder);
 
     /**
      * Проверить Fragment

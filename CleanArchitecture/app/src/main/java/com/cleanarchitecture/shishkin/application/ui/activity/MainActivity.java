@@ -15,17 +15,9 @@ import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
-import butterknife.BindView;
-
 public class MainActivity extends AbstractContentActivity {
 
     public static final String NAME = MainActivity.class.getName();
-
-    @BindView(R.id.fab_menu)
-    FloatingActionMenu mFloatingActionMenu;
-
-    @BindView(R.id.fab_btn_exit)
-    FloatingActionButton mFloatingActionButtonExit;
 
     private MainActivityPresenter mMainActivityPresenter = new MainActivityPresenter();
 

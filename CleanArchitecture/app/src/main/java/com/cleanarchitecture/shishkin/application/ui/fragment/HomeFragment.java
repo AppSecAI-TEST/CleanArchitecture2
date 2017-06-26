@@ -40,8 +40,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-import butterknife.ButterKnife;
-
 @SuppressWarnings("unused")
 public class HomeFragment extends AbstractContentFragment implements ILocationSubscriber {
 
@@ -65,7 +63,6 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         final View root = inflater.inflate(AdminUtils.getLayoutId("fragment_home", R.layout.fragment_home), container, false);
-        setUnbinder(ButterKnife.bind(this, root));
 
         return root;
     }
