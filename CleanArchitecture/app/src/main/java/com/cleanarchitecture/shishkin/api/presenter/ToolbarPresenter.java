@@ -313,15 +313,10 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     public void showHorizontalProgressBar() {
         ApplicationUtils.runOnUiThread(() -> {
             if (validate()) {
-                final AbstractContentFragment fragment = AdminUtils.getContentFragment();
-                if (fragment != null) {
-                    final SwipeRefreshLayout swipeRefreshLayout = fragment.getSwipeRefreshLayout();
-                    if (swipeRefreshLayout == null) {
-                        mHorizontalPogressBar.get().setVisibility(View.VISIBLE);
-                    } else if (!swipeRefreshLayout.isRefreshing()) {
-                        mHorizontalPogressBar.get().setVisibility(View.VISIBLE);
-                    }
-                } else {
+                final SwipeRefreshLayout swipeRefreshLayout = AdminUtils.getSwipeRefreshLayout();
+                if (swipeRefreshLayout == null) {
+                    mHorizontalPogressBar.get().setVisibility(View.VISIBLE);
+                } else if (!swipeRefreshLayout.isRefreshing()) {
                     mHorizontalPogressBar.get().setVisibility(View.VISIBLE);
                 }
             }
@@ -342,15 +337,10 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     public void showProgressBar() {
         ApplicationUtils.runOnUiThread(() -> {
             if (validate()) {
-                final AbstractContentFragment fragment = AdminUtils.getContentFragment();
-                if (fragment != null) {
-                    final SwipeRefreshLayout swipeRefreshLayout = fragment.getSwipeRefreshLayout();
-                    if (swipeRefreshLayout == null) {
-                        mPogressBar.get().setVisibility(View.VISIBLE);
-                    } else if (!swipeRefreshLayout.isRefreshing()) {
-                        mPogressBar.get().setVisibility(View.VISIBLE);
-                    }
-                } else {
+                final SwipeRefreshLayout swipeRefreshLayout = AdminUtils.getSwipeRefreshLayout();
+                if (swipeRefreshLayout == null) {
+                    mPogressBar.get().setVisibility(View.VISIBLE);
+                } else if (!swipeRefreshLayout.isRefreshing()) {
                     mPogressBar.get().setVisibility(View.VISIBLE);
                 }
             }
@@ -368,12 +358,9 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     }
 
     private void hideSwipeRefreshLayout() {
-        final AbstractContentFragment fragment = AdminUtils.getContentFragment();
-        if (fragment != null) {
-            final SwipeRefreshLayout swipeRefreshLayout = fragment.getSwipeRefreshLayout();
-            if (swipeRefreshLayout != null) {
-                swipeRefreshLayout.setRefreshing(false);
-            }
+        final SwipeRefreshLayout swipeRefreshLayout = AdminUtils.getSwipeRefreshLayout();
+        if (swipeRefreshLayout != null) {
+            swipeRefreshLayout.setRefreshing(false);
         }
     }
 

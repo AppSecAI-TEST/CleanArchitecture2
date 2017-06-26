@@ -4,6 +4,7 @@ import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -81,7 +82,8 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
             final ItemTouchHelper helper = new ItemTouchHelper(callback);
             helper.attachToRecyclerView(recyclerView);
 
-            recyclerView.addOnScrollListener(new OnScrollListener(recyclerView, AdminUtils.getSwipeRefreshLayout()));
+            final SwipeRefreshLayout swipeRefreshLayout = ViewUtils.findView(root, R.id.swipeRefreshLayout);
+            recyclerView.addOnScrollListener(new OnScrollListener(recyclerView, swipeRefreshLayout));
 
             mRecyclerView = new WeakReference<>(recyclerView);
         }
