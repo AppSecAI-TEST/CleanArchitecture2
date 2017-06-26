@@ -67,7 +67,6 @@ public abstract class AbstractActivity extends LifecycleActivity
         AdminUtils.register(this);
 
         mStateMachine.setState(Lifecycle.STATE_CREATE);
-
     }
 
     @Override
