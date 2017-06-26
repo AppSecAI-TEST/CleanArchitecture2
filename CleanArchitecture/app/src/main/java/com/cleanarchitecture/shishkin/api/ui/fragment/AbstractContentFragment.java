@@ -16,6 +16,7 @@ import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarInitEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarPrepareEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarResetEvent;
+import com.cleanarchitecture.shishkin.api.presenter.SwipeRefreshPresenter;
 import com.cleanarchitecture.shishkin.api.ui.activity.IOnBackPressListener;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
@@ -23,6 +24,7 @@ import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -30,6 +32,7 @@ public abstract class AbstractContentFragment extends AbstractFragment implement
         IContentFragment,
         IOnBackPressListener, IModuleSubscriber {
 
+    private SwipeRefreshPresenter mSwipeRefreshPresenter = new SwipeRefreshPresenter();
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
@@ -44,13 +47,14 @@ public abstract class AbstractContentFragment extends AbstractFragment implement
         super.onViewCreated(view, savedInstanceState);
 
         mSwipeRefreshLayout = ViewUtils.findView(view, R.id.swipeRefreshLayout);
-        if (mSwipeRefreshLayout != null) {
-            mSwipeRefreshLayout.setOnRefreshListener(() -> {
-                if (validate()) {
-                    refreshData();
-                }
-            });
-        }
+
+        mSwipeRefreshPresenter.bindView(mSwipeRefreshLayout);
+        registerPresenter(mSwipeRefreshPresenter);
+    }
+
+    @Override
+    public SwipeRefreshLayout getSwipeRefreshLayout() {
+        return mSwipeRefreshLayout;
     }
 
     /**
@@ -95,11 +99,6 @@ public abstract class AbstractContentFragment extends AbstractFragment implement
     }
 
     @Override
-    public SwipeRefreshLayout getSwipeRefreshLayout() {
-        return mSwipeRefreshLayout;
-    }
-
-    @Override
     public void onClick(View view) {
         if (validate()) {
             final int id = view.getId();
@@ -125,9 +124,8 @@ public abstract class AbstractContentFragment extends AbstractFragment implement
 
         ApplicationUtils.runOnUiThread(() -> {
             if (validate()) {
-                final SwipeRefreshLayout swipeRefreshLayout = getSwipeRefreshLayout();
-                if (swipeRefreshLayout != null) {
-                    swipeRefreshLayout.setRefreshing(false);
+                if (mSwipeRefreshLayout != null) {
+                    mSwipeRefreshLayout.setRefreshing(false);
                 }
             }
         });
