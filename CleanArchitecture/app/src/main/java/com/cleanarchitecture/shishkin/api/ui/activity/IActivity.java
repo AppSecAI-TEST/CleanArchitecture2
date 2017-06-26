@@ -11,8 +11,6 @@ import com.cleanarchitecture.shishkin.api.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.api.presenter.IPresenter;
 
-import butterknife.Unbinder;
-
 /**
  * Интерфейс activity
  */
@@ -41,20 +39,6 @@ public interface IActivity extends IModuleSubscriber {
      * @return the presenter
      */
     IPresenter getPresenter(final String name);
-
-    /**
-     * Получить Butter Knife Unbinder
-     *
-     * @return Unbinder the unbinder
-     */
-    Unbinder getUnbinder();
-
-    /**
-     * Установить Butter Knife Unbinder
-     *
-     * @param unbinder the unbinder
-     */
-    void setUnbinder(Unbinder unbinder);
 
     /**
      * Получить Activity

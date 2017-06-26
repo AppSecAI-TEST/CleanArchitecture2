@@ -16,7 +16,6 @@ import com.cleanarchitecture.shishkin.api.controller.DesktopController;
 import com.cleanarchitecture.shishkin.api.controller.IDesktopController;
 import com.cleanarchitecture.shishkin.api.controller.ILocationSubscriber;
 import com.cleanarchitecture.shishkin.api.controller.LocationController;
-import com.cleanarchitecture.shishkin.api.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.OnToolbarClickEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.OnToolbarMenuItemClickEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBackNavigationEvent;
@@ -30,20 +29,16 @@ import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewIdleEvent;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewScrolledEvent;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
+import com.cleanarchitecture.shishkin.application.presenter.MainActivityPresenter;
 import com.cleanarchitecture.shishkin.application.presenter.PhoneContactPresenter;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.ShareUtil;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
-import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 @SuppressWarnings("unused")
 public class HomeFragment extends AbstractContentFragment implements ILocationSubscriber {
@@ -57,12 +52,6 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
     private OnBackPressedPresenter mOnBackPressedPresenter = new OnBackPressedPresenter();
     private PhoneContactPresenter mSearchPresenter = new PhoneContactPresenter();
 
-    @BindView(R.id.fab_menu)
-    FloatingActionMenu mFloatingActionMenu;
-
-    @BindView(R.id.fab_btn_exit)
-    FloatingActionButton mFloatingActionButtonExit;
-
     @Override
     public List<String> hasSubscriberType() {
         final List<String> list = super.hasSubscriberType();
@@ -74,7 +63,6 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         final View root = inflater.inflate(AdminUtils.getLayoutId("fragment_home", R.layout.fragment_home), container, false);
-        setUnbinder(ButterKnife.bind(this, root));
 
         return root;
     }
@@ -82,8 +70,6 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
     @Override
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        mFloatingActionButtonExit.setOnClickListener(this::onClickFab);
 
         registerPresenter(mOnBackPressedPresenter);
 
@@ -101,10 +87,6 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
             AdminUtils.postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.WRITE_EXTERNAL_STORAGE));
         }
         */
-    }
-
-    private void onClickFab(View view) {
-        AdminUtils.postEvent(new FinishApplicationEvent());
     }
 
     @Override
@@ -143,12 +125,18 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public synchronized void onRecyclerViewIdleEvent(final OnRecyclerViewIdleEvent event) {
-        mFloatingActionMenu.setVisibility(View.VISIBLE);
+        final MainActivityPresenter presenter = (MainActivityPresenter) AdminUtils.getPresenter(MainActivityPresenter.NAME);
+        if (presenter != null) {
+            presenter.getFloatingActionMenu().setVisibility(View.VISIBLE);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public synchronized void onRecyclerViewScrolledEvent(final OnRecyclerViewScrolledEvent event) {
-        mFloatingActionMenu.setVisibility(View.INVISIBLE);
+        final MainActivityPresenter presenter = (MainActivityPresenter) AdminUtils.getPresenter(MainActivityPresenter.NAME);
+        if (presenter != null) {
+            presenter.getFloatingActionMenu().setVisibility(View.INVISIBLE);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

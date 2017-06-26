@@ -51,14 +51,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import butterknife.Unbinder;
-
 public abstract class AbstractActivity extends LifecycleActivity
         implements IActivity, IBackStack, IMailSubscriber {
 
     private Map<String, IPresenter> mPresenters = Collections.synchronizedMap(new ConcurrentHashMap<String, IPresenter>());
     private StateMachine mStateMachine = new StateMachine(Lifecycle.STATE_CREATE);
-    private Unbinder mUnbinder = null;
 
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
@@ -91,10 +88,6 @@ public abstract class AbstractActivity extends LifecycleActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        if (mUnbinder != null) {
-            mUnbinder.unbind();
-        }
 
         mStateMachine.setState(Lifecycle.STATE_DESTROY);
         mStateMachine.clear();
@@ -203,22 +196,12 @@ public abstract class AbstractActivity extends LifecycleActivity
     }
 
     @Override
-    public Unbinder getUnbinder() {
-        return mUnbinder;
-    }
-
-    @Override
     public int getState() {
         return mStateMachine.getState();
     }
 
     @Override
     public void setState(int state) {
-    }
-
-    @Override
-    public void setUnbinder(Unbinder unbinder) {
-        mUnbinder = unbinder;
     }
 
     @Override

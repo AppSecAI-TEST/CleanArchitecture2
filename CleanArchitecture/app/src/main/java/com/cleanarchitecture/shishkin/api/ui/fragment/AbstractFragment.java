@@ -30,15 +30,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import butterknife.Unbinder;
-
 @SuppressWarnings("unused")
 public abstract class AbstractFragment extends LifecycleFragment implements IFragment
         , IMailSubscriber, IModuleSubscriber {
 
     private Map<String, IPresenter> mPresenters = Collections.synchronizedMap(new ConcurrentHashMap<String, IPresenter>());
     private StateMachine mStateMachine = new StateMachine(Lifecycle.STATE_CREATE);
-    private Unbinder mUnbinder = null;
 
     @Override
     public <V extends View> V findView(@IdRes final int id) {
@@ -84,15 +81,6 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
         mPresenters.clear();
 
         AdminUtils.unregister(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        if (mUnbinder != null) {
-            mUnbinder.unbind();
-        }
-
-        super.onDestroy();
     }
 
     @Override
@@ -150,16 +138,6 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
             return mPresenters.get(name);
         }
         return null;
-    }
-
-    @Override
-    public Unbinder getUnbinder() {
-        return mUnbinder;
-    }
-
-    @Override
-    public void setUnbinder(Unbinder unbinder) {
-        mUnbinder = unbinder;
     }
 
     @Override
