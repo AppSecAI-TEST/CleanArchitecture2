@@ -9,12 +9,25 @@ import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.NotificationService;
 import com.cleanarchitecture.shishkin.api.event.ClearDiskCacheEvent;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractContentActivity;
+import com.cleanarchitecture.shishkin.application.presenter.MainActivityPresenter;
 import com.cleanarchitecture.shishkin.application.ui.fragment.HomeFragment;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
+
+import butterknife.BindView;
 
 public class MainActivity extends AbstractContentActivity {
 
     public static final String NAME = MainActivity.class.getName();
+
+    @BindView(R.id.fab_menu)
+    FloatingActionMenu mFloatingActionMenu;
+
+    @BindView(R.id.fab_btn_exit)
+    FloatingActionButton mFloatingActionButtonExit;
+
+    private MainActivityPresenter mMainActivityPresenter = new MainActivityPresenter();
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -25,6 +38,9 @@ public class MainActivity extends AbstractContentActivity {
         ViewUtils.setStatusBarColor(this, R.color.blue);
 
         setContentView(R.layout.activity_main);
+
+        mMainActivityPresenter.bindView(findViewById(R.id.root));
+        registerPresenter(mMainActivityPresenter);
 
         if (ViewUtils.isPhone(this)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);

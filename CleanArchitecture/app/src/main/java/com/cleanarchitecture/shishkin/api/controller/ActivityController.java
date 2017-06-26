@@ -129,14 +129,16 @@ public class ActivityController extends AbstractController<IActivity> implements
     public void onShowMessageEvent(ShowMessageEvent event) {
         final IActivity subscriber = getSubscriber();
         if (subscriber != null && subscriber.validate()) {
-            final String action = event.getAction();
-            if (StringUtils.isNullOrEmpty(action)) {
-                BaseSnackbar.make(subscriber.getActivity().findView(android.R.id.content), event.getMessage(), event.getDuration())
-                        .show();
-            } else {
-                BaseSnackbar.make(subscriber.getActivity().findView(android.R.id.content), event.getMessage(), event.getDuration())
-                        .setAction(action, this::onSnackbarClick)
-                        .show();
+            if (subscriber.getActivity().findView(R.id.root) != null) {
+                final String action = event.getAction();
+                if (StringUtils.isNullOrEmpty(action)) {
+                    BaseSnackbar.make(subscriber.getActivity().findView(R.id.root), event.getMessage(), event.getDuration())
+                            .show();
+                } else {
+                    BaseSnackbar.make(subscriber.getActivity().findView(R.id.root), event.getMessage(), event.getDuration())
+                            .setAction(action, this::onSnackbarClick)
+                            .show();
+                }
             }
         }
     }
