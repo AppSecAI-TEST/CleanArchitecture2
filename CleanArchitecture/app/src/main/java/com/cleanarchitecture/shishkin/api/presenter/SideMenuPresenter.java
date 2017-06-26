@@ -79,7 +79,7 @@ public class SideMenuPresenter extends AbstractPresenter<Void> implements View.O
 
     @Override
     public boolean isRegister() {
-        return false;
+        return true;
     }
 
     @Override
