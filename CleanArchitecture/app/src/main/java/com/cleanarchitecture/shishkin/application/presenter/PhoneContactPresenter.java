@@ -28,7 +28,6 @@ import com.cleanarchitecture.shishkin.api.repository.IDbProvider;
 import com.cleanarchitecture.shishkin.api.repository.IObserver;
 import com.cleanarchitecture.shishkin.api.repository.Repository;
 import com.cleanarchitecture.shishkin.api.ui.dialog.MaterialDialogExt;
-import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.OnScrollListener;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.SwipeTouchHelper;
 import com.cleanarchitecture.shishkin.application.app.Constant;
@@ -68,7 +67,7 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
         super();
     }
 
-    public void bindView(@NonNull final View root, final AbstractContentFragment fragment) {
+    public void bindView(@NonNull final View root) {
 
         final FastScrollRecyclerView recyclerView = ViewUtils.findView(root, R.id.list);
         if (recyclerView != null) {
@@ -82,7 +81,7 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
             final ItemTouchHelper helper = new ItemTouchHelper(callback);
             helper.attachToRecyclerView(recyclerView);
 
-            recyclerView.addOnScrollListener(new OnScrollListener(recyclerView, fragment.getSwipeRefreshLayout()));
+            recyclerView.addOnScrollListener(new OnScrollListener(recyclerView, AdminUtils.getSwipeRefreshLayout()));
 
             mRecyclerView = new WeakReference<>(recyclerView);
         }
@@ -95,7 +94,7 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
         }
 
         if (mDbProvider != null) {
-            mDbProvider.observe(fragment.getLifecycleActivity(), PhoneContactViewModel.NAME, PhoneContactViewModel.class, this);
+            mDbProvider.observe(AdminUtils.getActivity(), PhoneContactViewModel.NAME, PhoneContactViewModel.class, this);
         }
     }
 

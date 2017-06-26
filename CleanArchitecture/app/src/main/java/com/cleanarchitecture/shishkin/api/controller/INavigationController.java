@@ -61,11 +61,27 @@ public interface INavigationController extends IController<INavigationSubscriber
     AbstractActivity getActivity();
 
     /**
+     * Получить AbstractActivity
+     *
+     * @param name имя activity
+     * @return the AbstractActivity
+     */
+    AbstractActivity getActivity(String name);
+
+    /**
      * Получить AbstractContentActivity
      *
      * @return AbstractContentActivity
      */
     AbstractContentActivity getContentActivity();
+
+    /**
+     * Получить AbstractContentActivity
+     *
+     * @param name имя activity
+     * @return AbstractContentActivity
+     */
+    AbstractContentActivity getContentActivity(String name);
 
     /**
      * Обрабатывает событие - Start Activity

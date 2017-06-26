@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.os.PowerManager;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.R;
@@ -271,6 +272,22 @@ public class AdminUtils {
     }
 
     /**
+     * Получить activity.
+     *
+     * @param name имя activity
+     * @return the activity
+     */
+    public static AbstractActivity getActivity(final String name) {
+        if (!StringUtils.isNullOrEmpty(name)) {
+            final INavigationController controller = Admin.getInstance().get(NavigationController.NAME);
+            if (controller != null) {
+                return controller.getActivity(name);
+            }
+        }
+        return null;
+    }
+
+    /**
      * Получить content fragment.
      *
      * @return the content fragment
@@ -282,6 +299,14 @@ public class AdminUtils {
             if (activity != null) {
                 return activity.getContentFragment(AbstractContentFragment.class);
             }
+        }
+        return null;
+    }
+
+    public static SwipeRefreshLayout getSwipeRefreshLayout() {
+        final AbstractContentFragment fragment = getContentFragment();
+        if (fragment != null) {
+            return fragment.getSwipeRefreshLayout();
         }
         return null;
     }

@@ -8,10 +8,12 @@ import com.cleanarchitecture.shishkin.api.event.StartActivityEvent;
 import com.cleanarchitecture.shishkin.api.event.SwitchToFragmentEvent;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractActivity;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractContentActivity;
+import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,10 +75,38 @@ public class NavigationController extends AbstractController<INavigationSubscrib
     }
 
     @Override
+    public synchronized AbstractContentActivity getContentActivity(final String name) {
+        if (!StringUtils.isNullOrEmpty(name)) {
+            for (WeakReference<INavigationSubscriber> ref : getSubscribers().values()) {
+                if (ref.get().getName().equalsIgnoreCase(name)) {
+                    if (ref.get() instanceof AbstractContentActivity) {
+                        return (AbstractContentActivity) ref.get();
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
     public synchronized AbstractActivity getActivity() {
         final INavigationSubscriber subscriber = getSubscriber();
         if (subscriber != null && subscriber instanceof AbstractActivity) {
             return (AbstractActivity) subscriber;
+        }
+        return null;
+    }
+
+    @Override
+    public synchronized AbstractActivity getActivity(final String name) {
+        if (!StringUtils.isNullOrEmpty(name)) {
+            for (WeakReference<INavigationSubscriber> ref : getSubscribers().values()) {
+                if (ref.get().getName().equalsIgnoreCase(name)) {
+                    if (ref.get() instanceof AbstractActivity) {
+                        return (AbstractActivity) ref.get();
+                    }
+                }
+            }
         }
         return null;
     }

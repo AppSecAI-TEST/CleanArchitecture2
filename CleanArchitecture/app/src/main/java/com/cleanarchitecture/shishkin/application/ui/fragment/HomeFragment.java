@@ -73,7 +73,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
 
         registerPresenter(mOnBackPressedPresenter);
 
-        mSearchPresenter.bindView(view, this);
+        mSearchPresenter.bindView(view);
         registerPresenter(mSearchPresenter);
 
         ApplicationUtils.grantPermisions(ApplicationController.PERMISIONS, AdminUtils.getActivity());
