@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
@@ -23,7 +22,6 @@ import com.cleanarchitecture.shishkin.api.ui.fragment.ToolbarFragment;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.SafeUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
-import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 
 import java.util.List;
 
@@ -50,9 +48,6 @@ public abstract class AbstractContentActivity extends AbstractActivity
 
         AdminUtils.postEvent(new HideKeyboardEvent());
     }
-
-    @Override
-    public abstract String getName();
 
     @Override
     public List<String> hasSubscriberType() {
@@ -237,29 +232,18 @@ public abstract class AbstractContentActivity extends AbstractActivity
     }
 
     private void addToolbar() {
-        try {
-            final ToolbarFragment toolbar = new ToolbarFragment();
-            final FragmentManager fm = getSupportFragmentManager();
-            fm.beginTransaction().
-                    replace(R.id.toolbar, toolbar, ToolbarFragment.NAME).
+        if (findView(R.id.toolbar) != null) {
+            getSupportFragmentManager().beginTransaction().
+                    replace(R.id.toolbar, new ToolbarFragment(), ToolbarFragment.NAME).
                     commitAllowingStateLoss();
-        } catch (Exception e) {
-            ErrorController.getInstance().onError(LOG_TAG, e);
         }
     }
 
     private void addSideMenu() {
-        try {
-            final View v = ViewUtils.findView(this, R.id.sidemenu);
-            if (v != null) {
-                final SideMenuFragment sidemenu = new SideMenuFragment();
-                final FragmentManager fm = getSupportFragmentManager();
-                fm.beginTransaction().
-                        replace(R.id.sidemenu, sidemenu, ToolbarFragment.NAME).
-                        commitAllowingStateLoss();
-            }
-        } catch (Exception e) {
-            ErrorController.getInstance().onError(LOG_TAG, e);
+        if (findView(R.id.sidemenu) != null) {
+            getSupportFragmentManager().beginTransaction().
+                    replace(R.id.sidemenu, new SideMenuFragment(), ToolbarFragment.NAME).
+                    commitAllowingStateLoss();
         }
     }
 }
