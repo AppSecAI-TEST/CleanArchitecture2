@@ -15,7 +15,6 @@ public interface IExpiredStorage extends IStorage {
 
     /**
      * Check expired period all keys.
-     *
      */
     void checkAll();
 }
