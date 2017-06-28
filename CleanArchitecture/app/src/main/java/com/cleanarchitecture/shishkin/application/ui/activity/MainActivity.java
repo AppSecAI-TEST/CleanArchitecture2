@@ -33,8 +33,10 @@ public class MainActivity extends AbstractContentActivity {
         registerPresenter(mMainActivityPresenter);
 
         if (ViewUtils.isPhone(this)) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            lockOrientation();
+            if (!ViewUtils.is6inchPhone(this)) {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                lockOrientation();
+            }
         } else {
             if (ViewUtils.is10inchTablet(this)) {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);

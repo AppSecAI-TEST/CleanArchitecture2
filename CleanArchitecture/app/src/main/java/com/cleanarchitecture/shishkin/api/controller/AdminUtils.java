@@ -288,6 +288,20 @@ public class AdminUtils {
     }
 
     /**
+     * Стартовать activity.
+     *
+     * @param intent intent
+     */
+    public static void startActivity(final Intent intent) {
+        if(intent != null) {
+            final Context context = getContext();
+            if (context != null) {
+                context.startActivity(intent);
+            }
+        }
+    }
+
+    /**
      * Получить content fragment.
      *
      * @return the content fragment

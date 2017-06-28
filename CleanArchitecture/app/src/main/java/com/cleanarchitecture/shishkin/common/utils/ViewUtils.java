@@ -120,6 +120,11 @@ public class ViewUtils {
         return diagonalInches < 7;
     }
 
+    public static boolean is6inchPhone(final Context context) {
+        final double diagonalInches = diagonalInch(context);
+        return diagonalInches >= 6 && diagonalInches < 7;
+    }
+
     public static boolean is7inchTablet(final Context context) {
         final double diagonalInches = diagonalInch(context);
         return diagonalInches >= 7 && diagonalInches < 9;
