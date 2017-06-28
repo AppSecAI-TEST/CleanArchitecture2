@@ -24,7 +24,6 @@ import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.lang.ref.WeakReference;
 import java.util.List;
 
 @SuppressWarnings("unused")
