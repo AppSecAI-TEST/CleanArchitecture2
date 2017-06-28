@@ -12,4 +12,10 @@ public interface IExpiredStorage extends IStorage {
      * @param expired expired date
      */
     void put(String key, Serializable value, long expired);
+
+    /**
+     * Check expired period all keys.
+     *
+     */
+    void checkAll();
 }

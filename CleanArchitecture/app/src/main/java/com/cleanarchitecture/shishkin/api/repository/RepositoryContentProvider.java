@@ -26,7 +26,7 @@ public class RepositoryContentProvider {
                 responseEvent.setFrom(Repository.FROM_CONTENT_PROVIDER);
 
                 if (!responseEvent.hasError()) {
-                    repository.putToCache(String.valueOf(event.getId()), event.getCacheType(), (Serializable) responseEvent.getResponse());
+                    repository.putToCache(String.valueOf(event.getId()), event.getCacheType(), (Serializable) responseEvent.getResponse(), event.getExpired());
                 }
 
                 AdminUtils.postEvent(responseEvent);
