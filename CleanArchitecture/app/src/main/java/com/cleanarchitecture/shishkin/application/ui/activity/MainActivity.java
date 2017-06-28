@@ -7,7 +7,7 @@ import android.os.Bundle;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.NotificationService;
-import com.cleanarchitecture.shishkin.api.event.ClearDiskCacheEvent;
+import com.cleanarchitecture.shishkin.api.event.CheckDiskCacheEvent;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractContentActivity;
 import com.cleanarchitecture.shishkin.application.presenter.MainActivityPresenter;
 import com.cleanarchitecture.shishkin.application.ui.fragment.HomeFragment;
@@ -53,7 +53,7 @@ public class MainActivity extends AbstractContentActivity {
             final String action = intent.getAction();
             if ("android.intent.action.MAIN".equalsIgnoreCase(action)) {
                 // вызов из Launcher
-                AdminUtils.postEvent(new ClearDiskCacheEvent());
+                AdminUtils.postEvent(new CheckDiskCacheEvent());
                 showHomeFragment();
             } else if (NotificationService.ACTION_CLICK.equalsIgnoreCase(action)) {
                 // клик на сообщении в зоне уведомлений

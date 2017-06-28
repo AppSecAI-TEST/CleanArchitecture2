@@ -7,6 +7,7 @@ import com.cleanarchitecture.shishkin.api.controller.ErrorController;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
 import io.paperdb.Paper;
@@ -161,6 +162,26 @@ public class DiskCache extends AbstractModule implements IExpiredStorage {
 
         try {
             Paper.book(NAME).destroy();
+            Paper.book(TIME).destroy();
+        } catch (Exception e) {
+            ErrorController.getInstance().onError(LOG_TAG, e);
+        } finally {
+            mLock.unlock();
+        }
+    }
+
+    @Override
+    public void checkAll() {
+        mLock.lock();
+
+        try {
+            final List<String> list = Paper.book(TIME).getAllKeys();
+            for (String key : list) {
+                long expired = Paper.book(TIME).read(key);
+                if (expired < System.currentTimeMillis()) {
+                    deleteKeys(key);
+                }
+            }
         } catch (Exception e) {
             ErrorController.getInstance().onError(LOG_TAG, e);
         } finally {

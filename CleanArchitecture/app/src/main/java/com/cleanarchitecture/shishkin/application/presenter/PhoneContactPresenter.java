@@ -38,6 +38,7 @@ import com.cleanarchitecture.shishkin.application.event.phonecontactpresenter.On
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.ui.adapter.PhoneContactRecyclerViewAdapter;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
+import com.cleanarchitecture.shishkin.common.utils.CloseUtils;
 import com.cleanarchitecture.shishkin.common.utils.PhoneUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
@@ -50,6 +51,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 
 @SuppressWarnings("unused")
@@ -142,11 +144,15 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
     }
 
     private List<PhoneContactItem> filter(final String pattern) {
-        return Stream.of(getModel()).filter(item -> StringUtils.containsIgnoreCase(item.getName(), pattern)).toList();
+        final Stream<PhoneContactItem> stream = Stream.of(getModel());
+        final List<PhoneContactItem> list = stream.filter(item -> StringUtils.containsIgnoreCase(item.getName(), pattern)).toList();
+        CloseUtils.close(stream);
+        return list;
     }
 
     public void refreshData() {
         AdminUtils.postEvent(new RepositoryRequestGetContactsEvent()
+                .setExpired(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1))
                 .setCacheType(Repository.USE_SAVE_CACHE)
                 .setId(Constant.REPOSITORY_GET_CONTACTS)
         );

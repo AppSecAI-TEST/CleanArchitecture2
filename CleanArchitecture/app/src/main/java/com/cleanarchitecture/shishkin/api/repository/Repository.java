@@ -9,7 +9,7 @@ import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.AppPreferences;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
-import com.cleanarchitecture.shishkin.api.event.ClearDiskCacheEvent;
+import com.cleanarchitecture.shishkin.api.event.CheckDiskCacheEvent;
 import com.cleanarchitecture.shishkin.api.event.database.DbCreatedEvent;
 import com.cleanarchitecture.shishkin.api.event.database.DbUpdatedEvent;
 import com.cleanarchitecture.shishkin.api.mail.ShowToastMail;
@@ -95,7 +95,7 @@ public class Repository extends AbstractModule implements IRepository, IModuleSu
     }
 
     @Override
-    public synchronized void putToCache(final String key, final int cacheType, Serializable value) {
+    public synchronized void putToCache(final String key, final int cacheType, Serializable value, long expired) {
         final Context context = AdminUtils.getContext();
         if (context == null) {
             return;
@@ -114,14 +114,22 @@ public class Repository extends AbstractModule implements IRepository, IModuleSu
             case USE_ONLY_DISK_CACHE:
             case USE_SAVE_DISK_CACHE:
             case USE_DISK_CACHE:
-                DiskCacheService.put(context, key, value);
+                if (expired > 0) {
+                    DiskCacheService.put(context, key, value, expired);
+                } else {
+                    DiskCacheService.put(context, key, value);
+                }
                 break;
 
             case USE_ONLY_CACHE:
             case USE_SAVE_CACHE:
             case USE_CACHE:
                 MemoryCacheService.put(context, key, value);
-                DiskCacheService.put(context, key, value);
+                if (expired > 0) {
+                    DiskCacheService.put(context, key, value, expired);
+                } else {
+                    DiskCacheService.put(context, key, value);
+                }
                 break;
         }
     }
@@ -144,13 +152,13 @@ public class Repository extends AbstractModule implements IRepository, IModuleSu
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
-    public void onClearDiskCacheEvent(final ClearDiskCacheEvent event) {
+    public void onCheckDiskCacheEvent(final CheckDiskCacheEvent event) {
         final Context context = AdminUtils.getContext();
         if (context == null) {
             return;
         }
 
-        // раз в сутки очищаем дисковый кэш
+        // раз в сутки проверяем дисковый кэш
         final SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
         final int currentDay = StringUtils.toInt(formatter.format(new Date()));
         final int day = StringUtils.toInt(AppPreferences.getLastDayStart(context));
@@ -158,7 +166,7 @@ public class Repository extends AbstractModule implements IRepository, IModuleSu
             AppPreferences.setLastDayStart(context, String.valueOf(currentDay));
             final IExpiredStorage diskCache = Admin.getInstance().get(DiskCache.NAME);
             if (diskCache != null) {
-                diskCache.clearAll();
+                diskCache.checkAll();
             }
         }
     }

@@ -24,7 +24,8 @@ public interface IRepository extends IModule {
      * @param key       ключ данных
      * @param cacheType тип кеширования
      * @param value     сохраняемые Serializable данные
+     * @param expired   время окончания жизни данных
      */
-    void putToCache(String key, int cacheType, Serializable value);
+    void putToCache(String key, int cacheType, Serializable value, long expired);
 
 }
