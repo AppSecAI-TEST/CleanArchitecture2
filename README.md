@@ -90,6 +90,13 @@
  - ripple эффект на различных элементах UI
  - поддержка SwipeRefreshLayout
 
+Использованы презентеры:
+ - OnBackPressedPresenter - предоставляет сервис выхода из приложения по двойному клику на BackPress
+ - SideMenuPresenter - предоставляет сервис бокового меню
+ - SwipeRefreshPresenter - предоставляет поддержку SwipeRefreshLayout
+ - ToolbarPresenter - предоставляет поддежку работы с Toolbar
+ - MainActivityPresenter - пример работы с FabMenu
+ - PhoneContactPresenter - пример работы со списком контактов телефона
 
 
 
