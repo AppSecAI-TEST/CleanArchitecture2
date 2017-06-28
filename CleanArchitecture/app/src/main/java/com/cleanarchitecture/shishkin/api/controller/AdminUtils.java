@@ -293,7 +293,7 @@ public class AdminUtils {
      * @param intent intent
      */
     public static void startActivity(final Intent intent) {
-        if(intent != null) {
+        if (intent != null) {
             final Context context = getContext();
             if (context != null) {
                 context.startActivity(intent);

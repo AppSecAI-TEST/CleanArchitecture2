@@ -14,7 +14,7 @@ import io.paperdb.Paper;
 public class DiskCache extends AbstractModule implements IExpiredStorage {
 
     public static final String NAME = DiskCache.class.getName();
-    private static final String TIME = DiskCache.class.getName()+".time";
+    private static final String TIME = DiskCache.class.getName() + ".time";
     private static final String LOG_TAG = "DiskCache:";
 
     private static volatile DiskCache sInstance;
@@ -133,7 +133,7 @@ public class DiskCache extends AbstractModule implements IExpiredStorage {
     public Serializable get(final String key, final Serializable defaultValue) {
         final Serializable value = get(key);
         if (value == null) {
-            return  defaultValue;
+            return defaultValue;
         }
         return value;
     }
