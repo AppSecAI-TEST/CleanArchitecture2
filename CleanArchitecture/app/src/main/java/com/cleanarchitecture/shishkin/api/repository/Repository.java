@@ -15,6 +15,7 @@ import com.cleanarchitecture.shishkin.api.event.database.DbUpdatedEvent;
 import com.cleanarchitecture.shishkin.api.mail.ShowToastMail;
 import com.cleanarchitecture.shishkin.api.storage.DiskCache;
 import com.cleanarchitecture.shishkin.api.storage.DiskCacheService;
+import com.cleanarchitecture.shishkin.api.storage.IExpiredStorage;
 import com.cleanarchitecture.shishkin.api.storage.IStorage;
 import com.cleanarchitecture.shishkin.api.storage.MemoryCacheService;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
@@ -155,7 +156,7 @@ public class Repository extends AbstractModule implements IRepository, IModuleSu
         final int day = StringUtils.toInt(AppPreferences.getLastDayStart(context));
         if (currentDay > day) {
             AppPreferences.setLastDayStart(context, String.valueOf(currentDay));
-            final IStorage diskCache = Admin.getInstance().get(DiskCache.NAME);
+            final IExpiredStorage diskCache = Admin.getInstance().get(DiskCache.NAME);
             if (diskCache != null) {
                 diskCache.clearAll();
             }

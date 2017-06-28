@@ -11,9 +11,10 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import io.paperdb.Paper;
 
-public class DiskCache extends AbstractModule implements IStorage {
+public class DiskCache extends AbstractModule implements IExpiredStorage {
 
     public static final String NAME = DiskCache.class.getName();
+    private static final String TIME = DiskCache.class.getName()+".time";
     private static final String LOG_TAG = "DiskCache:";
 
     private static volatile DiskCache sInstance;
@@ -65,6 +66,41 @@ public class DiskCache extends AbstractModule implements IStorage {
     }
 
     @Override
+    public void put(final String key, final Serializable value, final long expired) {
+        if (StringUtils.isNullOrEmpty(key)) {
+            return;
+        }
+
+        if (expired < System.currentTimeMillis()) {
+            return;
+        }
+
+        mLock.lock();
+
+        try {
+            if (value == null) {
+                deleteKeys(key);
+            } else {
+                Paper.book(NAME).write(key, value);
+                Paper.book(TIME).write(key, expired);
+            }
+        } catch (Exception e) {
+            ErrorController.getInstance().onError(LOG_TAG, e);
+        } finally {
+            mLock.unlock();
+        }
+    }
+
+    private void deleteKeys(final String key) {
+        if (Paper.book(NAME).exist(key)) {
+            Paper.book(NAME).delete(key);
+        }
+        if (Paper.book(TIME).exist(key)) {
+            Paper.book(TIME).delete(key);
+        }
+    }
+
+    @Override
     public Serializable get(final String key) {
         if (StringUtils.isNullOrEmpty(key)) {
             return null;
@@ -74,7 +110,16 @@ public class DiskCache extends AbstractModule implements IStorage {
 
         try {
             if (Paper.book(NAME).exist(key)) {
+                if (Paper.book(TIME).exist(key)) {
+                    final long expired = Paper.book(TIME).read(key);
+                    if (expired < System.currentTimeMillis()) {
+                        deleteKeys(key);
+                        return null;
+                    }
+                }
                 return Paper.book(NAME).read(key);
+            } else {
+                deleteKeys(key);
             }
         } catch (Exception e) {
             ErrorController.getInstance().onError(LOG_TAG, e);
@@ -86,20 +131,11 @@ public class DiskCache extends AbstractModule implements IStorage {
 
     @Override
     public Serializable get(final String key, final Serializable defaultValue) {
-        if (StringUtils.isNullOrEmpty(key)) {
-            return defaultValue;
+        final Serializable value = get(key);
+        if (value == null) {
+            return  defaultValue;
         }
-
-        mLock.lock();
-
-        try {
-            return Paper.book(NAME).read(key, defaultValue);
-        } catch (Exception e) {
-            ErrorController.getInstance().onError(LOG_TAG, e);
-        } finally {
-            mLock.unlock();
-        }
-        return defaultValue;
+        return value;
     }
 
     @Override
@@ -111,7 +147,7 @@ public class DiskCache extends AbstractModule implements IStorage {
         mLock.lock();
 
         try {
-            Paper.book(NAME).delete(key);
+            deleteKeys(key);
         } catch (Exception e) {
             ErrorController.getInstance().onError(LOG_TAG, e);
         } finally {
