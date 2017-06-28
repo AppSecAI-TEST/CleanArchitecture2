@@ -59,18 +59,6 @@ public class AdminUtils {
     }
 
     /**
-     * Зарегистрировать activity
-     *
-     * @param activity activity
-     */
-    public static void registerActivity(final IActivity activity) {
-        final ActivityController controller = Admin.getInstance().get(ActivityController.NAME);
-        if (controller != null) {
-            controller.register(activity);
-        }
-    }
-
-    /**
      * Отменить регистрацию подписчика модуля
      *
      * @param subscriber подписчик модуля
@@ -317,6 +305,11 @@ public class AdminUtils {
         return null;
     }
 
+    /**
+     * Получить SwipeRefreshLayout
+     *
+     * @return SwipeRefreshLayout
+     */
     public static SwipeRefreshLayout getSwipeRefreshLayout() {
         final AbstractContentFragment fragment = getContentFragment();
         if (fragment != null) {
@@ -346,6 +339,15 @@ public class AdminUtils {
             return controller.getPresenter(name);
         }
         return null;
+    }
+
+    /**
+     * Получить prеsenter контроллер
+     *
+     * @return presenter контроллер
+     */
+    public static IPresenterController getPresenterController() {
+        return Admin.getInstance().get(PresenterController.NAME);
     }
 
     /**
