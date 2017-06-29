@@ -16,6 +16,7 @@ import java.util.List;
 public class StateMachine implements IStateable {
     private List<WeakReference<IStateable>> mList = Collections.synchronizedList(new ArrayList<>());
     private int mState = Lifecycle.STATE_CREATE;
+    private boolean mLostStateData = false;
 
     public StateMachine(final int state) {
         setState(state);
@@ -31,6 +32,9 @@ public class StateMachine implements IStateable {
         mState = state;
         for (WeakReference<IStateable> stateable : mList) {
             if (stateable != null && stateable.get() != null) {
+                if (mState == Lifecycle.STATE_DESTROY) {
+                    saveOrClearStateData(stateable.get());
+                }
                 stateable.get().setState(mState);
             }
         }
@@ -89,18 +93,48 @@ public class StateMachine implements IStateable {
     }
 
     /**
-     * Сохранить данные состояний всех слушателей
+     * Сохранить/стереть данные состояний всех слушателей
      */
     public synchronized void saveStateData() {
         final IPresenterController controller = AdminUtils.getPresenterController();
         if (controller != null) {
-            for (WeakReference<IStateable> ref : mList) {
-                if (ref != null && ref.get() != null && ref.get() instanceof IPresenter) {
-                    final IPresenter presenter = SafeUtils.cast(ref.get());
-                    controller.saveStateData(presenter.getName(), presenter.getStateData());
+            if (!mLostStateData) {
+                for (WeakReference<IStateable> ref : mList) {
+                    if (ref != null && ref.get() != null && ref.get() instanceof IPresenter) {
+                        final IPresenter presenter = SafeUtils.cast(ref.get());
+                        controller.saveStateData(presenter.getName(), presenter.getStateData());
+                    }
+                }
+            } else {
+                for (WeakReference<IStateable> ref : mList) {
+                    if (ref != null && ref.get() != null && ref.get() instanceof IPresenter) {
+                        final IPresenter presenter = SafeUtils.cast(ref.get());
+                        controller.clearStateData(presenter.getName());
+                    }
                 }
             }
         }
+    }
+
+    /**
+     * Сохранить/стереть данные состояния слушателя
+     */
+    public synchronized void saveOrClearStateData(final IStateable stateable) {
+        final IPresenterController controller = AdminUtils.getPresenterController();
+        if (controller != null && stateable != null) {
+            if (stateable instanceof IPresenter) {
+                final IPresenter presenter = SafeUtils.cast(stateable);
+                if (!mLostStateData) {
+                    controller.saveStateData(presenter.getName(), presenter.getStateData());
+                } else {
+                    controller.clearStateData(presenter.getName());
+                }
+            }
+        }
+    }
+
+    public void setLostStateDate(boolean lostStateDate) {
+        mLostStateData = lostStateDate;
     }
 
 }

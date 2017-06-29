@@ -75,7 +75,6 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
     public void onDestroyView() {
         super.onDestroyView();
 
-        mStateMachine.saveStateData();
         mStateMachine.setState(Lifecycle.STATE_DESTROY);
         mStateMachine.clear();
 
@@ -179,5 +178,9 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
         }
     }
 
+    @Override
+    public void setLostStateDate(boolean lostStateDate) {
+        mStateMachine.setLostStateDate(lostStateDate);
+    }
 
 }

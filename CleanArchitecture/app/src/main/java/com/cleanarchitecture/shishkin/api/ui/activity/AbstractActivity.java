@@ -89,7 +89,6 @@ public abstract class AbstractActivity extends LifecycleActivity
     protected void onDestroy() {
         super.onDestroy();
 
-        mStateMachine.saveStateData();
         mStateMachine.setState(Lifecycle.STATE_DESTROY);
         mStateMachine.clear();
 
@@ -238,6 +237,11 @@ public abstract class AbstractActivity extends LifecycleActivity
     @Override
     public boolean validate() {
         return (getState() != Lifecycle.STATE_DESTROY && !isFinishing());
+    }
+
+    @Override
+    public void setLostStateDate(boolean lostStateDate) {
+        mStateMachine.setLostStateDate(lostStateDate);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

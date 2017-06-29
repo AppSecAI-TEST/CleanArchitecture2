@@ -92,7 +92,7 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
 
         final EditText searchView = ViewUtils.findView(root, R.id.search);
         if (searchView != null) {
-            final Bundle bundle = AdminUtils.getSaveStateData(NAME);
+            final Bundle bundle = AdminUtils.getStateData(NAME);
             if (bundle != null) {
                 mCurrentFilter = bundle.getString(CURRENT_FILTER);
             }

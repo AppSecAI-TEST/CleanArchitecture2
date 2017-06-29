@@ -61,10 +61,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        final View root = inflater.inflate(AdminUtils.getLayoutId("fragment_home", R.layout.fragment_home), container, false);
-
-        return root;
+        return inflater.inflate(AdminUtils.getLayoutId("fragment_home", R.layout.fragment_home), container, false);
     }
 
     @Override
@@ -96,6 +93,8 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
 
     @Override
     public boolean onBackPressed() {
+        setLostStateDate(true);
+
         final boolean result = super.onBackPressed();
         if (!result) {
             mOnBackPressedPresenter.onClick();
