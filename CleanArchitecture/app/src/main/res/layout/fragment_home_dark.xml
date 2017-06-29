@@ -24,9 +24,9 @@
 
                 <EditText
                     android:id="@+id/search"
-                    style="@style/EditTextStyle"
+                    style="@style/EditTextStyle_dark"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_40dp"
+                    android:layout_height="@dimen/dimen_48dp"
                     android:layout_marginBottom="@dimen/dimen_8dp"
                     android:layout_marginLeft="@dimen/dimen_12dp"
                     android:layout_marginRight="@dimen/dimen_12dp"
@@ -34,7 +34,6 @@
                     android:drawableLeft="@mipmap/ic_search"
                     android:drawablePadding="@dimen/padding_8dp"
                     android:hint="@string/search_hint"
-                    android:textColorHint="@color/gray_switch"
                     android:inputType="text" />
 
             </LinearLayout>

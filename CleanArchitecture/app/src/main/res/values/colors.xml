@@ -26,6 +26,7 @@
     <color name="orange_button_background">#ff5514</color>
 
     <color name="edittext_background">#ffffff</color>
+    <color name="edittext_background_dark">#d0d0d0</color>
     <color name="edittext_background_disabled">#c0c0c0</color>
     <color name="edittext_border">#929191</color>
     <color name="edittext_border_disabled">#929191</color>
