@@ -354,7 +354,7 @@ public class AdminUtils {
      *
      * @return сохраненное состояние
      */
-    public static Bundle getSaveStateData(final String name) {
+    public static Bundle getStateData(final String name) {
         if (!StringUtils.isNullOrEmpty(name)) {
             final IPresenterController controller = getPresenterController();
             if (controller != null) {
@@ -367,7 +367,7 @@ public class AdminUtils {
     /**
      * Очистить сохраненное состояние prеsenter
      */
-    public static void clearSaveStateData(final String name) {
+    public static void clearStateData(final String name) {
         if (!StringUtils.isNullOrEmpty(name)) {
             final IPresenterController controller = getPresenterController();
             if (controller != null) {

@@ -59,4 +59,10 @@ public interface IFragment extends ISubscriber, IView {
      */
     boolean validate();
 
+    /**
+     * Установить флаг, очищать данные о состоянии презентеров
+     *
+     * @param lostStateDate true - очищать данные
+     */
+    void setLostStateDate(boolean lostStateDate);
 }
