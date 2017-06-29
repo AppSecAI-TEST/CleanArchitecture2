@@ -2,6 +2,8 @@ package com.cleanarchitecture.shishkin.api.controller;
 
 import android.Manifest;
 import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 
 import com.cleanarchitecture.shishkin.api.event.FinishApplicationEvent;
@@ -21,6 +23,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("unused")
@@ -37,6 +40,8 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
     private Location mLocation = null;
     private LocationCallback mLocationCallback = null;
     private LocationRequest mLocationRequest = null;
+    private Geocoder mGeocoder;
+
 
     public LocationController() {
         mLocationCallback = new LocationCallback() {
@@ -54,6 +59,11 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
         mLocationRequest.setInterval(POLLING_FREQ);
         mLocationRequest.setFastestInterval(FASTEST_UPDATE_FREQ);
         mLocationRequest.setSmallestDisplacement(SMALLEST_DISPLACEMENT);
+
+        final Context context = AdminUtils.getContext();
+        if (context != null) {
+            mGeocoder = new Geocoder(context, Locale.getDefault());
+        }
     }
 
     private void startLocation() {
@@ -152,6 +162,24 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
     @Override
     public void onUnRegister() {
         stopLocation(true);
+    }
+
+    @Override
+    public List<Address> getAddress(final Location location, int countAddress) {
+        if (countAddress < 1) {
+            countAddress = 1;
+        }
+
+        final List<Address> list = new ArrayList<>();
+        try {
+            list.addAll(mGeocoder.getFromLocation(
+                    location.getLatitude(),
+                    location.getLongitude(),
+                    countAddress));
+        } catch (Exception e) {
+            ErrorController.getInstance().onError(LOG_TAG, e);
+        }
+        return list;
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
