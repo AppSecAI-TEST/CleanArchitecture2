@@ -1,6 +1,7 @@
 package com.cleanarchitecture.shishkin.application.ui.fragment;
 
 import android.content.res.Configuration;
+import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,15 +15,16 @@ import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.DesktopController;
 import com.cleanarchitecture.shishkin.api.controller.IDesktopController;
+import com.cleanarchitecture.shishkin.api.controller.ILocationController;
 import com.cleanarchitecture.shishkin.api.controller.ILocationSubscriber;
 import com.cleanarchitecture.shishkin.api.controller.LocationController;
+import com.cleanarchitecture.shishkin.api.controller.NotificationService;
 import com.cleanarchitecture.shishkin.api.event.toolbar.OnToolbarClickEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.OnToolbarMenuItemClickEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBackNavigationEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetItemEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetMenuEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetTitleEvent;
-import com.cleanarchitecture.shishkin.api.event.ui.ShowMessageEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseFinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.presenter.OnBackPressedPresenter;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
@@ -114,7 +116,25 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
 
     @Override
     public void setLocation(Location location) {
-        AdminUtils.postEvent(new ShowMessageEvent(location.toString()));
+        final StringBuilder sb = new StringBuilder();
+        sb.append("Долгота: " + String.valueOf(location.getLongitude()) + " \n");
+        sb.append("Широта: " + String.valueOf(location.getLatitude() + " \n\n"));
+
+        final ILocationController controller = Admin.getInstance().get(LocationController.NAME);
+        if (controller != null) {
+            final List<Address> list = controller.getAddress(location, 1);
+            if (!list.isEmpty()) {
+                final Address address = list.get(0);
+                for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
+                    sb.append(address.getAddressLine(i));
+                    if (i < address.getMaxAddressLineIndex()) {
+                        sb.append(", ");
+                    }
+                }
+            }
+        }
+
+        NotificationService.replaceMessage(getContext(), sb.toString());
     }
 
     @Override
