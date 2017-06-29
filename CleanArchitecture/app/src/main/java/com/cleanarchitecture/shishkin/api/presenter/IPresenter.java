@@ -1,5 +1,7 @@
 package com.cleanarchitecture.shishkin.api.presenter;
 
+import android.os.Bundle;
+
 import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.api.ui.IView;
 import com.cleanarchitecture.shishkin.common.lifecycle.ILifecycle;
@@ -35,8 +37,15 @@ public interface IPresenter<M> extends ILifecycle, IView, IModuleSubscriber {
     /**
      * Проверить презентер
      *
-     * @return the boolean
+     * @return true -  презентер готов
      */
     boolean validate();
+
+    /**
+     * Получить данные о состоянии презентера
+     *
+     * @return данные презентера для сохранения и восстановления состояния
+     */
+    Bundle getStateData();
 
 }

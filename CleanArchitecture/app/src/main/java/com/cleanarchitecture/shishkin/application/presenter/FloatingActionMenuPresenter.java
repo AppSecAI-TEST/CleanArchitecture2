@@ -5,14 +5,14 @@ import android.view.View;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
-import com.cleanarchitecture.shishkin.api.event.FinishApplicationEvent;
+import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseFinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.presenter.AbstractPresenter;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
-public class MainActivityPresenter extends AbstractPresenter {
-    public static final String NAME = MainActivityPresenter.class.getName();
+public class FloatingActionMenuPresenter extends AbstractPresenter {
+    public static final String NAME = FloatingActionMenuPresenter.class.getName();
 
     private FloatingActionMenu mFloatingActionMenu;
 
@@ -26,7 +26,7 @@ public class MainActivityPresenter extends AbstractPresenter {
     }
 
     private void onClickFab(View view) {
-        AdminUtils.postEvent(new FinishApplicationEvent());
+        AdminUtils.postEvent(new UseCaseFinishApplicationEvent());
     }
 
     public FloatingActionMenu getFloatingActionMenu() {

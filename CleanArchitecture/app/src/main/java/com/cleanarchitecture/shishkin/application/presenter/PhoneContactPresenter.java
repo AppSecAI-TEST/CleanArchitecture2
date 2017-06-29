@@ -38,7 +38,6 @@ import com.cleanarchitecture.shishkin.application.event.phonecontactpresenter.On
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.ui.adapter.PhoneContactRecyclerViewAdapter;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
-import com.cleanarchitecture.shishkin.common.utils.CloseUtils;
 import com.cleanarchitecture.shishkin.common.utils.PhoneUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
@@ -58,6 +57,7 @@ import java.util.concurrent.TimeUnit;
 public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactItem>>
         implements IObserver<List<PhoneContactItem>> {
     public static final String NAME = PhoneContactPresenter.class.getName();
+    private static final String CURRENT_FILTER = "CURRENT_FILTER";
 
     private WeakReference<EditText> mSearchView;
     private WeakReference<FastScrollRecyclerView> mRecyclerView;
@@ -92,6 +92,11 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
 
         final EditText searchView = ViewUtils.findView(root, R.id.search);
         if (searchView != null) {
+            final Bundle bundle = AdminUtils.getSaveStateData(NAME);
+            if (bundle != null) {
+                mCurrentFilter = bundle.getString(CURRENT_FILTER);
+            }
+
             mEditTextDebouncedObserver = new EditTextDebouncedObserver(searchView, 1000, R.id.edittext_phone_contact_presenter);
             mSearchView = new WeakReference<>(searchView);
             searchView.setText(mCurrentFilter);
@@ -144,10 +149,7 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
     }
 
     private List<PhoneContactItem> filter(final String pattern) {
-        final Stream<PhoneContactItem> stream = Stream.of(getModel());
-        final List<PhoneContactItem> list = stream.filter(item -> StringUtils.containsIgnoreCase(item.getName(), pattern)).toList();
-        CloseUtils.close(stream);
-        return list;
+        return Stream.of(getModel()).filter(item -> StringUtils.containsIgnoreCase(item.getName(), pattern)).toList();
     }
 
     public void refreshData() {
@@ -181,6 +183,13 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
     @Override
     public void onChanged(@Nullable List<PhoneContactItem> list) {
         setModel(list);
+    }
+
+    @Override
+    public Bundle getStateData() {
+        final Bundle bundle = new Bundle();
+        bundle.putString(CURRENT_FILTER, mCurrentFilter);
+        return bundle;
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)

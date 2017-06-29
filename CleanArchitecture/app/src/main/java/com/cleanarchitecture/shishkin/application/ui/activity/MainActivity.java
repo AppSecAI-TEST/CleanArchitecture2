@@ -8,8 +8,9 @@ import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.NotificationService;
 import com.cleanarchitecture.shishkin.api.event.CheckDiskCacheEvent;
+import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseStartApplicationEvent;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractContentActivity;
-import com.cleanarchitecture.shishkin.application.presenter.MainActivityPresenter;
+import com.cleanarchitecture.shishkin.application.presenter.FloatingActionMenuPresenter;
 import com.cleanarchitecture.shishkin.application.ui.fragment.HomeFragment;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 
@@ -17,7 +18,7 @@ public class MainActivity extends AbstractContentActivity {
 
     public static final String NAME = MainActivity.class.getName();
 
-    private MainActivityPresenter mMainActivityPresenter = new MainActivityPresenter();
+    private FloatingActionMenuPresenter mFloatingActionMenuPresenter = new FloatingActionMenuPresenter();
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -25,12 +26,14 @@ public class MainActivity extends AbstractContentActivity {
 
         super.onCreate(savedInstanceState);
 
+        AdminUtils.postEvent(new UseCaseStartApplicationEvent());
+
         ViewUtils.setStatusBarColor(this, R.color.blue);
 
         setContentView(R.layout.activity_main);
 
-        mMainActivityPresenter.bindView(findViewById(R.id.root));
-        registerPresenter(mMainActivityPresenter);
+        mFloatingActionMenuPresenter.bindView(findViewById(R.id.root));
+        registerPresenter(mFloatingActionMenuPresenter);
 
         if (ViewUtils.isPhone(this)) {
             if (!ViewUtils.is6inchPhone(this)) {

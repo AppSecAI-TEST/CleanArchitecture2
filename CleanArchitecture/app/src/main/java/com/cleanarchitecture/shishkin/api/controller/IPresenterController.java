@@ -21,7 +21,7 @@ public interface IPresenterController extends IController<IPresenter> {
      * @param name  имя presenter
      * @param state состояние
      */
-    void saveState(String name, Bundle state);
+    void saveStateData(String name, Bundle state);
 
     /**
      * Получить состояние presenter
@@ -29,13 +29,17 @@ public interface IPresenterController extends IController<IPresenter> {
      * @param name имя presenter
      * @return состояние presenter
      */
-    Bundle restoreState(String name);
+    Bundle restoreStateData(String name);
 
     /**
      * Очистить состояние presenter
      *
      * @param name имя presenter
      */
-    void clearState(String name);
+    void clearStateData(String name);
 
+    /**
+     * Очистить состояние всех presenters
+     */
+    void clearStateData();
 }
