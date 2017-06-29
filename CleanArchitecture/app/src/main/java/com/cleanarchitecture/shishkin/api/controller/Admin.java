@@ -42,7 +42,7 @@ public class Admin extends AbstractAdmin {
         return NAME;
     }
 
-    public void init() {
+    private void init() {
         final Context context = AdminUtils.getContext();
 
         // default persistent (Singleton) controllers
