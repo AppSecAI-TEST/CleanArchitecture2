@@ -3,6 +3,8 @@ package com.cleanarchitecture.shishkin.api.controller;
 import android.os.Bundle;
 
 import com.cleanarchitecture.shishkin.api.presenter.IPresenter;
+import com.cleanarchitecture.shishkin.api.usecases.IUseCasesController;
+import com.cleanarchitecture.shishkin.api.usecases.UseCasesController;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
 import java.util.Collections;
@@ -55,14 +57,17 @@ public class PresenterController extends AbstractController<IPresenter>
     }
 
     @Override
-    public synchronized void saveState(final String name, final Bundle state) {
+    public synchronized void saveStateData(final String name, final Bundle state) {
         if (!StringUtils.isNullOrEmpty(name) && state != null) {
-            mStates.put(name, state);
+            final IUseCasesController controller = Admin.getInstance().get(UseCasesController.NAME);
+            if (controller != null && !controller.isApplicationFinished()) {
+                mStates.put(name, state);
+            }
         }
     }
 
     @Override
-    public synchronized Bundle restoreState(final String name) {
+    public synchronized Bundle restoreStateData(final String name) {
         if (!StringUtils.isNullOrEmpty(name)) {
             return mStates.get(name);
         }
@@ -70,10 +75,14 @@ public class PresenterController extends AbstractController<IPresenter>
     }
 
     @Override
-    public synchronized void clearState(final String name) {
+    public synchronized void clearStateData(final String name) {
         if (!StringUtils.isNullOrEmpty(name)) {
             mStates.remove(name);
         }
     }
 
+    @Override
+    public synchronized void clearStateData() {
+        mStates.clear();
+    }
 }

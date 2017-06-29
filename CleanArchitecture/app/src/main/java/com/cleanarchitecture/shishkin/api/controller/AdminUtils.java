@@ -5,6 +5,7 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.os.PowerManager;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
@@ -28,7 +29,6 @@ import com.cleanarchitecture.shishkin.api.storage.IStorage;
 import com.cleanarchitecture.shishkin.api.storage.MemoryCache;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractActivity;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractContentActivity;
-import com.cleanarchitecture.shishkin.api.ui.activity.IActivity;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
@@ -47,7 +47,6 @@ public class AdminUtils {
     private static final String LOG_TAG = "AdminUtils:";
     public static final int REQUEST_PERMISSIONS = 10000;
     public static final int REQUEST_GOOGLE_PLAY_SERVICES = 10001;
-
 
     /**
      * Зарегистрировать подписчика модуля
@@ -348,6 +347,33 @@ public class AdminUtils {
      */
     public static IPresenterController getPresenterController() {
         return Admin.getInstance().get(PresenterController.NAME);
+    }
+
+    /**
+     * Получить сохраненное состояние prеsenter
+     *
+     * @return сохраненное состояние
+     */
+    public static Bundle getSaveStateData(final String name) {
+        if (!StringUtils.isNullOrEmpty(name)) {
+            final IPresenterController controller = getPresenterController();
+            if (controller != null) {
+                return controller.restoreStateData(name);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Очистить сохраненное состояние prеsenter
+     */
+    public static void clearSaveStateData(final String name) {
+        if (!StringUtils.isNullOrEmpty(name)) {
+            final IPresenterController controller = getPresenterController();
+            if (controller != null) {
+                controller.clearStateData(name);
+            }
+        }
     }
 
     /**

@@ -1,5 +1,10 @@
 package com.cleanarchitecture.shishkin.common.lifecycle;
 
+import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.api.controller.IPresenterController;
+import com.cleanarchitecture.shishkin.api.presenter.IPresenter;
+import com.cleanarchitecture.shishkin.common.utils.SafeUtils;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -81,6 +86,21 @@ public class StateMachine implements IStateable {
      */
     public synchronized void clear() {
         mList.clear();
+    }
+
+    /**
+     * Сохранить данные состояний всех слушателей
+     */
+    public synchronized void saveStateData() {
+        final IPresenterController controller = AdminUtils.getPresenterController();
+        if (controller != null) {
+            for (WeakReference<IStateable> ref : mList) {
+                if (ref != null && ref.get() != null && ref.get() instanceof IPresenter) {
+                    final IPresenter presenter = SafeUtils.cast(ref.get());
+                    controller.saveStateData(presenter.getName(), presenter.getStateData());
+                }
+            }
+        }
     }
 
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.event.ui.OnSnackBarClickEvent;
+import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseFinishApplicationEvent;
 
 /**
  * Команда - нажатие на кнопку в панели Snackbar
@@ -20,7 +21,7 @@ public class SnackbarOnClickUseCase extends AbstractUseCase {
 
         if (context != null) {
             if (action.equals(context.getString(R.string.exit))) {
-                FinishApplicationUseCase.onFinishApplication();
+                AdminUtils.postEvent(new UseCaseFinishApplicationEvent());
             }
         }
     }

@@ -29,7 +29,7 @@ import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewIdleEvent;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewScrolledEvent;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
-import com.cleanarchitecture.shishkin.application.presenter.MainActivityPresenter;
+import com.cleanarchitecture.shishkin.application.presenter.FloatingActionMenuPresenter;
 import com.cleanarchitecture.shishkin.application.presenter.PhoneContactPresenter;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.ShareUtil;
@@ -125,7 +125,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public synchronized void onRecyclerViewIdleEvent(final OnRecyclerViewIdleEvent event) {
-        final MainActivityPresenter presenter = (MainActivityPresenter) AdminUtils.getPresenter(MainActivityPresenter.NAME);
+        final FloatingActionMenuPresenter presenter = (FloatingActionMenuPresenter) AdminUtils.getPresenter(FloatingActionMenuPresenter.NAME);
         if (presenter != null) {
             presenter.getFloatingActionMenu().setVisibility(View.VISIBLE);
         }
@@ -133,7 +133,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public synchronized void onRecyclerViewScrolledEvent(final OnRecyclerViewScrolledEvent event) {
-        final MainActivityPresenter presenter = (MainActivityPresenter) AdminUtils.getPresenter(MainActivityPresenter.NAME);
+        final FloatingActionMenuPresenter presenter = (FloatingActionMenuPresenter) AdminUtils.getPresenter(FloatingActionMenuPresenter.NAME);
         if (presenter != null) {
             presenter.getFloatingActionMenu().setVisibility(View.INVISIBLE);
         }

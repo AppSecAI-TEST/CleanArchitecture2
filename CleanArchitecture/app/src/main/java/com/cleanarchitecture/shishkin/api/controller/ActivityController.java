@@ -23,6 +23,7 @@ import com.cleanarchitecture.shishkin.api.event.ui.ShowListDialogEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowMessageEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowToastEvent;
+import com.cleanarchitecture.shishkin.api.ui.activity.AbstractActivity;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractContentActivity;
 import com.cleanarchitecture.shishkin.api.ui.activity.IActivity;
 import com.cleanarchitecture.shishkin.api.ui.dialog.MaterialDialogExt;
@@ -207,12 +208,13 @@ public class ActivityController extends AbstractController<IActivity> implements
     public void onHideKeyboardEvent(HideKeyboardEvent event) {
         final IActivity subscriber = getSubscriber();
         if (subscriber != null && subscriber.validate()) {
-            subscriber.getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-            InputMethodManager imm = (InputMethodManager) subscriber.getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+            final AbstractActivity activity = subscriber.getActivity();
+            activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+            final InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
             if (imm != null) {
-                View view = subscriber.getActivity().getCurrentFocus();
+                View view = activity.getCurrentFocus();
                 if (view == null) {
-                    view = new View(subscriber.getActivity());
+                    view = new View(activity);
                 }
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }

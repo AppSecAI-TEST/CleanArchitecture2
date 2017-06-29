@@ -17,6 +17,7 @@ import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseOnLowMemoryEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseOnScreenOffEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseOnScreenOnEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseRequestPermissionEvent;
+import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseStartApplicationEvent;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -32,6 +33,8 @@ public class UseCasesController extends AbstractController implements IUseCasesC
     public static final String NAME = UseCasesController.class.getName();
 
     private BroadcastReceiver mScreenOnOffReceiver;
+
+    private boolean mIsFinished = false;
 
     public UseCasesController() {
         registerScreenOnOffBroadcastReceiver();
@@ -88,14 +91,25 @@ public class UseCasesController extends AbstractController implements IUseCasesC
         return list;
     }
 
+    @Override
+    public boolean isApplicationFinished() {
+        return mIsFinished;
+    }
+
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onSnackBarClickEvent(final OnSnackBarClickEvent event) {
         SnackbarOnClickUseCase.onClick(event);
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
-    public void onFinishApplicationUseCaseEvent(final UseCaseFinishApplicationEvent event) {
+    public void onUseCaseFinishApplicationEvent(final UseCaseFinishApplicationEvent event) {
+        mIsFinished = true;
         FinishApplicationUseCase.onFinishApplication();
+    }
+
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onUseCaseStartApplicationEvent(final UseCaseStartApplicationEvent event) {
+        mIsFinished = false;
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)

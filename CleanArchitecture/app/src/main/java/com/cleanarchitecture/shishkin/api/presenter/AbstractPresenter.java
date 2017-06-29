@@ -1,5 +1,7 @@
 package com.cleanarchitecture.shishkin.api.presenter;
 
+import android.os.Bundle;
+
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.IMailSubscriber;
 import com.cleanarchitecture.shishkin.api.controller.MailController;
@@ -77,12 +79,6 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IMailSubscr
     }
 
     @Override
-    abstract public boolean isRegister();
-
-    @Override
-    abstract public String getName();
-
-    @Override
     public List<String> hasSubscriberType() {
         final ArrayList<String> list = new ArrayList<>();
         list.add(PresenterController.SUBSCRIBER_TYPE);
@@ -96,5 +92,10 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IMailSubscr
 
     @Override
     public void hideProgressBar() {
+    }
+
+    @Override
+    public Bundle getStateData() {
+        return null;
     }
 }
