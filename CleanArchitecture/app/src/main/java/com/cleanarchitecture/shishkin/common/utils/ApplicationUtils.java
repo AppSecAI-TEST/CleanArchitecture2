@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 
+import com.cleanarchitecture.shishkin.application.app.Constant;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -155,6 +157,14 @@ public class ApplicationUtils {
             return context.getResources().getIdentifier(nameResource, typeResource, context.getPackageName());
         }
         return 0;
+    }
+
+    /**
+     * Получить размер Java VM Heap Size в Мб
+     */
+    public static int getHeapSize() {
+        final Runtime runtime = Runtime.getRuntime();
+        return Long.valueOf(runtime.maxMemory()/Constant.MB).intValue();
     }
 
     private ApplicationUtils() {
