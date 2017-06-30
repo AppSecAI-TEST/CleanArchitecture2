@@ -42,7 +42,6 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
     private LocationRequest mLocationRequest = null;
     private Geocoder mGeocoder;
 
-
     public LocationController() {
         mLocationCallback = new LocationCallback() {
             @Override
@@ -182,24 +181,24 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
         return list;
     }
 
-    @Subscribe(threadMode = ThreadMode.ASYNC)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public synchronized void onPermisionGrantedEvent(OnPermisionGrantedEvent event) {
         if (event.getPermission().equals(Manifest.permission.ACCESS_FINE_LOCATION)) {
             startLocation();
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.ASYNC)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public synchronized void onFinishApplicationEvent(FinishApplicationEvent event) {
         stopLocation(true);
     }
 
-    @Subscribe(threadMode = ThreadMode.ASYNC)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onScreenOffEvent(final OnScreenOffEvent event) {
         stopLocation(true);
     }
 
-    @Subscribe(threadMode = ThreadMode.ASYNC)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onScreenOnEvent(final OnScreenOnEvent event) {
         startLocation();
     }
