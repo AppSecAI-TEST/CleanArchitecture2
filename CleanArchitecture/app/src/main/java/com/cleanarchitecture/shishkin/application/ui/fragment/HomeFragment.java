@@ -77,6 +77,10 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
 
         ApplicationUtils.grantPermisions(ApplicationController.PERMISIONS, AdminUtils.getActivity());
 
+        if (!AdminUtils.isGooglePlayServices()){
+            AdminUtils.checkGooglePlayServices();
+        }
+
         /*
         if (!AdminUtils.checkPermission(Manifest.permission.READ_CONTACTS)) {
             AdminUtils.postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.READ_CONTACTS));
