@@ -9,10 +9,12 @@ import com.cleanarchitecture.shishkin.api.repository.Repository;
 import com.cleanarchitecture.shishkin.api.storage.DiskCache;
 import com.cleanarchitecture.shishkin.api.storage.MemoryCache;
 import com.cleanarchitecture.shishkin.api.usecases.UseCasesController;
+import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 
 @SuppressWarnings("unused")
 public class Admin extends AbstractAdmin {
     public static final String NAME = Admin.class.getName();
+    public static final int MIN_HEAP_SIZE = 48;
 
     private static volatile Admin sInstance;
 
@@ -48,7 +50,9 @@ public class Admin extends AbstractAdmin {
         // default persistent (Singleton) controllers
         registerModule(ErrorController.getInstance());
         registerModule(EventBusController.getInstance());
-        registerModule(MemoryCache.getInstance());
+        if (ApplicationUtils.getHeapSize() > MIN_HEAP_SIZE) {
+            registerModule(MemoryCache.getInstance());
+        }
         if (context != null) {
             registerModule(DiskCache.getInstance(context));
         }
