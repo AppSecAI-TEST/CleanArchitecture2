@@ -31,6 +31,7 @@ import com.cleanarchitecture.shishkin.api.ui.activity.AbstractActivity;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractContentActivity;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
+import com.cleanarchitecture.shishkin.common.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.SafeUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
@@ -546,6 +547,47 @@ public class AdminUtils {
 
         }
 
+    }
+
+    /**
+     * Проверить - жива ли activity
+     *
+     * @return true - activity находится в состоянии Pause or Resume
+     */
+    public static boolean isLivingActivity(final String name) {
+        if (!StringUtils.isNullOrEmpty(name)) {
+            final INavigationController controller = Admin.getInstance().get(NavigationController.NAME);
+            if (controller != null) {
+                final AbstractActivity activity = controller.getActivity(name);
+                if (activity != null) {
+                    if (!activity.isFinishing() && (activity.getState() == Lifecycle.STATE_RESUME || activity
+                            .getState() == Lifecycle.STATE_PAUSE)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Проверить - жив ли presenter
+     *
+     * @return true - preseneter находится в состоянии Pause or Resume
+     */
+    public static boolean isLivingPresenter(final String name) {
+        if (!StringUtils.isNullOrEmpty(name)) {
+            final IPresenterController controller = Admin.getInstance().get(PresenterController.NAME);
+            if (controller != null) {
+                final IPresenter presenter = controller.getPresenter(name);
+                if (presenter != null) {
+                    if (presenter.getState() == Lifecycle.STATE_RESUME || presenter.getState() == Lifecycle.STATE_PAUSE) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private AdminUtils() {
