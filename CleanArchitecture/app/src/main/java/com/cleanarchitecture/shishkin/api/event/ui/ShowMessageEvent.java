@@ -4,7 +4,6 @@ import android.support.design.widget.Snackbar;
 
 import com.cleanarchitecture.shishkin.api.event.AbstractEvent;
 
-import static com.cleanarchitecture.shishkin.api.controller.ActivityController.TOAST_TYPE_ERROR;
 import static com.cleanarchitecture.shishkin.api.controller.ActivityController.TOAST_TYPE_INFO;
 
 /**

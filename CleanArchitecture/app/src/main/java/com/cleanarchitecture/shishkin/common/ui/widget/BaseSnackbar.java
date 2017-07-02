@@ -1,7 +1,6 @@
 package com.cleanarchitecture.shishkin.common.ui.widget;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
@@ -26,7 +25,7 @@ public class BaseSnackbar {
 
     @CheckResult
     public static Snackbar make(@NonNull final View view, @NonNull final CharSequence title, final int duration,
-            final int type) {
+                                final int type) {
         final Snackbar snackbar = Snackbar.make(view, title, duration);
         final View snackbarView = snackbar.getView();
         final TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);

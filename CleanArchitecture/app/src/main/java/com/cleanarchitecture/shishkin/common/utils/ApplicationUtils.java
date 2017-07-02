@@ -164,7 +164,7 @@ public class ApplicationUtils {
      */
     public static int getHeapSize() {
         final Runtime runtime = Runtime.getRuntime();
-        return Long.valueOf(runtime.maxMemory()/Constant.MB).intValue();
+        return Long.valueOf(runtime.maxMemory() / Constant.MB).intValue();
     }
 
     private ApplicationUtils() {
