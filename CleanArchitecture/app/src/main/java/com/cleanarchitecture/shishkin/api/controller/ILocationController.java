@@ -17,8 +17,8 @@ public interface ILocationController extends IController<ILocationSubscriber> {
     /**
      * Получить список адресов по его месту
      *
-     * @param location  location
-     * @param countAddress  кол-во адресов
+     * @param location     location
+     * @param countAddress кол-во адресов
      * @return список адресов
      */
     List<Address> getAddress(Location location, int countAddress);
