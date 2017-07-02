@@ -133,10 +133,11 @@ public class ActivityController extends AbstractController<IActivity> implements
             if (subscriber.getActivity().findView(R.id.root) != null) {
                 final String action = event.getAction();
                 if (StringUtils.isNullOrEmpty(action)) {
-                    BaseSnackbar.make(subscriber.getActivity().findView(R.id.root), event.getMessage(), event.getDuration())
+                    BaseSnackbar.make(subscriber.getActivity().findView(R.id.root), event.getMessage(), event
+                            .getDuration(), event.getType())
                             .show();
                 } else {
-                    BaseSnackbar.make(subscriber.getActivity().findView(R.id.root), event.getMessage(), event.getDuration())
+                    BaseSnackbar.make(subscriber.getActivity().findView(R.id.root), event.getMessage(), event.getDuration(), event.getType())
                             .setAction(action, this::onSnackbarClick)
                             .show();
                 }

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AbstractModule;
+import com.cleanarchitecture.shishkin.api.controller.ActivityController;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
@@ -87,7 +88,7 @@ public class NetProvider extends AbstractModule implements INetProvider, IModule
 
         final Context context = AdminUtils.getContext();
         if (context != null) {
-            AdminUtils.postEvent(new ShowMessageEvent(context.getString(R.string.network_disconnected)));
+            AdminUtils.postEvent(new ShowMessageEvent(context.getString(R.string.network_disconnected)).setType(ActivityController.TOAST_TYPE_WARNING));
         }
     }
 
