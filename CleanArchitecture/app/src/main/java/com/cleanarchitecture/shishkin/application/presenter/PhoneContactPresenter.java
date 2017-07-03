@@ -52,7 +52,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-
 @SuppressWarnings("unused")
 public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactItem>>
         implements IObserver<List<PhoneContactItem>> {
@@ -97,7 +96,8 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
                 mCurrentFilter = bundle.getString(CURRENT_FILTER);
             }
 
-            mEditTextDebouncedObserver = new EditTextDebouncedObserver(searchView, 1000, R.id.edittext_phone_contact_presenter);
+            mEditTextDebouncedObserver = new EditTextDebouncedObserver(searchView, 700, R.id
+                    .edittext_phone_contact_presenter);
             mSearchView = new WeakReference<>(searchView);
             searchView.setText(mCurrentFilter);
         }
@@ -120,7 +120,6 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
         mRecyclerView.get().clearOnScrollListeners();
         mRecyclerView.get().setAdapter(null);
         mRecyclerView = null;
-
     }
 
     @Override
