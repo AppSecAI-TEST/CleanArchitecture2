@@ -1,8 +1,6 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractActivity;
-import com.cleanarchitecture.shishkin.common.lifecycle.IStateable;
-import com.cleanarchitecture.shishkin.common.lifecycle.Lifecycle;
 
 import java.lang.ref.WeakReference;
 import java.util.Collections;

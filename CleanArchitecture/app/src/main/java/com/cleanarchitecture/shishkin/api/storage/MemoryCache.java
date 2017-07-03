@@ -2,7 +2,6 @@ package com.cleanarchitecture.shishkin.api.storage;
 
 import com.cleanarchitecture.shishkin.api.controller.AbstractModule;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
-import com.cleanarchitecture.shishkin.api.controller.ISubscriber;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -13,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 
-public class MemoryCache extends AbstractModule implements ISubscriber, IStorage {
+public class MemoryCache extends AbstractModule implements IStorage {
     public static final String NAME = MemoryCache.class.getName();
     private static final String LOG_TAG = "MemoryCache:";
     private static final long MAX_SIZE = 1000L;

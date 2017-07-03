@@ -4,10 +4,6 @@ import com.cleanarchitecture.shishkin.api.event.IEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.lang.ref.WeakReference;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Контроллер шины событий приложения
  */
