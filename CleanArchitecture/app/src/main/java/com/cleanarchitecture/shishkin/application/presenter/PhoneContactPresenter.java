@@ -148,7 +148,17 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
     }
 
     private List<PhoneContactItem> filter(final String pattern) {
-        return Stream.of(getModel()).filter(item -> StringUtils.containsIgnoreCase(item.getName(), pattern)).toList();
+        if (pattern.equalsIgnoreCase("*")) {
+            return getModel();
+        } else if (pattern.endsWith("*") && pattern.length() > 1) {
+            final String templ = StringUtils.mid(pattern, 0, pattern.length() - 1);
+            return Stream.of(getModel()).filter(item -> StringUtils.startsWith(item.getName(), templ)).toList();
+        } else if (pattern.startsWith("*") && pattern.length() > 1) {
+            final String templ = StringUtils.mid(pattern, 1);
+            return Stream.of(getModel()).filter(item -> StringUtils.endsWith(item.getName(), templ)).toList();
+        } else {
+            return Stream.of(getModel()).filter(item -> StringUtils.containsIgnoreCase(item.getName(), pattern)).toList();
+        }
     }
 
     public void refreshData() {

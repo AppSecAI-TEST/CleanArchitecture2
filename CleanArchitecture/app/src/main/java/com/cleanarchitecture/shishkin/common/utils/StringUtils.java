@@ -896,6 +896,30 @@ public class StringUtils {
         return (!isNullOrEmpty(getDigits(s)));
     }
 
+    public static boolean startsWith(final String s, final String with){
+        final int cnt = numToken(s, " ");
+        final String withs = with.toLowerCase();
+        for (int i = 1; i <= cnt; i++){
+            String ss = token(s, " ", i).toLowerCase();
+            if (ss.startsWith(withs)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean endsWith(final String s, final String with){
+        final int cnt = numToken(s, " ");
+        final String withs = with.toLowerCase();
+        for (int i = 1; i <= cnt; i++){
+            String ss = token(s, " ", i).toLowerCase();
+            if (ss.endsWith(withs)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     /*
     * This functions converts Bitmap picture to a string which can be
     * JSONified.
