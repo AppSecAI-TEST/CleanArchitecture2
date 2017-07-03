@@ -104,26 +104,6 @@ public class EventBusController implements IEventBusController {
     }
 
     @Override
-    public Object getSubscriber() {
-        return null;
-    }
-
-    @Override
-    public Object getSubscriber(String name) {
-        return null;
-    }
-
-    @Override
-    public Map<String, WeakReference<Object>> getSubscribers() {
-        return new HashMap<>();
-    }
-
-    @Override
-    public boolean hasSubscribers() {
-        return true;
-    }
-
-    @Override
     public String getName() {
         return NAME;
     }
