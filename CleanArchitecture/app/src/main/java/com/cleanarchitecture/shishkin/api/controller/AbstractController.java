@@ -40,7 +40,7 @@ public abstract class AbstractController<T extends ISubscriber> extends Abstract
     @Override
     public synchronized T getSubscriber(final String name) {
         checkNullSubscriber();
-        
+
         if (getSubscribers().containsKey(name)) {
             for (Map.Entry<String, WeakReference<T>> entry : getSubscribers().entrySet()) {
                 if (entry.getValue().get().getName().equalsIgnoreCase(name)) {
