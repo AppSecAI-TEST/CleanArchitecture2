@@ -52,7 +52,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-
 @SuppressWarnings("unused")
 public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactItem>>
         implements IObserver<List<PhoneContactItem>> {
@@ -97,7 +96,8 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
                 mCurrentFilter = bundle.getString(CURRENT_FILTER);
             }
 
-            mEditTextDebouncedObserver = new EditTextDebouncedObserver(searchView, 1000, R.id.edittext_phone_contact_presenter);
+            mEditTextDebouncedObserver = new EditTextDebouncedObserver(searchView, 700, R.id
+                    .edittext_phone_contact_presenter);
             mSearchView = new WeakReference<>(searchView);
             searchView.setText(mCurrentFilter);
         }
@@ -120,7 +120,6 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
         mRecyclerView.get().clearOnScrollListeners();
         mRecyclerView.get().setAdapter(null);
         mRecyclerView = null;
-
     }
 
     @Override
@@ -149,7 +148,17 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
     }
 
     private List<PhoneContactItem> filter(final String pattern) {
-        return Stream.of(getModel()).filter(item -> StringUtils.containsIgnoreCase(item.getName(), pattern)).toList();
+        if (pattern.equalsIgnoreCase("*")) {
+            return getModel();
+        } else if (pattern.endsWith("*") && pattern.length() > 1) {
+            final String templ = StringUtils.mid(pattern, 0, pattern.length() - 1);
+            return Stream.of(getModel()).filter(item -> StringUtils.startsWith(item.getName(), templ)).toList();
+        } else if (pattern.startsWith("*") && pattern.length() > 1) {
+            final String templ = StringUtils.mid(pattern, 1);
+            return Stream.of(getModel()).filter(item -> StringUtils.endsWith(item.getName(), templ)).toList();
+        } else {
+            return Stream.of(getModel()).filter(item -> StringUtils.containsIgnoreCase(item.getName(), pattern)).toList();
+        }
     }
 
     public void refreshData() {

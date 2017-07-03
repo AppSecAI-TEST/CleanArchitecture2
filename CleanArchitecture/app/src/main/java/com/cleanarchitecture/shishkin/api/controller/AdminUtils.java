@@ -552,7 +552,7 @@ public class AdminUtils {
     /**
      * Проверить - жива ли activity
      *
-     * @return true - activity находится в состоянии Pause or Resume
+     * @return true - activity находится в рабочем состоянии
      */
     public static boolean isLivingActivity(final String name) {
         if (!StringUtils.isNullOrEmpty(name)) {
@@ -560,8 +560,7 @@ public class AdminUtils {
             if (controller != null) {
                 final AbstractActivity activity = controller.getActivity(name);
                 if (activity != null) {
-                    if (!activity.isFinishing() && (activity.getState() == Lifecycle.STATE_RESUME || activity
-                            .getState() == Lifecycle.STATE_PAUSE)) {
+                    if (activity.validate()) {
                         return true;
                     }
                 }
@@ -573,7 +572,7 @@ public class AdminUtils {
     /**
      * Проверить - жив ли presenter
      *
-     * @return true - preseneter находится в состоянии Pause or Resume
+     * @return true - preseneter находится в рабочем состоянии
      */
     public static boolean isLivingPresenter(final String name) {
         if (!StringUtils.isNullOrEmpty(name)) {
@@ -581,7 +580,7 @@ public class AdminUtils {
             if (controller != null) {
                 final IPresenter presenter = controller.getPresenter(name);
                 if (presenter != null) {
-                    if (presenter.getState() == Lifecycle.STATE_RESUME || presenter.getState() == Lifecycle.STATE_PAUSE) {
+                    if (presenter.validate()) {
                         return true;
                     }
                 }
