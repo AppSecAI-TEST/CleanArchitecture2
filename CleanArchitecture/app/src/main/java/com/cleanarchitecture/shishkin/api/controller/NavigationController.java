@@ -123,7 +123,7 @@ public class NavigationController extends AbstractController<INavigationSubscrib
     @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onShowFragmentEvent(ShowFragmentEvent event) {
-        final INavigationSubscriber subscriber = getSubscriber();
+        final INavigationSubscriber subscriber = getCurrentSubscriber();
         if (subscriber != null) {
             subscriber.showFragment(event.getFragment(), event.isAddToBackStack(), event.isClearBackStack(), event.isAnimate(), event.isAllowingStateLoss());
         }
@@ -132,7 +132,7 @@ public class NavigationController extends AbstractController<INavigationSubscrib
     @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onSwitchToFragmentEvent(SwitchToFragmentEvent event) {
-        final INavigationSubscriber subscriber = getSubscriber();
+        final INavigationSubscriber subscriber = getCurrentSubscriber();
         if (subscriber != null) {
             subscriber.switchToFragment(event.getName());
         }
@@ -141,7 +141,7 @@ public class NavigationController extends AbstractController<INavigationSubscrib
     @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onActivityBackPressedEvent(OnActivityBackPressedEvent event) {
-        final INavigationSubscriber subscriber = getSubscriber();
+        final INavigationSubscriber subscriber = getCurrentSubscriber();
         if (subscriber != null) {
             subscriber.onActivityBackPressed();
         }

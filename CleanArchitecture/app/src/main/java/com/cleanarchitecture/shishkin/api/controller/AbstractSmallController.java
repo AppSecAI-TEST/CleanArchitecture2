@@ -11,7 +11,15 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class AbstractSmallController<T extends ISubscriber> implements ISmallController<T> {
 
-    private Map<String, WeakReference<T>> mSubscribers = Collections.synchronizedMap(new ConcurrentHashMap<String, WeakReference<T>>());
+    protected Map<String, WeakReference<T>> mSubscribers = Collections.synchronizedMap(new ConcurrentHashMap<String, WeakReference<T>>());
+
+    protected synchronized void checkNullSubscriber() {
+        for (Map.Entry<String, WeakReference<T>> entry : mSubscribers.entrySet()) {
+            if (entry.getValue() == null || entry.getValue().get() == null) {
+                mSubscribers.remove(entry.getKey());
+            }
+        }
+    }
 
     @Override
     public synchronized void register(T subscriber) {
@@ -39,57 +47,6 @@ public abstract class AbstractSmallController<T extends ISubscriber> implements 
         }
     }
 
-    private synchronized void checkNullSubscriber() {
-        for (Map.Entry<String, WeakReference<T>> entry : mSubscribers.entrySet()) {
-            if (entry.getValue() == null || entry.getValue().get() == null) {
-                mSubscribers.remove(entry.getKey());
-            }
-        }
-    }
-
-    /**
-     * Получить подписчика
-     *
-     * @return подписчик
-     */
-    @Override
-    public synchronized T getSubscriber() {
-        checkNullSubscriber();
-
-        if (!mSubscribers.isEmpty()) {
-            for (WeakReference<T> ref : mSubscribers.values()) {
-                if (ref.get() instanceof IStateable) {
-                    if (((IStateable) ref.get()).getState() == Lifecycle.STATE_RESUME) {
-                        return ref.get();
-                    }
-                }
-            }
-            return mSubscribers.entrySet().iterator().next().getValue().get();
-        } else {
-            ErrorController.getInstance().onError(getName(), "Subscribers not found", false);
-        }
-        return null;
-    }
-
-    @Override
-    public synchronized T getSubscriber(final String name) {
-        if (getSubscribers().containsKey(name)) {
-            for (Map.Entry<String, WeakReference<T>> entry : getSubscribers().entrySet()) {
-                if (entry.getValue().get().getName().equalsIgnoreCase(name)) {
-                    return entry.getValue().get();
-                }
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public synchronized Map<String, WeakReference<T>> getSubscribers() {
-        checkNullSubscriber();
-
-        return mSubscribers;
-    }
-
     @Override
     public boolean isPersistent() {
         return false;
@@ -97,11 +54,6 @@ public abstract class AbstractSmallController<T extends ISubscriber> implements 
 
     @Override
     public void onUnRegister() {
-    }
-
-    @Override
-    public synchronized boolean hasSubscribers() {
-        return (!mSubscribers.isEmpty());
     }
 
 }
