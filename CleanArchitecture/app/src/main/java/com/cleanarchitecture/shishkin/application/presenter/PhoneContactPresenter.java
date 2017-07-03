@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.telephony.PhoneNumberUtils;
 import android.view.View;
@@ -41,7 +42,6 @@ import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.PhoneUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
-import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -59,7 +59,7 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
     private static final String CURRENT_FILTER = "CURRENT_FILTER";
 
     private WeakReference<EditText> mSearchView;
-    private WeakReference<FastScrollRecyclerView> mRecyclerView;
+    private WeakReference<RecyclerView> mRecyclerView;
     private PhoneContactRecyclerViewAdapter mContactAdapter;
     private String mCurrentFilter = null;
     private IDbProvider mDbProvider = AdminUtils.getDbProvider();
@@ -71,7 +71,7 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
 
     public void bindView(@NonNull final View root) {
 
-        final FastScrollRecyclerView recyclerView = ViewUtils.findView(root, R.id.list);
+        final RecyclerView recyclerView = ViewUtils.findView(root, R.id.list);
         if (recyclerView != null) {
             final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(AdminUtils.getActivity());
             recyclerView.setLayoutManager(linearLayoutManager);

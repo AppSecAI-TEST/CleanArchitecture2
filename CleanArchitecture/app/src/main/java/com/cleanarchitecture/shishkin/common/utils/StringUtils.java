@@ -896,24 +896,24 @@ public class StringUtils {
         return (!isNullOrEmpty(getDigits(s)));
     }
 
-    public static boolean startsWith(final String s, final String with){
+    public static boolean startsWith(final String s, final String with) {
         final int cnt = numToken(s, " ");
         final String withs = with.toLowerCase();
-        for (int i = 1; i <= cnt; i++){
+        for (int i = 1; i <= cnt; i++) {
             String ss = token(s, " ", i).toLowerCase();
-            if (ss.startsWith(withs)){
+            if (ss.startsWith(withs)) {
                 return true;
             }
         }
         return false;
     }
 
-    public static boolean endsWith(final String s, final String with){
+    public static boolean endsWith(final String s, final String with) {
         final int cnt = numToken(s, " ");
         final String withs = with.toLowerCase();
-        for (int i = 1; i <= cnt; i++){
+        for (int i = 1; i <= cnt; i++) {
             String ss = token(s, " ", i).toLowerCase();
-            if (ss.endsWith(withs)){
+            if (ss.endsWith(withs)) {
                 return true;
             }
         }
