@@ -13,9 +13,9 @@ import android.view.ViewGroup;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
-import com.cleanarchitecture.shishkin.api.controller.AppPreferences;
 import com.cleanarchitecture.shishkin.api.controller.DesktopController;
 import com.cleanarchitecture.shishkin.api.controller.IDesktopController;
+import com.cleanarchitecture.shishkin.api.controller.IDesktopSubscriber;
 import com.cleanarchitecture.shishkin.api.controller.ILocationController;
 import com.cleanarchitecture.shishkin.api.controller.ILocationSubscriber;
 import com.cleanarchitecture.shishkin.api.controller.LocationController;
@@ -45,9 +45,10 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.List;
 
 @SuppressWarnings("unused")
-public class HomeFragment extends AbstractContentFragment implements ILocationSubscriber {
+public class HomeFragment extends AbstractContentFragment implements ILocationSubscriber, IDesktopSubscriber {
 
     public static final String NAME = HomeFragment.class.getName();
+    public static final String ORDER_NAME = NAME + ".ORDER";
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -148,6 +149,28 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
         return NAME;
     }
 
+    @Override
+    public String getDefaultDesktopOrder() {
+        final StringBuilder sb = new StringBuilder();
+        SettingsDesktopOrderItem itemOrder = new SettingsDesktopOrderItem("Фрагмент 1").setEnabled(true);
+        sb.append(itemOrder.toString());
+        sb.append(";");
+
+        itemOrder = new SettingsDesktopOrderItem("Фрагмент 2").setEnabled(true);
+        sb.append(itemOrder.toString());
+        sb.append(";");
+
+        itemOrder = new SettingsDesktopOrderItem("Фрагмент 3").setEnabled(true);
+        sb.append(itemOrder.toString());
+        sb.append(";");
+        return sb.toString();
+    }
+
+    @Override
+    public String getDesktopOrderName() {
+        return ORDER_NAME;
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public synchronized void onRecyclerViewIdleEvent(final OnRecyclerViewIdleEvent event) {
         final FloatingActionMenuPresenter presenter = (FloatingActionMenuPresenter) AdminUtils.getPresenter(FloatingActionMenuPresenter.NAME);
@@ -177,21 +200,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
         } else if (item.getItemId() == R.id.desktop_order) {
             final IDesktopController controller = Admin.getInstance().get(DesktopController.NAME);
             if (controller != null) {
-                final StringBuilder sb = new StringBuilder();
-                SettingsDesktopOrderItem itemOrder  = new SettingsDesktopOrderItem("Фрагмент 1").setEnabled(true);
-                sb.append(itemOrder.toString());
-                sb.append(";");
-
-                itemOrder  = new SettingsDesktopOrderItem("Фрагмент 2").setEnabled(true);
-                sb.append(itemOrder.toString());
-                sb.append(";");
-
-                itemOrder  = new SettingsDesktopOrderItem("Фрагмент 3").setEnabled(true);
-                sb.append(itemOrder.toString());
-                sb.append(";");
-
-                String order = AppPreferences.getDesktopOrder(getContext(), "TestFragment", sb.toString());
-                controller.setDesktopOrder("TestFragment", order);
+                controller.setDesktopOrder(this);
             }
         }
     }
@@ -203,6 +212,5 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
             ShareUtil.share(shareData, AdminUtils.getActivity());
         }
     }
-
 }
 

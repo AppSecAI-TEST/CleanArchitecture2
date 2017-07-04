@@ -9,4 +9,10 @@ public interface IDesktopSubscriber extends ISubscriber {
      */
     String getDefaultDesktopOrder();
 
+    /**
+     * Получить имя порядка элементов рабочего стола по умолчанию
+     *
+     * @return имя порядка элементов рабочего стола
+     */
+    String getDesktopOrderName();
 }

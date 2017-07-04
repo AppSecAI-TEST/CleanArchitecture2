@@ -95,17 +95,19 @@ public class DesktopController implements IDesktopController, IModuleSubscriber 
     }
 
     @Override
-    public String getDesktopOrder(String name, String defaultOrder) {
+    public String getDesktopOrder(final IDesktopSubscriber subscriber) {
         final Context context = AdminUtils.getContext();
-        if (context != null) {
-            return AppPreferences.getDesktopOrder(context, name, defaultOrder);
+        if (context != null && subscriber != null) {
+            return AppPreferences.getDesktopOrder(context, subscriber.getDesktopOrderName(), subscriber.getDefaultDesktopOrder());
         }
-        return defaultOrder;
+        return subscriber.getDefaultDesktopOrder();
     }
 
     @Override
-    public void setDesktopOrder(String name, String defaultOrder) {
-        AdminUtils.postEvent(new ShowFragmentEvent(SettingsDesktopOrderFragment.newInstance(name, defaultOrder)));
+    public void setDesktopOrder(final IDesktopSubscriber subscriber) {
+        if (subscriber != null) {
+            AdminUtils.postEvent(new ShowFragmentEvent(SettingsDesktopOrderFragment.newInstance(subscriber.getDesktopOrderName(), subscriber.getDefaultDesktopOrder())));
+        }
     }
 
     @Override
