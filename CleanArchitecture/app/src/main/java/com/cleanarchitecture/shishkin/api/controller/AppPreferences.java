@@ -53,6 +53,26 @@ public class AppPreferences {
     }
 
     /**
+     * Получить порядок рабочего стола
+     *
+     * @param name рабочий стол
+     * @return порядок рабочего стола
+     */
+    public static String getDesktopOrder(final Context context, final String name, final String desktopOrder) {
+        return getString(context, name, desktopOrder);
+    }
+
+    /**
+     * Сохранить порядок рабочего стола
+     *
+     * @param name рабочий стол
+     * @param desktopOrder порядок рабочего стола
+     */
+    public static void setDesktopOrder(final Context context, final String name, final String desktopOrder) {
+        putString(context, name, desktopOrder);
+    }
+
+    /**
      * Получить последний день старта приложения
      *
      * @return последний день старта приложения

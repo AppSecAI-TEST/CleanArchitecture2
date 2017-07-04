@@ -165,7 +165,6 @@ public abstract class AbstractContentActivity extends AbstractActivity
      * key. The default implementation simply finishes the current activity,
      * but you can override this to do whatever you want.
      */
-    @Override
     public void onActivityBackPressed() {
         super.onBackPressed();
     }

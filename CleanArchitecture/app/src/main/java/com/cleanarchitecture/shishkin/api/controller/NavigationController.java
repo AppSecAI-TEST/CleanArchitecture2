@@ -2,7 +2,7 @@ package com.cleanarchitecture.shishkin.api.controller;
 
 import android.content.Context;
 
-import com.cleanarchitecture.shishkin.api.event.OnActivityBackPressedEvent;
+import com.cleanarchitecture.shishkin.api.event.OnBackPressedEvent;
 import com.cleanarchitecture.shishkin.api.event.ShowFragmentEvent;
 import com.cleanarchitecture.shishkin.api.event.StartActivityEvent;
 import com.cleanarchitecture.shishkin.api.event.SwitchToFragmentEvent;
@@ -140,10 +140,10 @@ public class NavigationController extends AbstractController<INavigationSubscrib
 
     @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onActivityBackPressedEvent(OnActivityBackPressedEvent event) {
+    public void onActivityBackPressedEvent(OnBackPressedEvent event) {
         final INavigationSubscriber subscriber = getCurrentSubscriber();
         if (subscriber != null) {
-            subscriber.onActivityBackPressed();
+            subscriber.onBackPressed();
         }
     }
 

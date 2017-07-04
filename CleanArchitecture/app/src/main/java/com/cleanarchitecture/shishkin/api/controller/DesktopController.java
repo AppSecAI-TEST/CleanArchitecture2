@@ -4,10 +4,12 @@ import android.content.Context;
 import android.os.Bundle;
 
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.api.event.ShowFragmentEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowListDialogEvent;
 import com.cleanarchitecture.shishkin.api.mail.RecreateMail;
 import com.cleanarchitecture.shishkin.api.ui.dialog.MaterialDialogExt;
+import com.cleanarchitecture.shishkin.api.ui.fragment.SettingsDesktopOrderFragment;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
@@ -23,6 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class DesktopController implements IDesktopController, IModuleSubscriber {
     public static final String NAME = DesktopController.class.getName();
+    public static final String SUBSCRIBER_TYPE = IDesktopSubscriber.class.getName();
 
     private String mDesktop = ""; // default desktop
     private Map<String, String> mDesktops = Collections.synchronizedMap(new ConcurrentHashMap<String, String>());
@@ -92,13 +95,27 @@ public class DesktopController implements IDesktopController, IModuleSubscriber 
     }
 
     @Override
+    public String getDesktopOrder(String name, String defaultOrder) {
+        final Context context = AdminUtils.getContext();
+        if (context != null) {
+            return AppPreferences.getDesktopOrder(context, name, defaultOrder);
+        }
+        return defaultOrder;
+    }
+
+    @Override
+    public void setDesktopOrder(String name, String defaultOrder) {
+        AdminUtils.postEvent(new ShowFragmentEvent(SettingsDesktopOrderFragment.newInstance(name, defaultOrder)));
+    }
+
+    @Override
     public String getName() {
         return NAME;
     }
 
     @Override
     public String getSubscriberType() {
-        return null;
+        return SUBSCRIBER_TYPE;
     }
 
     @Override

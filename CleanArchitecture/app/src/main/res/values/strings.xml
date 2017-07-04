@@ -50,4 +50,7 @@
     <string name="test_message">Тестовое сообщение</string>
     <string name="share_with">Отправить с помощью ...</string>
 
+    <string name="settings_order_title">Настройки отображения</string>
+    <string name="settings_display">Порядок отображения</string>
+
 </resources>
