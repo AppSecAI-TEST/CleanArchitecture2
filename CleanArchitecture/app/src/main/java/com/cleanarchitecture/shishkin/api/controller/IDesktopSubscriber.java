@@ -1,8 +1,12 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
-/**
- * Created by Shishkin on 04.07.2017.
- */
+public interface IDesktopSubscriber extends ISubscriber {
 
-public interface IDesktopSubscriber {
+    /**
+     * Получить порядок элементов рабочего стола по умолчанию
+     *
+     * @return порядок элементов рабочего стола
+     */
+    String getDefaultDesktopOrder();
+
 }

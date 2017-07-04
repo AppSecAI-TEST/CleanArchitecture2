@@ -41,7 +41,7 @@ public interface INavigationSubscriber extends ISubscriber {
     /**
      * Событие -  on back pressed.
      */
-    void onActivityBackPressed();
+    void onBackPressed();
 
     /**
      * Получить фрагмент

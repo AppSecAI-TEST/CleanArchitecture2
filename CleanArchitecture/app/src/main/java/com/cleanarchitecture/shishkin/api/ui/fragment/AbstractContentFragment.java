@@ -13,6 +13,7 @@ import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
+import com.cleanarchitecture.shishkin.api.event.OnBackPressedEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarInitEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarPrepareEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarResetEvent;
@@ -28,8 +29,7 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 public abstract class AbstractContentFragment extends AbstractFragment implements
-        IContentFragment,
-        IOnBackPressListener, IModuleSubscriber {
+        IContentFragment, IOnBackPressListener, IModuleSubscriber {
 
     private SwipeRefreshPresenter mSwipeRefreshPresenter = new SwipeRefreshPresenter();
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -103,7 +103,7 @@ public abstract class AbstractContentFragment extends AbstractFragment implement
             final int id = view.getId();
             switch (id) {
                 case R.id.back:
-                    onBackPressed();
+                    AdminUtils.postEvent(new OnBackPressedEvent());
                     break;
             }
         }

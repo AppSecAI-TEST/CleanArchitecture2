@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.api.controller.AppPreferences;
 import com.cleanarchitecture.shishkin.api.controller.DesktopController;
 import com.cleanarchitecture.shishkin.api.controller.IDesktopController;
 import com.cleanarchitecture.shishkin.api.controller.ILocationController;
@@ -28,6 +29,7 @@ import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetTitleEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseFinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.presenter.OnBackPressedPresenter;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
+import com.cleanarchitecture.shishkin.api.ui.item.SettingsDesktopOrderItem;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewIdleEvent;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewScrolledEvent;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
@@ -171,6 +173,25 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
             final IDesktopController controller = Admin.getInstance().get(DesktopController.NAME);
             if (controller != null) {
                 controller.getDesktop();
+            }
+        } else if (item.getItemId() == R.id.desktop_order) {
+            final IDesktopController controller = Admin.getInstance().get(DesktopController.NAME);
+            if (controller != null) {
+                final StringBuilder sb = new StringBuilder();
+                SettingsDesktopOrderItem itemOrder  = new SettingsDesktopOrderItem("Фрагмент 1").setEnabled(true);
+                sb.append(itemOrder.toString());
+                sb.append(";");
+
+                itemOrder  = new SettingsDesktopOrderItem("Фрагмент 2").setEnabled(true);
+                sb.append(itemOrder.toString());
+                sb.append(";");
+
+                itemOrder  = new SettingsDesktopOrderItem("Фрагмент 3").setEnabled(true);
+                sb.append(itemOrder.toString());
+                sb.append(";");
+
+                String order = AppPreferences.getDesktopOrder(getContext(), "TestFragment", sb.toString());
+                controller.setDesktopOrder("TestFragment", order);
             }
         }
     }

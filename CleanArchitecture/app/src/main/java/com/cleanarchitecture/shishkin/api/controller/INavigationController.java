@@ -1,6 +1,6 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
-import com.cleanarchitecture.shishkin.api.event.OnActivityBackPressedEvent;
+import com.cleanarchitecture.shishkin.api.event.OnBackPressedEvent;
 import com.cleanarchitecture.shishkin.api.event.ShowFragmentEvent;
 import com.cleanarchitecture.shishkin.api.event.StartActivityEvent;
 import com.cleanarchitecture.shishkin.api.event.SwitchToFragmentEvent;
@@ -51,7 +51,7 @@ public interface INavigationController extends IController<INavigationSubscriber
      *
      * @param event событие
      */
-    void onActivityBackPressedEvent(OnActivityBackPressedEvent event);
+    void onActivityBackPressedEvent(OnBackPressedEvent event);
 
     /**
      * Получить AbstractActivity
