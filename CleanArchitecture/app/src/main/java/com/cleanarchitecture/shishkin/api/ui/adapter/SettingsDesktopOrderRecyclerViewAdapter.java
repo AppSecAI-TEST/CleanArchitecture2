@@ -15,7 +15,11 @@ import com.cleanarchitecture.shishkin.api.controller.AppPreferences;
 import com.cleanarchitecture.shishkin.api.ui.item.SettingsDesktopOrderItem;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.AbstractRecyclerViewAdapter;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.AbstractViewHolder;
+import com.cleanarchitecture.shishkin.common.utils.SerializableUtil;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class SettingsDesktopOrderRecyclerViewAdapter extends AbstractRecyclerViewAdapter<SettingsDesktopOrderItem, SettingsDesktopOrderRecyclerViewAdapter.ViewHolder> {
 
@@ -39,12 +43,11 @@ public class SettingsDesktopOrderRecyclerViewAdapter extends AbstractRecyclerVie
     public void save() {
         final Context context = AdminUtils.getContext();
         if (context != null) {
-            final StringBuilder sb = new StringBuilder();
+            final List<SettingsDesktopOrderItem> items = new LinkedList<>();
             for (int i = 0; i < getItemCount(); i++) {
-                sb.append(getItem(i).toString());
-                sb.append(";");
+                items.add(getItem(i));
             }
-            AppPreferences.setDesktopOrder(context, mOrderName, sb.toString());
+            AppPreferences.setDesktopOrder(context, mOrderName, (String) SerializableUtil.toJson(items));
         }
     }
 
