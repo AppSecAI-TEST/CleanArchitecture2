@@ -54,15 +54,15 @@ public interface IDesktopController extends IModule {
     /**
      * Получить порядок элементов рабочего стола
      *
-     * @param name имя подписчика
+     * @param subscriber подписчик
      * @return порядок элементов рабочего стола
      */
-    String getDesktopOrder(String name, String defaultOrder);
+    String getDesktopOrder(IDesktopSubscriber subscriber);
 
     /**
      * Установить порядок элементов рабочего стола
      *
-     * @param name имя подписчика
+     * @param subscriber подписчик
      */
-    void setDesktopOrder(String name, String defaultOrder);
+    void setDesktopOrder(IDesktopSubscriber subscriber);
 }

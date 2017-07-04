@@ -65,7 +65,7 @@ public class AppPreferences {
     /**
      * Сохранить порядок рабочего стола
      *
-     * @param name рабочий стол
+     * @param name         рабочий стол
      * @param desktopOrder порядок рабочего стола
      */
     public static void setDesktopOrder(final Context context, final String name, final String desktopOrder) {
