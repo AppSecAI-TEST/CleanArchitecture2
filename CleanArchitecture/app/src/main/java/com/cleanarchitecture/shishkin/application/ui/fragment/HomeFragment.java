@@ -36,12 +36,15 @@ import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.application.presenter.FloatingActionMenuPresenter;
 import com.cleanarchitecture.shishkin.application.presenter.PhoneContactPresenter;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
+import com.cleanarchitecture.shishkin.common.utils.SerializableUtil;
 import com.cleanarchitecture.shishkin.common.utils.ShareUtil;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 
+import org.apache.commons.lang3.SerializationUtils;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -151,19 +154,11 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
 
     @Override
     public String getDefaultDesktopOrder() {
-        final StringBuilder sb = new StringBuilder();
-        SettingsDesktopOrderItem itemOrder = new SettingsDesktopOrderItem("Фрагмент 1").setEnabled(true);
-        sb.append(itemOrder.toString());
-        sb.append(";");
-
-        itemOrder = new SettingsDesktopOrderItem("Фрагмент 2").setEnabled(true);
-        sb.append(itemOrder.toString());
-        sb.append(";");
-
-        itemOrder = new SettingsDesktopOrderItem("Фрагмент 3").setEnabled(true);
-        sb.append(itemOrder.toString());
-        sb.append(";");
-        return sb.toString();
+        final List<SettingsDesktopOrderItem> items = new LinkedList<>();
+        items.add(new SettingsDesktopOrderItem("Фрагмент 1").setEnabled(true));
+        items.add(new SettingsDesktopOrderItem("Фрагмент 2").setEnabled(true));
+        items.add(new SettingsDesktopOrderItem("Фрагмент 3").setEnabled(true));
+        return (String)SerializableUtil.toJson(SerializableUtil.toSerializable(items));
     }
 
     @Override
