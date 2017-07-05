@@ -28,6 +28,7 @@ import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetMenuEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetStatePopupMenuItemEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetTitleEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseFinishApplicationEvent;
+import com.cleanarchitecture.shishkin.api.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.api.presenter.OnBackPressedPresenter;
 import com.cleanarchitecture.shishkin.api.presenter.ToolbarPresenter;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
@@ -77,6 +78,11 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
     @Override
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        final IPresenter presenter = AdminUtils.getPresenter(FloatingActionMenuPresenter.NAME);
+        if (presenter != null) {
+            ((FloatingActionMenuPresenter)presenter).setVisible(true);
+        }
 
         registerPresenter(mOnBackPressedPresenter);
 
