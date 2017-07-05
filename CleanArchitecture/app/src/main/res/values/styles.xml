@@ -111,7 +111,7 @@
     <style name="PopupMenu" parent="Widget.AppCompat.ListView.DropDown">
         <item name="android:divider">@color/divider_color</item>
         <item name="android:dividerHeight">1dp</item>
-        <item name="android:textColor">@color/gray_dark</item>
+        <item name="android:textColor">@color/popup_menu_item_selector</item>
         <item name="android:textSize">@dimen/text_size_large</item>
         <item name="android:itemBackground">@color/white</item>
     </style>
@@ -119,7 +119,7 @@
     <style name="PopupMenu_dark" parent="Widget.AppCompat.ListView.DropDown">
         <item name="android:divider">@color/divider_color</item>
         <item name="android:dividerHeight">1dp</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/popup_menu_item_selector_dark</item>
         <item name="android:textSize">@dimen/text_size_large</item>
         <item name="android:itemBackground">@color/gray_text</item>
     </style>

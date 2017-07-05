@@ -6,6 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.PopupMenu;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -30,6 +31,7 @@ import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBackNavigation
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBackgroundEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetItemEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetMenuEvent;
+import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetStatePopupMenuItemEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetTitleEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarShowProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.HideHorizontalProgressBarEvent;
@@ -40,6 +42,7 @@ import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.common.net.Connectivity;
 import com.cleanarchitecture.shishkin.common.ui.widget.AutoResizeTextView;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
+import com.cleanarchitecture.shishkin.common.utils.IntentUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -49,13 +52,19 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 @SuppressWarnings("unused")
 public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolbarPresenter {
     public static final String NAME = ToolbarPresenter.class.getName();
+    public static final Integer POPOP_MENU_ITEM_STATE_ENABLED = 0;
+    public static final Integer POPOP_MENU_ITEM_STATE_DISABLED = 1;
+    public static final Integer POPOP_MENU_ITEM_STATE_REMOVED = 2;
     private static final String LOG_TAG = "ToolbarPresenter";
 
     private WeakReference<View> mToolbarLL;
@@ -72,6 +81,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     private int mMenuId = 0;
     private boolean mBackNavigation = false;
     private boolean mShow = true;
+    private Map<Integer, Integer> mStateMenuItems = Collections.synchronizedMap(new ConcurrentHashMap<Integer, Integer>());
 
     public void bindView(final View root) {
 
@@ -215,6 +225,19 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
                 mPopupMenu.inflate(mMenuId);
                 mPopupMenu.setOnMenuItemClickListener(this::onMenuItemClick);
                 mPopupMenu.setOnDismissListener(this::onDismiss);
+                if (!mStateMenuItems.isEmpty()) {
+                    final Menu menu = mPopupMenu.getMenu();
+                    for (Map.Entry<Integer, Integer> entry : mStateMenuItems.entrySet()) {
+                        final MenuItem item = menu.findItem(entry.getKey());
+                        if (item != null) {
+                            if (entry.getValue() == POPOP_MENU_ITEM_STATE_DISABLED) {
+                                item.setEnabled(false);
+                            } else if (entry.getValue() == POPOP_MENU_ITEM_STATE_REMOVED) {
+                                menu.removeItem(entry.getKey());
+                            }
+                        }
+                    }
+                }
                 mPopupMenu.show();
             } catch (Exception e) {
                 ErrorController.getInstance().onError(LOG_TAG, e);
@@ -277,6 +300,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     }
 
     private void resetToolbarTask() {
+        mStateMenuItems.clear();
         setShow(true);
         setHome(0, false);
         setTitle(0, null);
@@ -520,4 +544,9 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         onNetworkDisconnected();
     }
 
+
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onToolbarSetStatePopupMenuItemEvent(ToolbarSetStatePopupMenuItemEvent event) {
+        mStateMenuItems.put(event.getMenuItemId(), event.getState());
+    }
 }
