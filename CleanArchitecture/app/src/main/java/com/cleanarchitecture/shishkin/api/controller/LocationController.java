@@ -46,10 +46,7 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
         mLocationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
-                final List<Location> list = locationResult.getLocations();
-                if (!list.isEmpty()) {
-                    setLocation(list.get(list.size() - 1));
-                }
+                setLocation(locationResult.getLastLocation());
             }
         };
 
