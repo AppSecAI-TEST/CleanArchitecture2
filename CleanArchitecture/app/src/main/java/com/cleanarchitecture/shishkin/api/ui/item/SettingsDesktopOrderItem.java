@@ -8,9 +8,12 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 public class SettingsDesktopOrderItem implements IIdentify<String>, Parcelable {
+
+    // Название элемента, отображающееся на экране
     @SerializedName("Id")
     private String mId;
 
+    // Состояние переключателя элемента
     @SerializedName("Enabled")
     private boolean mEnabled;
 

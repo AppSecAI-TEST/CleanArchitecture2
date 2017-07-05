@@ -15,6 +15,7 @@ import com.cleanarchitecture.shishkin.api.ui.adapter.SettingsDesktopOrderRecycle
 import com.cleanarchitecture.shishkin.api.ui.fragment.SettingsDesktopOrderFragment;
 import com.cleanarchitecture.shishkin.api.ui.item.SettingsDesktopOrderItem;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.MoveTouchHelper;
+import com.cleanarchitecture.shishkin.application.data.viewmodel.PhoneContactViewModel;
 import com.cleanarchitecture.shishkin.common.utils.SerializableUtil;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
@@ -29,6 +30,7 @@ public class SettingsDesktopOrderPresenter extends AbstractPresenter<Void> {
     public static final String LOG_TAG = "SettingsDesktopOrderPresenter:";
 
     private SettingsDesktopOrderRecyclerViewAdapter mSettingsAdapter;
+    private RecyclerView mRecyclerView;
     private Bundle mArgs;
 
     public void bindView(final View root, final Bundle args) {
@@ -39,16 +41,16 @@ public class SettingsDesktopOrderPresenter extends AbstractPresenter<Void> {
 
         mArgs = args;
 
-        final RecyclerView recyclerView = ViewUtils.findView(root, R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView = ViewUtils.findView(root, R.id.recycler_view);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mSettingsAdapter = new SettingsDesktopOrderRecyclerViewAdapter(root.getContext(), mArgs.getString(SettingsDesktopOrderFragment.ORDER_NAME));
         mSettingsAdapter.addAll(getItems());
-        recyclerView.setAdapter(mSettingsAdapter);
+        mRecyclerView.setAdapter(mSettingsAdapter);
 
         final ItemTouchHelper.Callback callback = new MoveTouchHelper(mSettingsAdapter);
         final ItemTouchHelper helper = new ItemTouchHelper(callback);
-        helper.attachToRecyclerView(recyclerView);
+        helper.attachToRecyclerView(mRecyclerView);
     }
 
     private List<SettingsDesktopOrderItem> getItems() {
@@ -70,6 +72,13 @@ public class SettingsDesktopOrderPresenter extends AbstractPresenter<Void> {
             }
         }
         return list;
+    }
+
+    @Override
+    public void onDestroyLifecycle() {
+        super.onDestroyLifecycle();
+
+        mRecyclerView.setAdapter(null);
     }
 
     public void save() {
