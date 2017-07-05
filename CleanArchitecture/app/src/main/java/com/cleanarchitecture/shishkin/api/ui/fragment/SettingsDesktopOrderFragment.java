@@ -45,7 +45,7 @@ public class SettingsDesktopOrderFragment extends AbstractContentFragment {
 
         final IPresenter presenter = AdminUtils.getPresenter(FloatingActionMenuPresenter.NAME);
         if (presenter != null) {
-            ((FloatingActionMenuPresenter)presenter).setVisible(false);
+            ((FloatingActionMenuPresenter) presenter).setVisible(false);
         }
     }
 

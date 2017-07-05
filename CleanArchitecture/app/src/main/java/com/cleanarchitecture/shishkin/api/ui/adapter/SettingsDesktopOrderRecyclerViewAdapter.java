@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.AppPreferences;
-import com.cleanarchitecture.shishkin.api.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.api.ui.item.SettingsDesktopOrderItem;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.AbstractRecyclerViewAdapter;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.AbstractViewHolder;

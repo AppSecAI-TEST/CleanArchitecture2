@@ -15,11 +15,8 @@ import com.cleanarchitecture.shishkin.api.ui.adapter.SettingsDesktopOrderRecycle
 import com.cleanarchitecture.shishkin.api.ui.fragment.SettingsDesktopOrderFragment;
 import com.cleanarchitecture.shishkin.api.ui.item.SettingsDesktopOrderItem;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.MoveTouchHelper;
-import com.cleanarchitecture.shishkin.application.data.viewmodel.PhoneContactViewModel;
 import com.cleanarchitecture.shishkin.common.utils.SerializableUtil;
-import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
-import com.google.gson.Gson;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -54,7 +51,8 @@ public class SettingsDesktopOrderPresenter extends AbstractPresenter<Void> {
     }
 
     private List<SettingsDesktopOrderItem> getItems() {
-        final Type type = new com.google.gson.reflect.TypeToken<List<SettingsDesktopOrderItem>>() {}.getType();
+        final Type type = new com.google.gson.reflect.TypeToken<List<SettingsDesktopOrderItem>>() {
+        }.getType();
         final List<SettingsDesktopOrderItem> list = new ArrayList<>();
 
         final String order = AppPreferences.getDesktopOrder(AdminUtils.getContext(), mArgs.getString(SettingsDesktopOrderFragment.ORDER_NAME), mArgs.getString(SettingsDesktopOrderFragment.ORDER));
