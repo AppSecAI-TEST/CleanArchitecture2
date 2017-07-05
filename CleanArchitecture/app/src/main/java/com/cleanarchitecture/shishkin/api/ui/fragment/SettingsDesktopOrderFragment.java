@@ -31,7 +31,7 @@ public class SettingsDesktopOrderFragment extends AbstractContentFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        return inflater.inflate(AdminUtils.getLayoutId("fragment_settings", R.layout.fragment_settings), container, false);
     }
 
     @Override

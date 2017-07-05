@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white_light">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/black">
 
     <LinearLayout
         android:id="@+id/settings_ll"
@@ -21,17 +21,18 @@
             android:paddingRight="@dimen/padding_12dp"
             android:text="@string/settings_display"
             android:textColor="@color/text_dark"
-            android:textSize="@dimen/text_size_large" />
+            android:textSize="@dimen/text_size_large"/>
+
         <View
-            style="@style/HorizontalDivider" />
+            style="@style/HorizontalDivider"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
-            android:background="@color/white"
+            android:background="@color/gray_dark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <View style="@style/HorizontalDividerBlue2dp" />
+        <View style="@style/HorizontalDividerBlue2dp"/>
     </LinearLayout>
 
 </RelativeLayout>
