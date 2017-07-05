@@ -83,6 +83,9 @@ dependencies {
     // кэширование на диске
     compile 'io.paperdb:paperdb:2.1'
 
+    //image cache
+    compile 'com.jakewharton:disklrucache:2.0.2'
+
     // Кэш памяти и доп функции
     compile 'com.google.guava:guava:22.0-android'
 

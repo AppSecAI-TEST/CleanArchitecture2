@@ -10,6 +10,7 @@ import com.cleanarchitecture.shishkin.api.controller.AppPreferences;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.api.event.CheckDiskCacheEvent;
+import com.cleanarchitecture.shishkin.api.event.PutImageToCacheEvent;
 import com.cleanarchitecture.shishkin.api.event.database.DbCreatedEvent;
 import com.cleanarchitecture.shishkin.api.event.database.DbUpdatedEvent;
 import com.cleanarchitecture.shishkin.api.mail.ShowToastMail;
@@ -192,4 +193,10 @@ public class Repository extends AbstractModule implements IRepository, IModuleSu
         RepositoryContentProvider.requestContacts(event);
     }
 
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onPutImageToCacheEvent(final PutImageToCacheEvent event) {
+        //final Bitmap bitmap = BitmapFactory.decodeResource(AdminUtils.getContext().getResources(), R.drawable.background_splash);
+        //ImageCache.getInstance().put("background_splash", bitmap);
+        //final Bitmap bitmap1 = ImageCache.getInstance().get("background_splash");
+    }
 }
