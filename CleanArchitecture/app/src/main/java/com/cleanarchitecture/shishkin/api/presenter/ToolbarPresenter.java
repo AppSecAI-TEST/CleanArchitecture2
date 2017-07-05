@@ -42,7 +42,6 @@ import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.common.net.Connectivity;
 import com.cleanarchitecture.shishkin.common.ui.widget.AutoResizeTextView;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
-import com.cleanarchitecture.shishkin.common.utils.IntentUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 import com.wang.avi.AVLoadingIndicatorView;

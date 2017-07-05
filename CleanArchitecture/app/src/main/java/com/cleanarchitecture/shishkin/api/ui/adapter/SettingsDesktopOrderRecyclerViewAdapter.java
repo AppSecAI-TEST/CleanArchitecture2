@@ -36,7 +36,7 @@ public class SettingsDesktopOrderRecyclerViewAdapter extends AbstractRecyclerVie
     @NonNull
     @Override
     public SettingsDesktopOrderRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent, int viewType) {
-        final View view = inflater.inflate(R.layout.setting_item_layout, parent, false);
+        final View view = inflater.inflate(AdminUtils.getLayoutId("setting_item_layout", R.layout.setting_item_layout), parent, false);
         return new SettingsDesktopOrderRecyclerViewAdapter.ViewHolder(view);
     }
 

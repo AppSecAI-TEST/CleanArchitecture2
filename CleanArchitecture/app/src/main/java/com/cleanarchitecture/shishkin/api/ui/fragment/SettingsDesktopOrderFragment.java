@@ -10,7 +10,9 @@ import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBackNavigationEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetTitleEvent;
+import com.cleanarchitecture.shishkin.api.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.api.presenter.SettingsDesktopOrderPresenter;
+import com.cleanarchitecture.shishkin.application.presenter.FloatingActionMenuPresenter;
 
 public class SettingsDesktopOrderFragment extends AbstractContentFragment {
 
@@ -31,7 +33,7 @@ public class SettingsDesktopOrderFragment extends AbstractContentFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        return inflater.inflate(AdminUtils.getLayoutId("fragment_settings", R.layout.fragment_settings), container, false);
     }
 
     @Override
@@ -40,6 +42,11 @@ public class SettingsDesktopOrderFragment extends AbstractContentFragment {
 
         mSettingsDesktopOrderPresenter.bindView(view, getArguments());
         registerPresenter(mSettingsDesktopOrderPresenter);
+
+        final IPresenter presenter = AdminUtils.getPresenter(FloatingActionMenuPresenter.NAME);
+        if (presenter != null) {
+            ((FloatingActionMenuPresenter) presenter).setVisible(false);
+        }
     }
 
 

@@ -25,11 +25,10 @@ import com.cleanarchitecture.shishkin.api.event.toolbar.OnToolbarMenuItemClickEv
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBackNavigationEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetItemEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetMenuEvent;
-import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetStatePopupMenuItemEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetTitleEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseFinishApplicationEvent;
+import com.cleanarchitecture.shishkin.api.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.api.presenter.OnBackPressedPresenter;
-import com.cleanarchitecture.shishkin.api.presenter.ToolbarPresenter;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.api.ui.item.SettingsDesktopOrderItem;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewIdleEvent;
@@ -42,7 +41,6 @@ import com.cleanarchitecture.shishkin.common.utils.SerializableUtil;
 import com.cleanarchitecture.shishkin.common.utils.ShareUtil;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 
-import org.apache.commons.lang3.SerializationUtils;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -77,6 +75,11 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
     @Override
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        final IPresenter presenter = AdminUtils.getPresenter(FloatingActionMenuPresenter.NAME);
+        if (presenter != null) {
+            ((FloatingActionMenuPresenter) presenter).setVisible(true);
+        }
 
         registerPresenter(mOnBackPressedPresenter);
 
@@ -161,7 +164,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
         items.add(new SettingsDesktopOrderItem("Фрагмент 1").setEnabled(true));
         items.add(new SettingsDesktopOrderItem("Фрагмент 2").setEnabled(true));
         items.add(new SettingsDesktopOrderItem("Фрагмент 3").setEnabled(true));
-        return (String)SerializableUtil.toJson(SerializableUtil.toSerializable(items));
+        return (String) SerializableUtil.toJson(SerializableUtil.toSerializable(items));
     }
 
     @Override

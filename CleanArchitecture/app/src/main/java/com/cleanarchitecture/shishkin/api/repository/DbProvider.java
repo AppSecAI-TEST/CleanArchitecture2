@@ -1,11 +1,8 @@
 package com.cleanarchitecture.shishkin.api.repository;
 
-import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleActivity;
-import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LifecycleRegistry;
 import android.arch.lifecycle.ViewModelProviders;
-import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 

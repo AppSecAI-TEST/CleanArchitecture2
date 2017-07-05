@@ -42,4 +42,21 @@ public class FloatingActionMenuPresenter extends AbstractPresenter {
     public String getName() {
         return NAME;
     }
+
+    @Override
+    public boolean validate() {
+        return (super.validate()
+                && mFloatingActionMenu != null
+        );
+    }
+
+    public void setVisible(boolean isVisible) {
+        if (validate()) {
+            if (isVisible) {
+                mFloatingActionMenu.setVisibility(View.VISIBLE);
+            } else {
+                mFloatingActionMenu.setVisibility(View.INVISIBLE);
+            }
+        }
+    }
 }
