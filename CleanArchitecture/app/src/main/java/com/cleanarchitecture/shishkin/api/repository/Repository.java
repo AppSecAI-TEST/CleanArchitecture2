@@ -10,7 +10,6 @@ import com.cleanarchitecture.shishkin.api.controller.AppPreferences;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.api.event.CheckDiskCacheEvent;
-import com.cleanarchitecture.shishkin.api.event.PutImageToCacheEvent;
 import com.cleanarchitecture.shishkin.api.event.database.DbCreatedEvent;
 import com.cleanarchitecture.shishkin.api.event.database.DbUpdatedEvent;
 import com.cleanarchitecture.shishkin.api.mail.ShowToastMail;
@@ -30,6 +29,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -159,11 +159,14 @@ public class Repository extends AbstractModule implements IRepository, IModuleSu
             return;
         }
 
-        // раз в сутки проверяем дисковый кэш
+        // раз в месяц чистим дисковый кэш
         final SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-        final int currentDay = StringUtils.toInt(formatter.format(new Date()));
+        int currentDay = StringUtils.toInt(formatter.format(new Date()));
         final int day = StringUtils.toInt(AppPreferences.getLastDayStart(context));
         if (currentDay > day) {
+            final GregorianCalendar calsendar = new GregorianCalendar();
+            calsendar.add(GregorianCalendar.MONTH, 1);
+            currentDay = StringUtils.toInt(formatter.format(calsendar.getTime()));
             AppPreferences.setLastDayStart(context, String.valueOf(currentDay));
             final IExpiredStorage diskCache = Admin.getInstance().get(DiskCache.NAME);
             if (diskCache != null) {
@@ -191,12 +194,5 @@ public class Repository extends AbstractModule implements IRepository, IModuleSu
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onRepositoryRequestGetContactsEvent(final RepositoryRequestGetContactsEvent event) {
         RepositoryContentProvider.requestContacts(event);
-    }
-
-    @Subscribe(threadMode = ThreadMode.ASYNC)
-    public void onPutImageToCacheEvent(final PutImageToCacheEvent event) {
-        //final Bitmap bitmap = BitmapFactory.decodeResource(AdminUtils.getContext().getResources(), R.drawable.background_splash);
-        //ImageCache.getInstance().put("background_splash", bitmap);
-        //final Bitmap bitmap1 = ImageCache.getInstance().get("background_splash");
     }
 }
