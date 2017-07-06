@@ -541,6 +541,9 @@ public class AdminUtils {
             case ErrorController.ERROR_ACTIVITY_NOT_VALID:
                 return context.getString(R.string.error_activity_not_valid);
 
+            case ErrorController.ERROR_GEOCODER_NOT_FOUND:
+                return context.getString(R.string.error_geocoder_not_found);
+
             default:
                 return context.getString(R.string.error_application);
 
