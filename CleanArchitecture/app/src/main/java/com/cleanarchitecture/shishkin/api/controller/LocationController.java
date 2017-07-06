@@ -7,10 +7,13 @@ import android.location.Geocoder;
 import android.location.Location;
 
 import com.cleanarchitecture.shishkin.api.event.FinishApplicationEvent;
+import com.cleanarchitecture.shishkin.api.event.OnNetworkConnectedEvent;
+import com.cleanarchitecture.shishkin.api.event.OnNetworkDisconnectedEvent;
 import com.cleanarchitecture.shishkin.api.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.api.event.OnScreenOffEvent;
 import com.cleanarchitecture.shishkin.api.event.OnScreenOnEvent;
 import com.cleanarchitecture.shishkin.api.mail.LocationMail;
+import com.cleanarchitecture.shishkin.common.net.Connectivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -81,6 +84,10 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
 
         final Context context = AdminUtils.getContext();
         if (context == null) {
+            return;
+        }
+
+        if (!Connectivity.isNetworkConnected(context)) {
             return;
         }
 
@@ -167,20 +174,25 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
         }
 
         final List<Address> list = new ArrayList<>();
+
+        final Context context = AdminUtils.getContext();
+        if (context == null) {
+            return list;
+        }
+
         if (AdminUtils.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
-            if (mGeocoder != null && mFusedLocationClient != null) {
-                if (mGeocoder.isPresent()) {
-                    try {
-                        list.addAll(mGeocoder.getFromLocation(
-                                location.getLatitude(),
-                                location.getLongitude(),
-                                countAddress));
-                    } catch (Exception e) {
-                        ErrorController.getInstance().onError(LOG_TAG, e);
-                        ErrorController.getInstance().onError(LOG_TAG, ErrorController.ERROR_GEOCODER_NOT_FOUND, true);
+            if (Connectivity.isNetworkConnected(context)) {
+                if (mGeocoder != null && mFusedLocationClient != null) {
+                    if (mGeocoder.isPresent()) {
+                        try {
+                            list.addAll(mGeocoder.getFromLocation(
+                                    location.getLatitude(),
+                                    location.getLongitude(),
+                                    countAddress));
+                        } catch (Exception e) {
+                            ErrorController.getInstance().onError(LOG_TAG, ErrorController.ERROR_GEOCODER_NOT_FOUND, true);
+                        }
                     }
-                } else {
-                    ErrorController.getInstance().onError(LOG_TAG, ErrorController.ERROR_GEOCODER_NOT_FOUND, true);
                 }
             }
         }
@@ -207,5 +219,15 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onScreenOnEvent(final OnScreenOnEvent event) {
         startLocation();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNetworkConnectedEvent(final OnNetworkConnectedEvent event) {
+        startLocation();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNetworkDisconnectedEvent(final OnNetworkDisconnectedEvent event) {
+        stopLocation(true);
     }
 }
