@@ -24,9 +24,9 @@ import com.cleanarchitecture.shishkin.api.repository.INetProvider;
 import com.cleanarchitecture.shishkin.api.repository.IRepository;
 import com.cleanarchitecture.shishkin.api.repository.NetProvider;
 import com.cleanarchitecture.shishkin.api.repository.Repository;
-import com.cleanarchitecture.shishkin.api.storage.DiskCache;
 import com.cleanarchitecture.shishkin.api.storage.IStorage;
 import com.cleanarchitecture.shishkin.api.storage.MemoryCache;
+import com.cleanarchitecture.shishkin.api.storage.SerializableDiskCache;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractActivity;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractContentActivity;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
@@ -490,13 +490,13 @@ public class AdminUtils {
      * Получить кэш диска
      */
     public static IStorage getDiskCache() {
-        final IStorage cache = Admin.getInstance().get(DiskCache.NAME);
+        final IStorage cache = Admin.getInstance().get(SerializableDiskCache.NAME);
         if (cache != null) {
             return cache;
         } else {
             final Context context = getContext();
             if (context != null) {
-                return DiskCache.getInstance(context);
+                return SerializableDiskCache.getInstance(context);
             }
         }
         return null;

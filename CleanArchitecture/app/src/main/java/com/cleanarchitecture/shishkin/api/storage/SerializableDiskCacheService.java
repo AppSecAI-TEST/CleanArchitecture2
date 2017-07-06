@@ -14,21 +14,21 @@ import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("unused")
-public class DiskCacheService extends LiveLongBackgroundIntentService {
+public class SerializableDiskCacheService extends LiveLongBackgroundIntentService {
 
-    private static final String NAME = DiskCacheService.class.getName();
+    private static final String NAME = SerializableDiskCacheService.class.getName();
 
     private static final String EXTRA_SERIALIZABLE = "EXTRA_SERIALIZABLE";
     private static final String EXTRA_EXPIRED = "EXTRA_EXPIRED";
-    private static final String ACTION_PUT = BuildConfig.APPLICATION_ID + ".DiskCacheService.PUT";
-    private static final String ACTION_PUT_EXPIRED = BuildConfig.APPLICATION_ID + ".DiskCacheService.PUT_EXPIRED";
-    private static final String ACTION_CLEAR = BuildConfig.APPLICATION_ID + ".DiskCacheService.CLEAR";
-    private static final String ACTION_CLEAR_ALL = BuildConfig.APPLICATION_ID + ".DiskCacheService.CLEAR_ALL";
+    private static final String ACTION_PUT = BuildConfig.APPLICATION_ID + ".SerializableDiskCacheService.PUT";
+    private static final String ACTION_PUT_EXPIRED = BuildConfig.APPLICATION_ID + ".SerializableDiskCacheService.PUT_EXPIRED";
+    private static final String ACTION_CLEAR = BuildConfig.APPLICATION_ID + ".SerializableDiskCacheService.CLEAR";
+    private static final String ACTION_CLEAR_ALL = BuildConfig.APPLICATION_ID + ".SerializableDiskCacheService.CLEAR_ALL";
 
     private static final TimeUnit TIMEUNIT = TimeUnit.MINUTES;
     private static final long TIMEUNIT_DURATION = 5L;
 
-    public DiskCacheService() {
+    public SerializableDiskCacheService() {
         super(NAME);
     }
 
@@ -41,7 +41,7 @@ public class DiskCacheService extends LiveLongBackgroundIntentService {
 
     public static synchronized void put(final Context context, final String key, final Serializable object) {
         if (context != null && !StringUtils.isNullOrEmpty(key) && object != null) {
-            final Intent intent = IntentUtils.createActionIntent(context, DiskCacheService.class,
+            final Intent intent = IntentUtils.createActionIntent(context, SerializableDiskCacheService.class,
                     ACTION_PUT);
             intent.putExtra(Intent.EXTRA_TEXT, key);
             intent.putExtra(EXTRA_SERIALIZABLE, object);
@@ -51,7 +51,7 @@ public class DiskCacheService extends LiveLongBackgroundIntentService {
 
     public static synchronized void put(final Context context, final String key, final Serializable object, final long expired) {
         if (context != null && !StringUtils.isNullOrEmpty(key) && object != null) {
-            final Intent intent = IntentUtils.createActionIntent(context, DiskCacheService.class,
+            final Intent intent = IntentUtils.createActionIntent(context, SerializableDiskCacheService.class,
                     ACTION_PUT_EXPIRED);
             intent.putExtra(Intent.EXTRA_TEXT, key);
             intent.putExtra(EXTRA_SERIALIZABLE, object);
@@ -62,7 +62,7 @@ public class DiskCacheService extends LiveLongBackgroundIntentService {
 
     public static synchronized void clear(final Context context, final String key) {
         if (context != null && !StringUtils.isNullOrEmpty(key)) {
-            final Intent intent = IntentUtils.createActionIntent(context, DiskCacheService.class,
+            final Intent intent = IntentUtils.createActionIntent(context, SerializableDiskCacheService.class,
                     ACTION_CLEAR);
             intent.putExtra(Intent.EXTRA_TEXT, key);
             context.startService(intent);
@@ -71,7 +71,7 @@ public class DiskCacheService extends LiveLongBackgroundIntentService {
 
     public static synchronized void clearAll(final Context context) {
         if (context != null) {
-            final Intent intent = IntentUtils.createActionIntent(context, DiskCacheService.class,
+            final Intent intent = IntentUtils.createActionIntent(context, SerializableDiskCacheService.class,
                     ACTION_CLEAR_ALL);
             context.startService(intent);
         }
@@ -107,7 +107,7 @@ public class DiskCacheService extends LiveLongBackgroundIntentService {
 
     @WorkerThread
     private void onHandlePutAction(final String key, final Serializable object) {
-        final IExpiredStorage diskCache = Admin.getInstance().get(DiskCache.NAME);
+        final IExpiredStorage diskCache = Admin.getInstance().get(SerializableDiskCache.NAME);
         if (diskCache != null) {
             diskCache.put(key, object);
         }
@@ -115,7 +115,7 @@ public class DiskCacheService extends LiveLongBackgroundIntentService {
 
     @WorkerThread
     private void onHandlePutAction(final String key, final Serializable object, final long expired) {
-        final IExpiredStorage diskCache = Admin.getInstance().get(DiskCache.NAME);
+        final IExpiredStorage diskCache = Admin.getInstance().get(SerializableDiskCache.NAME);
         if (diskCache != null) {
             diskCache.put(key, object, expired);
         }
@@ -123,7 +123,7 @@ public class DiskCacheService extends LiveLongBackgroundIntentService {
 
     @WorkerThread
     private void onHandleClearAction(final String key) {
-        final IExpiredStorage diskCache = Admin.getInstance().get(DiskCache.NAME);
+        final IExpiredStorage diskCache = Admin.getInstance().get(SerializableDiskCache.NAME);
         if (diskCache != null) {
             diskCache.clear(key);
         }
@@ -131,7 +131,7 @@ public class DiskCacheService extends LiveLongBackgroundIntentService {
 
     @WorkerThread
     private void onHandleClearAllAction() {
-        final IExpiredStorage diskCache = Admin.getInstance().get(DiskCache.NAME);
+        final IExpiredStorage diskCache = Admin.getInstance().get(SerializableDiskCache.NAME);
         if (diskCache != null) {
             diskCache.clearAll();
         }

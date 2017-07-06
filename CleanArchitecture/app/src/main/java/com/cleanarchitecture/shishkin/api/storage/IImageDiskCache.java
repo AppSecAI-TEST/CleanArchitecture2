@@ -2,7 +2,7 @@ package com.cleanarchitecture.shishkin.api.storage;
 
 import android.graphics.Bitmap;
 
-public interface IImageCache {
+public interface IImageDiskCache {
 
     void put(String key, Bitmap bitmap);
 
@@ -15,6 +15,10 @@ public interface IImageCache {
     void clear();
 
     void setVersion(int version);
+
+    void flush();
+
+    void close();
 
 }
 
