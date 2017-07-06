@@ -4,7 +4,7 @@ import com.cleanarchitecture.shishkin.api.controller.ISubscriber;
 
 import java.io.Serializable;
 
-public interface IStorage extends ISubscriber {
+public interface ISerializableStorage extends ISubscriber {
 
     /**
      * Put value to storage.
@@ -41,5 +41,5 @@ public interface IStorage extends ISubscriber {
     /**
      * Clear all values.
      */
-    void clearAll();
+    void clear();
 }

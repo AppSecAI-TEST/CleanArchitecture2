@@ -90,7 +90,7 @@ public class MemoryCacheService extends LiveLongBackgroundIntentService {
 
     @WorkerThread
     private void onHandlePutAction(final String key, final Serializable object) {
-        final IStorage memoryCache = Admin.getInstance().get(MemoryCache.NAME);
+        final ISerializableStorage memoryCache = Admin.getInstance().get(SerializableMemoryCache.NAME);
         if (memoryCache != null) {
             memoryCache.put(key, object);
         }
@@ -98,7 +98,7 @@ public class MemoryCacheService extends LiveLongBackgroundIntentService {
 
     @WorkerThread
     private void onHandleClearAction(final String key) {
-        final IStorage memoryCache = Admin.getInstance().get(MemoryCache.NAME);
+        final ISerializableStorage memoryCache = Admin.getInstance().get(SerializableMemoryCache.NAME);
         if (memoryCache != null) {
             memoryCache.clear(key);
         }
@@ -106,9 +106,9 @@ public class MemoryCacheService extends LiveLongBackgroundIntentService {
 
     @WorkerThread
     private void onHandleClearAllAction() {
-        final IStorage memoryCache = Admin.getInstance().get(MemoryCache.NAME);
+        final ISerializableStorage memoryCache = Admin.getInstance().get(SerializableMemoryCache.NAME);
         if (memoryCache != null) {
-            memoryCache.clearAll();
+            memoryCache.clear();
         }
     }
 

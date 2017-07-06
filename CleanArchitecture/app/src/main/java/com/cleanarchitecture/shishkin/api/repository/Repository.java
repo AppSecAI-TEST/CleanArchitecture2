@@ -13,11 +13,8 @@ import com.cleanarchitecture.shishkin.api.event.CheckDiskCacheEvent;
 import com.cleanarchitecture.shishkin.api.event.database.DbCreatedEvent;
 import com.cleanarchitecture.shishkin.api.event.database.DbUpdatedEvent;
 import com.cleanarchitecture.shishkin.api.mail.ShowToastMail;
-import com.cleanarchitecture.shishkin.api.storage.DiskCache;
-import com.cleanarchitecture.shishkin.api.storage.DiskCacheService;
-import com.cleanarchitecture.shishkin.api.storage.IExpiredStorage;
-import com.cleanarchitecture.shishkin.api.storage.IStorage;
-import com.cleanarchitecture.shishkin.api.storage.MemoryCacheService;
+import com.cleanarchitecture.shishkin.api.storage.IExpiredSerializableStorage;
+import com.cleanarchitecture.shishkin.api.storage.SerializableDiskCache;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.ui.activity.MainActivity;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
@@ -58,81 +55,12 @@ public class Repository extends AbstractModule implements IRepository, IModuleSu
 
     @Override
     public synchronized Serializable getFromCache(final String key, final int cacheType) {
-        final IStorage diskCache = AdminUtils.getDiskCache();
-        final IStorage memoryCache = AdminUtils.getMemoryCache();
-
-        switch (cacheType) {
-            case USE_NO_CACHE:
-                break;
-
-            case USE_ONLY_MEMORY_CACHE:
-            case USE_MEMORY_CACHE:
-                if (memoryCache != null) {
-                    return memoryCache.get(key);
-                }
-                break;
-
-            case USE_ONLY_DISK_CACHE:
-            case USE_DISK_CACHE:
-                if (diskCache != null) {
-                    return diskCache.get(key);
-                }
-                break;
-
-            case USE_ONLY_CACHE:
-            case USE_CACHE:
-                Serializable ser = null;
-                if (memoryCache != null) {
-                    ser = memoryCache.get(key);
-                }
-                if (ser == null) {
-                    if (diskCache != null) {
-                        ser = diskCache.get(key);
-                    }
-                }
-                return ser;
-        }
-        return null;
+        return Cache.getFromCache(key, cacheType);
     }
 
     @Override
     public synchronized void putToCache(final String key, final int cacheType, Serializable value, long expired) {
-        final Context context = AdminUtils.getContext();
-        if (context == null) {
-            return;
-        }
-
-        switch (cacheType) {
-            case USE_NO_CACHE:
-                break;
-
-            case USE_ONLY_MEMORY_CACHE:
-            case USE_SAVE_MEMORY_CACHE:
-            case USE_MEMORY_CACHE:
-                MemoryCacheService.put(context, key, value);
-                break;
-
-            case USE_ONLY_DISK_CACHE:
-            case USE_SAVE_DISK_CACHE:
-            case USE_DISK_CACHE:
-                if (expired > 0) {
-                    DiskCacheService.put(context, key, value, expired);
-                } else {
-                    DiskCacheService.put(context, key, value);
-                }
-                break;
-
-            case USE_ONLY_CACHE:
-            case USE_SAVE_CACHE:
-            case USE_CACHE:
-                MemoryCacheService.put(context, key, value);
-                if (expired > 0) {
-                    DiskCacheService.put(context, key, value, expired);
-                } else {
-                    DiskCacheService.put(context, key, value);
-                }
-                break;
-        }
+        Cache.putToCache(key, cacheType, value, expired);
     }
 
     @Override
@@ -168,9 +96,9 @@ public class Repository extends AbstractModule implements IRepository, IModuleSu
             calsendar.add(GregorianCalendar.MONTH, 1);
             currentDay = StringUtils.toInt(formatter.format(calsendar.getTime()));
             AppPreferences.setLastDayStart(context, String.valueOf(currentDay));
-            final IExpiredStorage diskCache = Admin.getInstance().get(DiskCache.NAME);
+            final IExpiredSerializableStorage diskCache = Admin.getInstance().get(SerializableDiskCache.NAME);
             if (diskCache != null) {
-                diskCache.checkAll();
+                diskCache.check();
             }
         }
     }

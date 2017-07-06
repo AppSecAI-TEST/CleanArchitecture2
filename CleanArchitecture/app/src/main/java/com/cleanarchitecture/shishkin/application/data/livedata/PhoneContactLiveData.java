@@ -1,11 +1,14 @@
 package com.cleanarchitecture.shishkin.application.data.livedata;
 
+import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.data.AbstractContentProviderLiveData;
 import com.cleanarchitecture.shishkin.api.event.ui.HideHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.repository.Repository;
-import com.cleanarchitecture.shishkin.api.storage.IStorage;
+import com.cleanarchitecture.shishkin.api.storage.ISerializableStorage;
+import com.cleanarchitecture.shishkin.api.storage.SerializableDiskCache;
+import com.cleanarchitecture.shishkin.api.storage.SerializableMemoryCache;
 import com.cleanarchitecture.shishkin.application.app.Constant;
 import com.cleanarchitecture.shishkin.application.data.dao.PhoneContactDAO;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
@@ -39,12 +42,12 @@ public class PhoneContactLiveData extends AbstractContentProviderLiveData<List<P
 
     @Override
     public void onChanged() {
-        final IStorage memoryCache = AdminUtils.getMemoryCache();
+        final ISerializableStorage memoryCache = Admin.getInstance().get(SerializableMemoryCache.NAME);
         if (memoryCache != null) {
             memoryCache.clear(String.valueOf(Constant.REPOSITORY_GET_CONTACTS));
         }
 
-        final IStorage diskCache = AdminUtils.getDiskCache();
+        final ISerializableStorage diskCache = Admin.getInstance().get(SerializableDiskCache.NAME);
         if (diskCache != null) {
             diskCache.clear(String.valueOf(Constant.REPOSITORY_GET_CONTACTS));
         }

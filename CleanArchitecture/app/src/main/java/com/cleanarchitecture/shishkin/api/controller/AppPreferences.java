@@ -16,6 +16,7 @@ public class AppPreferences {
     public static final String LAST_DAY_START = "last_day_start";
     public static final String DESKTOP = "desktop";
     public static final String IMAGE_CACHE_VERSION = "image_cache_version";
+    public static final String PARCELABLE_CACHE_VERSION = "parcelable_cache_version";
 
     /**
      * Получить версию приложения.
@@ -52,6 +53,25 @@ public class AppPreferences {
      */
     public static void setImageCacheVersion(final Context context, final int version) {
         putInt(context, IMAGE_CACHE_VERSION, version);
+    }
+
+    /**
+     * Получить версию кэша Parcelable
+     *
+     * @param defaultValue значение по умолчанию
+     * @return версия кэша картинок
+     */
+    public static int getParcelableDiskCacheVersion(final Context context, final int defaultValue) {
+        return getInt(context, PARCELABLE_CACHE_VERSION, defaultValue);
+    }
+
+    /**
+     * Установить версию кэша Parcelable
+     *
+     * @param version версия кэша Parcelable
+     */
+    public static void setParcelableDiskCacheVersion(final Context context, final int version) {
+        putInt(context, PARCELABLE_CACHE_VERSION, version);
     }
 
     /**

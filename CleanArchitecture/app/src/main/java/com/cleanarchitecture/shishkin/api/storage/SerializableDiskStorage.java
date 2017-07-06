@@ -10,26 +10,26 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import io.paperdb.Paper;
 
-public class DiskStorage implements IStorage {
+public class SerializableDiskStorage implements ISerializableStorage {
 
-    public static final String NAME = DiskStorage.class.getName();
-    private static final String LOG_TAG = "DiskStorage:";
+    public static final String NAME = SerializableDiskStorage.class.getName();
+    private static final String LOG_TAG = "SerializableDiskStorage:";
 
-    private static volatile DiskStorage sInstance;
+    private static volatile SerializableDiskStorage sInstance;
     private ReentrantLock mLock;
 
-    public static DiskStorage getInstance(final Context context) {
+    public static SerializableDiskStorage getInstance(final Context context) {
         if (sInstance == null) {
-            synchronized (DiskStorage.class) {
+            synchronized (SerializableDiskStorage.class) {
                 if (sInstance == null) {
-                    sInstance = new DiskStorage(context);
+                    sInstance = new SerializableDiskStorage(context);
                 }
             }
         }
         return sInstance;
     }
 
-    private DiskStorage(final Context context) {
+    private SerializableDiskStorage(final Context context) {
         mLock = new ReentrantLock();
 
         if (context != null) {
@@ -119,7 +119,7 @@ public class DiskStorage implements IStorage {
     }
 
     @Override
-    public void clearAll() {
+    public void clear() {
         mLock.lock();
 
         try {

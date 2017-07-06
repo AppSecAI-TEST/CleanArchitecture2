@@ -12,27 +12,27 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import io.paperdb.Paper;
 
-public class DiskCache extends AbstractModule implements IExpiredStorage {
+public class SerializableDiskCache extends AbstractModule implements IExpiredSerializableStorage {
 
-    public static final String NAME = DiskCache.class.getName();
-    private static final String TIME = DiskCache.class.getName() + ".time";
-    private static final String LOG_TAG = "DiskCache:";
+    public static final String NAME = SerializableDiskCache.class.getName();
+    private static final String TIME = SerializableDiskCache.class.getName() + ".time";
+    private static final String LOG_TAG = "SerializableDiskCache:";
 
-    private static volatile DiskCache sInstance;
+    private static volatile SerializableDiskCache sInstance;
     private ReentrantLock mLock;
 
-    public static DiskCache getInstance(final Context context) {
+    public static SerializableDiskCache getInstance(final Context context) {
         if (sInstance == null) {
-            synchronized (DiskCache.class) {
+            synchronized (SerializableDiskCache.class) {
                 if (sInstance == null) {
-                    sInstance = new DiskCache(context);
+                    sInstance = new SerializableDiskCache(context);
                 }
             }
         }
         return sInstance;
     }
 
-    private DiskCache(final Context context) {
+    private SerializableDiskCache(final Context context) {
         mLock = new ReentrantLock();
 
         if (context != null) {
@@ -157,7 +157,7 @@ public class DiskCache extends AbstractModule implements IExpiredStorage {
     }
 
     @Override
-    public void clearAll() {
+    public void clear() {
         mLock.lock();
 
         try {
@@ -171,7 +171,7 @@ public class DiskCache extends AbstractModule implements IExpiredStorage {
     }
 
     @Override
-    public void checkAll() {
+    public void check() {
         mLock.lock();
 
         try {

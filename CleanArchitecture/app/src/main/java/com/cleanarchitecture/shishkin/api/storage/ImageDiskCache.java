@@ -29,9 +29,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.locks.ReentrantLock;
 
 @SuppressWarnings("unused")
-public class ImageCache extends AbstractModule implements IImageCache {
-    public static final String NAME = ImageCache.class.getName();
-    private static final String LOG_TAG = "ImageCache:";
+public class ImageDiskCache extends AbstractModule implements IImageDiskCache {
+    public static final String NAME = ImageDiskCache.class.getName();
+    private static final String LOG_TAG = "ImageDiskCache:";
 
     private static final int INDEX_EXPIRED = 0;
     private static final int INDEX_DATA = 1;
@@ -41,26 +41,25 @@ public class ImageCache extends AbstractModule implements IImageCache {
     private static final int COMPRESS_QUALITY = 100;
     private static final int DISK_CACHE_SIZE = Constant.MB * 100; // 100MB
     private static final int BUFFER_SIZE = Constant.KB * 16; // 16kb
-    private static final String DISK_CACHE_DIR = ApplicationController.EXTERNAL_STORAGE_APPLICATION_PATH + File.separator + "ImageCache";
+    private static final String DISK_CACHE_DIR = ApplicationController.EXTERNAL_STORAGE_APPLICATION_PATH + File.separator + "ImageDiskCache";
 
-    private static volatile ImageCache sInstance;
+    private static volatile ImageDiskCache sInstance;
     private DiskLruCache mDiskLruCache;
     private ReentrantLock mLock;
-
     private int mVersion = 0;
 
-    public static ImageCache getInstance() {
+    public static ImageDiskCache getInstance() {
         if (sInstance == null) {
-            synchronized (ImageCache.class) {
+            synchronized (ImageDiskCache.class) {
                 if (sInstance == null) {
-                    sInstance = new ImageCache();
+                    sInstance = new ImageDiskCache();
                 }
             }
         }
         return sInstance;
     }
 
-    private ImageCache() {
+    private ImageDiskCache() {
         mLock = new ReentrantLock();
 
         init();
@@ -166,7 +165,7 @@ public class ImageCache extends AbstractModule implements IImageCache {
             if (snapshot != null) {
                 inputStream = snapshot.getInputStream(INDEX_EXPIRED);
                 if (inputStream != null) {
-                    String s = CharStreams.toString(new InputStreamReader(
+                    final String s = CharStreams.toString(new InputStreamReader(
                             inputStream, Charsets.UTF_8));
                     inputStream.close();
                     if (!StringUtils.isNullOrEmpty(s)) {
@@ -257,6 +256,7 @@ public class ImageCache extends AbstractModule implements IImageCache {
         }
     }
 
+    @Override
     public void flush() {
         if (mDiskLruCache == null) {
             return;
@@ -273,6 +273,7 @@ public class ImageCache extends AbstractModule implements IImageCache {
         }
     }
 
+    @Override
     public void close() {
         if (mDiskLruCache == null) {
             return;

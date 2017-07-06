@@ -33,32 +33,36 @@ public class PhoneContactItem implements Parcelable {
         return mRowId;
     }
 
-    public void setId(final String id) {
+    public PhoneContactItem setId(final String id) {
         mRowId = id;
+        return this;
     }
 
     public String getName() {
         return mName;
     }
 
-    public void setName(final String text) {
+    public PhoneContactItem setName(final String text) {
         mName = text;
+        return this;
     }
 
     public String getPhones() {
         return mPhones;
     }
 
-    public void setPhones(String phones) {
+    public PhoneContactItem setPhones(String phones) {
         this.mPhones = phones;
+        return this;
     }
 
     public String getPhoto() {
         return mPhoto;
     }
 
-    public void setPhoto(String photo) {
+    public PhoneContactItem setPhoto(String photo) {
         this.mPhoto = photo;
+        return this;
     }
 
 

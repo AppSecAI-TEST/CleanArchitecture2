@@ -2,7 +2,7 @@ package com.cleanarchitecture.shishkin.api.storage;
 
 import java.io.Serializable;
 
-public interface IExpiredStorage extends IStorage {
+public interface IExpiredSerializableStorage extends ISerializableStorage {
 
     /**
      * Put value to storage.
@@ -16,5 +16,5 @@ public interface IExpiredStorage extends IStorage {
     /**
      * Check expired period all keys.
      */
-    void checkAll();
+    void check();
 }

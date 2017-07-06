@@ -7,7 +7,8 @@ import com.cleanarchitecture.shishkin.api.controller.IPresenterController;
 import com.cleanarchitecture.shishkin.api.controller.MailController;
 import com.cleanarchitecture.shishkin.api.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.HideKeyboardEvent;
-import com.cleanarchitecture.shishkin.api.storage.IStorage;
+import com.cleanarchitecture.shishkin.api.storage.ISerializableStorage;
+import com.cleanarchitecture.shishkin.api.storage.SerializableMemoryCache;
 
 /**
  * Команда - выход из приложения
@@ -23,9 +24,9 @@ public class FinishApplicationUseCase extends AbstractUseCase {
         AdminUtils.postEvent(new FinishApplicationEvent());
 
         // очистить кэш в памяти
-        final IStorage memoryCache = AdminUtils.getMemoryCache();
+        final ISerializableStorage memoryCache = Admin.getInstance().get(SerializableMemoryCache.NAME);
         if (memoryCache != null) {
-            memoryCache.clearAll();
+            memoryCache.clear();
         }
 
         // очистить все состояния в PresenterController

@@ -24,9 +24,6 @@ import com.cleanarchitecture.shishkin.api.repository.INetProvider;
 import com.cleanarchitecture.shishkin.api.repository.IRepository;
 import com.cleanarchitecture.shishkin.api.repository.NetProvider;
 import com.cleanarchitecture.shishkin.api.repository.Repository;
-import com.cleanarchitecture.shishkin.api.storage.DiskCache;
-import com.cleanarchitecture.shishkin.api.storage.IStorage;
-import com.cleanarchitecture.shishkin.api.storage.MemoryCache;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractActivity;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractContentActivity;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
@@ -484,34 +481,6 @@ public class AdminUtils {
             return provider.getDb(klass, databaseName);
         }
         return null;
-    }
-
-    /**
-     * Получить кэш диска
-     */
-    public static IStorage getDiskCache() {
-        final IStorage cache = Admin.getInstance().get(DiskCache.NAME);
-        if (cache != null) {
-            return cache;
-        } else {
-            final Context context = getContext();
-            if (context != null) {
-                return DiskCache.getInstance(context);
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Получить кэш памяти
-     */
-    public static IStorage getMemoryCache() {
-        final IStorage cache = Admin.getInstance().get(MemoryCache.NAME);
-        if (cache != null) {
-            return cache;
-        } else {
-            return MemoryCache.getInstance();
-        }
     }
 
     /**
