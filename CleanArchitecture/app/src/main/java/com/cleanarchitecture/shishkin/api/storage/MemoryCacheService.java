@@ -8,6 +8,7 @@ import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.LiveLongBackgroundIntentService;
 import com.cleanarchitecture.shishkin.common.utils.IntentUtils;
+import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
@@ -37,7 +38,7 @@ public class MemoryCacheService extends LiveLongBackgroundIntentService {
     }
 
     public static synchronized void put(final Context context, final String key, final Serializable object) {
-        if (context != null) {
+        if (context != null && !StringUtils.isNullOrEmpty(key) && object != null) {
             final Intent intent = IntentUtils.createActionIntent(context, MemoryCacheService.class,
                     ACTION_PUT);
             intent.putExtra(Intent.EXTRA_TEXT, key);
@@ -47,7 +48,7 @@ public class MemoryCacheService extends LiveLongBackgroundIntentService {
     }
 
     public static synchronized void clear(final Context context, final String key) {
-        if (context != null) {
+        if (context != null && !StringUtils.isNullOrEmpty(key)) {
             final Intent intent = IntentUtils.createActionIntent(context, MemoryCacheService.class,
                     ACTION_CLEAR);
             intent.putExtra(Intent.EXTRA_TEXT, key);

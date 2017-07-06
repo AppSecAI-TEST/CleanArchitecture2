@@ -17,9 +17,9 @@ import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.jakewharton.disklrucache.DiskLruCache;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,6 +28,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.locks.ReentrantLock;
 
+@SuppressWarnings("unused")
 public class ImageCache extends AbstractModule implements IImageCache {
     public static final String NAME = ImageCache.class.getName();
     private static final String LOG_TAG = "ImageCache:";
@@ -38,7 +39,8 @@ public class ImageCache extends AbstractModule implements IImageCache {
 
     private static final Bitmap.CompressFormat COMPRESS_FORMAT = Bitmap.CompressFormat.JPEG;
     private static final int COMPRESS_QUALITY = 100;
-    private static final int DISK_CACHE_SIZE = Constant.MB * 50; // 50MB
+    private static final int DISK_CACHE_SIZE = Constant.MB * 100; // 100MB
+    private static final int BUFFER_SIZE = Constant.KB * 16; // 16kb
     private static final String DISK_CACHE_DIR = ApplicationController.EXTERNAL_STORAGE_APPLICATION_PATH + File.separator + "ImageCache";
 
     private static volatile ImageCache sInstance;
@@ -118,7 +120,7 @@ public class ImageCache extends AbstractModule implements IImageCache {
                     out.flush();
                     out.close();
 
-                    out = editor.newOutputStream(INDEX_DATA);
+                    out = new BufferedOutputStream(editor.newOutputStream(INDEX_DATA), BUFFER_SIZE);
                     bitmap.compress(COMPRESS_FORMAT, COMPRESS_QUALITY, out);
                     out.flush();
                     out.close();
@@ -133,6 +135,7 @@ public class ImageCache extends AbstractModule implements IImageCache {
                 try {
                     editor.abort();
                 } catch (Exception e1) {
+                    ErrorController.getInstance().onError(LOG_TAG, e1);
                 }
             }
         } finally {
@@ -152,6 +155,7 @@ public class ImageCache extends AbstractModule implements IImageCache {
         final String hash = hashKeyForDisk(key);
         Bitmap bitmap = null;
         InputStream inputStream = null;
+        BufferedInputStream buffInputStream = null;
         long expired = -1;
 
         try {
@@ -170,9 +174,10 @@ public class ImageCache extends AbstractModule implements IImageCache {
                 if (expired == 0 || expired >= System.currentTimeMillis()) {
                     inputStream = snapshot.getInputStream(INDEX_DATA);
                     if (inputStream != null) {
-                        FileDescriptor fd = ((FileInputStream) inputStream).getFD();
-                        bitmap = decodeSampledBitmapFromDescriptor(fd, Integer.MAX_VALUE, Integer.MAX_VALUE);
+                        buffInputStream = new BufferedInputStream(inputStream, BUFFER_SIZE);
+                        bitmap = BitmapFactory.decodeStream(buffInputStream);
                         inputStream.close();
+                        buffInputStream.close();
                     }
                 } else {
                     snapshot.close();
@@ -184,6 +189,7 @@ public class ImageCache extends AbstractModule implements IImageCache {
             ErrorController.getInstance().onError(LOG_TAG, e);
         } finally {
             CloseUtils.close(inputStream);
+            CloseUtils.close(buffInputStream);
             mLock.unlock();
         }
         return bitmap;
@@ -251,7 +257,7 @@ public class ImageCache extends AbstractModule implements IImageCache {
         if (mDiskLruCache == null) {
             return;
         }
-        
+
         mLock.lock();
 
         try {
@@ -281,62 +287,6 @@ public class ImageCache extends AbstractModule implements IImageCache {
             mLock.unlock();
         }
     }
-
-    private Bitmap decodeSampledBitmapFromDescriptor(
-            FileDescriptor fileDescriptor, int reqWidth, int reqHeight) {
-
-        // First decode with inJustDecodeBounds=true to check dimensions
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFileDescriptor(fileDescriptor, null, options);
-
-        // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
-        // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false;
-
-        return BitmapFactory.decodeFileDescriptor(fileDescriptor, null, options);
-    }
-
-    private int calculateInSampleSize(BitmapFactory.Options options,
-                                      int reqWidth, int reqHeight) {
-        // Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
-            while ((halfHeight / inSampleSize) > reqHeight
-                    && (halfWidth / inSampleSize) > reqWidth) {
-                inSampleSize *= 2;
-            }
-
-            // This offers some additional logic in case the image has a strange
-            // aspect ratio. For example, a panorama may have a much larger
-            // width than height. In these cases the total pixels might still
-            // end up being too large to fit comfortably in memory, so we should
-            // be more aggressive with sample down the image (=larger inSampleSize).
-
-            long totalPixels = width * height / inSampleSize;
-
-            // Anything more than 2x the requested pixels we'll sample down further
-            final long totalReqPixelsCap = reqWidth * reqHeight * 2L;
-
-            while (totalPixels > totalReqPixelsCap) {
-                inSampleSize *= 2;
-                totalPixels /= 2;
-            }
-        }
-        return inSampleSize;
-    }
-
 
     private String hashKeyForDisk(String key) {
         String cacheKey;
