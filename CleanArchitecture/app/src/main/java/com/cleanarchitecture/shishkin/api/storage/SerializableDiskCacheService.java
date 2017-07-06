@@ -107,7 +107,7 @@ public class SerializableDiskCacheService extends LiveLongBackgroundIntentServic
 
     @WorkerThread
     private void onHandlePutAction(final String key, final Serializable object) {
-        final IExpiredStorage diskCache = Admin.getInstance().get(SerializableDiskCache.NAME);
+        final IExpiredSerializableStorage diskCache = Admin.getInstance().get(SerializableDiskCache.NAME);
         if (diskCache != null) {
             diskCache.put(key, object);
         }
@@ -115,7 +115,7 @@ public class SerializableDiskCacheService extends LiveLongBackgroundIntentServic
 
     @WorkerThread
     private void onHandlePutAction(final String key, final Serializable object, final long expired) {
-        final IExpiredStorage diskCache = Admin.getInstance().get(SerializableDiskCache.NAME);
+        final IExpiredSerializableStorage diskCache = Admin.getInstance().get(SerializableDiskCache.NAME);
         if (diskCache != null) {
             diskCache.put(key, object, expired);
         }
@@ -123,7 +123,7 @@ public class SerializableDiskCacheService extends LiveLongBackgroundIntentServic
 
     @WorkerThread
     private void onHandleClearAction(final String key) {
-        final IExpiredStorage diskCache = Admin.getInstance().get(SerializableDiskCache.NAME);
+        final IExpiredSerializableStorage diskCache = Admin.getInstance().get(SerializableDiskCache.NAME);
         if (diskCache != null) {
             diskCache.clear(key);
         }
@@ -131,9 +131,9 @@ public class SerializableDiskCacheService extends LiveLongBackgroundIntentServic
 
     @WorkerThread
     private void onHandleClearAllAction() {
-        final IExpiredStorage diskCache = Admin.getInstance().get(SerializableDiskCache.NAME);
+        final IExpiredSerializableStorage diskCache = Admin.getInstance().get(SerializableDiskCache.NAME);
         if (diskCache != null) {
-            diskCache.clearAll();
+            diskCache.clear();
         }
     }
 

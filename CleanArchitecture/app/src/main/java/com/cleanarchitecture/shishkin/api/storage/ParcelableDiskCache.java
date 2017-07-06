@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class ParcelableDiskCache<T extends Parcelable> implements IParcelableDiskCache<T> {
+public class ParcelableDiskCache<T extends Parcelable> implements IExpiredParcelableStorage<T> {
     public static final String NAME = ParcelableDiskCache.class.getName();
     private static final String LOG_TAG = "ParcelableDiskCache:";
 
@@ -93,12 +93,12 @@ public class ParcelableDiskCache<T extends Parcelable> implements IParcelableDis
     }
 
     @Override
-    public void put(final String key, final Parcelable value) {
+    public void put(final String key, final T value) {
         put(key, value, 0);
     }
 
     @Override
-    public void put(final String key, final Parcelable value, final long expired) {
+    public void put(final String key, final T value, final long expired) {
         if (mDiskLruCache == null || StringUtils.isNullOrEmpty(key) || value == null) {
             return;
         }
@@ -395,7 +395,6 @@ public class ParcelableDiskCache<T extends Parcelable> implements IParcelableDis
         }
     }
 
-    @Override
     public void setVersion(final int version) {
         final Context context = AdminUtils.getContext();
         if (context != null && version > mVersion) {
@@ -408,7 +407,6 @@ public class ParcelableDiskCache<T extends Parcelable> implements IParcelableDis
         }
     }
 
-    @Override
     public void flush() {
         if (mDiskLruCache == null) {
             return;
@@ -425,7 +423,6 @@ public class ParcelableDiskCache<T extends Parcelable> implements IParcelableDis
         }
     }
 
-    @Override
     public void close() {
         if (mDiskLruCache == null) {
             return;

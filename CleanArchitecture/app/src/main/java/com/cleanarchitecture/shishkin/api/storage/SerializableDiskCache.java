@@ -12,7 +12,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import io.paperdb.Paper;
 
-public class SerializableDiskCache extends AbstractModule implements IExpiredStorage {
+public class SerializableDiskCache extends AbstractModule implements IExpiredSerializableStorage {
 
     public static final String NAME = SerializableDiskCache.class.getName();
     private static final String TIME = SerializableDiskCache.class.getName() + ".time";
@@ -157,7 +157,7 @@ public class SerializableDiskCache extends AbstractModule implements IExpiredSto
     }
 
     @Override
-    public void clearAll() {
+    public void clear() {
         mLock.lock();
 
         try {
@@ -171,7 +171,7 @@ public class SerializableDiskCache extends AbstractModule implements IExpiredSto
     }
 
     @Override
-    public void checkAll() {
+    public void check() {
         mLock.lock();
 
         try {

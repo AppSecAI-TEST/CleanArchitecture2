@@ -10,7 +10,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import io.paperdb.Paper;
 
-public class SerializableDiskStorage implements IStorage {
+public class SerializableDiskStorage implements ISerializableStorage {
 
     public static final String NAME = SerializableDiskStorage.class.getName();
     private static final String LOG_TAG = "SerializableDiskStorage:";
@@ -119,7 +119,7 @@ public class SerializableDiskStorage implements IStorage {
     }
 
     @Override
-    public void clearAll() {
+    public void clear() {
         mLock.lock();
 
         try {

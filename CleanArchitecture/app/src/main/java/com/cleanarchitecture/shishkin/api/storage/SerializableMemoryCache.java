@@ -12,30 +12,30 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 
-public class MemoryCache extends AbstractModule implements IStorage {
-    public static final String NAME = MemoryCache.class.getName();
-    private static final String LOG_TAG = "MemoryCache:";
+public class SerializableMemoryCache extends AbstractModule implements ISerializableStorage {
+    public static final String NAME = SerializableMemoryCache.class.getName();
+    private static final String LOG_TAG = "SerializableMemoryCache:";
     private static final long MAX_SIZE = 1000L;
     private static final long DURATION = 3;
     private static final TimeUnit DURATION_TIMEUNIT = TimeUnit.MINUTES;
 
-    private static volatile MemoryCache sInstance;
+    private static volatile SerializableMemoryCache sInstance;
     private LoadingCache<String, Serializable> mCache;
     private Serializable mValue;
     private ReentrantLock mLock;
 
-    public static MemoryCache getInstance() {
+    public static SerializableMemoryCache getInstance() {
         if (sInstance == null) {
-            synchronized (MemoryCache.class) {
+            synchronized (SerializableMemoryCache.class) {
                 if (sInstance == null) {
-                    sInstance = new MemoryCache();
+                    sInstance = new SerializableMemoryCache();
                 }
             }
         }
         return sInstance;
     }
 
-    private MemoryCache() {
+    private SerializableMemoryCache() {
         mLock = new ReentrantLock();
 
         mCache = CacheBuilder.newBuilder()
@@ -132,7 +132,7 @@ public class MemoryCache extends AbstractModule implements IStorage {
     }
 
     @Override
-    public void clearAll() {
+    public void clear() {
         mLock.lock();
 
         try {
