@@ -109,9 +109,10 @@ public class ImageCache extends AbstractModule implements IImageCache {
         final String hash = hashKeyForDisk(key);
         OutputStream out = null;
         DiskLruCache.Editor editor = null;
+        DiskLruCache.Snapshot snapshot = null;
 
         try {
-            final DiskLruCache.Snapshot snapshot = mDiskLruCache.get(hash);
+            snapshot = mDiskLruCache.get(hash);
             if (snapshot == null) {
                 editor = mDiskLruCache.edit(hash);
                 if (editor != null) {
@@ -140,6 +141,7 @@ public class ImageCache extends AbstractModule implements IImageCache {
             }
         } finally {
             CloseUtils.close(out);
+            CloseUtils.close(snapshot);
             mLock.unlock();
         }
     }
@@ -157,9 +159,10 @@ public class ImageCache extends AbstractModule implements IImageCache {
         InputStream inputStream = null;
         BufferedInputStream buffInputStream = null;
         long expired = -1;
+        DiskLruCache.Snapshot snapshot = null;
 
         try {
-            final DiskLruCache.Snapshot snapshot = mDiskLruCache.get(hash);
+            snapshot = mDiskLruCache.get(hash);
             if (snapshot != null) {
                 inputStream = snapshot.getInputStream(INDEX_EXPIRED);
                 if (inputStream != null) {
@@ -190,6 +193,7 @@ public class ImageCache extends AbstractModule implements IImageCache {
         } finally {
             CloseUtils.close(inputStream);
             CloseUtils.close(buffInputStream);
+            CloseUtils.close(snapshot);
             mLock.unlock();
         }
         return bitmap;
