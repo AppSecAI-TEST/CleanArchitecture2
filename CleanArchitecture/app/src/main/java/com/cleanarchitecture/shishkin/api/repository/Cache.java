@@ -210,4 +210,41 @@ public class Cache {
         }
     }
 
+    public static <T extends Parcelable> void putToCache(final String key, final int cacheType, List<T> value, long expired) {
+        final IExpiredParcelableStorage<T> diskCache = Admin.getInstance().get(ParcelableDiskCache.NAME);
+        final IParcelableStorage<T> memoryCache = Admin.getInstance().get(ParcelableMemoryCache.NAME);
+
+        switch (cacheType) {
+            case Repository.USE_NO_CACHE:
+                break;
+
+            case Repository.USE_ONLY_MEMORY_CACHE:
+            case Repository.USE_SAVE_MEMORY_CACHE:
+            case Repository.USE_MEMORY_CACHE:
+                memoryCache.put(key, value);
+                break;
+
+            case Repository.USE_ONLY_DISK_CACHE:
+            case Repository.USE_SAVE_DISK_CACHE:
+            case Repository.USE_DISK_CACHE:
+                if (expired > 0) {
+                    diskCache.put(key, value, expired);
+                } else {
+                    diskCache.put(key, value);
+                }
+                break;
+
+            case Repository.USE_ONLY_CACHE:
+            case Repository.USE_SAVE_CACHE:
+            case Repository.USE_CACHE:
+                memoryCache.put(key, value);
+                if (expired > 0) {
+                    diskCache.put(key, value, expired);
+                } else {
+                    diskCache.put(key, value);
+                }
+                break;
+        }
+    }
+
 }
