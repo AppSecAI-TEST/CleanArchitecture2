@@ -167,18 +167,21 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
         }
 
         final List<Address> list = new ArrayList<>();
-        if (mGeocoder != null && mFusedLocationClient != null) {
-            if (mGeocoder.isPresent()) {
-                try {
-                    list.addAll(mGeocoder.getFromLocation(
-                            location.getLatitude(),
-                            location.getLongitude(),
-                            countAddress));
-                } catch (Exception e) {
-                    ErrorController.getInstance().onError(LOG_TAG, e);
+        if (AdminUtils.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
+            if (mGeocoder != null && mFusedLocationClient != null) {
+                if (mGeocoder.isPresent()) {
+                    try {
+                        list.addAll(mGeocoder.getFromLocation(
+                                location.getLatitude(),
+                                location.getLongitude(),
+                                countAddress));
+                    } catch (Exception e) {
+                        ErrorController.getInstance().onError(LOG_TAG, e);
+                        ErrorController.getInstance().onError(LOG_TAG, ErrorController.ERROR_GEOCODER_NOT_FOUND, true);
+                    }
+                } else {
+                    ErrorController.getInstance().onError(LOG_TAG, ErrorController.ERROR_GEOCODER_NOT_FOUND, true);
                 }
-            } else {
-                ErrorController.getInstance().onError(LOG_TAG, ErrorController.ERROR_GEOCODER_NOT_FOUND, true);
             }
         }
         return list;
