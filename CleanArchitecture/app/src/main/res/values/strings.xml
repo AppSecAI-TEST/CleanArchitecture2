@@ -47,7 +47,7 @@
     <string name="error_application">Ошибка в приложении</string>
     <string name="error_not_found_activity">Не могу получить текущую activity</string>
     <string name="error_activity_not_valid">Activity уже уничтожена</string>
-    <string name="error_geocoder_not_found">Служба геодекодирования не найдена. Перегрузите устройство. При повторяющейся ошибке отключите геолокацию в настройках</string>
+    <string name="error_geocoder_not_found">Служба геодекодирования не найдена. Перегрузите устройство. При повторяющейся ошибке запретите определение местоположения приложению</string>
 
     <string name="test_message">Тестовое сообщение</string>
     <string name="share_with">Отправить с помощью ...</string>
