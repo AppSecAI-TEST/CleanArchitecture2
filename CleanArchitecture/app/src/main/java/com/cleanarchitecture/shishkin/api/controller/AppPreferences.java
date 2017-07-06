@@ -15,6 +15,7 @@ public class AppPreferences {
     public static final String VERSION_APPLICATION = "version_application";
     public static final String LAST_DAY_START = "last_day_start";
     public static final String DESKTOP = "desktop";
+    public static final String IMAGE_CACHE_VERSION = "image_cache_version";
 
     /**
      * Получить версию приложения.
@@ -32,6 +33,25 @@ public class AppPreferences {
      */
     public static void setApplicationVersion(final Context context, final String version) {
         putString(context, VERSION_APPLICATION, version);
+    }
+
+    /**
+     * Получить версию кэша картинок
+     *
+     * @param defaultValue значение по умолчанию
+     * @return версия кэша картинок
+     */
+    public static int getImageCacheVersion(final Context context, final int defaultValue) {
+        return getInt(context, IMAGE_CACHE_VERSION, defaultValue);
+    }
+
+    /**
+     * Установить версию кэша картинок
+     *
+     * @param version версия кэша картинок
+     */
+    public static void setImageCacheVersion(final Context context, final int version) {
+        putInt(context, IMAGE_CACHE_VERSION, version);
     }
 
     /**

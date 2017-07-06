@@ -1,9 +1,13 @@
 package com.cleanarchitecture.shishkin.api.storage;
 
+import android.Manifest;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.cleanarchitecture.shishkin.api.controller.AbstractModule;
+import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.api.controller.AppPreferences;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
 import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.application.app.Constant;
@@ -24,9 +28,13 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class ImageCache extends AbstractModule {
+public class ImageCache extends AbstractModule implements IImageCache {
     public static final String NAME = ImageCache.class.getName();
     private static final String LOG_TAG = "ImageCache:";
+
+    private static final int INDEX_EXPIRED = 0;
+    private static final int INDEX_DATA = 1;
+    private static final int COUNT_INDEX = 2;
 
     private static final Bitmap.CompressFormat COMPRESS_FORMAT = Bitmap.CompressFormat.JPEG;
     private static final int COMPRESS_QUALITY = 100;
@@ -36,6 +44,8 @@ public class ImageCache extends AbstractModule {
     private static volatile ImageCache sInstance;
     private DiskLruCache mDiskLruCache;
     private ReentrantLock mLock;
+
+    private int mVersion = 0;
 
     public static ImageCache getInstance() {
         if (sInstance == null) {
@@ -55,15 +65,24 @@ public class ImageCache extends AbstractModule {
     }
 
     private void init() {
+        if (!AdminUtils.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            return;
+        }
+
+        final Context context = AdminUtils.getContext();
+        if (context != null) {
+            mVersion = AppPreferences.getImageCacheVersion(context, mVersion);
+        }
+
         mLock.lock();
 
         try {
             if (mDiskLruCache == null || mDiskLruCache.isClosed()) {
-                final File dir = new File(DISK_CACHE_DIR);
+                final File dir = new File(DISK_CACHE_DIR + File.separator + mVersion);
                 if (!dir.exists() && !dir.mkdirs()) {
                     return;
                 }
-                mDiskLruCache = DiskLruCache.open(dir, 1, 2, DISK_CACHE_SIZE);
+                mDiskLruCache = DiskLruCache.open(dir, mVersion, COUNT_INDEX, DISK_CACHE_SIZE);
             }
         } catch (Exception e) {
             ErrorController.getInstance().onError(LOG_TAG, e);
@@ -72,10 +91,12 @@ public class ImageCache extends AbstractModule {
         }
     }
 
+    @Override
     public void put(final String key, final Bitmap bitmap) {
         put(key, bitmap, 0);
     }
 
+    @Override
     public void put(final String key, final Bitmap bitmap, final long expired) {
         if (mDiskLruCache == null || StringUtils.isNullOrEmpty(key) || bitmap == null) {
             return;
@@ -92,12 +113,12 @@ public class ImageCache extends AbstractModule {
             if (snapshot == null) {
                 editor = mDiskLruCache.edit(hash);
                 if (editor != null) {
-                    out = editor.newOutputStream(0);
+                    out = editor.newOutputStream(INDEX_EXPIRED);
                     out.write(String.valueOf(expired).getBytes());
                     out.flush();
                     out.close();
 
-                    out = editor.newOutputStream(1);
+                    out = editor.newOutputStream(INDEX_DATA);
                     bitmap.compress(COMPRESS_FORMAT, COMPRESS_QUALITY, out);
                     out.flush();
                     out.close();
@@ -120,6 +141,7 @@ public class ImageCache extends AbstractModule {
         }
     }
 
+    @Override
     public Bitmap get(final String key) {
         if (mDiskLruCache == null || StringUtils.isNullOrEmpty(key)) {
             return null;
@@ -135,7 +157,7 @@ public class ImageCache extends AbstractModule {
         try {
             final DiskLruCache.Snapshot snapshot = mDiskLruCache.get(hash);
             if (snapshot != null) {
-                inputStream = snapshot.getInputStream(0);
+                inputStream = snapshot.getInputStream(INDEX_EXPIRED);
                 if (inputStream != null) {
                     String s = CharStreams.toString(new InputStreamReader(
                             inputStream, Charsets.UTF_8));
@@ -146,7 +168,7 @@ public class ImageCache extends AbstractModule {
                 }
 
                 if (expired == 0 || expired >= System.currentTimeMillis()) {
-                    inputStream = snapshot.getInputStream(1);
+                    inputStream = snapshot.getInputStream(INDEX_DATA);
                     if (inputStream != null) {
                         FileDescriptor fd = ((FileInputStream) inputStream).getFD();
                         bitmap = decodeSampledBitmapFromDescriptor(fd, Integer.MAX_VALUE, Integer.MAX_VALUE);
@@ -167,7 +189,37 @@ public class ImageCache extends AbstractModule {
         return bitmap;
     }
 
+    @Override
+    public void clear(final String key) {
+        if (mDiskLruCache == null || StringUtils.isNullOrEmpty(key)) {
+            return;
+        }
+
+        mLock.lock();
+
+        final String hash = hashKeyForDisk(key);
+        try {
+            final DiskLruCache.Snapshot snapshot = mDiskLruCache.get(hash);
+            if (snapshot != null) {
+                snapshot.close();
+                mDiskLruCache.remove(hash);
+                mDiskLruCache.flush();
+            }
+        } catch (final IOException e) {
+            ErrorController.getInstance().onError(LOG_TAG, e);
+        } finally {
+            mLock.unlock();
+        }
+    }
+
+    @Override
     public void clear() {
+        clearCache();
+
+        init();
+    }
+
+    private void clearCache() {
         if (mDiskLruCache != null && !mDiskLruCache.isClosed()) {
             mLock.lock();
 
@@ -180,38 +232,53 @@ public class ImageCache extends AbstractModule {
             }
             mDiskLruCache = null;
         }
+    }
 
-        init();
+    @Override
+    public void setVersion(final int version) {
+        final Context context = AdminUtils.getContext();
+        if (context != null && version > mVersion) {
+            clearCache();
+
+            mVersion = version;
+            AppPreferences.setImageCacheVersion(context, mVersion);
+
+            init();
+        }
     }
 
     public void flush() {
-        if (mDiskLruCache != null) {
-            mLock.lock();
+        if (mDiskLruCache == null) {
+            return;
+        }
+        
+        mLock.lock();
 
-            try {
-                mDiskLruCache.flush();
-            } catch (IOException e) {
-                ErrorController.getInstance().onError(LOG_TAG, e);
-            } finally {
-                mLock.unlock();
-            }
+        try {
+            mDiskLruCache.flush();
+        } catch (IOException e) {
+            ErrorController.getInstance().onError(LOG_TAG, e);
+        } finally {
+            mLock.unlock();
         }
     }
 
     public void close() {
-        if (mDiskLruCache != null) {
-            mLock.lock();
+        if (mDiskLruCache == null) {
+            return;
+        }
 
-            try {
-                if (!mDiskLruCache.isClosed()) {
-                    mDiskLruCache.close();
-                    mDiskLruCache = null;
-                }
-            } catch (IOException e) {
-                ErrorController.getInstance().onError(LOG_TAG, e);
-            } finally {
-                mLock.unlock();
+        mLock.lock();
+
+        try {
+            if (!mDiskLruCache.isClosed()) {
+                mDiskLruCache.close();
+                mDiskLruCache = null;
             }
+        } catch (IOException e) {
+            ErrorController.getInstance().onError(LOG_TAG, e);
+        } finally {
+            mLock.unlock();
         }
     }
 
