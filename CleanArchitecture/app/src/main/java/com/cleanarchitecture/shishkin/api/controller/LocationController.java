@@ -167,13 +167,15 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
         }
 
         final List<Address> list = new ArrayList<>();
-        try {
-            list.addAll(mGeocoder.getFromLocation(
-                    location.getLatitude(),
-                    location.getLongitude(),
-                    countAddress));
-        } catch (Exception e) {
-            ErrorController.getInstance().onError(LOG_TAG, e);
+        if (mGeocoder != null && mFusedLocationClient != null) {
+            try {
+                list.addAll(mGeocoder.getFromLocation(
+                        location.getLatitude(),
+                        location.getLongitude(),
+                        countAddress));
+            } catch (Exception e) {
+                ErrorController.getInstance().onError(LOG_TAG, e);
+            }
         }
         return list;
     }
