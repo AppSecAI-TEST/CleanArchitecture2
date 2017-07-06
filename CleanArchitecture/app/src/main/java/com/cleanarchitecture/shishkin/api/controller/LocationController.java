@@ -7,6 +7,8 @@ import android.location.Geocoder;
 import android.location.Location;
 
 import com.cleanarchitecture.shishkin.api.event.FinishApplicationEvent;
+import com.cleanarchitecture.shishkin.api.event.OnNetworkConnectedEvent;
+import com.cleanarchitecture.shishkin.api.event.OnNetworkDisconnectedEvent;
 import com.cleanarchitecture.shishkin.api.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.api.event.OnScreenOffEvent;
 import com.cleanarchitecture.shishkin.api.event.OnScreenOnEvent;
@@ -82,6 +84,10 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
 
         final Context context = AdminUtils.getContext();
         if (context == null) {
+            return;
+        }
+
+        if (!Connectivity.isNetworkConnected(context)) {
             return;
         }
 
@@ -213,5 +219,15 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onScreenOnEvent(final OnScreenOnEvent event) {
         startLocation();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNetworkConnectedEvent(final OnNetworkConnectedEvent event) {
+        startLocation();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNetworkDisconnectedEvent(final OnNetworkDisconnectedEvent event) {
+        stopLocation(true);
     }
 }
