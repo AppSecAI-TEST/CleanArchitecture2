@@ -7,8 +7,6 @@ public class Constant {
     public static final int MB = 1048576;
     public static final int GB = 1073741824;
 
-    public static final int REPOSITORY_GET_CONTACTS = 10001;
-
     private Constant() {
     }
 }
