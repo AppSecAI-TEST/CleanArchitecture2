@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".api.controller.NotificationBroadcastReceiver">
+        <receiver android:name=".api.service.NotificationBroadcastReceiver">
             <intent-filter>
                 <action android:name="${applicationId}.action.NotificationBroadcastReceiver.ACTION_DELETE_MESSAGES" />
             </intent-filter>
