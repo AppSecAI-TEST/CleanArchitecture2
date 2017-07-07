@@ -5,10 +5,11 @@ import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.data.AbstractContentProviderLiveData;
 import com.cleanarchitecture.shishkin.api.event.ui.HideHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowHorizontalProgressBarEvent;
-import com.cleanarchitecture.shishkin.api.repository.Repository;
-import com.cleanarchitecture.shishkin.api.storage.ISerializableStorage;
-import com.cleanarchitecture.shishkin.api.storage.SerializableDiskCache;
-import com.cleanarchitecture.shishkin.api.storage.SerializableMemoryCache;
+import com.cleanarchitecture.shishkin.api.repository.Cache;
+import com.cleanarchitecture.shishkin.api.storage.IExpiredParcelableStorage;
+import com.cleanarchitecture.shishkin.api.storage.IParcelableStorage;
+import com.cleanarchitecture.shishkin.api.storage.ParcelableDiskCache;
+import com.cleanarchitecture.shishkin.api.storage.ParcelableMemoryCache;
 import com.cleanarchitecture.shishkin.application.app.Constant;
 import com.cleanarchitecture.shishkin.application.data.dao.PhoneContactDAO;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
@@ -36,18 +37,18 @@ public class PhoneContactLiveData extends AbstractContentProviderLiveData<List<P
         AdminUtils.postEvent(new ShowHorizontalProgressBarEvent());
         AdminUtils.postEvent(new RepositoryRequestGetContactsEvent()
                 .setExpired(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1))
-                .setCacheType(Repository.USE_CACHE)
+                .setCacheType(Cache.USE_CACHE)
                 .setId(Constant.REPOSITORY_GET_CONTACTS));
     }
 
     @Override
     public void onChanged() {
-        final ISerializableStorage memoryCache = Admin.getInstance().get(SerializableMemoryCache.NAME);
+        final IParcelableStorage memoryCache = Admin.getInstance().get(ParcelableMemoryCache.NAME);
         if (memoryCache != null) {
             memoryCache.clear(String.valueOf(Constant.REPOSITORY_GET_CONTACTS));
         }
 
-        final ISerializableStorage diskCache = Admin.getInstance().get(SerializableDiskCache.NAME);
+        final IExpiredParcelableStorage diskCache = Admin.getInstance().get(ParcelableDiskCache.NAME);
         if (diskCache != null) {
             diskCache.clear(String.valueOf(Constant.REPOSITORY_GET_CONTACTS));
         }

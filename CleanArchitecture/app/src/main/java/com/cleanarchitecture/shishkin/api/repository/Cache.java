@@ -19,31 +19,42 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Cache {
+    // типы кеширования
+    public static final int USE_NO_CACHE = 0; // не использовать кеш ни при чтении ни при сохранении данных
+    public static final int USE_MEMORY_CACHE = 1; // использовать кеш в памяти при чтении и при сохранении данных - данные будут прочитаны позднее
+    public static final int USE_DISK_CACHE = 2; // использовать кеш на диске при чтении и при сохранении данных - данные будут прочитаны позднее
+    public static final int USE_CACHE = 3; // использовать кеш в памяти и на диске при чтении и при сохранении данных - данные будут прочитаны позднее
+    public static final int USE_ONLY_MEMORY_CACHE = 4; // использовать только кеш в памяти для получения данных
+    public static final int USE_ONLY_DISK_CACHE = 5; // использовать только кеш на диске для получения данных
+    public static final int USE_ONLY_CACHE = 6; // использовать только кеш в памяти и на диске для получения данных
+    public static final int USE_SAVE_MEMORY_CACHE = 7; // сохранять только в кеше памяти после получения данных. Не использовать кеш для чтения
+    public static final int USE_SAVE_DISK_CACHE = 8; // сохранять только в кеше на диске после получения данных. Не использовать кеш для чтения
+    public static final int USE_SAVE_CACHE = 9; // сохранять в кеш в памяти и на диске после получения данных. Не использовать кеш для чтения
 
-    public static Serializable getFromCache(final String key, final int cacheType) {
+    public static Serializable get(final String key, final int cacheType) {
         final ISerializableStorage diskCache = Admin.getInstance().get(SerializableDiskCache.NAME);
         final ISerializableStorage memoryCache = Admin.getInstance().get(SerializableMemoryCache.NAME);
 
         switch (cacheType) {
-            case Repository.USE_NO_CACHE:
+            case USE_NO_CACHE:
                 break;
 
-            case Repository.USE_ONLY_MEMORY_CACHE:
-            case Repository.USE_MEMORY_CACHE:
+            case USE_ONLY_MEMORY_CACHE:
+            case USE_MEMORY_CACHE:
                 if (memoryCache != null) {
                     return memoryCache.get(key);
                 }
                 break;
 
-            case Repository.USE_ONLY_DISK_CACHE:
-            case Repository.USE_DISK_CACHE:
+            case USE_ONLY_DISK_CACHE:
+            case USE_DISK_CACHE:
                 if (diskCache != null) {
                     return diskCache.get(key);
                 }
                 break;
 
-            case Repository.USE_ONLY_CACHE:
-            case Repository.USE_CACHE:
+            case USE_ONLY_CACHE:
+            case USE_CACHE:
                 Serializable value = null;
                 if (memoryCache != null) {
                     value = memoryCache.get(key);
@@ -58,30 +69,30 @@ public class Cache {
         return null;
     }
 
-    public static <T extends Parcelable> T getFromCache(final String key, final int cacheType, final Class itemClass) {
+    public static <T extends Parcelable> T get(final String key, final int cacheType, final Class itemClass) {
         final IExpiredParcelableStorage<T> diskCache = Admin.getInstance().get(ParcelableDiskCache.NAME);
         final IParcelableStorage<T> memoryCache = Admin.getInstance().get(ParcelableMemoryCache.NAME);
 
         switch (cacheType) {
-            case Repository.USE_NO_CACHE:
+            case USE_NO_CACHE:
                 break;
 
-            case Repository.USE_ONLY_MEMORY_CACHE:
-            case Repository.USE_MEMORY_CACHE:
+            case USE_ONLY_MEMORY_CACHE:
+            case USE_MEMORY_CACHE:
                 if (memoryCache != null) {
                     return memoryCache.get(key, itemClass);
                 }
                 break;
 
-            case Repository.USE_ONLY_DISK_CACHE:
-            case Repository.USE_DISK_CACHE:
+            case USE_ONLY_DISK_CACHE:
+            case USE_DISK_CACHE:
                 if (diskCache != null) {
                     return diskCache.get(key, itemClass);
                 }
                 break;
 
-            case Repository.USE_ONLY_CACHE:
-            case Repository.USE_CACHE:
+            case USE_ONLY_CACHE:
+            case USE_CACHE:
                 T value = null;
                 if (memoryCache != null) {
                     value = memoryCache.get(key, itemClass);
@@ -96,30 +107,30 @@ public class Cache {
         return null;
     }
 
-    public static <T extends Parcelable> List<T> getListFromCache(final String key, final int cacheType, final Class itemClass) {
+    public static <T extends Parcelable> List<T> getList(final String key, final int cacheType, final Class itemClass) {
         final IExpiredParcelableStorage<T> diskCache = Admin.getInstance().get(ParcelableDiskCache.NAME);
         final IParcelableStorage<T> memoryCache = Admin.getInstance().get(ParcelableMemoryCache.NAME);
 
         switch (cacheType) {
-            case Repository.USE_NO_CACHE:
+            case USE_NO_CACHE:
                 break;
 
-            case Repository.USE_ONLY_MEMORY_CACHE:
-            case Repository.USE_MEMORY_CACHE:
+            case USE_ONLY_MEMORY_CACHE:
+            case USE_MEMORY_CACHE:
                 if (memoryCache != null) {
                     return memoryCache.getList(key, itemClass);
                 }
                 break;
 
-            case Repository.USE_ONLY_DISK_CACHE:
-            case Repository.USE_DISK_CACHE:
+            case USE_ONLY_DISK_CACHE:
+            case USE_DISK_CACHE:
                 if (diskCache != null) {
                     return diskCache.getList(key, itemClass);
                 }
                 break;
 
-            case Repository.USE_ONLY_CACHE:
-            case Repository.USE_CACHE:
+            case USE_ONLY_CACHE:
+            case USE_CACHE:
                 List<T> value = null;
                 if (memoryCache != null) {
                     value = memoryCache.getList(key, itemClass);
@@ -134,25 +145,25 @@ public class Cache {
         return null;
     }
 
-    public static void putToCache(final String key, final int cacheType, Serializable value, long expired) {
+    public static void put(final String key, final int cacheType, Serializable value, long expired) {
         final Context context = AdminUtils.getContext();
         if (context == null) {
             return;
         }
 
         switch (cacheType) {
-            case Repository.USE_NO_CACHE:
+            case USE_NO_CACHE:
                 break;
 
-            case Repository.USE_ONLY_MEMORY_CACHE:
-            case Repository.USE_SAVE_MEMORY_CACHE:
-            case Repository.USE_MEMORY_CACHE:
+            case USE_ONLY_MEMORY_CACHE:
+            case USE_SAVE_MEMORY_CACHE:
+            case USE_MEMORY_CACHE:
                 MemoryCacheService.put(context, key, value);
                 break;
 
-            case Repository.USE_ONLY_DISK_CACHE:
-            case Repository.USE_SAVE_DISK_CACHE:
-            case Repository.USE_DISK_CACHE:
+            case USE_ONLY_DISK_CACHE:
+            case USE_SAVE_DISK_CACHE:
+            case USE_DISK_CACHE:
                 if (expired > 0) {
                     SerializableDiskCacheService.put(context, key, value, expired);
                 } else {
@@ -160,9 +171,9 @@ public class Cache {
                 }
                 break;
 
-            case Repository.USE_ONLY_CACHE:
-            case Repository.USE_SAVE_CACHE:
-            case Repository.USE_CACHE:
+            case USE_ONLY_CACHE:
+            case USE_SAVE_CACHE:
+            case USE_CACHE:
                 MemoryCacheService.put(context, key, value);
                 if (expired > 0) {
                     SerializableDiskCacheService.put(context, key, value, expired);
@@ -173,75 +184,91 @@ public class Cache {
         }
     }
 
-    public static <T extends Parcelable> void putToCache(final String key, final int cacheType, T value, long expired) {
+    public static <T extends Parcelable> void put(final String key, final int cacheType, T value, long expired) {
         final IExpiredParcelableStorage<T> diskCache = Admin.getInstance().get(ParcelableDiskCache.NAME);
         final IParcelableStorage<T> memoryCache = Admin.getInstance().get(ParcelableMemoryCache.NAME);
 
         switch (cacheType) {
-            case Repository.USE_NO_CACHE:
+            case USE_NO_CACHE:
                 break;
 
-            case Repository.USE_ONLY_MEMORY_CACHE:
-            case Repository.USE_SAVE_MEMORY_CACHE:
-            case Repository.USE_MEMORY_CACHE:
-                memoryCache.put(key, value);
-                break;
-
-            case Repository.USE_ONLY_DISK_CACHE:
-            case Repository.USE_SAVE_DISK_CACHE:
-            case Repository.USE_DISK_CACHE:
-                if (expired > 0) {
-                    diskCache.put(key, value, expired);
-                } else {
-                    diskCache.put(key, value);
+            case USE_ONLY_MEMORY_CACHE:
+            case USE_SAVE_MEMORY_CACHE:
+            case USE_MEMORY_CACHE:
+                if (memoryCache != null) {
+                    memoryCache.put(key, value);
                 }
                 break;
 
-            case Repository.USE_ONLY_CACHE:
-            case Repository.USE_SAVE_CACHE:
-            case Repository.USE_CACHE:
-                memoryCache.put(key, value);
-                if (expired > 0) {
-                    diskCache.put(key, value, expired);
-                } else {
-                    diskCache.put(key, value);
+            case USE_ONLY_DISK_CACHE:
+            case USE_SAVE_DISK_CACHE:
+            case USE_DISK_CACHE:
+                if (diskCache != null) {
+                    if (expired > 0) {
+                        diskCache.put(key, value, expired);
+                    } else {
+                        diskCache.put(key, value);
+                    }
+                }
+                break;
+
+            case USE_ONLY_CACHE:
+            case USE_SAVE_CACHE:
+            case USE_CACHE:
+                if (memoryCache != null) {
+                    memoryCache.put(key, value);
+                }
+                if (diskCache != null) {
+                    if (expired > 0) {
+                        diskCache.put(key, value, expired);
+                    } else {
+                        diskCache.put(key, value);
+                    }
                 }
                 break;
         }
     }
 
-    public static <T extends Parcelable> void putToCache(final String key, final int cacheType, List<T> value, long expired) {
+    public static <T extends Parcelable> void put(final String key, final int cacheType, List<T> value, long expired) {
         final IExpiredParcelableStorage<T> diskCache = Admin.getInstance().get(ParcelableDiskCache.NAME);
         final IParcelableStorage<T> memoryCache = Admin.getInstance().get(ParcelableMemoryCache.NAME);
 
         switch (cacheType) {
-            case Repository.USE_NO_CACHE:
+            case USE_NO_CACHE:
                 break;
 
-            case Repository.USE_ONLY_MEMORY_CACHE:
-            case Repository.USE_SAVE_MEMORY_CACHE:
-            case Repository.USE_MEMORY_CACHE:
-                memoryCache.put(key, value);
-                break;
-
-            case Repository.USE_ONLY_DISK_CACHE:
-            case Repository.USE_SAVE_DISK_CACHE:
-            case Repository.USE_DISK_CACHE:
-                if (expired > 0) {
-                    diskCache.put(key, value, expired);
-                } else {
-                    diskCache.put(key, value);
+            case USE_ONLY_MEMORY_CACHE:
+            case USE_SAVE_MEMORY_CACHE:
+            case USE_MEMORY_CACHE:
+                if (memoryCache != null) {
+                    memoryCache.put(key, value);
                 }
                 break;
 
-            case Repository.USE_ONLY_CACHE:
-            case Repository.USE_SAVE_CACHE:
-            case Repository.USE_CACHE:
-                memoryCache.put(key, value);
-                if (expired > 0) {
-                    diskCache.put(key, value, expired);
-                } else {
-                    diskCache.put(key, value);
+            case USE_ONLY_DISK_CACHE:
+            case USE_SAVE_DISK_CACHE:
+            case USE_DISK_CACHE:
+                if (diskCache != null) {
+                    if (expired > 0) {
+                        diskCache.put(key, value, expired);
+                    } else {
+                        diskCache.put(key, value);
+                    }
+                }
+                break;
+
+            case USE_ONLY_CACHE:
+            case USE_SAVE_CACHE:
+            case USE_CACHE:
+                if (memoryCache != null) {
+                    memoryCache.put(key, value);
+                }
+                if (diskCache != null) {
+                    if (expired > 0) {
+                        diskCache.put(key, value, expired);
+                    } else {
+                        diskCache.put(key, value);
+                    }
                 }
                 break;
         }

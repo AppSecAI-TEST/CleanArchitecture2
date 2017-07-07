@@ -4,9 +4,7 @@ import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryResponseGetContactsEvent;
-import com.cleanarchitecture.shishkin.common.utils.SerializableUtil;
 
-import java.io.Serializable;
 import java.util.List;
 
 public class RepositoryContentProvider {
@@ -16,7 +14,7 @@ public class RepositoryContentProvider {
     public static synchronized void requestContacts(final RepositoryRequestGetContactsEvent event) {
         final IRepository repository = AdminUtils.getRepository();
         if (repository != null) {
-            final List<PhoneContactItem> list = SerializableUtil.serializableToList(repository.getFromCache(String.valueOf(event.getId()), event.getCacheType()));
+            final List<PhoneContactItem> list = Cache.getList(String.valueOf(event.getId()), event.getCacheType(), PhoneContactItem.class);
             if (list != null) {
                 AdminUtils.postEvent(new RepositoryResponseGetContactsEvent()
                         .setResponse(list)
@@ -26,7 +24,7 @@ public class RepositoryContentProvider {
                 responseEvent.setFrom(Repository.FROM_CONTENT_PROVIDER);
 
                 if (!responseEvent.hasError()) {
-                    repository.putToCache(String.valueOf(event.getId()), event.getCacheType(), (Serializable) responseEvent.getResponse(), event.getExpired());
+                    Cache.put(String.valueOf(event.getId()), event.getCacheType(), (List<PhoneContactItem>) responseEvent.getResponse(), event.getExpired());
                 }
 
                 AdminUtils.postEvent(responseEvent);

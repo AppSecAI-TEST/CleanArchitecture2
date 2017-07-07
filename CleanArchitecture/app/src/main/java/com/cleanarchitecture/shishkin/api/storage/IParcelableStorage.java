@@ -2,9 +2,11 @@ package com.cleanarchitecture.shishkin.api.storage;
 
 import android.os.Parcelable;
 
+import com.cleanarchitecture.shishkin.api.controller.ISubscriber;
+
 import java.util.List;
 
-public interface IParcelableStorage<T extends Parcelable> {
+public interface IParcelableStorage<T extends Parcelable> extends ISubscriber {
 
     /**
      * Put value to storage.

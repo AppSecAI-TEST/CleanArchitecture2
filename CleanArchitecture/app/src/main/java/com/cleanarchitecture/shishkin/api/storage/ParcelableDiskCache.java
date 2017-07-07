@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.cleanarchitecture.shishkin.api.controller.AbstractModule;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.AppPreferences;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class ParcelableDiskCache<T extends Parcelable> implements IExpiredParcelableStorage<T> {
+public class ParcelableDiskCache<T extends Parcelable>  extends AbstractModule implements IExpiredParcelableStorage<T> {
     public static final String NAME = ParcelableDiskCache.class.getName();
     private static final String LOG_TAG = "ParcelableDiskCache:";
 
@@ -39,7 +40,7 @@ public class ParcelableDiskCache<T extends Parcelable> implements IExpiredParcel
     private static final String LIST = "LIST";
     private static final String PARCELABLE = "PARCELABLE";
 
-    private static final String DISK_CACHE_DIR = ApplicationController.EXTERNAL_STORAGE_APPLICATION_PATH + File.separator + "ParcelableDiskCache";
+    private static final String DISK_CACHE_DIR = ApplicationController.getInstance().getExternalCachePath() + File.separator + "ParcelableDiskCache";
     private static final int DISK_CACHE_SIZE = Constant.MB * 10; // 10MB
     private static final int BUFFER_SIZE = Constant.KB * 16; // 16kb
 
@@ -445,4 +446,13 @@ public class ParcelableDiskCache<T extends Parcelable> implements IExpiredParcel
     }
 
 
+    @Override
+    public String getName() {
+        return NAME;
+    }
+
+    @Override
+    public String getSubscriberType() {
+        return null;
+    }
 }
