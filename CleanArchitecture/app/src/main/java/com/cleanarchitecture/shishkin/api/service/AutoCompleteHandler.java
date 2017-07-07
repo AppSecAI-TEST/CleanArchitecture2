@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.api.controller;
+package com.cleanarchitecture.shishkin.api.service;
 
 import android.os.Handler;
 import android.os.HandlerThread;
