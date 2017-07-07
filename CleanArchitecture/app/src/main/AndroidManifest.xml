@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
-        android:name=".application.app.ApplicationController"
+        android:name=".api.controller.ApplicationController"
         android:allowBackup="true"
         android:configChanges="keyboardHidden|orientation|screenSize"
         android:excludeFromRecents="false"

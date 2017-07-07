@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.application.app;
+package com.cleanarchitecture.shishkin.api.controller;
 
 public class Constant {
 

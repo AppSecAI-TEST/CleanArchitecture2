@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.application.app;
+package com.cleanarchitecture.shishkin.api.controller;
 
 import android.Manifest;
 import android.content.Context;
@@ -7,9 +7,6 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
-import com.cleanarchitecture.shishkin.api.controller.Admin;
-import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
-import com.cleanarchitecture.shishkin.api.controller.IApplicationController;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseOnLowMemoryEvent;
 
 import java.io.File;
@@ -27,10 +24,6 @@ public class ApplicationController extends MultiDexApplication implements IAppli
         sInstance = this;
 
         super.onCreate();
-
-        //if (!LeakCanary.isInAnalyzerProcess(this)) {
-        //    LeakCanary.install(this);
-        //}
 
         Admin.instantiate();
     }

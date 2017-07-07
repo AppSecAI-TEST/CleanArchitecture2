@@ -2,6 +2,7 @@ package com.cleanarchitecture.shishkin.application.data.livedata;
 
 import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.api.controller.Constant;
 import com.cleanarchitecture.shishkin.api.data.AbstractContentProviderLiveData;
 import com.cleanarchitecture.shishkin.api.event.ui.HideHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowHorizontalProgressBarEvent;
@@ -10,7 +11,6 @@ import com.cleanarchitecture.shishkin.api.storage.IExpiredParcelableStorage;
 import com.cleanarchitecture.shishkin.api.storage.IParcelableStorage;
 import com.cleanarchitecture.shishkin.api.storage.ParcelableDiskCache;
 import com.cleanarchitecture.shishkin.api.storage.ParcelableMemoryCache;
-import com.cleanarchitecture.shishkin.application.app.Constant;
 import com.cleanarchitecture.shishkin.application.data.dao.PhoneContactDAO;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;

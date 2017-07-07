@@ -16,8 +16,8 @@ public class SwipeRefreshPresenter extends AbstractPresenter {
 
     public void bindView(final SwipeRefreshLayout view) {
         if (view != null) {
-            view.setColorSchemeResources (R.color.blue);
-            view.setProgressBackgroundColorSchemeResource (R.color.gray_light);
+            view.setColorSchemeResources(R.color.blue);
+            view.setProgressBackgroundColorSchemeResource(R.color.gray_light);
 
             mSwipeRefreshLayout = new WeakReference<>(view);
             mSwipeRefreshLayout.get().setOnRefreshListener(() -> {
