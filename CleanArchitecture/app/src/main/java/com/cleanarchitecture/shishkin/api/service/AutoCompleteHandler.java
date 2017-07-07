@@ -5,8 +5,8 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Process;
-import android.util.Log;
 
+import com.cleanarchitecture.shishkin.api.controller.ErrorController;
 import com.cleanarchitecture.shishkin.common.utils.SafeUtils;
 
 import java.util.concurrent.TimeUnit;
@@ -36,7 +36,7 @@ public class AutoCompleteHandler<E> {
 
     }
 
-    private static final String LOG_TAG = "AsyncHandler";
+    private static final String LOG_TAG = "AutoCompleteHandler";
 
     private static final int EVENT_TOKEN = 0xD0D0F00D;
     private static final int SHUTDOWN_TOKEN = 0xDEADBEEF;
@@ -184,7 +184,7 @@ public class AutoCompleteHandler<E> {
                     try {
                         handleEvent(event);
                     } catch (final Exception e) {
-                        Log.w(LOG_TAG, "An exception occurred during handleEvent()", e);
+                        ErrorController.getInstance().onError(LOG_TAG, e);
                     }
                     scheduleShutdown();
                     break;

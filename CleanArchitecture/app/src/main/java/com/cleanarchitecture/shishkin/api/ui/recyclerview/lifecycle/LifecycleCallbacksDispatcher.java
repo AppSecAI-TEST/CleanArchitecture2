@@ -2,14 +2,11 @@ package com.cleanarchitecture.shishkin.api.ui.recyclerview.lifecycle;
 
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class LifecycleCallbacksDispatcher {
-
-    private static final String TAG = "LifecycleDispatcher";
 
     private static final int NONE = 0;
     private static final int STARTED = 1;
@@ -28,7 +25,6 @@ public class LifecycleCallbacksDispatcher {
     }
 
     public void registerLifecycleCallbacks(@NonNull final LifecycleCallbacks lifecycleCallbacks) {
-        Log.i(TAG, "#registerLifecycleCallbacks: " + lifecycleCallbacks);
         if (!mLifecycleCallbacks.containsKey(lifecycleCallbacks)) {
             @LifecycleState int lifecycleState = NONE;
             if ((mLifecycleState & STARTED) == STARTED) {
@@ -44,7 +40,6 @@ public class LifecycleCallbacksDispatcher {
     }
 
     public void unregisterLifecycleCallbacks(@NonNull final LifecycleCallbacks lifecycleCallbacks) {
-        Log.i(TAG, "#unregisterLifecycleCallbacks: " + lifecycleCallbacks);
         if (mLifecycleCallbacks.containsKey(lifecycleCallbacks)) {
             @LifecycleState final int lifecycleState = mLifecycleCallbacks.remove(lifecycleCallbacks);
             if ((lifecycleState & RESUMED) == RESUMED) {
@@ -58,7 +53,6 @@ public class LifecycleCallbacksDispatcher {
 
     public void dispatchStarted() {
         mLifecycleState |= STARTED;
-        Log.i(TAG, "#dispatchStarted: state=" + mLifecycleState);
 
         for (final Map.Entry<LifecycleCallbacks, Integer> entry : mLifecycleCallbacks.entrySet()) {
             @LifecycleState final int lifecycleState = entry.getValue();
@@ -72,7 +66,6 @@ public class LifecycleCallbacksDispatcher {
 
     public void dispatchResumed() {
         mLifecycleState |= RESUMED;
-        Log.i(TAG, "#dispatchResumed: state=" + mLifecycleState);
 
         for (final Map.Entry<LifecycleCallbacks, Integer> entry : mLifecycleCallbacks.entrySet()) {
             @LifecycleState final int lifecycleState = entry.getValue();
@@ -86,7 +79,6 @@ public class LifecycleCallbacksDispatcher {
 
     public void dispatchPaused() {
         mLifecycleState &= ~RESUMED;
-        Log.i(TAG, "#dispatchPaused: state=" + mLifecycleState);
 
         for (final Map.Entry<LifecycleCallbacks, Integer> entry : mLifecycleCallbacks.entrySet()) {
             @LifecycleState final int lifecycleState = entry.getValue();
@@ -100,7 +92,6 @@ public class LifecycleCallbacksDispatcher {
 
     public void dispatchStopped() {
         mLifecycleState &= ~STARTED;
-        Log.i(TAG, "#dispatchStopped: state=" + mLifecycleState);
 
         for (final Map.Entry<LifecycleCallbacks, Integer> entry : mLifecycleCallbacks.entrySet()) {
             @LifecycleState final int lifecycleState = entry.getValue();

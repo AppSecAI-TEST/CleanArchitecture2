@@ -11,7 +11,6 @@ import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -111,13 +110,11 @@ public class DragMultipleModalChoiceMode extends ChoiceMode {
             mHotspotHeight = HEIGHT_UNSPECIFIED;
             mHotspotOffsetTop = HEIGHT_UNSPECIFIED;
             mHotspotOffsetBottom = HEIGHT_UNSPECIFIED;
-            d("Auto-scroll disabled");
 
         } else {
             mHotspotHeight = mDefaultHotspotHeight;
             mHotspotOffsetTop = mDefaultHotspotOffsetTop;
             mHotspotOffsetBottom = mDefaultHotspotOffsetBottom;
-            d("Hotspot height = %d", mHotspotHeight);
         }
     }
 
@@ -308,7 +305,6 @@ public class DragMultipleModalChoiceMode extends ChoiceMode {
                         mInBottomHotspot = false;
                         if (!mInTopHotspot) {
                             mInTopHotspot = true;
-                            d("Now in TOP hotspot");
                             mHandler.removeCallbacks(mAutoScroller);
                             mHandler.postDelayed(mAutoScroller, AUTO_SCROLL_DELAY);
                         }
@@ -316,13 +312,11 @@ public class DragMultipleModalChoiceMode extends ChoiceMode {
                         final float simulatedFactor = mHotspotTopBoundEnd - mHotspotTopBoundStart;
                         final float simulatedY = e.getY() - mHotspotTopBoundStart;
                         mAutoScrollVelocity = (int) (simulatedFactor - simulatedY) / 2;
-                        d("Auto scroll velocity = %d", mAutoScrollVelocity);
 
                     } else if (e.getY() >= mHotspotBottomBoundStart && e.getY() <= mHotspotBottomBoundEnd) {
                         mInTopHotspot = false;
                         if (!mInBottomHotspot) {
                             mInBottomHotspot = true;
-                            d("Now in BOTTOM hotspot");
                             mHandler.removeCallbacks(mAutoScroller);
                             mHandler.postDelayed(mAutoScroller, AUTO_SCROLL_DELAY);
                         }
@@ -331,10 +325,7 @@ public class DragMultipleModalChoiceMode extends ChoiceMode {
                         final float simulatedFactor = mHotspotBottomBoundStart + mHotspotBottomBoundEnd;
                         mAutoScrollVelocity = (int) (simulatedY - simulatedFactor) / 2;
 
-                        d("Auto scroll velocity = %d", mAutoScrollVelocity);
-
                     } else if (mInTopHotspot || mInBottomHotspot) {
-                        d("Left the hotspot");
                         mHandler.removeCallbacks(mAutoScroller);
                         mInTopHotspot = false;
                         mInBottomHotspot = false;
@@ -464,12 +455,10 @@ public class DragMultipleModalChoiceMode extends ChoiceMode {
                                             @IntRange(from = RecyclerView.NO_POSITION) final int position,
                                             @IntRange(from = RecyclerView.NO_ID) final long itemId) {
         if (mDragSelectActive) {
-            d("Drag selection is already active.");
             return true;
         }
 
         if (position == RecyclerView.NO_POSITION) {
-            d("Drag selection can not be started on unknown position.");
             return false;
         }
 
@@ -482,7 +471,6 @@ public class DragMultipleModalChoiceMode extends ChoiceMode {
         mDragSelectActive = true;
         mInitialPosition = position;
         mLastDraggedIndex = position;
-        d("Drag selection initialized, starting at index %d.", position);
         return true;
     }
 
@@ -635,20 +623,6 @@ public class DragMultipleModalChoiceMode extends ChoiceMode {
             mRecyclerView = null;
         }
 
-    }
-
-    private static final boolean DEBUG_ENABLED = true;
-
-    private static void d(@NonNull final String message, @Nullable final Object... args) {
-        if (DEBUG_ENABLED) {
-            Log.d(TAG, String.format(message, args));
-        }
-    }
-
-    private static void w(@NonNull final String message, @Nullable final Object... args) {
-        if (DEBUG_ENABLED) {
-            Log.w(TAG, String.format(message, args));
-        }
     }
 
 }
