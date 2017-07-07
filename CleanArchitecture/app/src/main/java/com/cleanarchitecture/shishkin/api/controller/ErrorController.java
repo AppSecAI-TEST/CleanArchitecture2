@@ -21,7 +21,7 @@ public class ErrorController implements IErrorController {
 
     private static volatile ErrorController sInstance;
 
-    public static final int ERROR_LOST_AAPLICATION_CONTEXT = 1;
+    public static final int ERROR_LOST_APPLICATION_CONTEXT = 1;
     public static final int ERROR_GET_DATA = 2;
     public static final int ERROR_DB = 3;
     public static final int ERROR_NOT_FOUND_ACTIVITY = 4;

@@ -34,7 +34,7 @@ public class ContentProvider extends AbstractModule implements IContentProvider 
 
         final Context context = AdminUtils.getContext();
         if (context == null) {
-            return event.setErrorCode(NAME, ErrorController.ERROR_LOST_AAPLICATION_CONTEXT);
+            return event.setErrorCode(NAME, ErrorController.ERROR_LOST_APPLICATION_CONTEXT);
         }
 
         if (!AdminUtils.checkPermission(Manifest.permission.READ_CONTACTS)) {
@@ -57,9 +57,7 @@ public class ContentProvider extends AbstractModule implements IContentProvider 
         } catch (Exception e) {
             event.setErrorText(NAME, e, context.getString(R.string.error_read_phone_contacts));
         } finally {
-            if (cursor != null) {
-                CloseUtils.close(cursor);
-            }
+            CloseUtils.close(cursor);
         }
         return event;
     }

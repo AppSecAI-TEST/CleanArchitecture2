@@ -494,7 +494,7 @@ public class AdminUtils {
         }
 
         switch (errorCode) {
-            case ErrorController.ERROR_LOST_AAPLICATION_CONTEXT:
+            case ErrorController.ERROR_LOST_APPLICATION_CONTEXT:
                 return context.getString(R.string.error_db_app_not_loaded);
 
             case ErrorController.ERROR_GET_DATA:
