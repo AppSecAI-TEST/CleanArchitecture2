@@ -10,10 +10,8 @@ import android.support.v4.app.NotificationCompat;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.api.storage.SerializableDiskStorage;
 import com.cleanarchitecture.shishkin.application.ui.activity.MainActivity;
 import com.cleanarchitecture.shishkin.common.utils.IntentUtils;
-import com.cleanarchitecture.shishkin.common.utils.SerializableUtil;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
 import java.util.Collections;
@@ -245,33 +243,21 @@ public class NotificationService extends LiveLongBackgroundIntentService {
 
     @WorkerThread
     private void onHandleAddMessageAction(final String message) {
-        final List<String> list = SerializableUtil.serializableToList(SerializableDiskStorage.getInstance(getApplicationContext()).get(NAME));
-        if (list != null) {
-            mMessages = list;
-        }
-
         mMessages.add(0, message);
         while (mMessages.size() > mMessagesCount) {
             mMessages.remove(mMessages.get(mMessages.size() - 1));
         }
-        SerializableDiskStorage.getInstance(getApplicationContext()).put(NAME, SerializableUtil.toSerializable(mMessages));
 
         sendNotification(message);
     }
 
     @WorkerThread
     private void onHandleAddDistinctMessageAction(final String message) {
-        final List<String> list = SerializableUtil.serializableToList(SerializableDiskStorage.getInstance(getApplicationContext()).get(NAME));
-        if (list != null) {
-            mMessages = list;
-        }
-
         if (!mMessages.contains(message)) {
             mMessages.add(0, message);
             while (mMessages.size() > mMessagesCount) {
                 mMessages.remove(mMessages.get(mMessages.size() - 1));
             }
-            SerializableDiskStorage.getInstance(getApplicationContext()).put(NAME, SerializableUtil.toSerializable(mMessages));
 
             sendNotification(message);
         } else {
@@ -281,21 +267,14 @@ public class NotificationService extends LiveLongBackgroundIntentService {
 
     @WorkerThread
     private void onHandleReplaceMessageAction(final String message) {
-
         mMessages.clear();
         mMessages.add(0, message);
-        SerializableDiskStorage.getInstance(getApplicationContext()).put(NAME, SerializableUtil.toSerializable(mMessages));
 
         sendNotification(message);
     }
 
     @WorkerThread
     private void onHandleRefreshAction() {
-        final List<String> list = SerializableUtil.serializableToList(SerializableDiskStorage.getInstance(getApplicationContext()).get(NAME));
-        if (list != null) {
-            mMessages = list;
-        }
-
         if (mMessages.isEmpty()) {
             onHandleClearAction();
             return;
@@ -309,7 +288,6 @@ public class NotificationService extends LiveLongBackgroundIntentService {
     @WorkerThread
     private void onHandleClearAction() {
         mMessages.clear();
-        SerializableDiskStorage.getInstance(getApplicationContext()).put(NAME, SerializableUtil.toSerializable(mMessages));
 
         final NotificationManager nm = AdminUtils.getSystemService(Context.NOTIFICATION_SERVICE);
         if (nm != null) {
@@ -320,7 +298,6 @@ public class NotificationService extends LiveLongBackgroundIntentService {
     @WorkerThread
     private void onHandleDeleteMessagesAction() {
         mMessages.clear();
-        SerializableDiskStorage.getInstance(getApplicationContext()).put(NAME, SerializableUtil.toSerializable(mMessages));
     }
 
     @WorkerThread
