@@ -1,10 +1,8 @@
-package com.cleanarchitecture.shishkin.api.controller;
+package com.cleanarchitecture.shishkin.api.service;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-
-import com.cleanarchitecture.shishkin.api.service.NotificationService;
 
 /**
  * BroadcastReceiver принимающий сообщение при свайпе на сообщении в зоне уведомлений
