@@ -22,7 +22,6 @@ import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,16 +38,6 @@ public class Repository extends AbstractModule implements IRepository, IModuleSu
     public static final int FROM_NETWORK = 2; // данные получены из сети
 
     public Repository() {
-    }
-
-    @Override
-    public synchronized Serializable getFromCache(final String key, final int cacheType) {
-        return Cache.getFromCache(key, cacheType);
-    }
-
-    @Override
-    public synchronized void putToCache(final String key, final int cacheType, Serializable value, long expired) {
-        Cache.putToCache(key, cacheType, value, expired);
     }
 
     @Override

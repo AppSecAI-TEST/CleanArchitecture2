@@ -29,7 +29,6 @@ import com.cleanarchitecture.shishkin.api.presenter.AbstractPresenter;
 import com.cleanarchitecture.shishkin.api.repository.Cache;
 import com.cleanarchitecture.shishkin.api.repository.IDbProvider;
 import com.cleanarchitecture.shishkin.api.repository.IObserver;
-import com.cleanarchitecture.shishkin.api.repository.Repository;
 import com.cleanarchitecture.shishkin.api.ui.dialog.MaterialDialogExt;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.OnScrollListener;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.SwipeTouchHelper;

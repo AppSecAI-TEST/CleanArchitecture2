@@ -6,6 +6,8 @@ import com.cleanarchitecture.shishkin.api.repository.ContentProvider;
 import com.cleanarchitecture.shishkin.api.repository.DbProvider;
 import com.cleanarchitecture.shishkin.api.repository.NetProvider;
 import com.cleanarchitecture.shishkin.api.repository.Repository;
+import com.cleanarchitecture.shishkin.api.storage.ParcelableDiskCache;
+import com.cleanarchitecture.shishkin.api.storage.ParcelableMemoryCache;
 import com.cleanarchitecture.shishkin.api.storage.SerializableDiskCache;
 import com.cleanarchitecture.shishkin.api.storage.SerializableMemoryCache;
 import com.cleanarchitecture.shishkin.api.usecases.UseCasesController;
@@ -50,12 +52,18 @@ public class Admin extends AbstractAdmin {
         // default persistent (Singleton) controllers
         registerModule(ErrorController.getInstance());
         registerModule(EventBusController.getInstance());
+
         if (ApplicationUtils.getHeapSize() > MIN_HEAP_SIZE) {
             registerModule(SerializableMemoryCache.getInstance());
         }
+        if (ApplicationUtils.getHeapSize() > MIN_HEAP_SIZE) {
+            registerModule(ParcelableMemoryCache.getInstance());
+        }
+
         if (context != null) {
             registerModule(SerializableDiskCache.getInstance(context));
         }
+        registerModule(ParcelableDiskCache.getInstance());
 
         // other controllers
         registerModule(CrashController.NAME);

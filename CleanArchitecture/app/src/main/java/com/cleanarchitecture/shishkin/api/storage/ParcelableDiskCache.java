@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.cleanarchitecture.shishkin.api.controller.AbstractModule;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.AppPreferences;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class ParcelableDiskCache<T extends Parcelable> implements IExpiredParcelableStorage<T> {
+public class ParcelableDiskCache<T extends Parcelable>  extends AbstractModule implements IExpiredParcelableStorage<T> {
     public static final String NAME = ParcelableDiskCache.class.getName();
     private static final String LOG_TAG = "ParcelableDiskCache:";
 
@@ -445,4 +446,13 @@ public class ParcelableDiskCache<T extends Parcelable> implements IExpiredParcel
     }
 
 
+    @Override
+    public String getName() {
+        return NAME;
+    }
+
+    @Override
+    public String getSubscriberType() {
+        return null;
+    }
 }

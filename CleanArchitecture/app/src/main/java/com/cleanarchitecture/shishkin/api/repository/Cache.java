@@ -31,7 +31,7 @@ public class Cache {
     public static final int USE_SAVE_DISK_CACHE = 8; // сохранять только в кеше на диске после получения данных. Не использовать кеш для чтения
     public static final int USE_SAVE_CACHE = 9; // сохранять в кеш в памяти и на диске после получения данных. Не использовать кеш для чтения
 
-    public static Serializable getFromCache(final String key, final int cacheType) {
+    public static Serializable get(final String key, final int cacheType) {
         final ISerializableStorage diskCache = Admin.getInstance().get(SerializableDiskCache.NAME);
         final ISerializableStorage memoryCache = Admin.getInstance().get(SerializableMemoryCache.NAME);
 
@@ -69,7 +69,7 @@ public class Cache {
         return null;
     }
 
-    public static <T extends Parcelable> T getFromCache(final String key, final int cacheType, final Class itemClass) {
+    public static <T extends Parcelable> T get(final String key, final int cacheType, final Class itemClass) {
         final IExpiredParcelableStorage<T> diskCache = Admin.getInstance().get(ParcelableDiskCache.NAME);
         final IParcelableStorage<T> memoryCache = Admin.getInstance().get(ParcelableMemoryCache.NAME);
 
@@ -107,7 +107,7 @@ public class Cache {
         return null;
     }
 
-    public static <T extends Parcelable> List<T> getListFromCache(final String key, final int cacheType, final Class itemClass) {
+    public static <T extends Parcelable> List<T> getList(final String key, final int cacheType, final Class itemClass) {
         final IExpiredParcelableStorage<T> diskCache = Admin.getInstance().get(ParcelableDiskCache.NAME);
         final IParcelableStorage<T> memoryCache = Admin.getInstance().get(ParcelableMemoryCache.NAME);
 
@@ -145,7 +145,7 @@ public class Cache {
         return null;
     }
 
-    public static void putToCache(final String key, final int cacheType, Serializable value, long expired) {
+    public static void put(final String key, final int cacheType, Serializable value, long expired) {
         final Context context = AdminUtils.getContext();
         if (context == null) {
             return;
@@ -184,7 +184,7 @@ public class Cache {
         }
     }
 
-    public static <T extends Parcelable> void putToCache(final String key, final int cacheType, T value, long expired) {
+    public static <T extends Parcelable> void put(final String key, final int cacheType, T value, long expired) {
         final IExpiredParcelableStorage<T> diskCache = Admin.getInstance().get(ParcelableDiskCache.NAME);
         final IParcelableStorage<T> memoryCache = Admin.getInstance().get(ParcelableMemoryCache.NAME);
 
@@ -221,7 +221,7 @@ public class Cache {
         }
     }
 
-    public static <T extends Parcelable> void putToCache(final String key, final int cacheType, List<T> value, long expired) {
+    public static <T extends Parcelable> void put(final String key, final int cacheType, List<T> value, long expired) {
         final IExpiredParcelableStorage<T> diskCache = Admin.getInstance().get(ParcelableDiskCache.NAME);
         final IParcelableStorage<T> memoryCache = Admin.getInstance().get(ParcelableMemoryCache.NAME);
 

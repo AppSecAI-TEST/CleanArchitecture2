@@ -2,6 +2,7 @@ package com.cleanarchitecture.shishkin.api.storage;
 
 import android.content.Context;
 
+import com.cleanarchitecture.shishkin.api.controller.AbstractModule;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
@@ -10,7 +11,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import io.paperdb.Paper;
 
-public class SerializableDiskStorage implements ISerializableStorage {
+public class SerializableDiskStorage extends AbstractModule implements ISerializableStorage {
 
     public static final String NAME = SerializableDiskStorage.class.getName();
     private static final String LOG_TAG = "SerializableDiskStorage:";
@@ -131,4 +132,8 @@ public class SerializableDiskStorage implements ISerializableStorage {
         }
     }
 
+    @Override
+    public String getSubscriberType() {
+        return null;
+    }
 }

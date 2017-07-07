@@ -1,7 +1,6 @@
 package com.cleanarchitecture.shishkin.api.repository.requests;
 
 import com.cleanarchitecture.shishkin.api.repository.Cache;
-import com.cleanarchitecture.shishkin.api.repository.Repository;
 
 public abstract class AbstractRequest implements Runnable, IRequest {
     public static final int MAX_RANK = 10;
