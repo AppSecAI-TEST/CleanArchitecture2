@@ -6,9 +6,9 @@ import android.os.Bundle;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
-import com.cleanarchitecture.shishkin.api.controller.NotificationService;
 import com.cleanarchitecture.shishkin.api.event.CheckDiskCacheEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseStartApplicationEvent;
+import com.cleanarchitecture.shishkin.api.service.NotificationService;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractContentActivity;
 import com.cleanarchitecture.shishkin.application.presenter.FloatingActionMenuPresenter;
 import com.cleanarchitecture.shishkin.application.ui.fragment.HomeFragment;

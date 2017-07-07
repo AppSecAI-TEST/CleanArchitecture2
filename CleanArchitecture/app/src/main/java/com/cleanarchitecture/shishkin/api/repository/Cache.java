@@ -5,14 +5,14 @@ import android.os.Parcelable;
 
 import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.api.service.ParcelableDiskCacheService;
+import com.cleanarchitecture.shishkin.api.service.SerializableDiskCacheService;
 import com.cleanarchitecture.shishkin.api.storage.IExpiredParcelableStorage;
 import com.cleanarchitecture.shishkin.api.storage.IParcelableStorage;
 import com.cleanarchitecture.shishkin.api.storage.ISerializableStorage;
 import com.cleanarchitecture.shishkin.api.storage.ParcelableDiskCache;
-import com.cleanarchitecture.shishkin.api.storage.ParcelableDiskCacheService;
 import com.cleanarchitecture.shishkin.api.storage.ParcelableMemoryCache;
 import com.cleanarchitecture.shishkin.api.storage.SerializableDiskCache;
-import com.cleanarchitecture.shishkin.api.storage.SerializableDiskCacheService;
 import com.cleanarchitecture.shishkin.api.storage.SerializableMemoryCache;
 
 import java.io.Serializable;

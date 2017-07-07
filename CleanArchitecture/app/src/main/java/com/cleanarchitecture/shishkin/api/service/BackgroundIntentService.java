@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.api.controller;
+package com.cleanarchitecture.shishkin.api.service;
 
 import android.app.Service;
 import android.content.Intent;
