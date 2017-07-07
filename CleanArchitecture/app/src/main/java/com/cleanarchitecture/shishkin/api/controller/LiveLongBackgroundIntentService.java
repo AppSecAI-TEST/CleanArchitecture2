@@ -3,6 +3,7 @@ package com.cleanarchitecture.shishkin.api.controller;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
 
@@ -167,7 +168,7 @@ public abstract class LiveLongBackgroundIntentService extends Service
      *               android.content.Context#startService(Intent)}.
      */
     @WorkerThread
-    protected abstract void onHandleIntent(@NonNull final Intent intent);
+    protected abstract <T extends Parcelable> void onHandleIntent(@NonNull final Intent intent);
 
     @Override
     public void onShutdown(final AutoCompleteHandler handler) {

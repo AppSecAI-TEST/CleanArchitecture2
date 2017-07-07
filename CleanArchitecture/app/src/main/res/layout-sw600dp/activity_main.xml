@@ -18,26 +18,12 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true" />
 
-        <LinearLayout
+        <FrameLayout
+            android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_below="@+id/toolbar"
-            android:orientation="horizontal">
-
-            <FrameLayout
-                android:id="@+id/sidemenu"
-                android:layout_width="@dimen/sidemenu_width"
-                android:layout_height="match_parent" />
-
-            <View style="@style/VerticalDivider" />
-
-            <FrameLayout
-                android:id="@+id/content"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-        </LinearLayout>
+            android:layout_below="@+id/toolbar" />
 
     </RelativeLayout>
 
