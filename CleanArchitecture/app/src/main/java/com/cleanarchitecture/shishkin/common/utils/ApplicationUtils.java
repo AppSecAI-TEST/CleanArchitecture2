@@ -8,7 +8,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 
-import com.cleanarchitecture.shishkin.application.app.Constant;
+import com.cleanarchitecture.shishkin.api.controller.Constant;
 
 import java.util.ArrayList;
 import java.util.List;

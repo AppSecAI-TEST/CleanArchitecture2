@@ -27,7 +27,6 @@ import com.cleanarchitecture.shishkin.api.repository.Repository;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractActivity;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractContentActivity;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
-import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.SafeUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
@@ -320,7 +319,7 @@ public class AdminUtils {
      * @return the context
      */
     public static Context getContext() {
-        return ApplicationController.getInstance();
+        return ApplicationController.getInstance().getApplicationContext();
     }
 
     /**

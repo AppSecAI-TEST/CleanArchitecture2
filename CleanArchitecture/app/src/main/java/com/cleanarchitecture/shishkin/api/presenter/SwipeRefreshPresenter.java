@@ -3,6 +3,7 @@ package com.cleanarchitecture.shishkin.api.presenter;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 
+import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
 
@@ -15,6 +16,9 @@ public class SwipeRefreshPresenter extends AbstractPresenter {
 
     public void bindView(final SwipeRefreshLayout view) {
         if (view != null) {
+            view.setColorSchemeResources(R.color.blue);
+            view.setProgressBackgroundColorSchemeResource(R.color.gray_light);
+
             mSwipeRefreshLayout = new WeakReference<>(view);
             mSwipeRefreshLayout.get().setOnRefreshListener(() -> {
                 if (validate()) {
