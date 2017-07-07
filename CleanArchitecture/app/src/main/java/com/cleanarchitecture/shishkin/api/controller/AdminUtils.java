@@ -320,7 +320,7 @@ public class AdminUtils {
      * @return the context
      */
     public static Context getContext() {
-        return ApplicationController.getInstance();
+        return ApplicationController.getInstance().getApplicationContext();
     }
 
     /**

@@ -86,7 +86,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
         mSearchPresenter.bindView(view);
         registerPresenter(mSearchPresenter);
 
-        ApplicationUtils.grantPermisions(ApplicationController.PERMISIONS, AdminUtils.getActivity());
+        ApplicationUtils.grantPermisions(ApplicationController.getInstance().getRequiredPermisions(), AdminUtils.getActivity());
 
         if (!AdminUtils.isGooglePlayServices()) {
             AdminUtils.checkGooglePlayServices();

@@ -9,16 +9,17 @@ import android.support.multidex.MultiDexApplication;
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.api.controller.IApplicationController;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseOnLowMemoryEvent;
 
 import java.io.File;
 
-public class ApplicationController extends MultiDexApplication {
+public class ApplicationController extends MultiDexApplication implements IApplicationController {
 
     public static final String NAME = ApplicationController.class.getName();
-    public static final String EXTERNAL_STORAGE_APPLICATION_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() +
+    private static final String EXTERNAL_STORAGE_APPLICATION_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() +
             File.separator + BuildConfig.APPLICATION_ID + File.separator;
-    public static String[] PERMISIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CONTACTS, Manifest.permission.CALL_PHONE, Manifest.permission.ACCESS_FINE_LOCATION};
+    private static String[] PERMISIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CONTACTS, Manifest.permission.CALL_PHONE, Manifest.permission.ACCESS_FINE_LOCATION};
     private static volatile ApplicationController sInstance;
 
     @Override
@@ -51,8 +52,38 @@ public class ApplicationController extends MultiDexApplication {
         AdminUtils.postEvent(new UseCaseOnLowMemoryEvent());
     }
 
+    @Override
     public String getExternalCachePath() {
         return getExternalCacheDir().getAbsolutePath();
     }
 
+    @Override
+    public String getExternalApplicationPath() {
+        return EXTERNAL_STORAGE_APPLICATION_PATH;
+    }
+
+    @Override
+    public String[] getRequiredPermisions() {
+        return PERMISIONS;
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
+    }
+
+    @Override
+    public String getSubscriberType() {
+        return null;
+    }
+
+    @Override
+    public boolean isPersistent() {
+        return false;
+    }
+
+    @Override
+    public void onUnRegister() {
+
+    }
 }

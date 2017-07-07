@@ -211,11 +211,11 @@ public class Cache {
             case USE_ONLY_DISK_CACHE:
             case USE_SAVE_DISK_CACHE:
             case USE_DISK_CACHE:
-                    if (expired > 0) {
-                        ParcelableDiskCacheService.put(context, key, value, expired);
-                    } else {
-                        ParcelableDiskCacheService.put(context, key, value);
-                    }
+                if (expired > 0) {
+                    ParcelableDiskCacheService.put(context, key, value, expired);
+                } else {
+                    ParcelableDiskCacheService.put(context, key, value);
+                }
                 break;
 
             case USE_ONLY_CACHE:

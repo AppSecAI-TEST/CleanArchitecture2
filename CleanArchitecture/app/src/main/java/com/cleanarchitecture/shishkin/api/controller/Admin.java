@@ -11,12 +11,13 @@ import com.cleanarchitecture.shishkin.api.storage.ParcelableMemoryCache;
 import com.cleanarchitecture.shishkin.api.storage.SerializableDiskCache;
 import com.cleanarchitecture.shishkin.api.storage.SerializableMemoryCache;
 import com.cleanarchitecture.shishkin.api.usecases.UseCasesController;
+import com.cleanarchitecture.shishkin.application.app.ApplicationController;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 
 @SuppressWarnings("unused")
 public class Admin extends AbstractAdmin {
     public static final String NAME = Admin.class.getName();
-    public static final int MIN_HEAP_SIZE = 48;
+    private static final int MIN_HEAP_SIZE = 48;
 
     private static volatile Admin sInstance;
 
@@ -38,18 +39,8 @@ public class Admin extends AbstractAdmin {
     }
 
     private Admin() {
-        init();
-    }
-
-    @Override
-    public String getName() {
-        return NAME;
-    }
-
-    private void init() {
-        final Context context = AdminUtils.getContext();
-
         // default persistent (Singleton) controllers
+        registerModule(ApplicationController.getInstance());
         registerModule(ErrorController.getInstance());
         registerModule(EventBusController.getInstance());
 
@@ -60,6 +51,7 @@ public class Admin extends AbstractAdmin {
             registerModule(ParcelableMemoryCache.getInstance());
         }
 
+        final Context context = AdminUtils.getContext();
         if (context != null) {
             registerModule(SerializableDiskCache.getInstance(context));
         }
@@ -79,6 +71,11 @@ public class Admin extends AbstractAdmin {
         registerModule(Repository.NAME);
         registerModule(DesktopController.NAME);
         registerModule(LocationController.NAME);
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
     }
 
 }
