@@ -38,18 +38,6 @@ public class Repository extends AbstractModule implements IRepository, IModuleSu
     public static final int FROM_CACHE = 1; // данные получены из кеша
     public static final int FROM_NETWORK = 2; // данные получены из сети
 
-    // типы кеширования
-    public static final int USE_NO_CACHE = 0; // не использовать кеш ни при чтении ни при сохранении данных
-    public static final int USE_MEMORY_CACHE = 1; // использовать кеш в памяти при чтении и при сохранении данных - данные будут прочитаны позднее
-    public static final int USE_DISK_CACHE = 2; // использовать кеш на диске при чтении и при сохранении данных - данные будут прочитаны позднее
-    public static final int USE_CACHE = 3; // использовать кеш в памяти и на диске при чтении и при сохранении данных - данные будут прочитаны позднее
-    public static final int USE_ONLY_MEMORY_CACHE = 4; // использовать только кеш в памяти для получения данных
-    public static final int USE_ONLY_DISK_CACHE = 5; // использовать только кеш на диске для получения данных
-    public static final int USE_ONLY_CACHE = 6; // использовать только кеш в памяти и на диске для получения данных
-    public static final int USE_SAVE_MEMORY_CACHE = 7; // сохранять только в кеше памяти после получения данных. Не использовать кеш для чтения
-    public static final int USE_SAVE_DISK_CACHE = 8; // сохранять только в кеше на диске после получения данных. Не использовать кеш для чтения
-    public static final int USE_SAVE_CACHE = 9; // сохранять в кеш в памяти и на диске после получения данных. Не использовать кеш для чтения
-
     public Repository() {
     }
 

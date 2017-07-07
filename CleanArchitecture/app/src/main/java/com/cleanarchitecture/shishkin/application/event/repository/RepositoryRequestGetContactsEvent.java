@@ -1,11 +1,12 @@
 package com.cleanarchitecture.shishkin.application.event.repository;
 
 import com.cleanarchitecture.shishkin.api.event.AbstractEvent;
+import com.cleanarchitecture.shishkin.api.repository.Cache;
 import com.cleanarchitecture.shishkin.api.repository.Repository;
 
 public class RepositoryRequestGetContactsEvent extends AbstractEvent {
 
-    private int mCacheType = Repository.USE_ONLY_CACHE;
+    private int mCacheType = Cache.USE_ONLY_CACHE;
     private long mExpired = 0;
 
     public int getCacheType() {

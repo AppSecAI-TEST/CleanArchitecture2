@@ -26,6 +26,7 @@ import com.cleanarchitecture.shishkin.api.event.ui.ShowToastEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseRequestPermissionEvent;
 import com.cleanarchitecture.shishkin.api.observer.EditTextDebouncedObserver;
 import com.cleanarchitecture.shishkin.api.presenter.AbstractPresenter;
+import com.cleanarchitecture.shishkin.api.repository.Cache;
 import com.cleanarchitecture.shishkin.api.repository.IDbProvider;
 import com.cleanarchitecture.shishkin.api.repository.IObserver;
 import com.cleanarchitecture.shishkin.api.repository.Repository;
@@ -164,7 +165,7 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
     public void refreshData() {
         AdminUtils.postEvent(new RepositoryRequestGetContactsEvent()
                 .setExpired(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1))
-                .setCacheType(Repository.USE_SAVE_CACHE)
+                .setCacheType(Cache.USE_SAVE_CACHE)
                 .setId(Constant.REPOSITORY_GET_CONTACTS)
         );
     }
