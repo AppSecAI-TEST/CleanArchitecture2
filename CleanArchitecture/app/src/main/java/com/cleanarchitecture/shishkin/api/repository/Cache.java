@@ -8,12 +8,12 @@ import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.storage.IExpiredParcelableStorage;
 import com.cleanarchitecture.shishkin.api.storage.IParcelableStorage;
 import com.cleanarchitecture.shishkin.api.storage.ISerializableStorage;
-import com.cleanarchitecture.shishkin.api.storage.MemoryCacheService;
 import com.cleanarchitecture.shishkin.api.storage.ParcelableDiskCache;
 import com.cleanarchitecture.shishkin.api.storage.ParcelableMemoryCache;
 import com.cleanarchitecture.shishkin.api.storage.SerializableDiskCache;
 import com.cleanarchitecture.shishkin.api.storage.SerializableDiskCacheService;
 import com.cleanarchitecture.shishkin.api.storage.SerializableMemoryCache;
+import com.cleanarchitecture.shishkin.api.storage.SerializableMemoryCacheService;
 
 import java.io.Serializable;
 import java.util.List;
@@ -158,7 +158,7 @@ public class Cache {
             case USE_ONLY_MEMORY_CACHE:
             case USE_SAVE_MEMORY_CACHE:
             case USE_MEMORY_CACHE:
-                MemoryCacheService.put(context, key, value);
+                SerializableMemoryCacheService.put(context, key, value);
                 break;
 
             case USE_ONLY_DISK_CACHE:
@@ -174,7 +174,7 @@ public class Cache {
             case USE_ONLY_CACHE:
             case USE_SAVE_CACHE:
             case USE_CACHE:
-                MemoryCacheService.put(context, key, value);
+                SerializableMemoryCacheService.put(context, key, value);
                 if (expired > 0) {
                     SerializableDiskCacheService.put(context, key, value, expired);
                 } else {

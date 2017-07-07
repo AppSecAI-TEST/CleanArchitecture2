@@ -14,19 +14,19 @@ import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("unused")
-public class MemoryCacheService extends LiveLongBackgroundIntentService {
+public class SerializableMemoryCacheService extends LiveLongBackgroundIntentService {
 
-    private static final String NAME = MemoryCacheService.class.getName();
+    private static final String NAME = SerializableMemoryCacheService.class.getName();
 
     private static final String EXTRA_SERIALIZABLE = "EXTRA_SERIALIZABLE";
-    private static final String ACTION_PUT = BuildConfig.APPLICATION_ID + ".MemoryCacheService.PUT";
-    private static final String ACTION_CLEAR = BuildConfig.APPLICATION_ID + ".MemoryCacheService.CLEAR";
-    private static final String ACTION_CLEAR_ALL = BuildConfig.APPLICATION_ID + ".MemoryCacheService.CLEAR_ALL";
+    private static final String ACTION_PUT = BuildConfig.APPLICATION_ID + ".SerializableMemoryCacheService.PUT";
+    private static final String ACTION_CLEAR = BuildConfig.APPLICATION_ID + ".SerializableMemoryCacheService.CLEAR";
+    private static final String ACTION_CLEAR_ALL = BuildConfig.APPLICATION_ID + ".SerializableMemoryCacheService.CLEAR_ALL";
 
     private static final TimeUnit TIMEUNIT = TimeUnit.MINUTES;
     private static final long TIMEUNIT_DURATION = 5L;
 
-    public MemoryCacheService() {
+    public SerializableMemoryCacheService() {
         super(NAME);
     }
 
@@ -39,7 +39,7 @@ public class MemoryCacheService extends LiveLongBackgroundIntentService {
 
     public static synchronized void put(final Context context, final String key, final Serializable object) {
         if (context != null && !StringUtils.isNullOrEmpty(key) && object != null) {
-            final Intent intent = IntentUtils.createActionIntent(context, MemoryCacheService.class,
+            final Intent intent = IntentUtils.createActionIntent(context, SerializableMemoryCacheService.class,
                     ACTION_PUT);
             intent.putExtra(Intent.EXTRA_TEXT, key);
             intent.putExtra(EXTRA_SERIALIZABLE, object);
@@ -49,7 +49,7 @@ public class MemoryCacheService extends LiveLongBackgroundIntentService {
 
     public static synchronized void clear(final Context context, final String key) {
         if (context != null && !StringUtils.isNullOrEmpty(key)) {
-            final Intent intent = IntentUtils.createActionIntent(context, MemoryCacheService.class,
+            final Intent intent = IntentUtils.createActionIntent(context, SerializableMemoryCacheService.class,
                     ACTION_CLEAR);
             intent.putExtra(Intent.EXTRA_TEXT, key);
             context.startService(intent);
@@ -58,7 +58,7 @@ public class MemoryCacheService extends LiveLongBackgroundIntentService {
 
     public static synchronized void clearAll(final Context context) {
         if (context != null) {
-            final Intent intent = IntentUtils.createActionIntent(context, MemoryCacheService.class,
+            final Intent intent = IntentUtils.createActionIntent(context, SerializableMemoryCacheService.class,
                     ACTION_CLEAR_ALL);
             context.startService(intent);
         }

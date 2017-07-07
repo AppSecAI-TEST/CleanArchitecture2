@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class ParcelableDiskCache<T extends Parcelable>  extends AbstractModule implements IExpiredParcelableStorage<T> {
+public class ParcelableDiskCache<T extends Parcelable> extends AbstractModule implements IExpiredParcelableStorage<T> {
     public static final String NAME = ParcelableDiskCache.class.getName();
     private static final String LOG_TAG = "ParcelableDiskCache:";
 
