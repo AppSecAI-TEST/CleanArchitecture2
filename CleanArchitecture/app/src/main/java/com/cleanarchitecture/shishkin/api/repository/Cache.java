@@ -195,27 +195,35 @@ public class Cache {
             case USE_ONLY_MEMORY_CACHE:
             case USE_SAVE_MEMORY_CACHE:
             case USE_MEMORY_CACHE:
-                memoryCache.put(key, value);
+                if (memoryCache != null) {
+                    memoryCache.put(key, value);
+                }
                 break;
 
             case USE_ONLY_DISK_CACHE:
             case USE_SAVE_DISK_CACHE:
             case USE_DISK_CACHE:
-                if (expired > 0) {
-                    diskCache.put(key, value, expired);
-                } else {
-                    diskCache.put(key, value);
+                if (diskCache != null) {
+                    if (expired > 0) {
+                        diskCache.put(key, value, expired);
+                    } else {
+                        diskCache.put(key, value);
+                    }
                 }
                 break;
 
             case USE_ONLY_CACHE:
             case USE_SAVE_CACHE:
             case USE_CACHE:
-                memoryCache.put(key, value);
-                if (expired > 0) {
-                    diskCache.put(key, value, expired);
-                } else {
-                    diskCache.put(key, value);
+                if (memoryCache != null) {
+                    memoryCache.put(key, value);
+                }
+                if (diskCache != null) {
+                    if (expired > 0) {
+                        diskCache.put(key, value, expired);
+                    } else {
+                        diskCache.put(key, value);
+                    }
                 }
                 break;
         }
@@ -232,27 +240,35 @@ public class Cache {
             case USE_ONLY_MEMORY_CACHE:
             case USE_SAVE_MEMORY_CACHE:
             case USE_MEMORY_CACHE:
-                memoryCache.put(key, value);
+                if (memoryCache != null) {
+                    memoryCache.put(key, value);
+                }
                 break;
 
             case USE_ONLY_DISK_CACHE:
             case USE_SAVE_DISK_CACHE:
             case USE_DISK_CACHE:
-                if (expired > 0) {
-                    diskCache.put(key, value, expired);
-                } else {
-                    diskCache.put(key, value);
+                if (diskCache != null) {
+                    if (expired > 0) {
+                        diskCache.put(key, value, expired);
+                    } else {
+                        diskCache.put(key, value);
+                    }
                 }
                 break;
 
             case USE_ONLY_CACHE:
             case USE_SAVE_CACHE:
             case USE_CACHE:
-                memoryCache.put(key, value);
-                if (expired > 0) {
-                    diskCache.put(key, value, expired);
-                } else {
-                    diskCache.put(key, value);
+                if (memoryCache != null) {
+                    memoryCache.put(key, value);
+                }
+                if (diskCache != null) {
+                    if (expired > 0) {
+                        diskCache.put(key, value, expired);
+                    } else {
+                        diskCache.put(key, value);
+                    }
                 }
                 break;
         }

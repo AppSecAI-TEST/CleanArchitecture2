@@ -51,4 +51,8 @@ public class ApplicationController extends MultiDexApplication {
         AdminUtils.postEvent(new UseCaseOnLowMemoryEvent());
     }
 
+    public String getExternalCachePath() {
+        return getExternalCacheDir().getAbsolutePath();
+    }
+
 }
