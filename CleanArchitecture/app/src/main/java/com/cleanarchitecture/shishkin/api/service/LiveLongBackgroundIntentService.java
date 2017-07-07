@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.api.controller;
+package com.cleanarchitecture.shishkin.api.service;
 
 import android.app.Service;
 import android.content.Intent;
@@ -7,6 +7,10 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
 
+import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.api.controller.AutoCompleteHandler;
+import com.cleanarchitecture.shishkin.api.controller.EventBusController;
+import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.api.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.event.OnScreenOffEvent;
 

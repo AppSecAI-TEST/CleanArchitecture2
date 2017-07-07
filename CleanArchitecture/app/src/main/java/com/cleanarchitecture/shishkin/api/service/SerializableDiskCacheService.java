@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.api.storage;
+package com.cleanarchitecture.shishkin.api.service;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,7 +6,8 @@ import android.support.annotation.WorkerThread;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.api.controller.Admin;
-import com.cleanarchitecture.shishkin.api.controller.LiveLongBackgroundIntentService;
+import com.cleanarchitecture.shishkin.api.storage.IExpiredSerializableStorage;
+import com.cleanarchitecture.shishkin.api.storage.SerializableDiskCache;
 import com.cleanarchitecture.shishkin.common.utils.IntentUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
