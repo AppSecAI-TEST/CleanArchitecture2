@@ -39,6 +39,7 @@
 
         <service android:name=".api.controller.NotificationService" />
         <service android:name=".api.storage.SerializableDiskCacheService" />
+        <service android:name=".api.storage.ParcelableDiskCacheService" />
 
     </application>
 
