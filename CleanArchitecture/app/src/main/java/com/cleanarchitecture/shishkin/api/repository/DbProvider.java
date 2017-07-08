@@ -80,7 +80,7 @@ public class DbProvider<H extends AbstractViewModel, T extends RoomDatabase> ext
 
     private synchronized boolean disconnect(final String databaseName) {
         if (isConnected(databaseName)) {
-            final T db = SafeUtils.cast(mDb.get(databaseName));
+            final T db = mDb.get(databaseName);
             try {
                 db.close();
                 mDb.remove(databaseName);
@@ -93,7 +93,7 @@ public class DbProvider<H extends AbstractViewModel, T extends RoomDatabase> ext
 
     @Override
     public synchronized void backup(final String databaseName, final String dirBackup) {
-        final T db = SafeUtils.cast(mDb.get(databaseName));
+        final T db = mDb.get(databaseName);
         if (db == null) {
             return;
         }
@@ -156,7 +156,7 @@ public class DbProvider<H extends AbstractViewModel, T extends RoomDatabase> ext
 
     @Override
     public synchronized void restore(final String databaseName, final String dirBackup) {
-        final T db = SafeUtils.cast(mDb.get(databaseName));
+        final T db = mDb.get(databaseName);
         if (db == null) {
             return;
         }
@@ -201,7 +201,7 @@ public class DbProvider<H extends AbstractViewModel, T extends RoomDatabase> ext
         if (!isConnected(databaseName)) {
             connect(klass, databaseName);
         }
-        return SafeUtils.cast(mDb.get(databaseName));
+        return mDb.get(databaseName);
     }
 
     @Override
