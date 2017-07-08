@@ -23,7 +23,7 @@ import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.ActivityController;
 import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
-import com.cleanarchitecture.shishkin.api.controller.AppPreferences;
+import com.cleanarchitecture.shishkin.api.controller.AppPreferencesUtils;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.IMailSubscriber;
 import com.cleanarchitecture.shishkin.api.controller.MailController;
@@ -166,7 +166,7 @@ public abstract class AbstractActivity extends LifecycleActivity
         AdminUtils.postEvent(new OnUserIteractionEvent());
 
         for (int i = 0; i < permissions.length; i++) {
-            AppPreferences.putInt(this, permissions[i], grantResults[i]);
+            AppPreferencesUtils.putInt(this, permissions[i], grantResults[i]);
             if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                 AdminUtils.postEvent(new OnPermisionGrantedEvent(permissions[i]));
             } else if (grantResults[i] == PackageManager.PERMISSION_DENIED) {

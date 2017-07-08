@@ -2,7 +2,6 @@ package com.cleanarchitecture.shishkin.api.controller;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 
 import java.util.Map;
@@ -11,12 +10,15 @@ import java.util.Map;
  * Preferences приложения
  */
 @SuppressWarnings("unused")
-public class AppPreferences {
-    public static final String VERSION_APPLICATION = "version_application";
-    public static final String LAST_DAY_START = "last_day_start";
-    public static final String DESKTOP = "desktop";
-    public static final String IMAGE_CACHE_VERSION = "image_cache_version";
-    public static final String PARCELABLE_CACHE_VERSION = "parcelable_cache_version";
+public class AppPreferencesUtils {
+    private static final String VERSION_APPLICATION = "version_application";
+    private static final String LAST_DAY_START = "last_day_start";
+    private static final String DESKTOP = "desktop";
+    private static final String IMAGE_CACHE_VERSION = "image_cache_version";
+    private static final String PARCELABLE_CACHE_VERSION = "parcelable_cache_version";
+
+    private AppPreferencesUtils() {
+    }
 
     /**
      * Получить версию приложения.
@@ -134,7 +136,7 @@ public class AppPreferences {
         if (context != null) {
             final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
             final SharedPreferences.Editor editor = settings.edit();
-            editor.putString(key, value).commit();
+            editor.putString(key, value).apply();
         }
     }
 
@@ -154,7 +156,7 @@ public class AppPreferences {
         if (context != null) {
             final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
             final SharedPreferences.Editor editor = settings.edit();
-            editor.putInt(key, value).commit();
+            editor.putInt(key, value).apply();
         }
     }
 
@@ -174,7 +176,7 @@ public class AppPreferences {
         if (context != null) {
             final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
             final SharedPreferences.Editor editor = settings.edit();
-            editor.putLong(key, value).commit();
+            editor.putLong(key, value).apply();
         }
     }
 
@@ -194,7 +196,7 @@ public class AppPreferences {
         if (context != null) {
             final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
             final SharedPreferences.Editor editor = settings.edit();
-            editor.putFloat(key, value).commit();
+            editor.putFloat(key, value).apply();
         }
     }
 
@@ -214,7 +216,7 @@ public class AppPreferences {
         if (context != null) {
             final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
             final SharedPreferences.Editor editor = settings.edit();
-            editor.putBoolean(key, value).commit();
+            editor.putBoolean(key, value).apply();
         }
     }
 
@@ -260,16 +262,6 @@ public class AppPreferences {
             final SharedPreferences.Editor editor = settings.edit();
             editor.clear().commit();
         }
-    }
-
-    /**
-     * Проверить установленное разрешение прав приложения.
-     *
-     * @param permission право приложения
-     * @return если true разрешение установлено, false - разрешение не установлено
-     */
-    public static boolean checkPermission(final Context context, final String permission) {
-        return getInt(context, permission, -100) == PackageManager.PERMISSION_GRANTED;
     }
 }
 

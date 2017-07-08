@@ -70,7 +70,7 @@ public class AdminUtils {
      * @return системный сервис
      */
     public static <S> S getSystemService(final String serviceName) {
-        final Context context = getContext();
+        final Context context = ApplicationController.getInstance().getApplicationContext();
         if (context != null) {
             return SafeUtils.cast(context.getSystemService(serviceName));
         }
@@ -117,7 +117,7 @@ public class AdminUtils {
      * Контролировать наличие и версию Google Play Services
      */
     public static boolean isGooglePlayServices() {
-        final Context context = getContext();
+        final Context context = ApplicationController.getInstance().getApplicationContext();
         if (context != null) {
             int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
             if (ConnectionResult.SUCCESS == resultCode) {
@@ -163,7 +163,7 @@ public class AdminUtils {
      * @return статус права
      */
     public static int getStatusPermission(final String permission) {
-        final Context context = getContext();
+        final Context context = ApplicationController.getInstance().getApplicationContext();
         if (context != null) {
             if (ApplicationUtils.hasMarshmallow()) {
                 return ActivityCompat.checkSelfPermission(context, permission);
@@ -191,7 +191,7 @@ public class AdminUtils {
      * @return true - БД существует
      */
     public static boolean existsDb(final String nameDb) {
-        final Context context = getContext();
+        final Context context = ApplicationController.getInstance().getApplicationContext();
         if (context != null) {
             try {
                 final String pathDb = context.getDatabasePath(nameDb).getAbsolutePath();
@@ -277,7 +277,7 @@ public class AdminUtils {
      */
     public static void startActivity(final Intent intent) {
         if (intent != null) {
-            final Context context = getContext();
+            final Context context = ApplicationController.getInstance().getApplicationContext();
             if (context != null) {
                 context.startActivity(intent);
             }
@@ -488,7 +488,7 @@ public class AdminUtils {
      * @param errorCode код ошибки
      */
     public static String getErrorText(final int errorCode) {
-        final Context context = getContext();
+        final Context context = ApplicationController.getInstance().getApplicationContext();
         if (context == null) {
             return "Error get context";
         }

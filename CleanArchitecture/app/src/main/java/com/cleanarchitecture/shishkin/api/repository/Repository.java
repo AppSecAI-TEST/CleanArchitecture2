@@ -6,7 +6,7 @@ import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AbstractModule;
 import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
-import com.cleanarchitecture.shishkin.api.controller.AppPreferences;
+import com.cleanarchitecture.shishkin.api.controller.AppPreferencesUtils;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.api.event.CheckDiskCacheEvent;
@@ -67,12 +67,12 @@ public class Repository extends AbstractModule implements IRepository, IModuleSu
         // раз в месяц чистим дисковый кэш
         final SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
         int currentDay = StringUtils.toInt(formatter.format(new Date()));
-        final int day = StringUtils.toInt(AppPreferences.getLastDayStart(context));
+        final int day = StringUtils.toInt(AppPreferencesUtils.getLastDayStart(context));
         if (currentDay > day) {
             final GregorianCalendar calsendar = new GregorianCalendar();
             calsendar.add(GregorianCalendar.MONTH, 1);
             currentDay = StringUtils.toInt(formatter.format(calsendar.getTime()));
-            AppPreferences.setLastDayStart(context, String.valueOf(currentDay));
+            AppPreferencesUtils.setLastDayStart(context, String.valueOf(currentDay));
             final IExpiredSerializableStorage diskCache = Admin.getInstance().get(SerializableDiskCache.NAME);
             if (diskCache != null) {
                 diskCache.check();
@@ -98,6 +98,6 @@ public class Repository extends AbstractModule implements IRepository, IModuleSu
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onRepositoryRequestGetContactsEvent(final RepositoryRequestGetContactsEvent event) {
-        RepositoryContentProvider.requestContacts(event);
+        RepositoryContentProviderUtils.requestContacts(event);
     }
 }

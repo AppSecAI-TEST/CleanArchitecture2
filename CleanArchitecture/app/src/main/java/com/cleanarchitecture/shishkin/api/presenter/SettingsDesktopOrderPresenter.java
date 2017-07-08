@@ -9,7 +9,7 @@ import android.view.View;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
-import com.cleanarchitecture.shishkin.api.controller.AppPreferences;
+import com.cleanarchitecture.shishkin.api.controller.AppPreferencesUtils;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
 import com.cleanarchitecture.shishkin.api.ui.adapter.SettingsDesktopOrderRecyclerViewAdapter;
 import com.cleanarchitecture.shishkin.api.ui.fragment.SettingsDesktopOrderFragment;
@@ -55,7 +55,7 @@ public class SettingsDesktopOrderPresenter extends AbstractPresenter<Void> {
         }.getType();
         final List<SettingsDesktopOrderItem> list = new ArrayList<>();
 
-        final String order = AppPreferences.getDesktopOrder(AdminUtils.getContext(), mArgs.getString(SettingsDesktopOrderFragment.ORDER_NAME), mArgs.getString(SettingsDesktopOrderFragment.ORDER));
+        final String order = AppPreferencesUtils.getDesktopOrder(AdminUtils.getContext(), mArgs.getString(SettingsDesktopOrderFragment.ORDER_NAME), mArgs.getString(SettingsDesktopOrderFragment.ORDER));
         try {
             list.addAll(SerializableUtil.fromJson(order, type));
         } catch (Exception e) {
