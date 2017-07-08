@@ -8,9 +8,9 @@ import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRes
 
 import java.util.List;
 
-public class RepositoryContentProviderUtils {
+public class ContentProviderUtils {
 
-    private RepositoryContentProviderUtils() {
+    private ContentProviderUtils() {
     }
 
     public static void requestContacts(final RepositoryRequestGetContactsEvent event) {
