@@ -28,16 +28,15 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class DbProvider<H extends AbstractViewModel> extends AbstractModule implements IDbProvider<H>, LifecycleOwner, IModuleSubscriber {
+public class DbProvider<H extends AbstractViewModel, T extends RoomDatabase> extends AbstractModule implements IDbProvider<H, T>, LifecycleOwner, IModuleSubscriber {
     public static final String NAME = DbProvider.class.getName();
     private static final String LOG_TAG = "DbProvider:";
 
-    private Map<String, Object> mDb;
+    private Map<String, T> mDb;
     private Map<String, H> mViewModel;
     private LifecycleRegistry mLifecycleRegistry;
 
@@ -45,13 +44,13 @@ public class DbProvider<H extends AbstractViewModel> extends AbstractModule impl
         mLifecycleRegistry = new LifecycleRegistry(this);
         mLifecycleRegistry.markState(Lifecycle.State.CREATED);
 
-        mDb = Collections.synchronizedMap(new HashMap<String, Object>());
+        mDb = Collections.synchronizedMap(new ConcurrentHashMap<String, T>());
         mViewModel = Collections.synchronizedMap(new ConcurrentHashMap<String, H>());
 
         mLifecycleRegistry.markState(Lifecycle.State.STARTED);
     }
 
-    private synchronized <T extends RoomDatabase> boolean connect(final Class<T> klass, final String databaseName) {
+    private synchronized boolean connect(final Class<T> klass, final String databaseName) {
         final Context context = AdminUtils.getContext();
         if (context == null) {
             return false;
@@ -79,7 +78,7 @@ public class DbProvider<H extends AbstractViewModel> extends AbstractModule impl
         return mDb.containsKey(databaseName);
     }
 
-    private synchronized <T extends RoomDatabase> boolean disconnect(final String databaseName) {
+    private synchronized boolean disconnect(final String databaseName) {
         if (isConnected(databaseName)) {
             final T db = SafeUtils.cast(mDb.get(databaseName));
             try {
@@ -92,7 +91,8 @@ public class DbProvider<H extends AbstractViewModel> extends AbstractModule impl
         return !isConnected(databaseName);
     }
 
-    public synchronized <T extends RoomDatabase> void backup(final String databaseName, final String dirBackup) {
+    @Override
+    public synchronized void backup(final String databaseName, final String dirBackup) {
         final T db = SafeUtils.cast(mDb.get(databaseName));
         if (db == null) {
             return;
@@ -154,7 +154,8 @@ public class DbProvider<H extends AbstractViewModel> extends AbstractModule impl
         connect(klass, nameDb);
     }
 
-    public synchronized <T extends RoomDatabase> void restore(final String databaseName, final String dirBackup) {
+    @Override
+    public synchronized void restore(final String databaseName, final String dirBackup) {
         final T db = SafeUtils.cast(mDb.get(databaseName));
         if (db == null) {
             return;
@@ -195,7 +196,8 @@ public class DbProvider<H extends AbstractViewModel> extends AbstractModule impl
         connect(klass, nameDb);
     }
 
-    public synchronized <T extends RoomDatabase> T getDb(final Class<T> klass, final String databaseName) {
+    @Override
+    public synchronized T getDb(final Class<T> klass, final String databaseName) {
         if (!isConnected(databaseName)) {
             connect(klass, databaseName);
         }
@@ -203,7 +205,7 @@ public class DbProvider<H extends AbstractViewModel> extends AbstractModule impl
     }
 
     @Override
-    public synchronized <T> void observe(final LifecycleActivity activity, final String nameViewModel, final Class<H> klass, final IObserver<T> observer) {
+    public synchronized <E> void observe(final LifecycleActivity activity, final String nameViewModel, final Class<H> klass, final IObserver<E> observer) {
         try {
             if (activity != null) {
                 H viewModel;
@@ -222,7 +224,7 @@ public class DbProvider<H extends AbstractViewModel> extends AbstractModule impl
     }
 
     @Override
-    public synchronized <T> void removeObserver(final String nameViewModel, final IObserver<T> observer) {
+    public synchronized <E> void removeObserver(final String nameViewModel, final IObserver<E> observer) {
         ApplicationUtils.runOnUiThread(() -> {
             try {
                 if (mViewModel.containsKey(nameViewModel)) {
