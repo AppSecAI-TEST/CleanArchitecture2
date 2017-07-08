@@ -183,7 +183,7 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
         if (AdminUtils.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
             if (Connectivity.isNetworkConnected(context)) {
                 if (mGeocoder != null && mFusedLocationClient != null) {
-                    if (mGeocoder.isPresent()) {
+                    if (Geocoder.isPresent()) {
                         try {
                             list.addAll(mGeocoder.getFromLocation(
                                     location.getLatitude(),
