@@ -173,10 +173,7 @@ public class ParcelableMemoryCache<T extends Parcelable> extends AbstractModule 
     private boolean validate() {
         final Runtime runtime = Runtime.getRuntime();
         final long procent = 100 - ((runtime.totalMemory() - runtime.freeMemory()) * 100 / runtime.maxMemory());
-        if (procent < 15) {
-            return false;
-        }
-        return true;
+        return procent >= 15;
     }
 
     @Override

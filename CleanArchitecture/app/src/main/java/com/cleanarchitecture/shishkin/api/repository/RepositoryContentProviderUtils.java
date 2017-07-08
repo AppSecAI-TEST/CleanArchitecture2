@@ -26,7 +26,7 @@ public class RepositoryContentProviderUtils {
                 responseEvent.setFrom(Repository.FROM_CONTENT_PROVIDER);
 
                 if (!responseEvent.hasError()) {
-                    CacheUtils.put(String.valueOf(event.getId()), event.getCacheType(), (List<PhoneContactItem>) responseEvent.getResponse(), event.getExpired());
+                    CacheUtils.put(String.valueOf(event.getId()), event.getCacheType(), responseEvent.getResponse(), event.getExpired());
                 }
 
                 AdminUtils.postEvent(responseEvent);
