@@ -290,11 +290,8 @@ public class DbProvider<H extends AbstractViewModel> extends AbstractModule impl
             }
             mViewModel.clear();
 
-            while (!mDb.isEmpty()) {
-                for (String databaseName : mDb.keySet()) {
-                    disconnect(databaseName);
-                    break;
-                }
+            for (String databaseName : mDb.keySet()) {
+                disconnect(databaseName);
             }
         });
     }
