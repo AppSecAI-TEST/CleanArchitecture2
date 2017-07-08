@@ -98,6 +98,6 @@ public class Repository extends AbstractModule implements IRepository, IModuleSu
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onRepositoryRequestGetContactsEvent(final RepositoryRequestGetContactsEvent event) {
-        RepositoryContentProviderUtils.requestContacts(event);
+        ContentProviderUtils.requestContacts(event);
     }
 }

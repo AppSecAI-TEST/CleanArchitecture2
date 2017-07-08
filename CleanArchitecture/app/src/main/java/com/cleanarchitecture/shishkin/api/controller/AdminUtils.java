@@ -477,7 +477,7 @@ public class AdminUtils {
     public static <T extends RoomDatabase> T getDb(final Class<T> klass, final String databaseName) {
         final IDbProvider provider = getDbProvider();
         if (provider != null) {
-            return provider.getDb(klass, databaseName);
+            return (T) provider.getDb(klass, databaseName);
         }
         return null;
     }
