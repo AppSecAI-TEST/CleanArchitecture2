@@ -9,7 +9,7 @@ import com.cleanarchitecture.shishkin.api.data.AbstractViewModel;
 /**
  * The interface Db provider.
  */
-public interface IDbProvider extends IModule {
+public interface IDbProvider<H extends AbstractViewModel> extends IModule {
 
     /**
      * архивировать БД
@@ -43,23 +43,21 @@ public interface IDbProvider extends IModule {
      * Зарегестрировать слушателя ViewModel
      *
      * @param <T>           the type parameter
-     * @param <E>           the type parameter
      * @param activity      the activity
      * @param nameViewModel the name view model
      * @param klass         the klass
      * @param observer      the observer
      */
-    <T, E extends AbstractViewModel> void observe(LifecycleActivity activity, String nameViewModel, Class<E> klass, IObserver<T> observer);
+    <T> void observe(LifecycleActivity activity, String nameViewModel, Class<H> klass, IObserver<T> observer);
 
     /**
      * Удалить слушателя ViewModel
      *
-     * @param <E>           the type parameter
      * @param <T>           the type parameter
      * @param nameViewModel the name view model
      * @param observer      the observer
      */
-    <E extends AbstractViewModel, T> void removeObserver(final String nameViewModel, final IObserver<T> observer);
+    <T> void removeObserver(final String nameViewModel, final IObserver<T> observer);
 
     /**
      * Удалить ViewModel
@@ -71,9 +69,8 @@ public interface IDbProvider extends IModule {
     /**
      * Получить ViewModel
      *
-     * @param <E>           the type parameter
      * @param nameViewModel the name view model
      * @return the view model
      */
-    <E extends AbstractViewModel> E getViewModel(final String nameViewModel);
+    H getViewModel(final String nameViewModel);
 }

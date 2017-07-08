@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class DbProvider<H extends AbstractViewModel> extends AbstractModule implements IDbProvider, LifecycleOwner, IModuleSubscriber {
+public class DbProvider<H extends AbstractViewModel> extends AbstractModule implements IDbProvider<H>, LifecycleOwner, IModuleSubscriber {
     public static final String NAME = DbProvider.class.getName();
     private static final String LOG_TAG = "DbProvider:";
 
@@ -203,16 +203,16 @@ public class DbProvider<H extends AbstractViewModel> extends AbstractModule impl
     }
 
     @Override
-    public synchronized <T, E extends AbstractViewModel> void observe(final LifecycleActivity activity, final String nameViewModel, final Class<E> klass, final IObserver<T> observer) {
+    public synchronized <T> void observe(final LifecycleActivity activity, final String nameViewModel, final Class<H> klass, final IObserver<T> observer) {
         try {
             if (activity != null) {
-                E viewModel;
+                H viewModel;
                 if (!mViewModel.containsKey(nameViewModel)) {
                     viewModel = ViewModelProviders.of(activity).get(klass);
                     viewModel.getLiveData().observe(this, observer);
                     mViewModel.put(viewModel.getName(), (H) viewModel);
                 } else {
-                    viewModel = (E) mViewModel.get(nameViewModel);
+                    viewModel = mViewModel.get(nameViewModel);
                     viewModel.getLiveData().observe(this, observer);
                 }
             }
@@ -222,11 +222,11 @@ public class DbProvider<H extends AbstractViewModel> extends AbstractModule impl
     }
 
     @Override
-    public synchronized <E extends AbstractViewModel, T> void removeObserver(final String nameViewModel, final IObserver<T> observer) {
+    public synchronized <T> void removeObserver(final String nameViewModel, final IObserver<T> observer) {
         ApplicationUtils.runOnUiThread(() -> {
             try {
                 if (mViewModel.containsKey(nameViewModel)) {
-                    final E viewModel = (E) mViewModel.get(nameViewModel);
+                    final H viewModel = mViewModel.get(nameViewModel);
                     viewModel.getLiveData().removeObserver(observer);
                     if (!viewModel.getLiveData().hasObservers()) {
                         new ViewModelDebounce(nameViewModel).onEvent();
@@ -239,9 +239,9 @@ public class DbProvider<H extends AbstractViewModel> extends AbstractModule impl
     }
 
     @Override
-    public <E extends AbstractViewModel> E getViewModel(final String nameViewModel) {
+    public H getViewModel(final String nameViewModel) {
         if (mViewModel.containsKey(nameViewModel)) {
-            return (E) mViewModel.get(nameViewModel);
+            return mViewModel.get(nameViewModel);
         }
         return null;
     }
