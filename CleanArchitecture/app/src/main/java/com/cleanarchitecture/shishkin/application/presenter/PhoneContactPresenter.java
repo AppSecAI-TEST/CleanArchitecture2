@@ -17,6 +17,7 @@ import com.annimon.stream.Stream;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
+import com.cleanarchitecture.shishkin.api.debounce.Debounce;
 import com.cleanarchitecture.shishkin.api.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.EditTextAfterTextChangedEvent;
@@ -64,6 +65,12 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
     private String mCurrentFilter = null;
     private IDbProvider mDbProvider = AdminUtils.getDbProvider();
     private EditTextDebouncedObserver mEditTextDebouncedObserver;
+    private Debounce mDebounce = new Debounce(TimeUnit.SECONDS.toMillis(5)) {
+        @Override
+        public void run() {
+            AdminUtils.postEvent(new HideKeyboardEvent());
+        }
+    };
 
     public PhoneContactPresenter() {
         super();
@@ -120,6 +127,7 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
         mRecyclerView.get().clearOnScrollListeners();
         mRecyclerView.get().setAdapter(null);
         mRecyclerView = null;
+        mDebounce.finish();
     }
 
     @Override
@@ -180,9 +188,7 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
                     mContactAdapter.setItems(getModel());
                 }
 
-                if (!mContactAdapter.isEmpty()) {
-                    AdminUtils.postEvent(new HideKeyboardEvent());
-                } else {
+                if (mContactAdapter.isEmpty()) {
                     AdminUtils.postEvent(new ShowToastEvent(AdminUtils.getContext().getString(R.string.no_data)));
                 }
             }
@@ -253,6 +259,7 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
         if (event.getId() == R.id.edittext_phone_contact_presenter) {
             mCurrentFilter = event.getText();
             updateView();
+            mDebounce.onEvent();
         }
     }
 }
