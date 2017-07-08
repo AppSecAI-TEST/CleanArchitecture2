@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.api.repository;
+package com.cleanarchitecture.shishkin.api.storage;
 
 import android.content.Context;
 import android.os.Parcelable;
@@ -7,18 +7,11 @@ import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.service.ParcelableDiskCacheService;
 import com.cleanarchitecture.shishkin.api.service.SerializableDiskCacheService;
-import com.cleanarchitecture.shishkin.api.storage.IExpiredParcelableStorage;
-import com.cleanarchitecture.shishkin.api.storage.IParcelableStorage;
-import com.cleanarchitecture.shishkin.api.storage.ISerializableStorage;
-import com.cleanarchitecture.shishkin.api.storage.ParcelableDiskCache;
-import com.cleanarchitecture.shishkin.api.storage.ParcelableMemoryCache;
-import com.cleanarchitecture.shishkin.api.storage.SerializableDiskCache;
-import com.cleanarchitecture.shishkin.api.storage.SerializableMemoryCache;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class Cache {
+public class CacheUtils {
     // типы кеширования
     public static final int USE_NO_CACHE = 0; // не использовать кеш ни при чтении ни при сохранении данных
     public static final int USE_MEMORY_CACHE = 1; // использовать кеш в памяти при чтении и при сохранении данных - данные будут прочитаны позднее
@@ -30,6 +23,9 @@ public class Cache {
     public static final int USE_SAVE_MEMORY_CACHE = 7; // сохранять только в кеше памяти после получения данных. Не использовать кеш для чтения
     public static final int USE_SAVE_DISK_CACHE = 8; // сохранять только в кеше на диске после получения данных. Не использовать кеш для чтения
     public static final int USE_SAVE_CACHE = 9; // сохранять в кеш в памяти и на диске после получения данных. Не использовать кеш для чтения
+
+    private CacheUtils() {
+    }
 
     public static Serializable get(final String key, final int cacheType) {
         final ISerializableStorage diskCache = Admin.getInstance().get(SerializableDiskCache.NAME);
@@ -276,5 +272,4 @@ public class Cache {
                 break;
         }
     }
-
 }
