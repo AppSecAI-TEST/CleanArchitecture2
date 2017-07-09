@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.telephony.PhoneNumberUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 
@@ -24,6 +25,7 @@ import com.cleanarchitecture.shishkin.api.event.ui.EditTextAfterTextChangedEvent
 import com.cleanarchitecture.shishkin.api.event.ui.HideKeyboardEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowListDialogEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowToastEvent;
+import com.cleanarchitecture.shishkin.api.event.ui.ShowTooltipEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseRequestPermissionEvent;
 import com.cleanarchitecture.shishkin.api.observer.EditTextDebouncedObserver;
 import com.cleanarchitecture.shishkin.api.presenter.AbstractPresenter;
@@ -112,6 +114,12 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
         if (mDbProvider != null) {
             mDbProvider.observe(AdminUtils.getActivity(), PhoneContactViewModel.NAME, PhoneContactViewModel.class, this);
         }
+
+    }
+
+    @Override
+    public void onResumeLifecycle() {
+        AdminUtils.postEvent(new ShowTooltipEvent(mSearchView.get(), R.string.tooltip_search, Gravity.BOTTOM));
     }
 
     @Override

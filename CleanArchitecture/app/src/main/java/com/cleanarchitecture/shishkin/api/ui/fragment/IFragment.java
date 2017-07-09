@@ -77,4 +77,13 @@ public interface IFragment extends ISubscriber, IView {
      * Скрыть Circle Progress Bar
      */
     void hideCircleProgressBar();
+
+    /**
+     * Показать подсказку
+     *
+     * @param anchorView anchor view
+     * @param resId      id текста подсказки
+     * @param gravity    выравнивание подсказки
+     */
+    void showTooltip(final View anchorView, final int resId, final int gravity);
 }

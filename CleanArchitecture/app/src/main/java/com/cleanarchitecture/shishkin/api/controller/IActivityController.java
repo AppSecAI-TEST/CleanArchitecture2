@@ -12,6 +12,7 @@ import com.cleanarchitecture.shishkin.api.event.ui.ShowListDialogEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowMessageEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowToastEvent;
+import com.cleanarchitecture.shishkin.api.event.ui.ShowTooltipEvent;
 import com.cleanarchitecture.shishkin.api.ui.activity.IActivity;
 
 /**
@@ -126,4 +127,11 @@ public interface IActivityController extends IController<IActivity> {
      * @param event событие
      */
     void onShowDialogEvent(ShowDialogEvent event);
+
+    /**
+     * Обрабатывает событие - показать Tooltip
+     *
+     * @param event событие
+     */
+    void onShowTooltipEvent(ShowTooltipEvent event);
 }

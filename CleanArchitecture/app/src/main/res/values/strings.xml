@@ -55,4 +55,7 @@
     <string name="settings_order_title">Настройки отображения</string>
     <string name="settings_display">Порядок отображения</string>
 
+    <string name="tooltip_search">Используйте символ \'<font color="red">*</font>\' для поиска во всех словах. Например:\nш* - искать все слова, начинающиеся с \'ш\'\n*ов - найти все слова, оканчивающиеся на \'ов\'</string>
+
+
 </resources>
