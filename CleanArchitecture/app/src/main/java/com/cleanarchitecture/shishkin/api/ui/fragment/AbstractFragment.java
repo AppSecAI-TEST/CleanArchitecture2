@@ -223,10 +223,11 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
                         .setText(getString(resId))
                         .setCancelable(true)
                         .setDismissOnClick(true)
-                        .setBackgroundColor(ViewUtils.getColor(getContext(), R.color.blue))
+                        .setBackgroundColor(ViewUtils.getColor(getContext(), R.color.tooltip_background))
                         .setGravity(gravity)
-                        .setCornerRadius(R.dimen.dimen_4dp)
-                        .setTextColor(ViewUtils.getColor(getContext(), R.color.gray_light))
+                        .setCornerRadius(R.dimen.dimen_8dp)
+                        .setPadding(R.dimen.dimen_8dp)
+                        .setTextColor(ViewUtils.getColor(getContext(), R.color.text_dark))
                         .setTextSize(R.dimen.text_size_large)
                         .show();
             });
