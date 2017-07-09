@@ -25,6 +25,7 @@ import com.cleanarchitecture.shishkin.api.event.ui.ShowListDialogEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowMessageEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowToastEvent;
+import com.cleanarchitecture.shishkin.api.event.ui.ShowTooltipEvent;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractActivity;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractContentActivity;
 import com.cleanarchitecture.shishkin.api.ui.activity.IActivity;
@@ -288,6 +289,21 @@ public class ActivityController extends AbstractController<IActivity> implements
                 final AbstractContentFragment fragment = activity.getContentFragment(AbstractContentFragment.class);
                 if (fragment != null) {
                     fragment.hideCircleProgressBar();
+                }
+            }
+        }
+    }
+
+    @Override
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onShowTooltipEvent(ShowTooltipEvent event) {
+        final IActivity subscriber = getSubscriber();
+        if (subscriber != null && subscriber.validate()) {
+            if (subscriber instanceof AbstractContentActivity) {
+                final AbstractContentActivity activity = (AbstractContentActivity) subscriber;
+                final AbstractContentFragment fragment = activity.getContentFragment(AbstractContentFragment.class);
+                if (fragment != null) {
+                    fragment.showTooltip(event.getView(), event.getResId(), event.getGravity());
                 }
             }
         }

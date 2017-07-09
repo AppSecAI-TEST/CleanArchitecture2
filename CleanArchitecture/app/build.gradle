@@ -125,4 +125,6 @@ dependencies {
     // Circle ProgressBar
     compile 'com.github.lzyzsd:circleprogress:1.2.1'
 
+    // ToolTip
+    compile 'com.github.vihtarb:tooltip:0.1.9'
 }

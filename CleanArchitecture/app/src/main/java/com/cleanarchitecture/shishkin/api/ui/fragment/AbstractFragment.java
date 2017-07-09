@@ -24,6 +24,7 @@ import com.cleanarchitecture.shishkin.common.lifecycle.StateMachine;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 import com.github.lzyzsd.circleprogress.DonutProgress;
+import com.tooltip.Tooltip;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -208,6 +209,27 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
     @Override
     public void setLostStateDate(boolean lostStateDate) {
         mStateMachine.setLostStateDate(lostStateDate);
+    }
+
+    @Override
+    public void showTooltip(final View anchorView, final int resId, final int gravity) {
+        if (anchorView == null) {
+            return;
+        }
+
+        if (validate()) {
+            ApplicationUtils.runOnUiThread(() -> {
+                new Tooltip.Builder(anchorView)
+                        .setText(getString(resId))
+                        .setCancelable(true)
+                        .setDismissOnClick(true)
+                        .setBackgroundColor(ViewUtils.getColor(getContext(), R.color.blue))
+                        .setGravity(gravity)
+                        .setCornerRadius(R.dimen.dimen_4dp)
+                        .setTextColor(ViewUtils.getColor(getContext(), R.color.gray_light))
+                        .show();
+            });
+        }
     }
 
 }
