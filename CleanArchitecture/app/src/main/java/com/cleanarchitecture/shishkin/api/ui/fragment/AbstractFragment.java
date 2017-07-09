@@ -227,6 +227,7 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
                         .setGravity(gravity)
                         .setCornerRadius(R.dimen.dimen_4dp)
                         .setTextColor(ViewUtils.getColor(getContext(), R.color.gray_light))
+                        .setTextSize(R.dimen.text_size_large)
                         .show();
             });
         }
