@@ -26,6 +26,8 @@ import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBackNavigation
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetItemEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetMenuEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetTitleEvent;
+import com.cleanarchitecture.shishkin.api.event.ui.HideCircleProgressBarEvent;
+import com.cleanarchitecture.shishkin.api.event.ui.ShowCircleProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseFinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.api.presenter.OnBackPressedPresenter;
@@ -90,6 +92,15 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
 
         if (!AdminUtils.isGooglePlayServices()) {
             AdminUtils.checkGooglePlayServices();
+        }
+
+        for (int i = 0; i <= 11; i++) {
+            if (i < 11) {
+                final int ii = i;
+                view.postDelayed(() -> AdminUtils.postEvent(new ShowCircleProgressBarEvent(ii * 10)), 200 * i);
+            } else {
+                view.postDelayed(() -> AdminUtils.postEvent(new HideCircleProgressBarEvent()), 200 * i);
+            }
         }
 
         /*

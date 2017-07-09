@@ -12,9 +12,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.api.event.ui.HideCircleProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.HideKeyboardEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.HideProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.OnSnackBarClickEvent;
+import com.cleanarchitecture.shishkin.api.event.ui.ShowCircleProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowDialogEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowEditDialogEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowErrorMessageEvent;
@@ -248,6 +250,21 @@ public class ActivityController extends AbstractController<IActivity> implements
 
     @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onShowCircleProgressBarEvent(ShowCircleProgressBarEvent event) {
+        final IActivity subscriber = getSubscriber();
+        if (subscriber != null && subscriber.validate()) {
+            if (subscriber instanceof AbstractContentActivity) {
+                final AbstractContentActivity activity = (AbstractContentActivity) subscriber;
+                final AbstractContentFragment fragment = activity.getContentFragment(AbstractContentFragment.class);
+                if (fragment != null) {
+                    fragment.showCircleProgressBar(event.getPosition());
+                }
+            }
+        }
+    }
+
+    @Override
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onHideProgressBarEvent(HideProgressBarEvent event) {
         final IActivity subscriber = getSubscriber();
         if (subscriber != null && subscriber.validate()) {
@@ -256,6 +273,21 @@ public class ActivityController extends AbstractController<IActivity> implements
                 final AbstractContentFragment fragment = activity.getContentFragment(AbstractContentFragment.class);
                 if (fragment != null) {
                     fragment.hideProgressBar();
+                }
+            }
+        }
+    }
+
+    @Override
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onHideCircleProgressBarEvent(HideCircleProgressBarEvent event) {
+        final IActivity subscriber = getSubscriber();
+        if (subscriber != null && subscriber.validate()) {
+            if (subscriber instanceof AbstractContentActivity) {
+                final AbstractContentActivity activity = (AbstractContentActivity) subscriber;
+                final AbstractContentFragment fragment = activity.getContentFragment(AbstractContentFragment.class);
+                if (fragment != null) {
+                    fragment.hideCircleProgressBar();
                 }
             }
         }

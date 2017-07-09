@@ -23,6 +23,7 @@ import com.cleanarchitecture.shishkin.common.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.common.lifecycle.StateMachine;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
+import com.github.lzyzsd.circleprogress.DonutProgress;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -157,10 +158,24 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
     @Override
     public void showProgressBar() {
         if (validate()) {
-            final View progressBar = findView(R.id.presenterProgressBar);
-            if (progressBar != null) {
+            final View view = findView(R.id.presenterProgressBar);
+            if (view != null) {
                 ApplicationUtils.runOnUiThread(() -> {
-                    progressBar.setVisibility(View.VISIBLE);
+                    view.setVisibility(View.VISIBLE);
+                });
+            }
+        }
+    }
+
+    @Override
+    public void showCircleProgressBar(final float progress) {
+        if (validate()) {
+            final View view = findView(R.id.presenterCircleProgressBarLL);
+            final DonutProgress progressBar = findView(R.id.presenterCircleProgressBar);
+            if (progressBar != null && view != null) {
+                ApplicationUtils.runOnUiThread(() -> {
+                    view.setVisibility(View.VISIBLE);
+                    progressBar.setProgress(progress);
                 });
             }
         }
@@ -169,10 +184,22 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
     @Override
     public void hideProgressBar() {
         if (validate()) {
-            final View progressBar = findView(R.id.presenterProgressBar);
-            if (progressBar != null) {
+            final View view = findView(R.id.presenterProgressBar);
+            if (view != null) {
                 ApplicationUtils.runOnUiThread(() -> {
-                    progressBar.setVisibility(View.INVISIBLE);
+                    view.setVisibility(View.INVISIBLE);
+                });
+            }
+        }
+    }
+
+    @Override
+    public void hideCircleProgressBar() {
+        if (validate()) {
+            final View view = findView(R.id.presenterCircleProgressBarLL);
+            if (view != null) {
+                ApplicationUtils.runOnUiThread(() -> {
+                    view.setVisibility(View.INVISIBLE);
                 });
             }
         }

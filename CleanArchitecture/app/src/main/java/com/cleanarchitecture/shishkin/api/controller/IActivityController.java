@@ -1,7 +1,9 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
+import com.cleanarchitecture.shishkin.api.event.ui.HideCircleProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.HideKeyboardEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.HideProgressBarEvent;
+import com.cleanarchitecture.shishkin.api.event.ui.ShowCircleProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowDialogEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowEditDialogEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowErrorMessageEvent;
@@ -89,6 +91,20 @@ public interface IActivityController extends IController<IActivity> {
      * @param event событие
      */
     void onHideProgressBarEvent(HideProgressBarEvent event);
+
+    /**
+     * Обрабатывает событие - показать Circle Progress Bar
+     *
+     * @param event событие
+     */
+    void onShowCircleProgressBarEvent(ShowCircleProgressBarEvent event);
+
+    /**
+     * Обрабатывает событие - скрыть Circle Progress Bar
+     *
+     * @param event событие
+     */
+    void onHideCircleProgressBarEvent(HideCircleProgressBarEvent event);
 
     /**
      * Обрабатывает событие - показать диалок с выбором из списка
