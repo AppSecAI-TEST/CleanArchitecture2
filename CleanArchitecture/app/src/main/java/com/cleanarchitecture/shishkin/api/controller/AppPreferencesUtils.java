@@ -16,8 +16,17 @@ public class AppPreferencesUtils {
     private static final String DESKTOP = "desktop";
     private static final String IMAGE_CACHE_VERSION = "image_cache_version";
     private static final String PARCELABLE_CACHE_VERSION = "parcelable_cache_version";
+    private static final String SETTING_SHOW_TOOLTIP = "setting_show_tooltip";
 
     private AppPreferencesUtils() {
+    }
+
+    public static boolean getSettingShowTooltip(final Context context) {
+        return getBoolean(context, SETTING_SHOW_TOOLTIP, true);
+    }
+
+    public static void setSettingShowTooltip(final Context context, final boolean value) {
+        putBoolean(context, SETTING_SHOW_TOOLTIP, value);
     }
 
     /**

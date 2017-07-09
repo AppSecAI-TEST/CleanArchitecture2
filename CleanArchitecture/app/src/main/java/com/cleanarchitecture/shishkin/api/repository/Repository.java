@@ -12,7 +12,11 @@ import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.api.event.CheckDiskCacheEvent;
 import com.cleanarchitecture.shishkin.api.event.database.DbCreatedEvent;
 import com.cleanarchitecture.shishkin.api.event.database.DbUpdatedEvent;
+import com.cleanarchitecture.shishkin.api.event.repository.RepositoryRequestGetApplicationSettingsEvent;
+import com.cleanarchitecture.shishkin.api.event.repository.RepositoryRequestSetApplicationSettingEvent;
+import com.cleanarchitecture.shishkin.api.event.repository.RepositoryResponseGetApplicationSettingsEvent;
 import com.cleanarchitecture.shishkin.api.mail.ShowToastMail;
+import com.cleanarchitecture.shishkin.api.repository.data.ApplicationSetting;
 import com.cleanarchitecture.shishkin.api.storage.IExpiredSerializableStorage;
 import com.cleanarchitecture.shishkin.api.storage.SerializableDiskCache;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
@@ -57,6 +61,48 @@ public class Repository extends AbstractModule implements IRepository, IModuleSu
         return list;
     }
 
+    private synchronized void getApplicationSettings() {
+        final Context context = AdminUtils.getContext();
+        if (context == null) {
+            return;
+        }
+
+        List<ApplicationSetting> list = new ArrayList<>();
+
+        final boolean currentValue = AppPreferencesUtils.getSettingShowTooltip(context);
+        final ApplicationSetting setting = new ApplicationSetting(ApplicationSetting.TYPE_SWITCH)
+                .setTitleId(R.string.settings_show_tooltip)
+                .setCurrentValue(String.valueOf(currentValue))
+                .setId(R.id.application_setting_show_tooltip);
+
+        list.add(setting);
+
+        AdminUtils.postEvent(new RepositoryResponseGetApplicationSettingsEvent().setResponse(list));
+    }
+
+    private synchronized void setApplicationSetting(RepositoryRequestSetApplicationSettingEvent event) {
+        if (event == null) {
+            return;
+        }
+
+        if (event.getApplicationSetting() == null) {
+            return;
+        }
+
+        final Context context = AdminUtils.getContext();
+        if (context == null) {
+            return;
+        }
+
+        switch (event.getApplicationSetting().getId()) {
+            case R.id.application_setting_show_tooltip:
+                final boolean currentValue = Boolean.valueOf(event.getApplicationSetting().getCurrentValue());
+                AppPreferencesUtils.setSettingShowTooltip(context, currentValue);
+                break;
+        }
+    }
+
+
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onCheckDiskCacheEvent(final CheckDiskCacheEvent event) {
         final Context context = AdminUtils.getContext();
@@ -99,5 +145,15 @@ public class Repository extends AbstractModule implements IRepository, IModuleSu
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onRepositoryRequestGetContactsEvent(final RepositoryRequestGetContactsEvent event) {
         ContentProviderUtils.requestContacts(event);
+    }
+
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onRepositoryRequestGetApplicationSettingsEvent(final RepositoryRequestGetApplicationSettingsEvent event) {
+        getApplicationSettings();
+    }
+
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onRepositoryRequestSetApplicationSettingEvent(final RepositoryRequestSetApplicationSettingEvent event) {
+        setApplicationSetting(event);
     }
 }

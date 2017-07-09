@@ -1,6 +1,7 @@
 package com.cleanarchitecture.shishkin.application.presenter;
 
 import android.Manifest;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import android.widget.EditText;
 import com.annimon.stream.Stream;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.api.controller.AppPreferencesUtils;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.debounce.Debounce;
 import com.cleanarchitecture.shishkin.api.event.OnPermisionGrantedEvent;
@@ -119,7 +121,12 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
 
     @Override
     public void onResumeLifecycle() {
-        AdminUtils.postEvent(new ShowTooltipEvent(mSearchView.get(), R.string.tooltip_search, Gravity.BOTTOM));
+        final Context context = AdminUtils.getContext();
+        if (context != null) {
+            if (AppPreferencesUtils.getSettingShowTooltip(context)) {
+                AdminUtils.postEvent(new ShowTooltipEvent(mSearchView.get(), R.string.tooltip_search, Gravity.BOTTOM));
+            }
+        }
     }
 
     @Override

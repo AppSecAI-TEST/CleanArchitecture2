@@ -20,6 +20,7 @@ import com.cleanarchitecture.shishkin.api.controller.IDesktopSubscriber;
 import com.cleanarchitecture.shishkin.api.controller.ILocationController;
 import com.cleanarchitecture.shishkin.api.controller.ILocationSubscriber;
 import com.cleanarchitecture.shishkin.api.controller.LocationController;
+import com.cleanarchitecture.shishkin.api.event.ShowFragmentEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.OnToolbarClickEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.OnToolbarMenuItemClickEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBackNavigationEvent;
@@ -33,6 +34,7 @@ import com.cleanarchitecture.shishkin.api.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.api.presenter.OnBackPressedPresenter;
 import com.cleanarchitecture.shishkin.api.service.NotificationService;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
+import com.cleanarchitecture.shishkin.api.ui.fragment.SettingApplicationFragment;
 import com.cleanarchitecture.shishkin.api.ui.item.SettingsDesktopOrderItem;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewIdleEvent;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewScrolledEvent;
@@ -204,6 +206,8 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
         final MenuItem item = event.getMenuItem();
         if (item.getItemId() == R.id.exit) {
             AdminUtils.postEvent(new UseCaseFinishApplicationEvent());
+        } else if (item.getItemId() == R.id.setting) {
+            AdminUtils.postEvent(new ShowFragmentEvent(SettingApplicationFragment.newInstance()));
         } else if (item.getItemId() == R.id.desktop) {
             final IDesktopController controller = Admin.getInstance().get(DesktopController.NAME);
             if (controller != null) {
