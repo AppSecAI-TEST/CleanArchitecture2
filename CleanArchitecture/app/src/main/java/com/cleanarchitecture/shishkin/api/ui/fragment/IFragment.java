@@ -65,4 +65,16 @@ public interface IFragment extends ISubscriber, IView {
      * @param lostStateDate true - очищать данные
      */
     void setLostStateDate(boolean lostStateDate);
+
+    /**
+     * Показать Circle Progress Bar
+     *
+     * @param progress текущая позиция
+     */
+    void showCircleProgressBar(final float progress);
+
+    /**
+     * Скрыть Circle Progress Bar
+     */
+    void hideCircleProgressBar();
 }
