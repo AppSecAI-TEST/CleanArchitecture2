@@ -233,6 +233,15 @@ public class ActivityController extends AbstractController<IActivity> implements
         final IActivity subscriber = getSubscriber();
         if (subscriber != null && subscriber.validate()) {
             subscriber.getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+
+            final AbstractActivity activity = subscriber.getActivity();
+            final InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                View view = activity.getCurrentFocus();
+                if (view != null) {
+                    imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+                }
+            }
         }
     }
 
