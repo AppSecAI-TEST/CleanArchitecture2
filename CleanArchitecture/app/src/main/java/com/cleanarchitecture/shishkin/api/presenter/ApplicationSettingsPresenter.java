@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
-import com.cleanarchitecture.shishkin.api.controller.ErrorController;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.event.repository.RepositoryRequestGetApplicationSettingsEvent;
 import com.cleanarchitecture.shishkin.api.event.repository.RepositoryRequestSetApplicationSettingEvent;
@@ -31,9 +30,15 @@ public class ApplicationSettingsPresenter extends AbstractPresenter<Void> implem
 
     private WeakReference<LinearLayout> mLinearLayout;
     private List<ApplicationSetting> mSettings;
+    private LayoutInflater mInflater;
 
     public void bindView(@NonNull final View root) {
         if (root != null) {
+            final AbstractActivity activity = AdminUtils.getActivity();
+            if (activity != null) {
+                mInflater = activity.getLayoutInflater();
+            }
+
             final LinearLayout list = ViewUtils.findView(root, R.id.list);
             if (list != null) {
                 mLinearLayout = new WeakReference<>(list);
@@ -68,29 +73,17 @@ public class ApplicationSettingsPresenter extends AbstractPresenter<Void> implem
     }
 
     private void generateInfoItem(final ViewGroup parent, final ApplicationSetting setting) {
-        final AbstractActivity activity = AdminUtils.getActivity();
-        if (activity == null) {
-            ErrorController.getInstance().onError("1", "Пустой activity", true);
-            return;
-        }
-
-        final LayoutInflater inflater = activity.getLayoutInflater();
-        if (inflater == null) {
-            ErrorController.getInstance().onError("1", "Пустой inflater", true);
-            return;
-        }
-
         View v = null;
         TextView titleView;
         switch (setting.getType()) {
             case ApplicationSetting.TYPE_TEXT:
-                v = inflater.inflate(AdminUtils.getLayoutId("setting_item_text", R.layout.setting_item_text), parent, false);
+                v = mInflater.inflate(AdminUtils.getLayoutId("setting_item_text", R.layout.setting_item_text), parent, false);
                 titleView = ViewUtils.findView(v, R.id.item_title);
                 titleView.setText(setting.getTitleId());
                 break;
 
             case ApplicationSetting.TYPE_SWITCH:
-                v = inflater.inflate(AdminUtils.getLayoutId("setting_item_switch", R.layout.setting_item_switch), parent, false);
+                v = mInflater.inflate(AdminUtils.getLayoutId("setting_item_switch", R.layout.setting_item_switch), parent, false);
                 titleView = ViewUtils.findView(v, R.id.item_title);
                 titleView.setText(setting.getTitleId());
 
