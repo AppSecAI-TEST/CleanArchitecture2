@@ -2,12 +2,14 @@ package com.cleanarchitecture.shishkin.api.storage;
 
 import com.cleanarchitecture.shishkin.api.controller.AbstractModule;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
+import com.cleanarchitecture.shishkin.common.utils.SerializableUtil;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -75,6 +77,28 @@ public class SerializableMemoryCache extends AbstractModule implements ISerializ
     }
 
     @Override
+    public void put(final String key, final List<Serializable> values) {
+        if (StringUtils.isNullOrEmpty(key) || values == null) {
+            return;
+        }
+        mLock.lock();
+
+        try {
+            if (validate()) {
+                final Serializable s = SerializableUtil.toSerializable(values);
+                if (s != null) {
+                    mValue = s;
+                    mCache.put(key, s);
+                }
+            }
+        } catch (Exception e) {
+            ErrorController.getInstance().onError(LOG_TAG, e);
+        } finally {
+            mLock.unlock();
+        }
+    }
+
+    @Override
     public Serializable get(final String key) {
         if (StringUtils.isNullOrEmpty(key)) {
             return null;
@@ -84,6 +108,27 @@ public class SerializableMemoryCache extends AbstractModule implements ISerializ
 
         try {
             return mCache.getIfPresent(key);
+        } catch (Exception e) {
+            ErrorController.getInstance().onError(LOG_TAG, e);
+        } finally {
+            mLock.unlock();
+        }
+        return null;
+    }
+
+    @Override
+    public List<Serializable> getList(final String key) {
+        if (StringUtils.isNullOrEmpty(key)) {
+            return null;
+        }
+
+        mLock.lock();
+
+        try {
+            final Serializable s = mCache.getIfPresent(key);
+            if (s != null) {
+                return SerializableUtil.serializableToList(s);
+            }
         } catch (Exception e) {
             ErrorController.getInstance().onError(LOG_TAG, e);
         } finally {

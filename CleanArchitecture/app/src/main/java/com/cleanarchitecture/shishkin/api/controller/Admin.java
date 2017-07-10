@@ -70,6 +70,7 @@ public class Admin extends AbstractAdmin {
         registerModule(Repository.NAME);
         registerModule(DesktopController.NAME);
         registerModule(LocationController.NAME);
+        registerModule(TransformDataModule.NAME);
     }
 
     @Override

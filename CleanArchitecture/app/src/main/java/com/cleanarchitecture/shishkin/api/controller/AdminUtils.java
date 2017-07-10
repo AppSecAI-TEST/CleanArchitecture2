@@ -559,6 +559,11 @@ public class AdminUtils {
         return false;
     }
 
+    public static ITransformDataModule getTransformDataModule() {
+        return Admin.getInstance().get(TransformDataModule.NAME);
+    }
+
+
     private AdminUtils() {
     }
 
