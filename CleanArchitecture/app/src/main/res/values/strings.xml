@@ -57,6 +57,7 @@
 
     <string name="tooltip_search">Используйте символ \'<font color="red">*</font>\' для поиска во всех словах. Например:\nш* - искать все слова, начинающиеся с \'ш\'\n*ов - найти все слова, оканчивающиеся на \'ов\'</string>
     <string name="settings_show_tooltip">Показывать подсказки</string>
+    <string name="display">Дисплей</string>
 
 
 </resources>

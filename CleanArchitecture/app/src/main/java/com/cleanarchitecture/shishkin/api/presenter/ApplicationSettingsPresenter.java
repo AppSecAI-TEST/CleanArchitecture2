@@ -30,7 +30,7 @@ public class ApplicationSettingsPresenter extends AbstractPresenter<Void> implem
     public static final String NAME = ApplicationSettingsPresenter.class.getName();
 
     private WeakReference<LinearLayout> mLinearLayout;
-    private List<ApplicationSetting> mSettings = new ArrayList<>();
+    private List<ApplicationSetting> mSettings;
 
     public void bindView(@NonNull final View root) {
         if (root != null) {
@@ -70,10 +70,18 @@ public class ApplicationSettingsPresenter extends AbstractPresenter<Void> implem
 
     private void generateInfoItem(final ViewGroup parent, final ApplicationSetting setting) {
         final LayoutInflater inflater = AdminUtils.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View v = inflater.inflate(getInfoItemLayoutId(setting.getType()), parent, false);
+        View v = null;
+        TextView titleView;
         switch (setting.getType()) {
+            case ApplicationSetting.TYPE_TEXT:
+                //v = inflater.inflate(AdminUtils.getLayoutId("setting_item_text", R.layout.setting_item_text), parent, false);
+                //titleView = ViewUtils.findView(v, R.id.item_title);
+                //titleView.setText(setting.getTitleId());
+                break;
+
             case ApplicationSetting.TYPE_SWITCH:
-                final TextView titleView = ViewUtils.findView(v, R.id.item_title);
+                v = inflater.inflate(AdminUtils.getLayoutId("setting_item_switch", R.layout.setting_item_switch), parent, false);
+                titleView = ViewUtils.findView(v, R.id.item_title);
                 titleView.setText(setting.getTitleId());
 
                 final SwitchCompat valueView = ViewUtils.findView(v, R.id.item_switch);
@@ -82,9 +90,12 @@ public class ApplicationSettingsPresenter extends AbstractPresenter<Void> implem
                 valueView.setTag(setting);
                 valueView.setOnCheckedChangeListener(this);
                 break;
+
         }
 
-        parent.addView(v);
+        if (v != null) {
+            parent.addView(v);
+        }
     }
 
     @Override
@@ -95,14 +106,6 @@ public class ApplicationSettingsPresenter extends AbstractPresenter<Void> implem
 
             AdminUtils.postEvent(new RepositoryRequestSetApplicationSettingEvent(setting));
         }
-    }
-
-    private int getInfoItemLayoutId(final int type) {
-        switch (type) {
-            case ApplicationSetting.TYPE_SWITCH:
-                return R.layout.setting_item_layout;
-        }
-        return R.layout.setting_item_layout;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

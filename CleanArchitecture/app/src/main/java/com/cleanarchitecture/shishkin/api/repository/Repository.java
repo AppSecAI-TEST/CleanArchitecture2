@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.LinkedList;
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -67,14 +68,20 @@ public class Repository extends AbstractModule implements IRepository, IModuleSu
             return;
         }
 
-        List<ApplicationSetting> list = new ArrayList<>();
+        ApplicationSetting setting;
 
-        final boolean currentValue = AppPreferencesUtils.getSettingShowTooltip(context);
-        final ApplicationSetting setting = new ApplicationSetting(ApplicationSetting.TYPE_SWITCH)
+        List<ApplicationSetting> list = new LinkedList<>();
+        boolean currentValueBoolean = true;
+
+        setting = new ApplicationSetting(ApplicationSetting.TYPE_TEXT)
+                .setTitleId(R.string.display);
+        list.add(setting);
+
+        currentValueBoolean = AppPreferencesUtils.getSettingShowTooltip(context);
+        setting = new ApplicationSetting(ApplicationSetting.TYPE_SWITCH)
                 .setTitleId(R.string.settings_show_tooltip)
-                .setCurrentValue(String.valueOf(currentValue))
+                .setCurrentValue(String.valueOf(currentValueBoolean))
                 .setId(R.id.application_setting_show_tooltip);
-
         list.add(setting);
 
         AdminUtils.postEvent(new RepositoryResponseGetApplicationSettingsEvent().setResponse(list));
