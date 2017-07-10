@@ -24,7 +24,10 @@ import com.cleanarchitecture.shishkin.api.debounce.Debounce;
 import com.cleanarchitecture.shishkin.api.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.EditTextAfterTextChangedEvent;
+import com.cleanarchitecture.shishkin.api.event.ui.HideCircleProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.HideKeyboardEvent;
+import com.cleanarchitecture.shishkin.api.event.ui.ShowCircleProgressBarEvent;
+import com.cleanarchitecture.shishkin.api.event.ui.ShowKeyboardEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowListDialogEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowToastEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowTooltipEvent;
@@ -69,7 +72,7 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
     private String mCurrentFilter = null;
     private IDbProvider mDbProvider = AdminUtils.getDbProvider();
     private EditTextDebouncedObserver mEditTextDebouncedObserver;
-    private Debounce mDebounce = new Debounce(TimeUnit.SECONDS.toMillis(5)) {
+    private Debounce mDebounce = new Debounce(TimeUnit.SECONDS.toMillis(8)) {
         @Override
         public void run() {
             AdminUtils.postEvent(new HideKeyboardEvent());
@@ -111,12 +114,26 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
                     .edittext_phone_contact_presenter);
             mSearchView = new WeakReference<>(searchView);
             searchView.setText(mCurrentFilter);
+            AdminUtils.postEvent(new HideKeyboardEvent());
         }
 
         if (mDbProvider != null) {
             mDbProvider.observe(AdminUtils.getActivity(), PhoneContactViewModel.NAME, PhoneContactViewModel.class, this);
         }
 
+        for (int i = 0; i <= 11; i++) {
+            if (i < 11) {
+                final int ii = i;
+                root.postDelayed(() -> AdminUtils.postEvent(new ShowCircleProgressBarEvent(ii * 10)), 200 * i);
+            } else {
+                root.postDelayed(() -> AdminUtils.postEvent(new HideCircleProgressBarEvent()), 200 * i);
+                root.postDelayed(() -> {
+                    mSearchView.get().requestFocus();
+                    mSearchView.get().requestFocusFromTouch();
+                    AdminUtils.postEvent(new ShowKeyboardEvent());
+                }, 200 * i);
+            }
+        }
     }
 
     @Override
