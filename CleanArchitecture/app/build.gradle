@@ -127,7 +127,4 @@ dependencies {
 
     // ToolTip
     compile 'com.github.vihtarb:tooltip:0.1.9'
-
-    // библиотека работы с Json
-    compile 'com.googlecode.json-simple:json-simple:1.1'
 }
