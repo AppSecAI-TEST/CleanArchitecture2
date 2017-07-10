@@ -11,6 +11,7 @@ import com.cleanarchitecture.shishkin.api.service.SerializableDiskCacheService;
 import java.io.Serializable;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class CacheUtils {
     // типы кеширования
     public static final int USE_NO_CACHE = 0; // не использовать кеш ни при чтении ни при сохранении данных
@@ -32,9 +33,6 @@ public class CacheUtils {
         final ISerializableStorage memoryCache = Admin.getInstance().get(SerializableMemoryCache.NAME);
 
         switch (cacheType) {
-            case USE_NO_CACHE:
-                break;
-
             case USE_ONLY_MEMORY_CACHE:
             case USE_MEMORY_CACHE:
                 if (memoryCache != null) {
@@ -61,6 +59,11 @@ public class CacheUtils {
                     }
                 }
                 return value;
+
+            case USE_NO_CACHE:
+            default:
+                break;
+
         }
         return null;
     }
@@ -70,9 +73,6 @@ public class CacheUtils {
         final IParcelableStorage<T> memoryCache = Admin.getInstance().get(ParcelableMemoryCache.NAME);
 
         switch (cacheType) {
-            case USE_NO_CACHE:
-                break;
-
             case USE_ONLY_MEMORY_CACHE:
             case USE_MEMORY_CACHE:
                 if (memoryCache != null) {
@@ -99,6 +99,10 @@ public class CacheUtils {
                     }
                 }
                 return value;
+
+            case USE_NO_CACHE:
+            default:
+                break;
         }
         return null;
     }
@@ -108,9 +112,6 @@ public class CacheUtils {
         final IParcelableStorage<T> memoryCache = Admin.getInstance().get(ParcelableMemoryCache.NAME);
 
         switch (cacheType) {
-            case USE_NO_CACHE:
-                break;
-
             case USE_ONLY_MEMORY_CACHE:
             case USE_MEMORY_CACHE:
                 if (memoryCache != null) {
@@ -137,6 +138,11 @@ public class CacheUtils {
                     }
                 }
                 return value;
+
+            case USE_NO_CACHE:
+            default:
+                break;
+
         }
         return null;
     }
@@ -149,9 +155,6 @@ public class CacheUtils {
         }
 
         switch (cacheType) {
-            case USE_NO_CACHE:
-                break;
-
             case USE_ONLY_MEMORY_CACHE:
             case USE_SAVE_MEMORY_CACHE:
             case USE_MEMORY_CACHE:
@@ -182,6 +185,11 @@ public class CacheUtils {
                     SerializableDiskCacheService.put(context, key, value);
                 }
                 break;
+
+            case USE_NO_CACHE:
+            default:
+                break;
+
         }
     }
 
@@ -193,9 +201,6 @@ public class CacheUtils {
         }
 
         switch (cacheType) {
-            case USE_NO_CACHE:
-                break;
-
             case USE_ONLY_MEMORY_CACHE:
             case USE_SAVE_MEMORY_CACHE:
             case USE_MEMORY_CACHE:
@@ -226,6 +231,11 @@ public class CacheUtils {
                     ParcelableDiskCacheService.put(context, key, value);
                 }
                 break;
+
+            case USE_NO_CACHE:
+            default:
+                break;
+
         }
     }
 
@@ -237,9 +247,6 @@ public class CacheUtils {
         }
 
         switch (cacheType) {
-            case USE_NO_CACHE:
-                break;
-
             case USE_ONLY_MEMORY_CACHE:
             case USE_SAVE_MEMORY_CACHE:
             case USE_MEMORY_CACHE:
@@ -270,6 +277,11 @@ public class CacheUtils {
                     ParcelableDiskCacheService.put(context, key, value);
                 }
                 break;
+
+            case USE_NO_CACHE:
+            default:
+                break;
+
         }
     }
 }
