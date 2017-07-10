@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.api.data;
+package com.cleanarchitecture.shishkin.api.model;
 
 import android.arch.lifecycle.LiveData;
 import android.content.ContentResolver;

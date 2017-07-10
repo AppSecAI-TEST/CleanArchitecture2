@@ -2,7 +2,7 @@ package com.cleanarchitecture.shishkin.application.data.livedata;
 
 import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
-import com.cleanarchitecture.shishkin.api.data.AbstractContentProviderLiveData;
+import com.cleanarchitecture.shishkin.api.model.AbstractContentProviderLiveData;
 import com.cleanarchitecture.shishkin.api.event.ui.HideHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.storage.CacheUtils;

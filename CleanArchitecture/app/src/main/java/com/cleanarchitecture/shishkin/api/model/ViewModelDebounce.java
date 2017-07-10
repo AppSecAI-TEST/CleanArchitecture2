@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.api.data;
+package com.cleanarchitecture.shishkin.api.model;
 
 import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.debounce.Debounce;
