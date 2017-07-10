@@ -5,7 +5,7 @@ import com.annimon.stream.function.Predicate;
 
 import java.util.List;
 
-public class TransformDataModule implements ITransformDataModule {
+public class TransformDataModule extends AbstractModule implements ITransformDataModule {
 
     public static final String NAME = TransformDataModule.class.getName();
 
@@ -27,12 +27,4 @@ public class TransformDataModule implements ITransformDataModule {
         return null;
     }
 
-    @Override
-    public boolean isPersistent() {
-        return false;
-    }
-
-    @Override
-    public void onUnRegister() {
-    }
 }
