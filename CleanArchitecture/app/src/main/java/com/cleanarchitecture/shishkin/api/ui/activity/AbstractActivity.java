@@ -23,7 +23,6 @@ import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.ActivityController;
 import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
-import com.cleanarchitecture.shishkin.api.controller.AppPreferencesUtils;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.IMailSubscriber;
 import com.cleanarchitecture.shishkin.api.controller.MailController;
@@ -39,6 +38,7 @@ import com.cleanarchitecture.shishkin.api.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.api.ui.dialog.MaterialDialogExt;
 import com.cleanarchitecture.shishkin.common.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.common.lifecycle.StateMachine;
+import com.cleanarchitecture.shishkin.common.utils.AppPreferencesUtils;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 

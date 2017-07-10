@@ -33,7 +33,7 @@ public class DesktopController implements IDesktopController, IModuleSubscriber 
     public DesktopController() {
         final Context context = AdminUtils.getContext();
         if (context != null) {
-            mDesktop = AppPreferencesUtils.getDesktop(context);
+            mDesktop = AppPreferencesModule.getInstance().getDesktop();
 
             String[] keys = context.getResources().getStringArray(R.array.desktop_key);
             String[] values = context.getResources().getStringArray(R.array.desktop_value);
@@ -98,7 +98,7 @@ public class DesktopController implements IDesktopController, IModuleSubscriber 
     public String getDesktopOrder(final IDesktopSubscriber subscriber) {
         final Context context = AdminUtils.getContext();
         if (context != null && subscriber != null) {
-            return AppPreferencesUtils.getDesktopOrder(context, subscriber.getDesktopOrderName(), subscriber.getDefaultDesktopOrder());
+            return AppPreferencesModule.getInstance().getDesktopOrder(subscriber.getDesktopOrderName(), subscriber.getDefaultDesktopOrder());
         }
         return subscriber.getDefaultDesktopOrder();
     }
@@ -146,7 +146,7 @@ public class DesktopController implements IDesktopController, IModuleSubscriber 
                 if (list != null && list.size() > 0) {
                     if (mDesktops.containsKey(list.get(0))) {
                         mDesktop = mDesktops.get(list.get(0));
-                        AppPreferencesUtils.setDesktop(context, mDesktop);
+                        AppPreferencesModule.getInstance().setDesktop(mDesktop);
                         final INavigationController controller = Admin.getInstance().get(NavigationController.NAME);
                         if (controller != null) {
                             final Map<String, WeakReference<INavigationSubscriber>> map = controller.getSubscribers();
