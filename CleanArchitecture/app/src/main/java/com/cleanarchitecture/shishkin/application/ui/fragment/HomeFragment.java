@@ -42,7 +42,6 @@ import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewId
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewScrolledEvent;
 import com.cleanarchitecture.shishkin.application.presenter.FloatingActionMenuPresenter;
 import com.cleanarchitecture.shishkin.application.presenter.PhoneContactPresenter;
-import com.cleanarchitecture.shishkin.common.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.SerializableUtil;
 import com.cleanarchitecture.shishkin.common.utils.ShareUtil;
