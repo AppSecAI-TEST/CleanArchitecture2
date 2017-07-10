@@ -15,28 +15,25 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContentProviderModule extends AbstractModule implements IModuleSubscriber {
+public class ContentProviderProxy extends AbstractModule implements IModuleSubscriber {
 
-    public static final String NAME = ContentProviderModule.class.getName();
+    public static final String NAME = ContentProviderProxy.class.getName();
 
-    public void requestContacts(final RepositoryRequestGetContactsEvent event) {
-        final IRepository repository = AdminUtils.getRepository();
-        if (repository != null) {
-            final List<PhoneContactItem> list = CacheUtils.getList(String.valueOf(event.getId()), event.getCacheType(), PhoneContactItem.class);
-            if (list != null) {
-                AdminUtils.postEvent(new RepositoryResponseGetContactsEvent()
-                        .setResponse(list)
-                        .setFrom(Repository.FROM_CACHE));
-            } else {
-                final RepositoryResponseGetContactsEvent responseEvent = (RepositoryResponseGetContactsEvent) AdminUtils.getContentProvider().getContacts();
-                responseEvent.setFrom(Repository.FROM_CONTENT_PROVIDER);
+    private void requestContacts(final RepositoryRequestGetContactsEvent event) {
+        final List<PhoneContactItem> list = CacheUtils.getList(String.valueOf(event.getId()), event.getCacheType(), PhoneContactItem.class);
+        if (list != null) {
+            AdminUtils.postEvent(new RepositoryResponseGetContactsEvent()
+                    .setResponse(list)
+                    .setFrom(Repository.FROM_CACHE));
+        } else {
+            final RepositoryResponseGetContactsEvent responseEvent = (RepositoryResponseGetContactsEvent) AdminUtils.getContentProvider().getContacts();
+            responseEvent.setFrom(Repository.FROM_CONTENT_PROVIDER);
 
-                if (!responseEvent.hasError()) {
-                    CacheUtils.put(String.valueOf(event.getId()), event.getCacheType(), responseEvent.getResponse(), event.getExpired());
-                }
-
-                AdminUtils.postEvent(responseEvent);
+            if (!responseEvent.hasError()) {
+                CacheUtils.put(String.valueOf(event.getId()), event.getCacheType(), responseEvent.getResponse(), event.getExpired());
             }
+
+            AdminUtils.postEvent(responseEvent);
         }
     }
 
