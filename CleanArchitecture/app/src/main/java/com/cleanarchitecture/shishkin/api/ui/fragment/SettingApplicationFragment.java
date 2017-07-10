@@ -14,6 +14,8 @@ import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetTitleEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.HideHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.HideKeyboardEvent;
 import com.cleanarchitecture.shishkin.api.presenter.ApplicationSettingsPresenter;
+import com.cleanarchitecture.shishkin.api.presenter.IPresenter;
+import com.cleanarchitecture.shishkin.application.presenter.FloatingActionMenuPresenter;
 
 @SuppressWarnings("unused")
 public class SettingApplicationFragment extends AbstractContentFragment {
@@ -35,13 +37,14 @@ public class SettingApplicationFragment extends AbstractContentFragment {
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        AdminUtils.postEvent(new HideHorizontalProgressBarEvent());
-        AdminUtils.postEvent(new HideKeyboardEvent());
-
-        mApplicationSettingsPresenter.bindView(view);
         registerPresenter(mApplicationSettingsPresenter);
-    }
+        mApplicationSettingsPresenter.bindView(view);
 
+        final IPresenter presenter = AdminUtils.getPresenter(FloatingActionMenuPresenter.NAME);
+        if (presenter != null) {
+            ((FloatingActionMenuPresenter) presenter).setVisible(false);
+        }
+    }
 
     @Override
     public boolean onBackPressed() {

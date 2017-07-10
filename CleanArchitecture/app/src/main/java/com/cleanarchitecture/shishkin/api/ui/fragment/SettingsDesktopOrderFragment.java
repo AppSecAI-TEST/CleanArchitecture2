@@ -40,8 +40,8 @@ public class SettingsDesktopOrderFragment extends AbstractContentFragment {
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mSettingsDesktopOrderPresenter.bindView(view, getArguments());
         registerPresenter(mSettingsDesktopOrderPresenter);
+        mSettingsDesktopOrderPresenter.bindView(view, getArguments());
 
         final IPresenter presenter = AdminUtils.getPresenter(FloatingActionMenuPresenter.NAME);
         if (presenter != null) {

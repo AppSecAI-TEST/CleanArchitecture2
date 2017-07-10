@@ -28,6 +28,8 @@ import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetItemEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetMenuEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetTitleEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.HideCircleProgressBarEvent;
+import com.cleanarchitecture.shishkin.api.event.ui.HideHorizontalProgressBarEvent;
+import com.cleanarchitecture.shishkin.api.event.ui.HideKeyboardEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowCircleProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseFinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.presenter.IPresenter;
@@ -40,6 +42,7 @@ import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewId
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewScrolledEvent;
 import com.cleanarchitecture.shishkin.application.presenter.FloatingActionMenuPresenter;
 import com.cleanarchitecture.shishkin.application.presenter.PhoneContactPresenter;
+import com.cleanarchitecture.shishkin.common.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.SerializableUtil;
 import com.cleanarchitecture.shishkin.common.utils.ShareUtil;
@@ -87,8 +90,8 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
 
         registerPresenter(mOnBackPressedPresenter);
 
-        mSearchPresenter.bindView(view);
         registerPresenter(mSearchPresenter);
+        mSearchPresenter.bindView(view);
 
         ApplicationUtils.grantPermisions(ApplicationController.getInstance().getRequiredPermisions(), AdminUtils.getActivity());
 
@@ -114,6 +117,14 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
             AdminUtils.postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.WRITE_EXTERNAL_STORAGE));
         }
         */
+    }
+
+    @Override
+    public void onDestroyView() {
+        AdminUtils.postEvent(new HideHorizontalProgressBarEvent());
+        AdminUtils.postEvent(new HideKeyboardEvent());
+
+        super.onDestroyView();
     }
 
     @Override

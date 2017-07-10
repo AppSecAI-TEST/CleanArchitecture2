@@ -1,6 +1,5 @@
 package com.cleanarchitecture.shishkin.api.presenter;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
@@ -12,18 +11,19 @@ import android.widget.TextView;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.api.controller.ErrorController;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.event.repository.RepositoryRequestGetApplicationSettingsEvent;
 import com.cleanarchitecture.shishkin.api.event.repository.RepositoryRequestSetApplicationSettingEvent;
 import com.cleanarchitecture.shishkin.api.event.repository.RepositoryResponseGetApplicationSettingsEvent;
 import com.cleanarchitecture.shishkin.api.repository.data.ApplicationSetting;
+import com.cleanarchitecture.shishkin.api.ui.activity.AbstractActivity;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ApplicationSettingsPresenter extends AbstractPresenter<Void> implements CompoundButton.OnCheckedChangeListener {
@@ -36,7 +36,6 @@ public class ApplicationSettingsPresenter extends AbstractPresenter<Void> implem
         if (root != null) {
             final LinearLayout list = ViewUtils.findView(root, R.id.list);
             if (list != null) {
-                list.removeAllViews();
                 mLinearLayout = new WeakReference<>(list);
 
                 AdminUtils.postEvent(new RepositoryRequestGetApplicationSettingsEvent());
@@ -69,14 +68,25 @@ public class ApplicationSettingsPresenter extends AbstractPresenter<Void> implem
     }
 
     private void generateInfoItem(final ViewGroup parent, final ApplicationSetting setting) {
-        final LayoutInflater inflater = AdminUtils.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final AbstractActivity activity = AdminUtils.getActivity();
+        if (activity == null) {
+            ErrorController.getInstance().onError("1", "Пустой activity", true);
+            return;
+        }
+
+        final LayoutInflater inflater = activity.getLayoutInflater();
+        if (inflater == null) {
+            ErrorController.getInstance().onError("1", "Пустой inflater", true);
+            return;
+        }
+
         View v = null;
         TextView titleView;
         switch (setting.getType()) {
             case ApplicationSetting.TYPE_TEXT:
-                //v = inflater.inflate(AdminUtils.getLayoutId("setting_item_text", R.layout.setting_item_text), parent, false);
-                //titleView = ViewUtils.findView(v, R.id.item_title);
-                //titleView.setText(setting.getTitleId());
+                v = inflater.inflate(AdminUtils.getLayoutId("setting_item_text", R.layout.setting_item_text), parent, false);
+                titleView = ViewUtils.findView(v, R.id.item_title);
+                titleView.setText(setting.getTitleId());
                 break;
 
             case ApplicationSetting.TYPE_SWITCH:
@@ -109,18 +119,18 @@ public class ApplicationSettingsPresenter extends AbstractPresenter<Void> implem
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public synchronized void onRepositoryResponseGetApplicationSettingsEvent(RepositoryResponseGetApplicationSettingsEvent event) {
-        if (validate()) {
-            mSettings = event.getResponse();
-            if (mSettings == null) {
-                return;
-            }
+    public synchronized void onRepositoryResponseGetApplicationSettingsEvent
+            (RepositoryResponseGetApplicationSettingsEvent event) {
+        if (event.getResponse() == null) {
+            return;
+        }
 
+        mSettings = event.getResponse();
+        if (validate()) {
+            mLinearLayout.get().removeAllViews();
             for (ApplicationSetting setting : mSettings) {
                 generateInfoItem(mLinearLayout.get(), setting);
             }
         }
     }
-
-
 }

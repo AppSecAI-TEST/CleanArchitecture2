@@ -69,7 +69,6 @@ public class Repository extends AbstractModule implements IRepository, IModuleSu
         }
 
         ApplicationSetting setting;
-
         List<ApplicationSetting> list = new LinkedList<>();
         boolean currentValueBoolean = true;
 

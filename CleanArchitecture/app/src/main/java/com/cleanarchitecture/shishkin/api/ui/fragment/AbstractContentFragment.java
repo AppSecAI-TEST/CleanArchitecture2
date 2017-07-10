@@ -47,8 +47,8 @@ public abstract class AbstractContentFragment extends AbstractFragment implement
 
         mSwipeRefreshLayout = ViewUtils.findView(view, R.id.swipeRefreshLayout);
 
-        mSwipeRefreshPresenter.bindView(mSwipeRefreshLayout);
         registerPresenter(mSwipeRefreshPresenter);
+        mSwipeRefreshPresenter.bindView(mSwipeRefreshLayout);
     }
 
     @Override
