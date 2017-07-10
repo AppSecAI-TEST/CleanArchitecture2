@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
-import com.cleanarchitecture.shishkin.api.controller.AppPreferencesUtils;
+import com.cleanarchitecture.shishkin.api.controller.AppPreferencesModule;
 import com.cleanarchitecture.shishkin.api.ui.item.SettingsDesktopOrderItem;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.AbstractRecyclerViewAdapter;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.AbstractViewHolder;
@@ -47,7 +47,7 @@ public class SettingsDesktopOrderRecyclerViewAdapter extends AbstractRecyclerVie
             for (int i = 0; i < getItemCount(); i++) {
                 items.add(getItem(i));
             }
-            AppPreferencesUtils.setDesktopOrder(context, mOrderName, (String) SerializableUtil.toJson(items));
+            AppPreferencesModule.getInstance().setDesktopOrder(mOrderName, (String) SerializableUtil.toJson(items));
         }
     }
 

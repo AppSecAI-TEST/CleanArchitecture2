@@ -3,6 +3,7 @@ package com.cleanarchitecture.shishkin.api.controller;
 import android.content.Context;
 
 import com.cleanarchitecture.shishkin.api.repository.ContentProvider;
+import com.cleanarchitecture.shishkin.api.repository.ContentProviderModule;
 import com.cleanarchitecture.shishkin.api.repository.DbProvider;
 import com.cleanarchitecture.shishkin.api.repository.NetProvider;
 import com.cleanarchitecture.shishkin.api.repository.Repository;
@@ -42,6 +43,7 @@ public class Admin extends AbstractAdmin {
         registerModule(ApplicationController.getInstance());
         registerModule(ErrorController.getInstance());
         registerModule(EventBusController.getInstance());
+        registerModule(AppPreferencesModule.getInstance());
 
         if (ApplicationUtils.getHeapSize() > MIN_HEAP_SIZE) {
             registerModule(SerializableMemoryCache.getInstance());
@@ -65,12 +67,14 @@ public class Admin extends AbstractAdmin {
         registerModule(MailController.NAME);
         registerModule(UserIteractionController.NAME);
         registerModule(ContentProvider.NAME);
+        registerModule(ContentProviderModule.NAME);
         registerModule(DbProvider.NAME);
         registerModule(NetProvider.NAME);
         registerModule(Repository.NAME);
         registerModule(DesktopController.NAME);
         registerModule(LocationController.NAME);
         registerModule(TransformDataModule.NAME);
+        registerModule(AppPreferencesModule.NAME);
     }
 
     @Override

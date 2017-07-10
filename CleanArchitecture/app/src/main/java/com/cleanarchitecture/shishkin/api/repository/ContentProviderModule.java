@@ -1,19 +1,25 @@
 package com.cleanarchitecture.shishkin.api.repository;
 
+import com.cleanarchitecture.shishkin.api.controller.AbstractModule;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.api.controller.EventBusController;
+import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.api.storage.CacheUtils;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryResponseGetContactsEvent;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class ContentProviderUtils {
+public class ContentProviderModule extends AbstractModule implements IModuleSubscriber {
 
-    private ContentProviderUtils() {
-    }
+    public static final String NAME = ContentProviderModule.class.getName();
 
-    public static void requestContacts(final RepositoryRequestGetContactsEvent event) {
+    public void requestContacts(final RepositoryRequestGetContactsEvent event) {
         final IRepository repository = AdminUtils.getRepository();
         if (repository != null) {
             final List<PhoneContactItem> list = CacheUtils.getList(String.valueOf(event.getId()), event.getCacheType(), PhoneContactItem.class);
@@ -33,4 +39,27 @@ public class ContentProviderUtils {
             }
         }
     }
+
+    @Override
+    public String getName() {
+        return NAME;
+    }
+
+    @Override
+    public String getSubscriberType() {
+        return null;
+    }
+
+    @Override
+    public List<String> hasSubscriberType() {
+        final ArrayList<String> list = new ArrayList<>();
+        list.add(EventBusController.SUBSCRIBER_TYPE);
+        return list;
+    }
+
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onRepositoryRequestGetContactsEvent(final RepositoryRequestGetContactsEvent event) {
+        requestContacts(event);
+    }
+
 }

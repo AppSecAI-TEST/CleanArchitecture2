@@ -1,7 +1,6 @@
 package com.cleanarchitecture.shishkin.application.presenter;
 
 import android.Manifest;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,7 +16,7 @@ import android.widget.EditText;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
-import com.cleanarchitecture.shishkin.api.controller.AppPreferencesUtils;
+import com.cleanarchitecture.shishkin.api.controller.AppPreferencesModule;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.ITransformDataModule;
 import com.cleanarchitecture.shishkin.api.debounce.Debounce;
@@ -128,9 +127,11 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
             } else {
                 root.postDelayed(() -> AdminUtils.postEvent(new HideCircleProgressBarEvent()), 200 * i);
                 root.postDelayed(() -> {
-                    mSearchView.get().requestFocus();
-                    mSearchView.get().requestFocusFromTouch();
-                    AdminUtils.postEvent(new ShowKeyboardEvent());
+                    if (validate()) {
+                        mSearchView.get().requestFocus();
+                        mSearchView.get().requestFocusFromTouch();
+                        AdminUtils.postEvent(new ShowKeyboardEvent());
+                    }
                 }, 200 * i);
             }
         }
@@ -138,11 +139,8 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
 
     @Override
     public void onResumeLifecycle() {
-        final Context context = AdminUtils.getContext();
-        if (context != null) {
-            if (AppPreferencesUtils.getSettingShowTooltip(context)) {
-                AdminUtils.postEvent(new ShowTooltipEvent(mSearchView.get(), R.string.tooltip_search, Gravity.BOTTOM));
-            }
+        if (AppPreferencesModule.getInstance().getSettingShowTooltip()) {
+            AdminUtils.postEvent(new ShowTooltipEvent(mSearchView.get(), R.string.tooltip_search, Gravity.BOTTOM));
         }
     }
 

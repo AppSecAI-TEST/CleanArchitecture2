@@ -7,7 +7,7 @@ import android.graphics.BitmapFactory;
 
 import com.cleanarchitecture.shishkin.api.controller.AbstractModule;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
-import com.cleanarchitecture.shishkin.api.controller.AppPreferencesUtils;
+import com.cleanarchitecture.shishkin.api.controller.AppPreferencesModule;
 import com.cleanarchitecture.shishkin.api.controller.ApplicationController;
 import com.cleanarchitecture.shishkin.api.controller.Constant;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
@@ -70,10 +70,7 @@ public class ImageDiskCache extends AbstractModule implements IImageDiskCache {
             return;
         }
 
-        final Context context = AdminUtils.getContext();
-        if (context != null) {
-            mVersion = AppPreferencesUtils.getImageCacheVersion(context, mVersion);
-        }
+        mVersion = AppPreferencesModule.getInstance().getImageCacheVersion(mVersion);
 
         mLock.lock();
 
@@ -250,7 +247,7 @@ public class ImageDiskCache extends AbstractModule implements IImageDiskCache {
             clearCache();
 
             mVersion = version;
-            AppPreferencesUtils.setImageCacheVersion(context, mVersion);
+            AppPreferencesModule.getInstance().setImageCacheVersion(mVersion);
 
             init();
         }
