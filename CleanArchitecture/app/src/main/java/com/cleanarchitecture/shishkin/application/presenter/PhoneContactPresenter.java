@@ -15,11 +15,11 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 
-import com.annimon.stream.Stream;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.AppPreferencesUtils;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
+import com.cleanarchitecture.shishkin.api.controller.ITransformDataModule;
 import com.cleanarchitecture.shishkin.api.debounce.Debounce;
 import com.cleanarchitecture.shishkin.api.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.DialogResultEvent;
@@ -171,16 +171,21 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
     }
 
     private List<PhoneContactItem> filter(final String pattern) {
+        final ITransformDataModule module = AdminUtils.getTransformDataModule();
+        if (module == null) {
+            return getModel();
+        }
+
         if (pattern.equalsIgnoreCase("*")) {
             return getModel();
         } else if (pattern.endsWith("*") && pattern.length() > 1) {
             final String templ = StringUtils.mid(pattern, 0, pattern.length() - 1);
-            return Stream.of(getModel()).filter(item -> StringUtils.startsWith(item.getName(), templ)).toList();
+            return module.filter(getModel(), item -> StringUtils.startsWith(item.getName(), templ));
         } else if (pattern.startsWith("*") && pattern.length() > 1) {
             final String templ = StringUtils.mid(pattern, 1);
-            return Stream.of(getModel()).filter(item -> StringUtils.endsWith(item.getName(), templ)).toList();
+            return module.filter(getModel(), item -> StringUtils.endsWith(item.getName(), templ));
         } else {
-            return Stream.of(getModel()).filter(item -> StringUtils.containsIgnoreCase(item.getName(), pattern)).toList();
+            return module.filter(getModel(), item -> StringUtils.containsIgnoreCase(item.getName(), pattern));
         }
     }
 

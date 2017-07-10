@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.cleanarchitecture.shishkin.api.controller.AbstractModule;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
+import com.cleanarchitecture.shishkin.common.utils.SerializableUtil;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
 import java.io.Serializable;
@@ -67,6 +68,28 @@ public class SerializableDiskCache extends AbstractModule implements IExpiredSer
     }
 
     @Override
+    public void put(final String key, final List<Serializable> values) {
+        if (StringUtils.isNullOrEmpty(key)) {
+            return;
+        }
+
+        mLock.lock();
+
+        try {
+            final Serializable s = SerializableUtil.toSerializable(values);
+            if (values == s) {
+                Paper.book(NAME).delete(key);
+            } else {
+                Paper.book(NAME).write(key, values);
+            }
+        } catch (Exception e) {
+            ErrorController.getInstance().onError(LOG_TAG, e);
+        } finally {
+            mLock.unlock();
+        }
+    }
+
+    @Override
     public void put(final String key, final Serializable value, final long expired) {
         if (StringUtils.isNullOrEmpty(key)) {
             return;
@@ -119,6 +142,39 @@ public class SerializableDiskCache extends AbstractModule implements IExpiredSer
                     }
                 }
                 return Paper.book(NAME).read(key);
+            } else {
+                deleteKeys(key);
+            }
+        } catch (Exception e) {
+            ErrorController.getInstance().onError(LOG_TAG, e);
+        } finally {
+            mLock.unlock();
+        }
+        return null;
+    }
+
+    @Override
+    public List<Serializable> getList(String key) {
+        if (StringUtils.isNullOrEmpty(key)) {
+            return null;
+        }
+
+        mLock.lock();
+
+        try {
+            if (Paper.book(NAME).exist(key)) {
+                if (Paper.book(TIME).exist(key)) {
+                    final long expired = Paper.book(TIME).read(key);
+                    if (expired < System.currentTimeMillis()) {
+                        deleteKeys(key);
+                        return null;
+                    }
+                }
+
+                final Serializable s = Paper.book(NAME).read(key);
+                if (s != null) {
+                    return SerializableUtil.serializableToList(s);
+                }
             } else {
                 deleteKeys(key);
             }
