@@ -4,7 +4,7 @@ import android.arch.lifecycle.LifecycleActivity;
 import android.arch.persistence.room.RoomDatabase;
 
 import com.cleanarchitecture.shishkin.api.controller.IModule;
-import com.cleanarchitecture.shishkin.api.data.AbstractViewModel;
+import com.cleanarchitecture.shishkin.api.model.AbstractViewModel;
 
 /**
  * The interface Db provider.
