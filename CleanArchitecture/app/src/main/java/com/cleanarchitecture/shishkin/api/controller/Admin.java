@@ -3,7 +3,7 @@ package com.cleanarchitecture.shishkin.api.controller;
 import android.content.Context;
 
 import com.cleanarchitecture.shishkin.api.repository.ContentProvider;
-import com.cleanarchitecture.shishkin.api.repository.ContentProviderModule;
+import com.cleanarchitecture.shishkin.api.repository.ContentProviderProxy;
 import com.cleanarchitecture.shishkin.api.repository.DbProvider;
 import com.cleanarchitecture.shishkin.api.repository.NetProvider;
 import com.cleanarchitecture.shishkin.api.repository.Repository;
@@ -67,7 +67,7 @@ public class Admin extends AbstractAdmin {
         registerModule(MailController.NAME);
         registerModule(UserIteractionController.NAME);
         registerModule(ContentProvider.NAME);
-        registerModule(ContentProviderModule.NAME);
+        registerModule(ContentProviderProxy.NAME);
         registerModule(DbProvider.NAME);
         registerModule(NetProvider.NAME);
         registerModule(Repository.NAME);
