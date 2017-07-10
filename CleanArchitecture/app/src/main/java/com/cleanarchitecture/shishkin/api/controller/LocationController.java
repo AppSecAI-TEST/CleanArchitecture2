@@ -190,7 +190,8 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
                                     location.getLongitude(),
                                     countAddress));
                         } catch (Exception e) {
-                            ErrorController.getInstance().onError(LOG_TAG, ErrorController.ERROR_GEOCODER_NOT_FOUND, true);
+                            ErrorController.getInstance().onError(LOG_TAG, e.getMessage(), false);
+                            //ErrorController.getInstance().onError(LOG_TAG, ErrorController.ERROR_GEOCODER_NOT_FOUND, true);
                         }
                     }
                 }

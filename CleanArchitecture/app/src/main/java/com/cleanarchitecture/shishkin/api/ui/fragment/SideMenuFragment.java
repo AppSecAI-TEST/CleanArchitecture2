@@ -26,8 +26,8 @@ public class SideMenuFragment extends AbstractFragment {
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mSideMenuPresenter.bindView(view);
         registerPresenter(mSideMenuPresenter);
+        mSideMenuPresenter.bindView(view);
     }
 
     @Override

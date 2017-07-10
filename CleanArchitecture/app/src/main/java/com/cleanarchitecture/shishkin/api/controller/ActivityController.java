@@ -218,9 +218,11 @@ public class ActivityController extends AbstractController<IActivity> implements
             if (imm != null) {
                 View view = activity.getCurrentFocus();
                 if (view == null) {
-                    view = new View(activity);
+                    view = subscriber.findView(R.id.root);
                 }
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                if (view != null) {
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
             }
         }
     }

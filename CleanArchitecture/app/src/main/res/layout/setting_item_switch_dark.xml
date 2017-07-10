@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:mrl_rippleAlpha="0.2"
-        app:mrl_rippleColor="#585858"
+        app:mrl_rippleColor="#C8C8C8"
         app:mrl_rippleDelayClick="false"
         app:mrl_rippleHover="true"
         app:mrl_rippleOverlay="true">
@@ -24,13 +24,13 @@
             <TextView
                 android:id="@+id/item_title"
                 style="@style/HelveticaTextStyle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:paddingLeft="@dimen/padding_12dp"
                 android:paddingRight="@dimen/padding_8dp"
-                android:textColor="@color/blue"
+                android:textColor="@color/white"
                 android:textSize="@dimen/text_size_large"/>
 
             <android.support.v7.widget.SwitchCompat

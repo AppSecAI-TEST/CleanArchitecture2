@@ -9,39 +9,36 @@ import android.view.ViewGroup;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBackNavigationEvent;
+import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetMenuEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetTitleEvent;
+import com.cleanarchitecture.shishkin.api.event.ui.HideHorizontalProgressBarEvent;
+import com.cleanarchitecture.shishkin.api.event.ui.HideKeyboardEvent;
+import com.cleanarchitecture.shishkin.api.presenter.ApplicationSettingsPresenter;
 import com.cleanarchitecture.shishkin.api.presenter.IPresenter;
-import com.cleanarchitecture.shishkin.api.presenter.SettingsDesktopOrderPresenter;
 import com.cleanarchitecture.shishkin.application.presenter.FloatingActionMenuPresenter;
 
-public class SettingsDesktopOrderFragment extends AbstractContentFragment {
+@SuppressWarnings("unused")
+public class SettingApplicationFragment extends AbstractContentFragment {
 
-    public static final String NAME = SettingsDesktopOrderFragment.class.getName();
-    public static final String ORDER = "ORDER";
-    public static final String ORDER_NAME = "ORDER.NAME";
+    public static final String NAME = SettingApplicationFragment.class.getName();
 
-    private SettingsDesktopOrderPresenter mSettingsDesktopOrderPresenter = new SettingsDesktopOrderPresenter();
-
-    public static SettingsDesktopOrderFragment newInstance(final String name, final String order) {
-        final SettingsDesktopOrderFragment fragment = new SettingsDesktopOrderFragment();
-        final Bundle args = new Bundle();
-        args.putString(ORDER_NAME, name);
-        args.putString(ORDER, order);
-        fragment.setArguments(args);
-        return fragment;
+    public static SettingApplicationFragment newInstance() {
+        final SettingApplicationFragment f = new SettingApplicationFragment();
+        return f;
     }
+
+    private ApplicationSettingsPresenter mApplicationSettingsPresenter = new ApplicationSettingsPresenter();
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(AdminUtils.getLayoutId("fragment_desktop_order_setting", R.layout.fragment_desktop_order_setting), container, false);
+        return inflater.inflate(AdminUtils.getLayoutId("fragment_application_setting", R.layout.fragment_application_setting), container, false);
     }
 
-    @Override
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        registerPresenter(mSettingsDesktopOrderPresenter);
-        mSettingsDesktopOrderPresenter.bindView(view, getArguments());
+        registerPresenter(mApplicationSettingsPresenter);
+        mApplicationSettingsPresenter.bindView(view);
 
         final IPresenter presenter = AdminUtils.getPresenter(FloatingActionMenuPresenter.NAME);
         if (presenter != null) {
@@ -49,10 +46,15 @@ public class SettingsDesktopOrderFragment extends AbstractContentFragment {
         }
     }
 
+    @Override
+    public boolean onBackPressed() {
+        return false;
+    }
 
     @Override
     public void prepareToolbar() {
-        AdminUtils.postEvent(new ToolbarSetTitleEvent(0, getString(R.string.settings_order_title)));
+        AdminUtils.postEvent(new ToolbarSetTitleEvent(0, getString(R.string.setting)));
+        AdminUtils.postEvent(new ToolbarSetMenuEvent(R.menu.main_menu, false));
         AdminUtils.postEvent(new ToolbarSetBackNavigationEvent(true));
     }
 
@@ -61,10 +63,5 @@ public class SettingsDesktopOrderFragment extends AbstractContentFragment {
         return NAME;
     }
 
-    @Override
-    public boolean onBackPressed() {
-        mSettingsDesktopOrderPresenter.save();
-        return false;
-    }
-
 }
+

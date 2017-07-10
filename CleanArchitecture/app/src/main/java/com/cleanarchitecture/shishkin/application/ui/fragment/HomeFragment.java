@@ -20,6 +20,7 @@ import com.cleanarchitecture.shishkin.api.controller.IDesktopSubscriber;
 import com.cleanarchitecture.shishkin.api.controller.ILocationController;
 import com.cleanarchitecture.shishkin.api.controller.ILocationSubscriber;
 import com.cleanarchitecture.shishkin.api.controller.LocationController;
+import com.cleanarchitecture.shishkin.api.event.ShowFragmentEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.OnToolbarClickEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.OnToolbarMenuItemClickEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBackNavigationEvent;
@@ -27,17 +28,21 @@ import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetItemEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetMenuEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetTitleEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.HideCircleProgressBarEvent;
+import com.cleanarchitecture.shishkin.api.event.ui.HideHorizontalProgressBarEvent;
+import com.cleanarchitecture.shishkin.api.event.ui.HideKeyboardEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowCircleProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseFinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.api.presenter.OnBackPressedPresenter;
 import com.cleanarchitecture.shishkin.api.service.NotificationService;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
+import com.cleanarchitecture.shishkin.api.ui.fragment.SettingApplicationFragment;
 import com.cleanarchitecture.shishkin.api.ui.item.SettingsDesktopOrderItem;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewIdleEvent;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewScrolledEvent;
 import com.cleanarchitecture.shishkin.application.presenter.FloatingActionMenuPresenter;
 import com.cleanarchitecture.shishkin.application.presenter.PhoneContactPresenter;
+import com.cleanarchitecture.shishkin.common.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.SerializableUtil;
 import com.cleanarchitecture.shishkin.common.utils.ShareUtil;
@@ -85,8 +90,8 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
 
         registerPresenter(mOnBackPressedPresenter);
 
-        mSearchPresenter.bindView(view);
         registerPresenter(mSearchPresenter);
+        mSearchPresenter.bindView(view);
 
         ApplicationUtils.grantPermisions(ApplicationController.getInstance().getRequiredPermisions(), AdminUtils.getActivity());
 
@@ -112,6 +117,14 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
             AdminUtils.postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.WRITE_EXTERNAL_STORAGE));
         }
         */
+    }
+
+    @Override
+    public void onDestroyView() {
+        AdminUtils.postEvent(new HideHorizontalProgressBarEvent());
+        AdminUtils.postEvent(new HideKeyboardEvent());
+
+        super.onDestroyView();
     }
 
     @Override
@@ -204,6 +217,8 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
         final MenuItem item = event.getMenuItem();
         if (item.getItemId() == R.id.exit) {
             AdminUtils.postEvent(new UseCaseFinishApplicationEvent());
+        } else if (item.getItemId() == R.id.setting) {
+            AdminUtils.postEvent(new ShowFragmentEvent(SettingApplicationFragment.newInstance()));
         } else if (item.getItemId() == R.id.desktop) {
             final IDesktopController controller = Admin.getInstance().get(DesktopController.NAME);
             if (controller != null) {
