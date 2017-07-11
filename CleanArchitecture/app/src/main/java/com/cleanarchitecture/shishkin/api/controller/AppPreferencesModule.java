@@ -20,6 +20,7 @@ import java.util.List;
 public class AppPreferencesModule implements IAppPreferencesModule, IModuleSubscriber {
 
     public static final String NAME = AppPreferencesModule.class.getName();
+    private static final String LOG_TAG = "AppPreferencesModule:";
     private static final String SETTING_SHOW_TOOLTIP = "setting_show_tooltip";
     private static final String DESKTOP = "desktop";
     private static final String IMAGE_CACHE_VERSION = "image_cache_version";
@@ -41,6 +42,14 @@ public class AppPreferencesModule implements IAppPreferencesModule, IModuleSubsc
     }
 
     private AppPreferencesModule() {
+        final int currentVersion = ApplicationController.getInstance().getVersion();
+        final int version = getApplicationVersion();
+        if (version == 0) {
+            setApplicationVersion(currentVersion);
+        } else if (currentVersion > version) {
+            setApplicationVersion(currentVersion);
+            ApplicationController.getInstance().onApplicationUpdated(currentVersion);
+        }
     }
 
     @Override
@@ -69,29 +78,18 @@ public class AppPreferencesModule implements IAppPreferencesModule, IModuleSubsc
         return list;
     }
 
-    /**
-     * Получить версию кэша картинок
-     *
-     * @param defaultValue значение по умолчанию
-     * @return версия кэша картинок
-     */
     @Override
-    public synchronized int getImageCacheVersion(final int defaultValue) {
-        final Context context = AdminUtils.getContext();
+    public synchronized int getImageCacheVersion() {
+        final Context context = ApplicationController.getInstance().getApplicationContext();
         if (context != null) {
-            return AppPreferencesUtils.getInt(context, IMAGE_CACHE_VERSION, defaultValue);
+            return AppPreferencesUtils.getInt(context, IMAGE_CACHE_VERSION, 0);
         }
-        return defaultValue;
+        return 0;
     }
 
-    /**
-     * Установить версию кэша картинок
-     *
-     * @param version версия кэша картинок
-     */
     @Override
     public synchronized void setImageCacheVersion(final int version) {
-        final Context context = AdminUtils.getContext();
+        final Context context = ApplicationController.getInstance().getApplicationContext();
         if (context != null) {
             AppPreferencesUtils.putInt(context, IMAGE_CACHE_VERSION, version);
         }
@@ -99,7 +97,7 @@ public class AppPreferencesModule implements IAppPreferencesModule, IModuleSubsc
 
     @Override
     public synchronized boolean getSettingShowTooltip() {
-        final Context context = AdminUtils.getContext();
+        final Context context = ApplicationController.getInstance().getApplicationContext();
         if (context != null) {
             return AppPreferencesUtils.getBoolean(context, SETTING_SHOW_TOOLTIP, true);
         }
@@ -108,145 +106,92 @@ public class AppPreferencesModule implements IAppPreferencesModule, IModuleSubsc
 
     @Override
     public synchronized void setSettingShowTooltip(final boolean value) {
-        final Context context = AdminUtils.getContext();
+        final Context context = ApplicationController.getInstance().getApplicationContext();
         if (context != null) {
             AppPreferencesUtils.putBoolean(context, SETTING_SHOW_TOOLTIP, value);
         }
     }
 
-    /**
-     * Получить версию кэша Parcelable
-     *
-     * @param defaultValue значение по умолчанию
-     * @return версия кэша картинок
-     */
     @Override
-    public synchronized int getParcelableDiskCacheVersion(final int defaultValue) {
-        final Context context = AdminUtils.getContext();
+    public synchronized int getParcelableDiskCacheVersion() {
+        final Context context = ApplicationController.getInstance().getApplicationContext();
         if (context != null) {
-            return AppPreferencesUtils.getInt(context, PARCELABLE_CACHE_VERSION, defaultValue);
+            return AppPreferencesUtils.getInt(context, PARCELABLE_CACHE_VERSION, 0);
         }
-        return defaultValue;
+        return 0;
     }
 
-    /**
-     * Установить версию кэша Parcelable
-     *
-     * @param version версия кэша Parcelable
-     */
     @Override
     public synchronized void setParcelableDiskCacheVersion(final int version) {
-        final Context context = AdminUtils.getContext();
+        final Context context = ApplicationController.getInstance().getApplicationContext();
         if (context != null) {
             AppPreferencesUtils.putInt(context, PARCELABLE_CACHE_VERSION, version);
         }
     }
 
-    /**
-     * Получить рабочий стол
-     *
-     * @return рабочий стол
-     */
     @Override
     public synchronized String getDesktop() {
-        final Context context = AdminUtils.getContext();
+        final Context context = ApplicationController.getInstance().getApplicationContext();
         if (context != null) {
             return AppPreferencesUtils.getString(context, DESKTOP, "");
         }
         return "";
     }
 
-    /**
-     * Установить рабочий стол
-     *
-     * @param desktop рабочий стол
-     */
     @Override
     public synchronized void setDesktop(final String desktop) {
-        final Context context = AdminUtils.getContext();
+        final Context context = ApplicationController.getInstance().getApplicationContext();
         if (context != null) {
             AppPreferencesUtils.putString(context, DESKTOP, desktop);
         }
     }
 
-    /**
-     * Получить порядок рабочего стола
-     *
-     * @param name рабочий стол
-     * @return порядок рабочего стола
-     */
     @Override
     public synchronized String getDesktopOrder(final String name, final String desktopOrder) {
-        final Context context = AdminUtils.getContext();
+        final Context context = ApplicationController.getInstance().getApplicationContext();
         if (context != null) {
             return AppPreferencesUtils.getString(context, name, desktopOrder);
         }
         return desktopOrder;
     }
 
-    /**
-     * Сохранить порядок рабочего стола
-     *
-     * @param name         рабочий стол
-     * @param desktopOrder порядок рабочего стола
-     */
     @Override
     public synchronized void setDesktopOrder(final String name, final String desktopOrder) {
-        final Context context = AdminUtils.getContext();
+        final Context context = ApplicationController.getInstance().getApplicationContext();
         if (context != null) {
             AppPreferencesUtils.putString(context, name, desktopOrder);
         }
     }
 
-    /**
-     * Получить версию приложения.
-     *
-     * @return версия приложения
-     */
     @Override
-    public synchronized String getApplicationVersion() {
-        final Context context = AdminUtils.getContext();
+    public synchronized int getApplicationVersion() {
+        final Context context = ApplicationController.getInstance().getApplicationContext();
         if (context != null) {
-            return AppPreferencesUtils.getString(context, VERSION_APPLICATION, null);
+            return AppPreferencesUtils.getInt(context, VERSION_APPLICATION, 0);
         }
-        return null;
+        return 0;
     }
 
-    /**
-     * Установить версию приложения.
-     *
-     * @param version версия приложения
-     */
     @Override
-    public synchronized void setApplicationVersion(final String version) {
-        final Context context = AdminUtils.getContext();
+    public synchronized void setApplicationVersion(final int version) {
+        final Context context = ApplicationController.getInstance().getApplicationContext();
         if (context != null) {
-            AppPreferencesUtils.putString(context, VERSION_APPLICATION, version);
+            AppPreferencesUtils.putInt(context, VERSION_APPLICATION, version);
         }
     }
 
-    /**
-     * Получить последний день старта приложения
-     *
-     * @return последний день старта приложения
-     */
     @Override
-    public synchronized String getLastDayStart() {
-        final Context context = AdminUtils.getContext();
+    public synchronized String getCleanCacheDay() {
+        final Context context = ApplicationController.getInstance().getApplicationContext();
         if (context != null) {
             return AppPreferencesUtils.getString(context, LAST_DAY_START, null);
         }
         return null;
     }
 
-    /**
-     * Установить последний день старта приложения.
-     *
-     * @param day версия приложения
-     */
     @Override
-    public synchronized void setLastDayStart(final String day) {
-        final Context context = AdminUtils.getContext();
+    public synchronized void setCleanCacheDay(final String day) {
+        final Context context = ApplicationController.getInstance().getApplicationContext();
         if (context != null) {
             AppPreferencesUtils.putString(context, LAST_DAY_START, day);
         }
@@ -268,7 +213,7 @@ public class AppPreferencesModule implements IAppPreferencesModule, IModuleSubsc
                 .setId(R.id.application_setting_show_tooltip);
         list.add(setting);
 
-        AdminUtils.postEvent(new RepositoryResponseGetApplicationSettingsEvent().setResponse(list));
+        EventBusController.getInstance().post(new RepositoryResponseGetApplicationSettingsEvent().setResponse(list));
     }
 
     private synchronized void setApplicationSetting(RepositoryRequestSetApplicationSettingEvent event) {

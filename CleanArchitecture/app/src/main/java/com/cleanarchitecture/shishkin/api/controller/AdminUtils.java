@@ -559,8 +559,22 @@ public class AdminUtils {
         return false;
     }
 
+    /**
+     * Получить модуль преобразования данных
+     *
+     * @return модуль преобразования данных
+     */
     public static ITransformDataModule getTransformDataModule() {
         return Admin.getInstance().get(TransformDataModule.NAME);
+    }
+
+    /**
+     * Получить модуль Application Preferences
+     *
+     * @return модуль Application Preferences
+     */
+    public static IAppPreferencesModule getPreferences() {
+        return Admin.getInstance().get(AppPreferencesModule.NAME);
     }
 
     private AdminUtils() {

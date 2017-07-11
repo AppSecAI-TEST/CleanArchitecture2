@@ -1,16 +1,15 @@
 package com.cleanarchitecture.shishkin.api.storage;
 
 import android.Manifest;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.cleanarchitecture.shishkin.api.controller.AbstractModule;
-import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.AppPreferencesModule;
 import com.cleanarchitecture.shishkin.api.controller.ApplicationController;
 import com.cleanarchitecture.shishkin.api.controller.Constant;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
+import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.CloseUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import com.google.common.base.Charsets;
@@ -46,7 +45,6 @@ public class ImageDiskCache extends AbstractModule implements IImageDiskCache {
     private static volatile ImageDiskCache sInstance;
     private DiskLruCache mDiskLruCache;
     private ReentrantLock mLock;
-    private int mVersion = 0;
 
     public static ImageDiskCache getInstance() {
         if (sInstance == null) {
@@ -66,21 +64,25 @@ public class ImageDiskCache extends AbstractModule implements IImageDiskCache {
     }
 
     private void init() {
-        if (!AdminUtils.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+        if (!ApplicationUtils.checkPermission(ApplicationController.getInstance(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             return;
         }
 
-        mVersion = AppPreferencesModule.getInstance().getImageCacheVersion(mVersion);
+        int version = AppPreferencesModule.getInstance().getImageCacheVersion();
+        if (version == 0) {
+            version = ApplicationController.getInstance().getVersion();
+            AppPreferencesModule.getInstance().setImageCacheVersion(version);
+        }
 
         mLock.lock();
 
         try {
             if (mDiskLruCache == null || mDiskLruCache.isClosed()) {
-                final File dir = new File(DISK_CACHE_DIR + File.separator + mVersion);
+                final File dir = new File(DISK_CACHE_DIR + File.separator + version);
                 if (!dir.exists() && !dir.mkdirs()) {
                     return;
                 }
-                mDiskLruCache = DiskLruCache.open(dir, mVersion, COUNT_INDEX, DISK_CACHE_SIZE);
+                mDiskLruCache = DiskLruCache.open(dir, version, COUNT_INDEX, DISK_CACHE_SIZE);
             }
         } catch (Exception e) {
             ErrorController.getInstance().onError(LOG_TAG, e);
@@ -220,12 +222,6 @@ public class ImageDiskCache extends AbstractModule implements IImageDiskCache {
 
     @Override
     public void clear() {
-        clearCache();
-
-        init();
-    }
-
-    private void clearCache() {
         if (mDiskLruCache != null && !mDiskLruCache.isClosed()) {
             mLock.lock();
 
@@ -237,17 +233,7 @@ public class ImageDiskCache extends AbstractModule implements IImageDiskCache {
                 mLock.unlock();
             }
             mDiskLruCache = null;
-        }
-    }
-
-    @Override
-    public void setVersion(final int version) {
-        final Context context = AdminUtils.getContext();
-        if (context != null && version > mVersion) {
-            clearCache();
-
-            mVersion = version;
-            AppPreferencesModule.getInstance().setImageCacheVersion(mVersion);
+            AppPreferencesModule.getInstance().setImageCacheVersion(0);
 
             init();
         }

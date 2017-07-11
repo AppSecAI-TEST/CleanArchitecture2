@@ -6,7 +6,6 @@ import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AbstractModule;
 import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
-import com.cleanarchitecture.shishkin.api.controller.AppPreferencesModule;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.api.event.CheckDiskCacheEvent;
@@ -23,7 +22,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -58,20 +56,15 @@ public class Repository extends AbstractModule implements IRepository, IModuleSu
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onCheckDiskCacheEvent(final CheckDiskCacheEvent event) {
-        final Context context = AdminUtils.getContext();
-        if (context == null) {
-            return;
-        }
-
         // раз в месяц чистим дисковый кэш
         final GregorianCalendar calsendar = new GregorianCalendar();
         final SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
         int currentDay = StringUtils.toInt(formatter.format(calsendar.getTime()));
-        final int day = StringUtils.toInt(AppPreferencesModule.getInstance().getLastDayStart());
+        final int day = StringUtils.toInt(AdminUtils.getPreferences().getCleanCacheDay());
         if (currentDay > day) {
             calsendar.add(GregorianCalendar.MONTH, 1);
             currentDay = StringUtils.toInt(formatter.format(calsendar.getTime()));
-            AppPreferencesModule.getInstance().setLastDayStart(String.valueOf(currentDay));
+            AdminUtils.getPreferences().setCleanCacheDay(String.valueOf(currentDay));
             final IExpiredSerializableStorage diskCache = Admin.getInstance().get(SerializableDiskCache.NAME);
             if (diskCache != null) {
                 diskCache.check();
