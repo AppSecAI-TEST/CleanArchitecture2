@@ -128,5 +128,6 @@ dependencies {
     // ToolTip
     compile 'com.github.vihtarb:tooltip:0.1.9'
 
+    // Expandable Layout
     compile 'com.github.aakira:expandable-layout:1.4.2@aar'
 }

@@ -103,9 +103,9 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
 
         mBoardLayout = ViewUtils.findView(view, R.id.expandableLayout);
         mBoardTextView = ViewUtils.findView(view, R.id.board);
-        mBoardTextView.setOnClickListener(this::onClickButton);
+        mBoardTextView.setOnClickListener(this::onClickView);
         mButton = ViewUtils.findView(view, R.id.button);
-        mButton.setOnClickListener(this::onClickButton);
+        mButton.setOnClickListener(this::onClickView);
 
         /*
         if (!AdminUtils.checkPermission(Manifest.permission.READ_CONTACTS)) {
@@ -118,7 +118,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
         */
     }
 
-    private void onClickButton(View view) {
+    private void onClickView(View view) {
         switch (view.getId()) {
             case R.id.button:
                 mBoardLayout.expand();
