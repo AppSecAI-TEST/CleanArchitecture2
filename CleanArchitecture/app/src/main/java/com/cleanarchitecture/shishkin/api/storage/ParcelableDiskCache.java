@@ -1,16 +1,15 @@
 package com.cleanarchitecture.shishkin.api.storage;
 
 import android.Manifest;
-import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.cleanarchitecture.shishkin.api.controller.AbstractModule;
-import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.AppPreferencesModule;
 import com.cleanarchitecture.shishkin.api.controller.ApplicationController;
 import com.cleanarchitecture.shishkin.api.controller.Constant;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
+import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.CloseUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import com.google.common.base.Charsets;
@@ -47,7 +46,6 @@ public class ParcelableDiskCache<T extends Parcelable> extends AbstractModule im
     private static volatile ParcelableDiskCache sInstance;
     private DiskLruCache mDiskLruCache;
     private ReentrantLock mLock;
-    private int mVersion = 0;
 
     public static ParcelableDiskCache getInstance() {
         if (sInstance == null) {
@@ -67,21 +65,25 @@ public class ParcelableDiskCache<T extends Parcelable> extends AbstractModule im
     }
 
     private void init() {
-        if (!AdminUtils.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+        if (!ApplicationUtils.checkPermission(ApplicationController.getInstance(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             return;
         }
 
-        mVersion = AppPreferencesModule.getInstance().getParcelableDiskCacheVersion(mVersion);
+        int version = AppPreferencesModule.getInstance().getParcelableDiskCacheVersion();
+        if (version == 0) {
+            version = ApplicationController.getInstance().getVersion();
+            AppPreferencesModule.getInstance().setParcelableDiskCacheVersion(version);
+        }
 
         mLock.lock();
 
         try {
             if (mDiskLruCache == null || mDiskLruCache.isClosed()) {
-                final File dir = new File(DISK_CACHE_DIR + File.separator + mVersion);
+                final File dir = new File(DISK_CACHE_DIR + File.separator + version);
                 if (!dir.exists() && !dir.mkdirs()) {
                     return;
                 }
-                mDiskLruCache = DiskLruCache.open(dir, mVersion, COUNT_INDEX, DISK_CACHE_SIZE);
+                mDiskLruCache = DiskLruCache.open(dir, version, COUNT_INDEX, DISK_CACHE_SIZE);
             }
         } catch (Exception e) {
             ErrorController.getInstance().onError(LOG_TAG, e);
@@ -375,12 +377,6 @@ public class ParcelableDiskCache<T extends Parcelable> extends AbstractModule im
 
     @Override
     public void clear() {
-        clearCache();
-
-        init();
-    }
-
-    private void clearCache() {
         if (mDiskLruCache != null && !mDiskLruCache.isClosed()) {
             mLock.lock();
 
@@ -392,16 +388,7 @@ public class ParcelableDiskCache<T extends Parcelable> extends AbstractModule im
                 mLock.unlock();
             }
             mDiskLruCache = null;
-        }
-    }
-
-    public void setVersion(final int version) {
-        final Context context = AdminUtils.getContext();
-        if (context != null && version > mVersion) {
-            clearCache();
-
-            mVersion = version;
-            AppPreferencesModule.getInstance().setParcelableDiskCacheVersion(mVersion);
+            AppPreferencesModule.getInstance().setParcelableDiskCacheVersion(0);
 
             init();
         }

@@ -14,8 +14,6 @@ public interface IImageDiskCache {
 
     void clear();
 
-    void setVersion(int version);
-
     void flush();
 
     void close();

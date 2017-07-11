@@ -16,7 +16,6 @@ import android.widget.EditText;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
-import com.cleanarchitecture.shishkin.api.controller.AppPreferencesModule;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.ITransformDataModule;
 import com.cleanarchitecture.shishkin.api.debounce.Debounce;
@@ -139,7 +138,7 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
 
     @Override
     public void onResumeLifecycle() {
-        if (AppPreferencesModule.getInstance().getSettingShowTooltip()) {
+        if (AdminUtils.getPreferences().getSettingShowTooltip()) {
             AdminUtils.postEvent(new ShowTooltipEvent(mSearchView.get(), R.string.tooltip_search, Gravity.BOTTOM));
         }
     }

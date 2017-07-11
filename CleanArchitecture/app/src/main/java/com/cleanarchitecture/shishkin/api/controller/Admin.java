@@ -45,6 +45,7 @@ public class Admin extends AbstractAdmin {
         registerModule(EventBusController.getInstance());
         registerModule(AppPreferencesModule.getInstance());
 
+        // default persistent (Singleton) cache controllers
         if (ApplicationUtils.getHeapSize() > MIN_HEAP_SIZE) {
             registerModule(SerializableMemoryCache.getInstance());
         }

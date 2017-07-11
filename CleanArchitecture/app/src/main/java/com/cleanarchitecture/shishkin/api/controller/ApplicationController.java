@@ -2,12 +2,16 @@ package com.cleanarchitecture.shishkin.api.controller;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.os.Environment;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseOnLowMemoryEvent;
+import com.cleanarchitecture.shishkin.api.storage.ImageDiskCache;
+import com.cleanarchitecture.shishkin.api.storage.ParcelableDiskCache;
+import com.cleanarchitecture.shishkin.api.storage.SerializableDiskCache;
 
 import java.io.File;
 
@@ -36,6 +40,13 @@ public class ApplicationController extends MultiDexApplication implements IAppli
 
     public static ApplicationController getInstance() {
         return sInstance;
+    }
+
+    @Override
+    public synchronized void onApplicationUpdated(final int version) {
+        SerializableDiskCache.getInstance(this).clear();
+        ImageDiskCache.getInstance().clear();
+        ParcelableDiskCache.getInstance().clear();
     }
 
     @Override
@@ -78,5 +89,15 @@ public class ApplicationController extends MultiDexApplication implements IAppli
     @Override
     public void onUnRegister() {
 
+    }
+
+    @Override
+    public int getVersion() {
+        try {
+            final PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            return pInfo.versionCode;
+        } catch (Exception e) {
+            return 0;
+        }
     }
 }
