@@ -115,7 +115,7 @@ public class ImageDiskCache extends AbstractModule implements IImageDiskCache {
                 editor = mDiskLruCache.edit(hash);
                 if (editor != null) {
                     out = editor.newOutputStream(INDEX_EXPIRED);
-                    out.write(String.valueOf(expired).getBytes());
+                    out.write(String.valueOf(expired).getBytes(Charsets.UTF_8));
                     out.flush();
                     out.close();
 
@@ -280,7 +280,7 @@ public class ImageDiskCache extends AbstractModule implements IImageDiskCache {
         String cacheKey;
         try {
             final MessageDigest mDigest = MessageDigest.getInstance("MD5");
-            mDigest.update(key.getBytes());
+            mDigest.update(key.getBytes(Charsets.UTF_8));
             cacheKey = StringUtils.byteArrayToHex(mDigest.digest());
         } catch (NoSuchAlgorithmException e) {
             cacheKey = String.valueOf(key.hashCode());

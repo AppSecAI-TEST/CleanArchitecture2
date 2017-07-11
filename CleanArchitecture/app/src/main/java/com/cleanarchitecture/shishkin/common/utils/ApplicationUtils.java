@@ -126,11 +126,9 @@ public class ApplicationUtils {
                 if (!listPermissionsNeeded.isEmpty()) {
                     String[] arrayPermissionsNeeded = new String[listPermissionsNeeded.size()];
                     listPermissionsNeeded.toArray(arrayPermissionsNeeded);
-                    if (activity != null) {
-                        ActivityCompat.requestPermissions(activity,
-                                arrayPermissionsNeeded,
-                                REQUEST_PERMISSIONS);
-                    }
+                    ActivityCompat.requestPermissions(activity,
+                            arrayPermissionsNeeded,
+                            REQUEST_PERMISSIONS);
                     return false;
                 }
             } else {

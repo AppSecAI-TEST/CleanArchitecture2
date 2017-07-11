@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                xmlns:custom="http://schemas.android.com/apk/res-auto"
                 android:background="@color/white_light">
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -14,6 +15,43 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
+            <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+                android:background="@color/red"
+                android:id="@+id/expandableLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:ael_duration="200"
+                app:ael_orientation="vertical">
+
+                <TextView
+                    android:id="@+id/board"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_40dp"
+                    android:gravity="center"
+                    android:text="Просто пример"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_xlarge"/>
+
+            </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_8dp"
+                    android:background="@color/red"
+                    android:orientation="vertical"/>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_menu_down"/>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -33,19 +71,19 @@
                     android:drawableLeft="@mipmap/ic_search"
                     android:drawablePadding="@dimen/padding_8dp"
                     android:hint="@string/search_hint"
-                    android:textColorHint="@color/gray_switch"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:textColorHint="@color/gray_switch"/>
 
             </LinearLayout>
 
-            <View style="@style/HorizontalDivider" />
+            <View style="@style/HorizontalDivider"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:scrollbars="vertical" />
+                android:scrollbars="vertical"/>
 
         </LinearLayout>
 
@@ -63,7 +101,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true" />
+            android:layout_centerVertical="true"/>
 
     </RelativeLayout>
 
@@ -78,7 +116,7 @@
             android:id="@+id/presenterCircleProgressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"/>
 
     </RelativeLayout>
 </RelativeLayout>

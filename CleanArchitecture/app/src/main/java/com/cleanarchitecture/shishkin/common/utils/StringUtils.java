@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.SparseArray;
 
+import com.google.common.base.Charsets;
+
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -225,30 +227,6 @@ public class StringUtils {
      */
     public static boolean match(final String str, final String pattern) {
         return str.matches(pattern);
-    }
-
-    /**
-     * Method String trimnoprint(String string1) Removes leading and trailing
-     * notprintable characters from a string
-     *
-     * @param str - The string you want returned with leading and trailing
-     *            notprintable characters deleted<br>
-     * @return Returns a copy of string with all leading and trailing
-     * notprintable characters deleted
-     */
-    public static String trimNoPrint(final String str) {
-        if (null == str) {
-            return EMPTY;
-        }
-
-        final byte[] _a = str.getBytes();
-        for (int i = 0; i < _a.length; i++) {
-            final byte ch = _a[i];
-            if (!(ch > 31 && ch < 253)) {
-                _a[i] = ' ';
-            }
-        }
-        return new String(_a).trim();
     }
 
     /**
@@ -782,7 +760,7 @@ public class StringUtils {
         String base64 = null;
         try {
             md = MessageDigest.getInstance("SHA-512");
-            byte byteData[] = md.digest(ss.getBytes());
+            byte byteData[] = md.digest(ss.getBytes(Charsets.UTF_8));
             base64 = Base64.encodeToString(byteData, Base64.NO_WRAP);
         } catch (Exception e) {
         }

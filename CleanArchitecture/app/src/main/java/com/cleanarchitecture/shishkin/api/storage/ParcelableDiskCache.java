@@ -120,7 +120,7 @@ public class ParcelableDiskCache<T extends Parcelable> extends AbstractModule im
                 editor = mDiskLruCache.edit(hash);
                 if (editor != null) {
                     out = editor.newOutputStream(INDEX_EXPIRED);
-                    writeToOutputStream(out, String.valueOf(expired).getBytes());
+                    writeToOutputStream(out, String.valueOf(expired).getBytes(Charsets.UTF_8));
 
                     out = new BufferedOutputStream(editor.newOutputStream(INDEX_DATA), BUFFER_SIZE);
                     writeToOutputStream(out, parcel.marshall());
@@ -174,7 +174,7 @@ public class ParcelableDiskCache<T extends Parcelable> extends AbstractModule im
                 editor = mDiskLruCache.edit(hash);
                 if (editor != null) {
                     out = editor.newOutputStream(INDEX_EXPIRED);
-                    writeToOutputStream(out, String.valueOf(expired).getBytes());
+                    writeToOutputStream(out, String.valueOf(expired).getBytes(Charsets.UTF_8));
 
                     out = new BufferedOutputStream(editor.newOutputStream(INDEX_DATA), BUFFER_SIZE);
                     writeToOutputStream(out, parcel.marshall());
@@ -344,7 +344,7 @@ public class ParcelableDiskCache<T extends Parcelable> extends AbstractModule im
         String cacheKey;
         try {
             final MessageDigest mDigest = MessageDigest.getInstance("MD5");
-            mDigest.update(key.getBytes());
+            mDigest.update(key.getBytes(Charsets.UTF_8));
             cacheKey = StringUtils.byteArrayToHex(mDigest.digest());
         } catch (NoSuchAlgorithmException e) {
             cacheKey = String.valueOf(key.hashCode());

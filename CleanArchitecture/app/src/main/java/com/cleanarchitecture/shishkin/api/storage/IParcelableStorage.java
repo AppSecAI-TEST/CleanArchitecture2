@@ -17,7 +17,7 @@ public interface IParcelableStorage<T extends Parcelable> extends ISubscriber {
     void put(String key, T value);
 
     /**
-     * Put value to storage.
+     * Put list of values to storage.
      *
      * @param key    the key
      * @param values the values
@@ -34,7 +34,7 @@ public interface IParcelableStorage<T extends Parcelable> extends ISubscriber {
     T get(String key, Class itemClass);
 
     /**
-     * Get values list from storage.
+     * Get list of values from storage.
      *
      * @param key       the key
      * @param itemClass the value class
