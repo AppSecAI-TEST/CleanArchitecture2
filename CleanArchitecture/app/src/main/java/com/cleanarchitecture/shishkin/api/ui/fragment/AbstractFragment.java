@@ -207,8 +207,8 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
     }
 
     @Override
-    public void setLostStateDate(boolean lostStateDate) {
-        mStateMachine.setLostStateDate(lostStateDate);
+    public void setLostStateData(boolean lostStateData) {
+        mStateMachine.setLostStateData(lostStateData);
     }
 
     @Override

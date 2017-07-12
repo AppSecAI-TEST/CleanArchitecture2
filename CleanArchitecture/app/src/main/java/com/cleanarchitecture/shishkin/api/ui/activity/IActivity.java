@@ -109,7 +109,7 @@ public interface IActivity extends IModuleSubscriber {
     /**
      * Установить флаг, очищать данные о состоянии презентеров
      *
-     * @param lostStateDate true - очищать данные
+     * @param lostStateData true - очищать данные
      */
-    void setLostStateDate(boolean lostStateDate);
+    void setLostStateData(boolean lostStateData);
 }

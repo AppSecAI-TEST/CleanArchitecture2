@@ -16,8 +16,8 @@
             android:orientation="vertical">
 
             <com.github.aakira.expandablelayout.ExpandableRelativeLayout
-                android:background="@color/red"
                 android:id="@+id/expandableLayout"
+                android:background="@color/red"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:ael_duration="200"
@@ -26,7 +26,8 @@
                 <TextView
                     android:id="@+id/board"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_40dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="@dimen/dimen_40dp"
                     android:gravity="center"
                     android:text="Просто пример"
                     android:textColor="@color/white"
@@ -35,7 +36,7 @@
             </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
             <LinearLayout
-                android:id="@+id/button"
+                android:id="@+id/board_button"
                 android:background="@color/gray_dark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

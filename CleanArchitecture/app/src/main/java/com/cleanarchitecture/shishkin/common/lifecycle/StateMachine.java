@@ -133,8 +133,8 @@ public class StateMachine implements IStateable {
         }
     }
 
-    public void setLostStateDate(boolean lostStateDate) {
-        mLostStateData = lostStateDate;
+    public void setLostStateData(boolean lostStateData) {
+        mLostStateData = lostStateData;
     }
 
 }
