@@ -1,6 +1,7 @@
 package com.cleanarchitecture.shishkin.api.presenter;
 
 import android.graphics.drawable.Drawable;
+import android.text.SpannableString;
 
 import com.cleanarchitecture.shishkin.api.event.OnNetworkConnectedEvent;
 import com.cleanarchitecture.shishkin.api.event.OnNetworkDisconnectedEvent;
@@ -8,6 +9,7 @@ import com.cleanarchitecture.shishkin.api.event.toolbar.OnToolbarClickEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarHideProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBackNavigationEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBackgroundEvent;
+import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBadgeEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetItemEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetMenuEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetTitleEvent;
@@ -53,6 +55,14 @@ public interface IToolbarPresenter {
      * @param isVisible the is visible
      */
     void setHome(int iconId, boolean isVisible);
+
+    /**
+     * Установить Badge
+     *
+     * @param count     отображаемое количество
+     * @param isVisible the is visible
+     */
+    void setBadge(final int count, final boolean isVisible);
 
     /**
      * Флаг - показывать/скрыть Toolbar
@@ -183,4 +193,10 @@ public interface IToolbarPresenter {
      */
     void onToolbarHideProgressBarEvent(ToolbarHideProgressBarEvent event);
 
+    /**
+     * Обрабатывает событие - показать Badge
+     *
+     * @param event событие
+     */
+    void onToolbarSetBadgeEvent(ToolbarSetBadgeEvent event);
 }

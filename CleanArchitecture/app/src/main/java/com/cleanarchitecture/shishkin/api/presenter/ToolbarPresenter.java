@@ -6,12 +6,16 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.PopupMenu;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.allenliu.badgeview.BadgeFactory;
+import com.allenliu.badgeview.BadgeView;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
@@ -29,6 +33,7 @@ import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarPrepareEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarResetEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBackNavigationEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBackgroundEvent;
+import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBadgeEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetItemEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetMenuEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetStatePopupMenuItemEvent;
@@ -81,6 +86,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     private boolean mBackNavigation = false;
     private boolean mShow = true;
     private Map<Integer, Integer> mStateMenuItems = Collections.synchronizedMap(new ConcurrentHashMap<Integer, Integer>());
+    private BadgeView mBadgeView;
 
     public void bindView(final View root) {
 
@@ -116,6 +122,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
             mToolbar = new WeakReference<>(toolbar);
         }
         if (title != null) {
+            title.setOnClickListener(this::onClick);
             mTitle = new WeakReference<>(title);
         }
         if (horizontalProgresBar != null) {
@@ -195,6 +202,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         final int id = view.getId();
         switch (id) {
             case R.id.item:
+            case R.id.title:
             case R.id.back:
                 AdminUtils.postEvent(new OnToolbarClickEvent(view));
                 break;
@@ -298,6 +306,32 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         });
     }
 
+    @Override
+    public void setBadge(final int count, final boolean isVisible) {
+        ApplicationUtils.runOnUiThread(() -> {
+            if (validate()) {
+                if (isVisible) {
+                    final Context context = mTitle.get().getContext();
+                    final int size = ViewUtils.px2dp(context, context.getResources().getDimension(R.dimen.badge_size));
+                    final int textSize = ViewUtils.px2sp(context, context.getResources().getDimension(R.dimen.text_size_large));
+                    mBadgeView = BadgeFactory.create(context)
+                            .setTextColor(ViewUtils.getColor(context, R.color.white))
+                            .setWidthAndHeight(size, size)
+                            .setBadgeBackground(ViewUtils.getColor(context, R.color.red))
+                            .setTextSize(textSize)
+                            .setBadgeGravity(Gravity.RIGHT | Gravity.TOP)
+                            .setBadgeCount(count)
+                            .setShape(BadgeView.SHAPE_CIRCLE)
+                            .bind(mTitle.get());
+                } else {
+                    if (mBadgeView != null) {
+                        mBadgeView.unbind();
+                    }
+                }
+            }
+        });
+    }
+
     private void resetToolbarTask() {
         mStateMenuItems.clear();
         setShow(true);
@@ -305,6 +339,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         setTitle(0, null);
         setMenu(0, false);
         setItem(0, false);
+        setBadge(0, false);
         setBackNavigation(false);
 
         checkNetStatus();
@@ -487,6 +522,12 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onSetToolbarItemEvent(ToolbarSetItemEvent event) {
         setItem(event.getItemId(), event.isVisible());
+    }
+
+    @Override
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onToolbarSetBadgeEvent(ToolbarSetBadgeEvent event) {
+        setBadge(event.getCount(), event.isVisible());
     }
 
     @Override

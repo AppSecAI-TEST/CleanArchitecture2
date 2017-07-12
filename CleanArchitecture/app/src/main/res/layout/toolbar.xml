@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:autofit="http://schemas.android.com/tools"
-    android:id="@+id/toolbar_ll"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:id="@+id/toolbar_ll"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/toolbar"
@@ -18,23 +17,23 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:src="@mipmap/ic_arrow_left_bold_circle_outline"
-            android:visibility="visible"
             android:paddingLeft="@dimen/padding_4dp"
-            android:paddingRight="@dimen/padding_4dp" />
+            android:paddingRight="@dimen/padding_4dp"
+            android:src="@mipmap/ic_arrow_left_bold_circle_outline"
+            android:visibility="visible"/>
 
         <com.cleanarchitecture.shishkin.common.ui.widget.AutoResizeTextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/dimen_64dp"
-            android:layout_marginRight="@dimen/dimen_64dp"
             android:layout_marginBottom="@dimen/dimen_2dp"
+            android:layout_marginLeft="@dimen/toolbar_title_margin"
+            android:layout_marginRight="@dimen/toolbar_title_margin"
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="2"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_size_xxlarge" />
+            android:textSize="@dimen/text_size_xxlarge"/>
 
         <LinearLayout
             android:id="@+id/right_group"
@@ -52,15 +51,15 @@
                 android:layout_centerVertical="true"
                 android:visibility="gone"
                 app:indicatorColor="@color/white_light"
-                app:indicatorName="LineSpinFadeLoaderIndicator" />
+                app:indicatorName="LineSpinFadeLoaderIndicator"/>
 
             <ImageView
                 android:id="@+id/item"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:paddingRight="@dimen/padding_4dp"
                 android:layout_gravity="center_vertical"
-                android:visibility="gone" />
+                android:paddingRight="@dimen/padding_4dp"
+                android:visibility="gone"/>
 
             <ImageView
                 android:id="@+id/menu"
@@ -69,23 +68,23 @@
                 android:layout_gravity="center_vertical"
                 android:paddingRight="@dimen/padding_4dp"
                 android:src="@mipmap/ic_dots_vertical"
-                android:visibility="gone" />
+                android:visibility="gone"/>
 
         </LinearLayout>
 
 
         <me.zhanghai.android.materialprogressbar.MaterialProgressBar
             android:id="@+id/horizontalprogressbar"
+            style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="-6dp"
             android:indeterminate="true"
-            app:mpb_progressStyle="horizontal"
-            app:mpb_showProgressBackground = "false"
+            android:visibility="invisible"
             app:mpb_indeterminateTint="@color/orange"
-            style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
-            android:visibility="invisible" />
+            app:mpb_progressStyle="horizontal"
+            app:mpb_showProgressBackground="false"/>
     </RelativeLayout>
 
 </LinearLayout>

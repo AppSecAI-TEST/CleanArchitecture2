@@ -130,4 +130,7 @@ dependencies {
 
     // Expandable Layout
     compile 'com.github.aakira:expandable-layout:1.4.2@aar'
+
+    // BadgeView
+    compile 'com.allenliu.badgeview:library:1.1.1'
 }
