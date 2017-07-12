@@ -1,7 +1,6 @@
 package com.cleanarchitecture.shishkin.api.presenter;
 
 import android.graphics.drawable.Drawable;
-import android.text.SpannableString;
 
 import com.cleanarchitecture.shishkin.api.event.OnNetworkConnectedEvent;
 import com.cleanarchitecture.shishkin.api.event.OnNetworkDisconnectedEvent;

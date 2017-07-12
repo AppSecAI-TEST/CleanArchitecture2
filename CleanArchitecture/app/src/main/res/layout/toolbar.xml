@@ -22,18 +22,32 @@
             android:src="@mipmap/ic_arrow_left_bold_circle_outline"
             android:visibility="visible"/>
 
-        <com.cleanarchitecture.shishkin.common.ui.widget.AutoResizeTextView
-            android:id="@+id/title"
+        <cn.bingoogolapple.badgeview.BGABadgeRelativeLayout
+            android:id="@+id/badge"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:badge_bgColor="@color/red"
+            app:badge_textColor="@color/white"
+            app:badge_gravity="rightTop"
+            app:badge_borderWidth="@dimen/dimen_2dp"
+            app:badge_borderColor="@color/white"
+            app:badge_padding="6dp"
+            app:badge_textSize="@dimen/text_size_large"
             android:layout_marginBottom="@dimen/dimen_2dp"
             android:layout_marginLeft="@dimen/toolbar_title_margin"
-            android:layout_marginRight="@dimen/toolbar_title_margin"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:maxLines="2"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_size_xxlarge"/>
+            android:layout_marginRight="@dimen/toolbar_title_margin">
+
+            <com.cleanarchitecture.shishkin.common.ui.widget.AutoResizeTextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/dimen_24dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="2"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_xxlarge"/>
+        </cn.bingoogolapple.badgeview.BGABadgeRelativeLayout>
 
         <LinearLayout
             android:id="@+id/right_group"

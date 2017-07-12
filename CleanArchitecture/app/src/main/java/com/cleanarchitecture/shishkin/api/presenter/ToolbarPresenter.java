@@ -6,16 +6,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.PopupMenu;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.allenliu.badgeview.BadgeFactory;
-import com.allenliu.badgeview.BadgeView;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
@@ -61,6 +57,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import cn.bingoogolapple.badgeview.BGABadgeRelativeLayout;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 @SuppressWarnings("unused")
@@ -79,6 +76,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     private WeakReference<ImageView> mMenu;
     private WeakReference<ImageView> mItem;
     private WeakReference<AVLoadingIndicatorView> mPogressBar;
+    private WeakReference<BGABadgeRelativeLayout> mBadgeView;
 
     private PopupMenu mPopupMenu;
     private boolean mPopupMenuShow = false;
@@ -86,7 +84,6 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     private boolean mBackNavigation = false;
     private boolean mShow = true;
     private Map<Integer, Integer> mStateMenuItems = Collections.synchronizedMap(new ConcurrentHashMap<Integer, Integer>());
-    private BadgeView mBadgeView;
 
     public void bindView(final View root) {
 
@@ -102,6 +99,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         final ImageView item = ViewUtils.findView(root, R.id.item);
         final MaterialProgressBar horizontalProgresBar = ViewUtils.findView(root, R.id.horizontalprogressbar);
         final AVLoadingIndicatorView progresBar = ViewUtils.findView(root, R.id.presenterProgressBar);
+        final BGABadgeRelativeLayout badge = ViewUtils.findView(root, R.id.badge);
 
         if (menu != null) {
             menu.setOnClickListener(this::onClick);
@@ -131,6 +129,9 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         if (progresBar != null) {
             mPogressBar = new WeakReference<>(progresBar);
         }
+        if (badge != null) {
+            mBadgeView = new WeakReference<>(badge);
+        }
     }
 
     @Override
@@ -146,6 +147,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         mHome = null;
         mMenu = null;
         mItem = null;
+        mBadgeView = null;
 
         AdminUtils.removeStickyEvent(new ToolbarInitEvent());
     }
@@ -161,6 +163,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
                 && mHome != null && mHome.get() != null
                 && mMenu != null && mMenu.get() != null
                 && mItem != null && mItem.get() != null
+                && mBadgeView != null && mBadgeView.get() != null
         );
     }
 
@@ -311,22 +314,10 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         ApplicationUtils.runOnUiThread(() -> {
             if (validate()) {
                 if (isVisible) {
-                    final Context context = mTitle.get().getContext();
-                    final int size = ViewUtils.px2dp(context, context.getResources().getDimension(R.dimen.badge_size));
-                    final int textSize = ViewUtils.px2sp(context, context.getResources().getDimension(R.dimen.text_size_large));
-                    mBadgeView = BadgeFactory.create(context)
-                            .setTextColor(ViewUtils.getColor(context, R.color.white))
-                            .setWidthAndHeight(size, size)
-                            .setBadgeBackground(ViewUtils.getColor(context, R.color.red))
-                            .setTextSize(textSize)
-                            .setBadgeGravity(Gravity.RIGHT | Gravity.TOP)
-                            .setBadgeCount(count)
-                            .setShape(BadgeView.SHAPE_CIRCLE)
-                            .bind(mTitle.get());
+                    mBadgeView.get().showCirclePointBadge();
+                    mBadgeView.get().showTextBadge(String.valueOf(count));
                 } else {
-                    if (mBadgeView != null) {
-                        mBadgeView.unbind();
-                    }
+                    mBadgeView.get().hiddenBadge();
                 }
             }
         });

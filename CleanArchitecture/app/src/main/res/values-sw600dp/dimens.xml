@@ -19,7 +19,6 @@
     <dimen name="board_min_height">48dp</dimen>
     <dimen name="board_max_height">180dp</dimen>
     <dimen name="toolbar_title_margin">112dp</dimen>
-    <dimen name="badge_size">30dp</dimen>
 
 
 </resources>
