@@ -36,14 +36,16 @@
                     <TextView
                         android:id="@+id/board"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="@dimen/board_min_height"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
                         android:gravity="center"
+                        android:maxHeight="@dimen/dimen_128dp"
+                        android:minHeight="@dimen/board_min_height"
                         android:text="Просто пример"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size_xlarge"/>
-
                 </com.balysv.materialripple.MaterialRippleLayout>
+
             </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
             <LinearLayout
