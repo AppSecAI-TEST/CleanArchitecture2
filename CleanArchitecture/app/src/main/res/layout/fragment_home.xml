@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/white_light">
@@ -17,26 +16,38 @@
             android:orientation="vertical">
 
             <com.github.aakira.expandablelayout.ExpandableRelativeLayout
-                android:background="@color/red"
                 android:id="@+id/expandableLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/red"
                 app:ael_duration="200"
                 app:ael_orientation="vertical">
 
-                <TextView
-                    android:id="@+id/board"
+                <com.balysv.materialripple.MaterialRippleLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_40dp"
-                    android:gravity="center"
-                    android:text="Просто пример"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_xlarge"/>
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:mrl_rippleAlpha="0.3"
+                    app:mrl_rippleColor="@color/white"
+                    app:mrl_rippleDelayClick="false"
+                    app:mrl_rippleHover="true"
+                    app:mrl_rippleOverlay="true">
 
+                    <TextView
+                        android:id="@+id/board"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/dimen_40dp"
+                        android:gravity="center"
+                        android:text="Просто пример"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_xlarge"/>
+
+                </com.balysv.materialripple.MaterialRippleLayout>
             </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
             <LinearLayout
-                android:id="@+id/button"
+                android:id="@+id/board_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">

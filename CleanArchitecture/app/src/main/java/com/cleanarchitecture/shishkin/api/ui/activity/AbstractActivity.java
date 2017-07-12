@@ -240,8 +240,8 @@ public abstract class AbstractActivity extends LifecycleActivity
     }
 
     @Override
-    public void setLostStateDate(boolean lostStateDate) {
-        mStateMachine.setLostStateDate(lostStateDate);
+    public void setLostStateData(boolean lostStateData) {
+        mStateMachine.setLostStateData(lostStateData);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

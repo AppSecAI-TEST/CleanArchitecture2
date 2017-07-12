@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.Admin;
@@ -39,13 +38,13 @@ import com.cleanarchitecture.shishkin.api.ui.fragment.SettingApplicationFragment
 import com.cleanarchitecture.shishkin.api.ui.item.SettingsDesktopOrderItem;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewIdleEvent;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewScrolledEvent;
+import com.cleanarchitecture.shishkin.application.presenter.ExpandableBoardPresenter;
 import com.cleanarchitecture.shishkin.application.presenter.FloatingActionMenuPresenter;
 import com.cleanarchitecture.shishkin.application.presenter.PhoneContactPresenter;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.SerializableUtil;
 import com.cleanarchitecture.shishkin.common.utils.ShareUtil;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
-import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -65,9 +64,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
 
     private OnBackPressedPresenter mOnBackPressedPresenter = new OnBackPressedPresenter();
     private PhoneContactPresenter mSearchPresenter = new PhoneContactPresenter();
-    private ExpandableRelativeLayout mBoardLayout;
-    private View mButton;
-    private TextView mBoardTextView;
+    private ExpandableBoardPresenter mBoardPresenter = new ExpandableBoardPresenter();
 
     @Override
     public List<String> hasSubscriberType() {
@@ -95,17 +92,14 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
         registerPresenter(mSearchPresenter);
         mSearchPresenter.bindView(view);
 
+        registerPresenter(mBoardPresenter);
+        mBoardPresenter.bindView(view);
+
         ApplicationUtils.grantPermisions(ApplicationController.getInstance().getRequiredPermisions(), AdminUtils.getActivity());
 
         if (!AdminUtils.isGooglePlayServices()) {
             AdminUtils.checkGooglePlayServices();
         }
-
-        mBoardLayout = ViewUtils.findView(view, R.id.expandableLayout);
-        mBoardTextView = ViewUtils.findView(view, R.id.board);
-        mBoardTextView.setOnClickListener(this::onClickView);
-        mButton = ViewUtils.findView(view, R.id.button);
-        mButton.setOnClickListener(this::onClickView);
 
         /*
         if (!AdminUtils.checkPermission(Manifest.permission.READ_CONTACTS)) {
@@ -116,18 +110,6 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
             AdminUtils.postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.WRITE_EXTERNAL_STORAGE));
         }
         */
-    }
-
-    private void onClickView(View view) {
-        switch (view.getId()) {
-            case R.id.button:
-                mBoardLayout.expand();
-                break;
-
-            case R.id.board:
-                mBoardLayout.collapse();
-                break;
-        }
     }
 
     @Override
@@ -145,7 +127,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
 
     @Override
     public boolean onBackPressed() {
-        setLostStateDate(true);
+        setLostStateData(true);
 
         final boolean result = super.onBackPressed();
         if (!result) {
