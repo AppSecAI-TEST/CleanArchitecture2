@@ -71,5 +71,7 @@
 	<dimen name="recyclerview_item_image_size">48dp</dimen>
 	<dimen name="info_item_min_height">36dp</dimen>
 
+	<dimen name="board_min_height">40dp</dimen>
+
 
 </resources>
