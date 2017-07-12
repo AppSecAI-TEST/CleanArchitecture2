@@ -37,7 +37,7 @@
                         android:id="@+id/board"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:minHeight="@dimen/dimen_40dp"
+                        android:minHeight="@dimen/board_min_height"
                         android:gravity="center"
                         android:text="Просто пример"
                         android:textColor="@color/white"
