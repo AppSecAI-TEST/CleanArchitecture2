@@ -24,11 +24,13 @@ import com.cleanarchitecture.shishkin.api.event.ShowFragmentEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.OnToolbarClickEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.OnToolbarMenuItemClickEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBackNavigationEvent;
+import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBadgeEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetItemEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetMenuEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetTitleEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.HideHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.HideKeyboardEvent;
+import com.cleanarchitecture.shishkin.api.event.ui.ShowToastEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseFinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.api.presenter.OnBackPressedPresenter;
@@ -144,6 +146,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
         }
         AdminUtils.postEvent(new ToolbarSetBackNavigationEvent(true));
         AdminUtils.postEvent(new ToolbarSetItemEvent(R.mipmap.ic_share_variant, true));
+        AdminUtils.postEvent(new ToolbarSetBadgeEvent(2, true));
         //AdminUtils.postEvent(new ToolbarSetStatePopupMenuItemEvent(R.id.desktop_order, ToolbarPresenter.POPOP_MENU_ITEM_STATE_DISABLED));
     }
 
@@ -227,9 +230,14 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public synchronized void onToolbarClickEvent(OnToolbarClickEvent event) {
-        if (event.getView() != null && event.getView().getId() == R.id.item) {
-            final ShareUtil.ShareData shareData = new ShareUtil.ShareData(null, getString(R.string.test_mesage));
-            ShareUtil.share(shareData, AdminUtils.getActivity());
+        if (event.getView() != null) {
+            if (event.getView().getId() == R.id.item) {
+                final ShareUtil.ShareData shareData = new ShareUtil.ShareData(null, getString(R.string.test_mesage));
+                ShareUtil.share(shareData, AdminUtils.getActivity());
+            } else if (event.getView().getId() == R.id.title) {
+                AdminUtils.postEvent(new ToolbarSetBadgeEvent(0, false));
+                AdminUtils.postEvent(new ShowToastEvent("Click on Toolbar title"));
+            }
         }
     }
 }

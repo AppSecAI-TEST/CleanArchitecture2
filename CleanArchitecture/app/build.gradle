@@ -130,4 +130,7 @@ dependencies {
 
     // Expandable Layout
     compile 'com.github.aakira:expandable-layout:1.4.2@aar'
+
+    // BadgeView
+    compile 'cn.bingoogolapple:bga-badgeview:1.1.3@aar'
 }
