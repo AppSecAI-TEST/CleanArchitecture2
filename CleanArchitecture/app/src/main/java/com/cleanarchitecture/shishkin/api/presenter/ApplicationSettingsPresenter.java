@@ -1,5 +1,6 @@
 package com.cleanarchitecture.shishkin.api.presenter;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
@@ -12,12 +13,15 @@ import android.widget.TextView;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
+import com.cleanarchitecture.shishkin.api.event.ShowFragmentEvent;
 import com.cleanarchitecture.shishkin.api.event.repository.RepositoryRequestGetApplicationSettingsEvent;
 import com.cleanarchitecture.shishkin.api.event.repository.RepositoryRequestSetApplicationSettingEvent;
 import com.cleanarchitecture.shishkin.api.event.repository.RepositoryResponseGetApplicationSettingsEvent;
 import com.cleanarchitecture.shishkin.api.repository.data.ApplicationSetting;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractActivity;
+import com.cleanarchitecture.shishkin.api.ui.fragment.SettingsColorPickerFragment;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
+import com.flyco.roundview.RoundRelativeLayout;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -75,6 +79,9 @@ public class ApplicationSettingsPresenter extends AbstractPresenter<Void> implem
     private void generateInfoItem(final ViewGroup parent, final ApplicationSetting setting) {
         View v = null;
         TextView titleView;
+        String currentValue;
+        RoundRelativeLayout colorView;
+
         switch (setting.getType()) {
             case ApplicationSetting.TYPE_TEXT:
                 v = mInflater.inflate(AdminUtils.getLayoutId("setting_item_text", R.layout.setting_item_text), parent, false);
@@ -88,16 +95,42 @@ public class ApplicationSettingsPresenter extends AbstractPresenter<Void> implem
                 titleView.setText(setting.getTitleId());
 
                 final SwitchCompat valueView = ViewUtils.findView(v, R.id.item_switch);
-                final String currentValue = setting.getCurrentValue();
+                currentValue = setting.getCurrentValue();
                 valueView.setChecked(Boolean.valueOf(currentValue));
                 valueView.setTag(setting);
                 valueView.setOnCheckedChangeListener(this);
                 break;
 
+            case ApplicationSetting.TYPE_COLOR:
+                v = mInflater.inflate(AdminUtils.getLayoutId("setting_item_color", R.layout.setting_item_color), parent, false);
+                titleView = ViewUtils.findView(v, R.id.item_title);
+                titleView.setText(setting.getTitleId());
+                titleView.setTag(setting);
+                titleView.setOnClickListener(this::onClickChangeColor);
+
+                colorView = ViewUtils.findView(v, R.id.item_color);
+                currentValue = setting.getCurrentValue();
+                int color;
+                if (currentValue.contains("#")) {
+                    color = Color.parseColor(currentValue);
+                } else {
+                    color = Integer.valueOf(currentValue);
+                }
+                colorView.getDelegate().setBackgroundColor(color);
+                colorView.setTag(setting);
+                colorView.setOnClickListener(this::onClickChangeColor);
+                break;
         }
 
         if (v != null) {
             parent.addView(v);
+        }
+    }
+
+    private void onClickChangeColor(View view) {
+        final ApplicationSetting setting = (ApplicationSetting) view.getTag();
+        if (setting != null) {
+            AdminUtils.postEvent(new ShowFragmentEvent(SettingsColorPickerFragment.newInstance(setting)));
         }
     }
 
@@ -126,4 +159,5 @@ public class ApplicationSettingsPresenter extends AbstractPresenter<Void> implem
             }
         }
     }
+
 }

@@ -99,4 +99,6 @@ public interface IAppPreferencesModule extends IModule {
      * @param day день очистки кэше
      */
     void setCleanCacheDay(String day);
+
+    String getSettingColor(String key, String defaultColor);
 }

@@ -5,17 +5,6 @@
               android:layout_height="wrap_content"
               android:orientation="vertical">
 
-    <com.balysv.materialripple.MaterialRippleLayout
-        android:id="@+id/ripple"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:mrl_rippleAlpha="0.2"
-        app:mrl_rippleColor="#585858"
-        app:mrl_rippleDelayClick="false"
-        app:mrl_rippleHover="true"
-        app:mrl_rippleOverlay="true">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_56dp"
@@ -30,7 +19,7 @@
                 android:layout_weight="1"
                 android:paddingLeft="@dimen/padding_12dp"
                 android:paddingRight="@dimen/padding_8dp"
-                android:textColor="@color/blue"
+                android:textColor="@color/text_dark"
                 android:textSize="@dimen/text_size_large"/>
 
             <android.support.v7.widget.SwitchCompat
@@ -43,8 +32,6 @@
                 android:theme="@style/Switch"/>
 
         </LinearLayout>
-
-    </com.balysv.materialripple.MaterialRippleLayout>
 
     <View style="@style/HorizontalDivider"/>
 </LinearLayout>

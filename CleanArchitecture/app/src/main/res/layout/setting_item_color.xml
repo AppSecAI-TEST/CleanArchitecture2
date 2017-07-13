@@ -19,17 +19,18 @@
                 android:layout_weight="1"
                 android:paddingLeft="@dimen/padding_12dp"
                 android:paddingRight="@dimen/padding_8dp"
-                android:textColor="@color/white"
+                android:textColor="@color/text_dark"
+                android:clickable="true"
                 android:textSize="@dimen/text_size_large"/>
 
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/item_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <com.flyco.roundview.RoundRelativeLayout
+                android:id="@+id/item_color"
+                android:clickable="true"
+                android:layout_width="@dimen/dimen_32dp"
+                android:layout_height="@dimen/dimen_32dp"
                 android:layout_gravity="center_vertical"
-                android:paddingLeft="@dimen/padding_8dp"
-                android:paddingRight="@dimen/padding_8dp"
-                android:theme="@style/Switch"/>
+                android:layout_marginRight="@dimen/dimen_16dp"
+                app:rv_cornerRadius="@dimen/dimen_8dp"/>
 
         </LinearLayout>
 

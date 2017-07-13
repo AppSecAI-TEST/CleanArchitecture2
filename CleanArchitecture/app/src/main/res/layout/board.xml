@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+        android:id="@+id/expandableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/red"
+        app:ael_duration="200"
+        app:ael_orientation="vertical">
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:mrl_rippleAlpha="0.3"
+            app:mrl_rippleColor="@color/white"
+            app:mrl_rippleDelayClick="false"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <TextView
+                android:id="@+id/board"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:maxHeight="@dimen/dimen_128dp"
+                android:minHeight="@dimen/board_min_height"
+                android:text="Просто пример"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_xlarge"/>
+        </com.balysv.materialripple.MaterialRippleLayout>
+
+    </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/board_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_8dp"
+            android:background="@color/red"
+            android:orientation="vertical"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_menu_down"/>
+    </LinearLayout>
+</LinearLayout>
