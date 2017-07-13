@@ -37,7 +37,7 @@ public class ValidateController extends AbstractController<IValidateSubscriber> 
             mValidators.remove(subscriber.getName());
         }
 
-        super.register(subscriber);
+        super.unregister(subscriber);
     }
 
     @Override
