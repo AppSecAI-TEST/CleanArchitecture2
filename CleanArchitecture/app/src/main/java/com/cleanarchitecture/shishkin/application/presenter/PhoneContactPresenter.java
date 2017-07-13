@@ -18,6 +18,8 @@ import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.ITransformDataModule;
+import com.cleanarchitecture.shishkin.api.controller.IValidateSubscriber;
+import com.cleanarchitecture.shishkin.api.controller.ValidateController;
 import com.cleanarchitecture.shishkin.api.debounce.Debounce;
 import com.cleanarchitecture.shishkin.api.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.DialogResultEvent;
@@ -38,12 +40,14 @@ import com.cleanarchitecture.shishkin.api.storage.CacheUtils;
 import com.cleanarchitecture.shishkin.api.ui.dialog.MaterialDialogExt;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.OnScrollListener;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.SwipeTouchHelper;
+import com.cleanarchitecture.shishkin.api.validate.IValidator;
 import com.cleanarchitecture.shishkin.application.Constant;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.data.viewmodel.PhoneContactViewModel;
 import com.cleanarchitecture.shishkin.application.event.phonecontactpresenter.OnPhoneContactPresenterItemClick;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.ui.adapter.PhoneContactRecyclerViewAdapter;
+import com.cleanarchitecture.shishkin.application.validate.PhoneContactItemValidator;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.PhoneUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
@@ -60,7 +64,7 @@ import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("unused")
 public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactItem>>
-        implements IObserver<List<PhoneContactItem>> {
+        implements IObserver<List<PhoneContactItem>>, IValidateSubscriber {
     public static final String NAME = PhoneContactPresenter.class.getName();
     private static final String CURRENT_FILTER = "CURRENT_FILTER";
 
@@ -168,6 +172,7 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
     public List<String> hasSubscriberType() {
         final List<String> list = super.hasSubscriberType();
         list.add(EventBusController.SUBSCRIBER_TYPE);
+        list.add(ValidateController.SUBSCRIBER_TYPE);
         return list;
     }
 
@@ -241,25 +246,38 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
         return bundle;
     }
 
+    @Override
+    public IValidator getValidator() {
+        return new PhoneContactItemValidator();
+    }
+
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public synchronized void onSearchPresenterItemClick(OnPhoneContactPresenterItemClick event) {
         if (AdminUtils.checkPermission(Manifest.permission.CALL_PHONE)) {
             if (event.getContactItem() != null) {
                 final PhoneContactItem item = event.getContactItem();
+                if (!AdminUtils.validate(this, item)) {
+                    return;
+                }
+
                 final ArrayList<String> list = new ArrayList<>();
                 for (int i = 1; i <= StringUtils.numToken(item.getPhones(), ";"); i++) {
                     String phone = StringUtils.token(item.getPhones(), ";", i);
-                    String phone1 = null;
-                    if (ApplicationUtils.hasLollipop()) {
-                        phone1 = PhoneNumberUtils.formatNumber(phone, Locale.getDefault().getCountry());
-                    }
-                    if (StringUtils.isNullOrEmpty(phone1)) {
-                        list.add(phone);
-                    } else {
-                        list.add(phone1);
+                    if (AdminUtils.validate(this, phone)) {
+                        String phone1 = null;
+                        if (ApplicationUtils.hasLollipop()) {
+                            phone1 = PhoneNumberUtils.formatNumber(phone, Locale.getDefault().getCountry());
+                        }
+                        if (StringUtils.isNullOrEmpty(phone1)) {
+                            list.add(phone);
+                        } else {
+                            list.add(phone1);
+                        }
                     }
                 }
-                AdminUtils.postEvent(new ShowListDialogEvent(R.id.dialog_call_phone, R.string.phone_call, null, list, -1, R.string.exit, true));
+                if (!list.isEmpty()) {
+                    AdminUtils.postEvent(new ShowListDialogEvent(R.id.dialog_call_phone, R.string.phone_call, null, list, -1, R.string.exit, true));
+                }
             }
         } else {
             AdminUtils.postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.CALL_PHONE));
@@ -296,4 +314,5 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
             mDebounce.onEvent();
         }
     }
+
 }

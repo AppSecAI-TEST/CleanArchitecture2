@@ -577,6 +577,15 @@ public class AdminUtils {
         return Admin.getInstance().get(AppPreferencesModule.NAME);
     }
 
+    public static boolean validate(IValidateSubscriber subscriber, Object object) {
+        final IValidateController controller = Admin.getInstance().get(ValidateController.NAME);
+        if (controller != null) {
+            return controller.validate(subscriber, object);
+        }
+        return false;
+    }
+
+
     private AdminUtils() {
     }
 

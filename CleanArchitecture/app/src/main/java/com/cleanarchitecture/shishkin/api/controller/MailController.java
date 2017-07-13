@@ -10,7 +10,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -25,8 +24,6 @@ public class MailController extends AbstractController<IMailSubscriber> implemen
 
     public MailController() {
         super();
-
-        mMail = Collections.synchronizedMap(new HashMap<Long, IMail>());
     }
 
     @Override
