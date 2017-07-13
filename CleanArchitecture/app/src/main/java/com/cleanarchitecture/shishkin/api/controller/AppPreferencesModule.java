@@ -27,6 +27,7 @@ public class AppPreferencesModule implements IAppPreferencesModule, IModuleSubsc
     private static final String PARCELABLE_CACHE_VERSION = "parcelable_cache_version";
     private static final String VERSION_APPLICATION = "version_application";
     private static final String LAST_DAY_START = "last_day_start";
+    private static final String COLOR_ON_NETWORK_DISCONNECTED = "color_on_network_disconnected";
 
     private static volatile AppPreferencesModule sInstance;
 
@@ -197,10 +198,20 @@ public class AppPreferencesModule implements IAppPreferencesModule, IModuleSubsc
         }
     }
 
+    @Override
+    public synchronized String getSettingColorOnNetworkDisconnected() {
+        final Context context = ApplicationController.getInstance().getApplicationContext();
+        if (context != null) {
+            return AppPreferencesUtils.getString(context, COLOR_ON_NETWORK_DISCONNECTED, "#ff5514");
+        }
+        return null;
+    }
+
     private synchronized void getApplicationSettings() {
         ApplicationSetting setting;
         List<ApplicationSetting> list = new LinkedList<>();
         boolean currentValueBoolean = true;
+        String currentValueString;
 
         setting = new ApplicationSetting(ApplicationSetting.TYPE_TEXT)
                 .setTitleId(R.string.display);
@@ -212,6 +223,18 @@ public class AppPreferencesModule implements IAppPreferencesModule, IModuleSubsc
                 .setCurrentValue(String.valueOf(currentValueBoolean))
                 .setId(R.id.application_setting_show_tooltip);
         list.add(setting);
+
+        setting = new ApplicationSetting(ApplicationSetting.TYPE_TEXT)
+                .setTitleId(R.string.settings_color);
+        list.add(setting);
+
+        currentValueString = getSettingColorOnNetworkDisconnected();
+        setting = new ApplicationSetting(ApplicationSetting.TYPE_COLOR)
+                .setTitleId(R.string.settings_color_on_disconnect_network)
+                .setCurrentValue(currentValueString)
+                .setId(R.id.application_setting_color_on_network_disconnected);
+        list.add(setting);
+
 
         EventBusController.getInstance().post(new RepositoryResponseGetApplicationSettingsEvent().setResponse(list));
     }

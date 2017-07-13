@@ -1,5 +1,7 @@
 package com.cleanarchitecture.shishkin.api.presenter;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import com.cleanarchitecture.shishkin.api.event.repository.RepositoryResponseGet
 import com.cleanarchitecture.shishkin.api.repository.data.ApplicationSetting;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractActivity;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
+import com.flyco.roundview.RoundRelativeLayout;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -75,6 +78,9 @@ public class ApplicationSettingsPresenter extends AbstractPresenter<Void> implem
     private void generateInfoItem(final ViewGroup parent, final ApplicationSetting setting) {
         View v = null;
         TextView titleView;
+        String currentValue;
+        RoundRelativeLayout colorView;
+
         switch (setting.getType()) {
             case ApplicationSetting.TYPE_TEXT:
                 v = mInflater.inflate(AdminUtils.getLayoutId("setting_item_text", R.layout.setting_item_text), parent, false);
@@ -88,16 +94,36 @@ public class ApplicationSettingsPresenter extends AbstractPresenter<Void> implem
                 titleView.setText(setting.getTitleId());
 
                 final SwitchCompat valueView = ViewUtils.findView(v, R.id.item_switch);
-                final String currentValue = setting.getCurrentValue();
+                currentValue = setting.getCurrentValue();
                 valueView.setChecked(Boolean.valueOf(currentValue));
                 valueView.setTag(setting);
                 valueView.setOnCheckedChangeListener(this);
                 break;
 
+            case ApplicationSetting.TYPE_COLOR:
+                v = mInflater.inflate(AdminUtils.getLayoutId("setting_item_color", R.layout.setting_item_color), parent, false);
+                titleView = ViewUtils.findView(v, R.id.item_title);
+                titleView.setText(setting.getTitleId());
+                titleView.setTag(setting);
+                titleView.setOnClickListener(this::onClickChangeColor);
+
+                colorView = ViewUtils.findView(v, R.id.item_color);
+                final int color = Color.parseColor(setting.getCurrentValue());
+                colorView.getDelegate().setBackgroundColor(color);
+                colorView.setTag(setting);
+                colorView.setOnClickListener(this::onClickChangeColor);
+                break;
         }
 
         if (v != null) {
             parent.addView(v);
+        }
+    }
+
+    private void onClickChangeColor(View view) {
+        final ApplicationSetting setting = (ApplicationSetting)view.getTag();
+        if (setting != null) {
+
         }
     }
 

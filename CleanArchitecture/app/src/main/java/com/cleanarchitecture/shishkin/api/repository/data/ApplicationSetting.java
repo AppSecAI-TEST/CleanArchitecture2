@@ -6,6 +6,7 @@ public class ApplicationSetting {
     public static final int TYPE_LIST = 0;
     public static final int TYPE_SWITCH = 1;
     public static final int TYPE_TEXT = 2;
+    public static final int TYPE_COLOR = 3;
 
     private ArrayList<String> mValues;
     private String mCurrentValue;
