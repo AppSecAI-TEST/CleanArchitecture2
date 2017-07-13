@@ -1,7 +1,6 @@
 package com.cleanarchitecture.shishkin.api.presenter;
 
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
@@ -129,7 +128,7 @@ public class ApplicationSettingsPresenter extends AbstractPresenter<Void> implem
     }
 
     private void onClickChangeColor(View view) {
-        final ApplicationSetting setting = (ApplicationSetting)view.getTag();
+        final ApplicationSetting setting = (ApplicationSetting) view.getTag();
         if (setting != null) {
             AdminUtils.postEvent(new ShowFragmentEvent(SettingsColorPickerFragment.newInstance(setting)));
         }

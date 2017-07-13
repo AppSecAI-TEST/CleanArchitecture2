@@ -8,8 +8,6 @@ import com.cleanarchitecture.shishkin.api.event.repository.RepositoryRequestSetA
 import com.cleanarchitecture.shishkin.api.event.repository.RepositoryResponseGetApplicationSettingsEvent;
 import com.cleanarchitecture.shishkin.api.repository.data.ApplicationSetting;
 import com.cleanarchitecture.shishkin.common.utils.AppPreferencesUtils;
-import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
-import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 
 import org.greenrobot.eventbus.Subscribe;

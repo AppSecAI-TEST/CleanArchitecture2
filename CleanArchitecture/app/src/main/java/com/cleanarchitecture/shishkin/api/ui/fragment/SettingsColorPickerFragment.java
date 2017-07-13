@@ -2,7 +2,6 @@ package com.cleanarchitecture.shishkin.api.ui.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,7 +52,7 @@ public class SettingsColorPickerFragment extends AbstractContentFragment {
         int color;
         final String currentValue = mSetting.getCurrentValue();
         if (currentValue.contains("#")) {
-             color = Color.parseColor(currentValue);
+            color = Color.parseColor(currentValue);
         } else {
             color = Integer.valueOf(currentValue);
         }
