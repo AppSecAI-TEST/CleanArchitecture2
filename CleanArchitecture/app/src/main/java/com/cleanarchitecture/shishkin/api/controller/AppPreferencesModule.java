@@ -8,6 +8,9 @@ import com.cleanarchitecture.shishkin.api.event.repository.RepositoryRequestSetA
 import com.cleanarchitecture.shishkin.api.event.repository.RepositoryResponseGetApplicationSettingsEvent;
 import com.cleanarchitecture.shishkin.api.repository.data.ApplicationSetting;
 import com.cleanarchitecture.shishkin.common.utils.AppPreferencesUtils;
+import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
+import com.cleanarchitecture.shishkin.common.utils.StringUtils;
+import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -27,7 +30,8 @@ public class AppPreferencesModule implements IAppPreferencesModule, IModuleSubsc
     private static final String PARCELABLE_CACHE_VERSION = "parcelable_cache_version";
     private static final String VERSION_APPLICATION = "version_application";
     private static final String LAST_DAY_START = "last_day_start";
-    private static final String COLOR_ON_NETWORK_DISCONNECTED = "color_on_network_disconnected";
+    public static final String COLOR_ON_NETWORK_CONNECTED = "color_on_network_connected";
+    public static final String COLOR_ON_NETWORK_DISCONNECTED = "color_on_network_disconnected";
 
     private static volatile AppPreferencesModule sInstance;
 
@@ -199,15 +203,27 @@ public class AppPreferencesModule implements IAppPreferencesModule, IModuleSubsc
     }
 
     @Override
-    public synchronized String getSettingColorOnNetworkDisconnected() {
+    public synchronized String getSettingColor(final String key, final String defaultColor) {
         final Context context = ApplicationController.getInstance().getApplicationContext();
         if (context != null) {
-            return AppPreferencesUtils.getString(context, COLOR_ON_NETWORK_DISCONNECTED, "#ff5514");
+            return AppPreferencesUtils.getString(context, key, defaultColor);
         }
         return null;
     }
 
+    public synchronized void setSettingColor(final ApplicationSetting setting) {
+        final Context context = ApplicationController.getInstance().getApplicationContext();
+        if (context != null) {
+            AppPreferencesUtils.putString(context, setting.getPreferenceName(), String.valueOf(setting.getCurrentValue()));
+        }
+    }
+
     private synchronized void getApplicationSettings() {
+        final Context context = AdminUtils.getContext();
+        if (context == null) {
+            return;
+        }
+
         ApplicationSetting setting;
         List<ApplicationSetting> list = new LinkedList<>();
         boolean currentValueBoolean = true;
@@ -228,13 +244,23 @@ public class AppPreferencesModule implements IAppPreferencesModule, IModuleSubsc
                 .setTitleId(R.string.settings_color);
         list.add(setting);
 
-        currentValueString = getSettingColorOnNetworkDisconnected();
+        currentValueString = getSettingColor(COLOR_ON_NETWORK_CONNECTED, String.valueOf(ViewUtils.getColor(context, R.color.blue)));
         setting = new ApplicationSetting(ApplicationSetting.TYPE_COLOR)
-                .setTitleId(R.string.settings_color_on_disconnect_network)
+                .setTitleId(R.string.settings_color_on_connect_network)
+                .setPreferenceName(COLOR_ON_NETWORK_CONNECTED)
                 .setCurrentValue(currentValueString)
-                .setId(R.id.application_setting_color_on_network_disconnected);
+                .setDefaultValue(String.valueOf(ViewUtils.getColor(context, R.color.blue)))
+                .setId(R.id.application_setting_color);
         list.add(setting);
 
+        currentValueString = getSettingColor(COLOR_ON_NETWORK_DISCONNECTED, String.valueOf(ViewUtils.getColor(context, R.color.orange)));
+        setting = new ApplicationSetting(ApplicationSetting.TYPE_COLOR)
+                .setTitleId(R.string.settings_color_on_disconnect_network)
+                .setPreferenceName(COLOR_ON_NETWORK_DISCONNECTED)
+                .setCurrentValue(currentValueString)
+                .setDefaultValue(String.valueOf(ViewUtils.getColor(context, R.color.orange)))
+                .setId(R.id.application_setting_color);
+        list.add(setting);
 
         EventBusController.getInstance().post(new RepositoryResponseGetApplicationSettingsEvent().setResponse(list));
     }
@@ -253,7 +279,12 @@ public class AppPreferencesModule implements IAppPreferencesModule, IModuleSubsc
                 final boolean currentValue = Boolean.valueOf(event.getApplicationSetting().getCurrentValue());
                 setSettingShowTooltip(currentValue);
                 break;
+
+            case R.id.application_setting_color:
+                setSettingColor(event.getApplicationSetting());
         }
+
+        getApplicationSettings();
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)

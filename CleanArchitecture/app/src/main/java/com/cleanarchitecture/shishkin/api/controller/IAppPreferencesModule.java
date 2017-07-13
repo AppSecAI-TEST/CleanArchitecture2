@@ -100,5 +100,5 @@ public interface IAppPreferencesModule extends IModule {
      */
     void setCleanCacheDay(String day);
 
-    String getSettingColorOnNetworkDisconnected();
+    String getSettingColor(String key, String defaultColor);
 }

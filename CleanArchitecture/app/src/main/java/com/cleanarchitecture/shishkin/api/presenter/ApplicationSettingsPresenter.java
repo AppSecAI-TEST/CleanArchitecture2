@@ -14,11 +14,13 @@ import android.widget.TextView;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
+import com.cleanarchitecture.shishkin.api.event.ShowFragmentEvent;
 import com.cleanarchitecture.shishkin.api.event.repository.RepositoryRequestGetApplicationSettingsEvent;
 import com.cleanarchitecture.shishkin.api.event.repository.RepositoryRequestSetApplicationSettingEvent;
 import com.cleanarchitecture.shishkin.api.event.repository.RepositoryResponseGetApplicationSettingsEvent;
 import com.cleanarchitecture.shishkin.api.repository.data.ApplicationSetting;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractActivity;
+import com.cleanarchitecture.shishkin.api.ui.fragment.SettingsColorPickerFragment;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 import com.flyco.roundview.RoundRelativeLayout;
 
@@ -108,7 +110,13 @@ public class ApplicationSettingsPresenter extends AbstractPresenter<Void> implem
                 titleView.setOnClickListener(this::onClickChangeColor);
 
                 colorView = ViewUtils.findView(v, R.id.item_color);
-                final int color = Color.parseColor(setting.getCurrentValue());
+                currentValue = setting.getCurrentValue();
+                int color;
+                if (currentValue.contains("#")) {
+                    color = Color.parseColor(currentValue);
+                } else {
+                    color = Integer.valueOf(currentValue);
+                }
                 colorView.getDelegate().setBackgroundColor(color);
                 colorView.setTag(setting);
                 colorView.setOnClickListener(this::onClickChangeColor);
@@ -123,7 +131,7 @@ public class ApplicationSettingsPresenter extends AbstractPresenter<Void> implem
     private void onClickChangeColor(View view) {
         final ApplicationSetting setting = (ApplicationSetting)view.getTag();
         if (setting != null) {
-
+            AdminUtils.postEvent(new ShowFragmentEvent(SettingsColorPickerFragment.newInstance(setting)));
         }
     }
 
@@ -152,4 +160,5 @@ public class ApplicationSettingsPresenter extends AbstractPresenter<Void> implem
             }
         }
     }
+
 }

@@ -134,6 +134,10 @@ dependencies {
     // BadgeView
     compile 'cn.bingoogolapple:bga-badgeview:1.1.3'
 
+    // Round View
     compile 'com.flyco.roundview:FlycoRoundView_Lib:1.1.4@aar'
+
+    // Color Picker
+    compile 'com.github.madrapps:eyedropper:1.1.0'
 
 }
