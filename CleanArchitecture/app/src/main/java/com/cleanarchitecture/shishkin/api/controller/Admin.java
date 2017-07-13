@@ -118,6 +118,9 @@ public class Admin extends AbstractAdmin {
 
         // Модуль преобразования данных
         registerModule(TransformDataModule.NAME);
+
+        // Модуль валидации
+        registerModule(ValidateController.NAME);
     }
 
     @Override
