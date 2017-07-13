@@ -8,6 +8,9 @@ public class PhoneContactItemValidator extends AbstractValidator {
 
     public static final String NAME = PhoneContactItemValidator.class.getName();
 
+    public PhoneContactItemValidator() {
+    }
+
     @Override
     public boolean validate(final Object object) {
         if (object == null) {

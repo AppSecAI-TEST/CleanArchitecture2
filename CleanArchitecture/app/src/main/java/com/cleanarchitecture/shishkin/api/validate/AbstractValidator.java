@@ -10,10 +10,6 @@ public abstract class AbstractValidator implements IValidator {
 
     private Map<String, IValidator> mValidators = Collections.synchronizedMap(new ConcurrentHashMap<String, IValidator>());
 
-    public AbstractValidator() {
-        add(this);
-    }
-
     @Override
     public boolean execValidate(Object object) {
         if (validate(object)) {
