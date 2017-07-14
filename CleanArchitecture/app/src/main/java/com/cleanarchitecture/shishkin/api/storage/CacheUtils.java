@@ -284,4 +284,17 @@ public class CacheUtils {
 
         }
     }
+
+    public static void clear(final String key) {
+        final IParcelableStorage memoryCache = Admin.getInstance().get(ParcelableMemoryCache.NAME);
+        final IExpiredParcelableStorage diskCache = Admin.getInstance().get(ParcelableDiskCache.NAME);
+
+        if (memoryCache != null) {
+            memoryCache.clear(key);
+        }
+
+        if (diskCache != null) {
+            diskCache.clear(key);
+        }
+    }
 }

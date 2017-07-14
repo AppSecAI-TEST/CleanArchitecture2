@@ -9,6 +9,8 @@ public abstract class AbstractDebouncedObserver extends AbstractObserver impleme
     private long mDelay = 1000;
     private Handler mHandler = null;
     private Object mArg = null;
+    private int mSkip = 0;
+
 
     public AbstractDebouncedObserver(final Observable observable, final long delay) {
         super(observable);
@@ -17,11 +19,23 @@ public abstract class AbstractDebouncedObserver extends AbstractObserver impleme
         mDelay = delay;
     }
 
+    public AbstractDebouncedObserver(final Observable observable, final long delay, final int skip) {
+        this(observable, delay);
+
+        mSkip = skip;
+    }
+
     @Override
     public synchronized void update(final Observable o, final Object arg) {
-        mArg = arg;
-        mHandler.removeCallbacks(this);
-        mHandler.postDelayed(this, mDelay);
+        if (mSkip >= 0) {
+            mSkip--;
+        }
+
+        if (mSkip < 0) {
+            mArg = arg;
+            mHandler.removeCallbacks(this);
+            mHandler.postDelayed(this, mDelay);
+        }
     }
 
     @Override
