@@ -57,10 +57,12 @@
 
     <string name="tooltip_search">Используйте символ \'<font color="red">*</font>\' для поиска во всех словах. Например:\nш* - искать все слова, начинающиеся с \'ш\'\n*ов - найти все слова, оканчивающиеся на \'ов\'</string>
     <string name="settings_show_tooltip">Показывать подсказки</string>
+    <string name="settings_show_screenshot">Разрешить скриншоты приложения</string>
     <string name="settings_color">Настройки цветов</string>
     <string name="settings_color_on_connect_network">Цвет заголовка приложения при наличии сети</string>
     <string name="settings_color_on_disconnect_network">Цвет заголовка приложения при отсутствии сети</string>
     <string name="display">Дисплей</string>
+    <string name="screenshot_help">Перезапустите приложение для применения настройки</string>
 
     <string name="settings_color_title">Выберите цвет</string>
     <string name="settings_color_button">Цвет по умолчанию</string>

@@ -15,6 +15,8 @@
 
     <item name="application_setting_show_tooltip" type="id" />
 
+    <item name="application_setting_screenshot_enabled" type="id" />
+
     <item name="application_setting_color" type="id" />
 
 </resources>
