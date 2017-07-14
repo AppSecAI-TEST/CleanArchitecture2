@@ -134,6 +134,11 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
     }
 
     @Override
+    public void refreshData() {
+        mSearchPresenter.refreshData();
+    }
+
+    @Override
     public void prepareToolbar() {
         AdminUtils.postEvent(new ToolbarSetTitleEvent(0, getString(R.string.app_name)));
         if (ViewUtils.getOrientation(getContext()) != Configuration.ORIENTATION_LANDSCAPE) {
