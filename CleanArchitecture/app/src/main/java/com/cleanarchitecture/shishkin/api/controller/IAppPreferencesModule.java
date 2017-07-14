@@ -101,4 +101,8 @@ public interface IAppPreferencesModule extends IModule {
     void setCleanCacheDay(String day);
 
     String getSettingColor(String key, String defaultColor);
+
+    boolean getScreenshotEnabled();
+
+    void setScreenshotEnabled(final boolean enabled);
 }

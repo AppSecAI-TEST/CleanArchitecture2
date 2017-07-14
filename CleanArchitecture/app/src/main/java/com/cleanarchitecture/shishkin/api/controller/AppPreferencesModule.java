@@ -6,7 +6,9 @@ import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.event.repository.RepositoryRequestGetApplicationSettingsEvent;
 import com.cleanarchitecture.shishkin.api.event.repository.RepositoryRequestSetApplicationSettingEvent;
 import com.cleanarchitecture.shishkin.api.event.repository.RepositoryResponseGetApplicationSettingsEvent;
+import com.cleanarchitecture.shishkin.api.event.ui.ShowDialogEvent;
 import com.cleanarchitecture.shishkin.api.repository.data.ApplicationSetting;
+import com.cleanarchitecture.shishkin.api.ui.dialog.MaterialDialogExt;
 import com.cleanarchitecture.shishkin.common.utils.AppPreferencesUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 
@@ -30,6 +32,7 @@ public class AppPreferencesModule implements IAppPreferencesModule, IModuleSubsc
     private static final String LAST_DAY_START = "last_day_start";
     public static final String COLOR_ON_NETWORK_CONNECTED = "color_on_network_connected";
     public static final String COLOR_ON_NETWORK_DISCONNECTED = "color_on_network_disconnected";
+    public static final String SCREENSHOT = "screenshot";
 
     private static volatile AppPreferencesModule sInstance;
 
@@ -95,6 +98,23 @@ public class AppPreferencesModule implements IAppPreferencesModule, IModuleSubsc
         final Context context = ApplicationController.getInstance().getApplicationContext();
         if (context != null) {
             AppPreferencesUtils.putInt(context, IMAGE_CACHE_VERSION, version);
+        }
+    }
+
+    @Override
+    public synchronized boolean getScreenshotEnabled() {
+        final Context context = ApplicationController.getInstance().getApplicationContext();
+        if (context != null) {
+            return AppPreferencesUtils.getBoolean(context, SCREENSHOT, true);
+        }
+        return true;
+    }
+
+    @Override
+    public synchronized void setScreenshotEnabled(final boolean enabled) {
+        final Context context = ApplicationController.getInstance().getApplicationContext();
+        if (context != null) {
+            AppPreferencesUtils.putBoolean(context, SCREENSHOT, enabled);
         }
     }
 
@@ -238,6 +258,13 @@ public class AppPreferencesModule implements IAppPreferencesModule, IModuleSubsc
                 .setId(R.id.application_setting_show_tooltip);
         list.add(setting);
 
+        currentValueBoolean = getScreenshotEnabled();
+        setting = new ApplicationSetting(ApplicationSetting.TYPE_SWITCH)
+                .setTitleId(R.string.settings_show_screenshot)
+                .setCurrentValue(String.valueOf(currentValueBoolean))
+                .setId(R.id.application_setting_screenshot_enabled);
+        list.add(setting);
+
         setting = new ApplicationSetting(ApplicationSetting.TYPE_TEXT)
                 .setTitleId(R.string.settings_color);
         list.add(setting);
@@ -272,10 +299,20 @@ public class AppPreferencesModule implements IAppPreferencesModule, IModuleSubsc
             return;
         }
 
+        boolean currentValue = true;
         switch (event.getApplicationSetting().getId()) {
             case R.id.application_setting_show_tooltip:
-                final boolean currentValue = Boolean.valueOf(event.getApplicationSetting().getCurrentValue());
+                currentValue = Boolean.valueOf(event.getApplicationSetting().getCurrentValue());
                 setSettingShowTooltip(currentValue);
+                break;
+
+            case R.id.application_setting_screenshot_enabled:
+                currentValue = Boolean.valueOf(event.getApplicationSetting().getCurrentValue());
+                setScreenshotEnabled(currentValue);
+                final Context context = AdminUtils.getContext();
+                if (context != null) {
+                    AdminUtils.postEvent(new ShowDialogEvent(-1, MaterialDialogExt.NO_TITLE, context.getString(R.string.screenshot_help)));
+                }
                 break;
 
             case R.id.application_setting_color:

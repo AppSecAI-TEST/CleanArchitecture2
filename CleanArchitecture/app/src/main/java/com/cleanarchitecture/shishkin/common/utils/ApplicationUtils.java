@@ -20,6 +20,10 @@ public class ApplicationUtils {
     public static final int REQUEST_PERMISSIONS = 10000;
     public static final int REQUEST_GOOGLE_PLAY_SERVICES = 10001;
 
+    public static boolean hasHoneycomb() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
+    }
+
     public static boolean hasJellyBean() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
     }
