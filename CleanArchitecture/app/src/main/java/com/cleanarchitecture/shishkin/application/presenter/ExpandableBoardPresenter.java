@@ -5,7 +5,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.presenter.AbstractPresenter;
+import com.cleanarchitecture.shishkin.application.event.expandableboard.OnExpandableBoardClick;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
@@ -43,6 +45,7 @@ public class ExpandableBoardPresenter extends AbstractPresenter {
                     break;
 
                 case R.id.board:
+                    AdminUtils.postEvent(new OnExpandableBoardClick());
                     mBoardLayout.collapse();
                     break;
             }
