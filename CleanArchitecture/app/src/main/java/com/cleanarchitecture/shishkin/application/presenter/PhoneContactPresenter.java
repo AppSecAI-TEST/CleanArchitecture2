@@ -87,6 +87,8 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
 
     public void bindView(@NonNull final View root) {
 
+        final Bundle bundle = AdminUtils.getStateData(NAME);
+
         final RecyclerView recyclerView = ViewUtils.findView(root, R.id.list);
         if (recyclerView != null) {
             final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(AdminUtils.getActivity());
@@ -107,9 +109,9 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
 
         final EditText searchView = ViewUtils.findView(root, R.id.search);
         if (searchView != null) {
-            final Bundle bundle = AdminUtils.getStateData(NAME);
             if (bundle != null) {
                 mCurrentFilter = bundle.getString(CURRENT_FILTER);
+                mContactAdapter.clear();
             }
 
             mEditTextDebouncedObserver = new EditTextDebouncedObserver(searchView, 700, R.id

@@ -123,11 +123,6 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
     }
 
     @Override
-    public void refreshData() {
-        mSearchPresenter.refreshData();
-    }
-
-    @Override
     public boolean onBackPressed() {
         setLostStateData(true);
 
@@ -136,6 +131,11 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
             mOnBackPressedPresenter.onClick();
         }
         return true;
+    }
+
+    @Override
+    public void refreshData() {
+        mSearchPresenter.refreshData();
     }
 
     @Override
