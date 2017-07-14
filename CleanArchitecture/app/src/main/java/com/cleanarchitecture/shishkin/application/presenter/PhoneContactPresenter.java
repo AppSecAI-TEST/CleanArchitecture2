@@ -97,10 +97,6 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
             mContactAdapter = new PhoneContactRecyclerViewAdapter(root.getContext());
             recyclerView.setAdapter(mContactAdapter);
 
-            final ItemTouchHelper.Callback callback = new SwipeTouchHelper(mContactAdapter);
-            final ItemTouchHelper helper = new ItemTouchHelper(callback);
-            helper.attachToRecyclerView(recyclerView);
-
             final SwipeRefreshLayout swipeRefreshLayout = ViewUtils.findView(root, R.id.swipeRefreshLayout);
             recyclerView.addOnScrollListener(new OnScrollListener(recyclerView, swipeRefreshLayout));
 
