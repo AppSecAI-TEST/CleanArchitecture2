@@ -5,6 +5,7 @@ import com.cleanarchitecture.shishkin.common.collection.GenericCollection;
 import com.cleanarchitecture.shishkin.common.collection.GenericMap;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.Serializable;
 import java.util.List;
 
 public interface ITransformDataModule extends IModule {
@@ -18,5 +19,9 @@ public interface ITransformDataModule extends IModule {
     <T, Collection, Value> T fromJsonCollection(Object jsonObject, GenericCollection<Collection, Value> genericCollection);
 
     <T, Map, Key, Value> T fromJsonMap(Object jsonObject, GenericMap<Map, Key, Value> genericMap);
+
+    <T> Serializable toJson(final T obj);
+
+    <T> Serializable toJson(final T obj, final TypeToken<T> typeToken);
 
 }
