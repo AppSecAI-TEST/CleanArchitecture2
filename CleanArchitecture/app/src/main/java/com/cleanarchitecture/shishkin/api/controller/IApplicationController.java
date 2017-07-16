@@ -29,6 +29,13 @@ public interface IApplicationController extends IModule {
     String getExternalApplicationPath();
 
     /**
+     * Получить путь хранения данных и журналов
+     *
+     * @return путь хранения данных и журналов
+     */
+    String getDataApplicationPath();
+
+    /**
      * Получить Permisions приложения
      *
      * @return the string [ ]

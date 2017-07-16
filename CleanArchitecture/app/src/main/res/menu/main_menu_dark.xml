@@ -2,21 +2,25 @@
     <item
         android:id="@+id/setting"
         android:icon="@mipmap/ic_settings_white"
-        android:orderInCategory="90"
+        android:orderInCategory="100"
         android:title="@string/setting" />
     <item
         android:id="@+id/desktop"
         android:icon="@mipmap/ic_brush_white_48dp"
-        android:orderInCategory="100"
+        android:orderInCategory="200"
         android:title="@string/desktop" />
     <item
         android:id="@+id/desktop_order"
         android:icon="@mipmap/ic_format_list_checks_white_48dp"
-        android:orderInCategory="105"
+        android:orderInCategory="300"
         android:title="@string/settings_order_title" />
+    <item
+        android:id="@+id/log_view"
+        android:orderInCategory="350"
+        android:title="@string/log_view" />
     <item
         android:id="@+id/exit"
         android:icon="@mipmap/ic_home"
-        android:orderInCategory="110"
+        android:orderInCategory="400"
         android:title="@string/exit" />
 </menu>

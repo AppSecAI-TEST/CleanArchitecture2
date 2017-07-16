@@ -1,8 +1,5 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
-import android.Manifest;
-import android.os.Environment;
-
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowErrorMessageEvent;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
@@ -40,32 +37,22 @@ public class ErrorController implements IErrorController {
     }
 
     private ErrorController() {
-        boolean isGrant = true;
-        if (!AdminUtils.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            isGrant = false;
-        }
-
-        if (isGrant) {
-            try {
-                Log.setEnabled(true);
-                Log.setLog2FileEnabled(true);
-                final String path = Environment.getExternalStorageDirectory().getAbsolutePath() +
-                        File.separator + BuildConfig.APPLICATION_ID;
-                final File file = new File(path + File.separator);
-                if (!file.exists()) {
-                    file.mkdirs();
-                }
-                if (file.exists()) {
-                    Log.setFilePathGenerator(new FilePathGenerator.DefaultFilePathGenerator(path,
-                            StringUtils.replace(BuildConfig.APPLICATION_ID, ".", "_"), ".log"));
-                    checkLogSize();
-                } else {
-                    Log.setEnabled(false);
-                }
-            } catch (Exception e) {
+        try {
+            Log.setEnabled(true);
+            Log.setLog2FileEnabled(true);
+            final String path = ApplicationController.getInstance().getDataApplicationPath();
+            final File file = new File(path);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            if (file.exists()) {
+                Log.setFilePathGenerator(new FilePathGenerator.DefaultFilePathGenerator(path,
+                        StringUtils.replace(BuildConfig.APPLICATION_ID, ".", "_"), ".log"));
+                checkLogSize();
+            } else {
                 Log.setEnabled(false);
             }
-        } else {
+        } catch (Exception e) {
             Log.setEnabled(false);
         }
     }
@@ -141,6 +128,19 @@ public class ErrorController implements IErrorController {
             AdminUtils.postEvent(new ShowErrorMessageEvent(errorCode));
         } else {
             Log.e(source, AdminUtils.getErrorText(errorCode));
+        }
+    }
+
+    @Override
+    public synchronized String getPath() {
+        return Log.getPath();
+    }
+
+    @Override
+    public synchronized void clearLog() {
+        final File log = new File(getPath());
+        if (log.exists()) {
+            log.delete();
         }
     }
 

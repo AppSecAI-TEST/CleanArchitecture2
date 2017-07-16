@@ -1,5 +1,6 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
@@ -28,11 +29,13 @@ import com.cleanarchitecture.shishkin.api.ui.activity.AbstractActivity;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractContentActivity;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
+import com.cleanarchitecture.shishkin.common.utils.IntentUtils;
 import com.cleanarchitecture.shishkin.common.utils.SafeUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.common.io.Files;
 
 import java.io.File;
 import java.util.List;
@@ -583,6 +586,51 @@ public class AdminUtils {
             return controller.validate(subscriber, object);
         }
         return false;
+    }
+
+    public static void viewLog() {
+        final Context context = getActivity();
+        if (context == null) {
+            return;
+        }
+
+        if (checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            try {
+                final File log = new File(ErrorController.getInstance().getPath());
+                final String file = log.getName();
+                final String externalPath = ApplicationController.getInstance().getExternalApplicationPath() + File.separator + file;
+                final File external = new File(externalPath);
+
+                if (external.exists()) {
+                    external.delete();
+                }
+                Files.copy(log, external);
+
+                final Intent intent = IntentUtils.getViewDocumentIntent(getContext(), external);
+                startChooser(intent, context.getString(R.string.log_view_title));
+            } catch (Exception e) {
+                ErrorController.getInstance().onError(LOG_TAG, e);
+            }
+        } else {
+            grantPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, context.getString(R.string.permission_write_external_storage));
+        }
+    }
+
+    public static void startChooser(final Intent intent, final String title) {
+        if (intent == null) {
+            return;
+        }
+
+        final Context context = getActivity();
+        if (context == null) {
+            return;
+        }
+
+        try {
+            context.startActivity(Intent.createChooser(intent, title));
+        } catch (Exception e) {
+            ErrorController.getInstance().onError(LOG_TAG, e);
+        }
     }
 
 

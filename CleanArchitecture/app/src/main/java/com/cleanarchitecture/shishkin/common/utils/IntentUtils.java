@@ -177,10 +177,10 @@ public class IntentUtils {
     }
 
     public static Intent sendEmailIntent(
-                                 @NonNull String[] recipients,
-                                 @NonNull String subject,
-                                 @NonNull String body,
-                                 @Nullable String path) {
+            @NonNull String[] recipients,
+            @NonNull String subject,
+            @NonNull String body,
+            @Nullable String path) {
 
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("message/rfc822");

@@ -67,4 +67,6 @@
     <string name="settings_color_title">Выберите цвет</string>
     <string name="settings_color_button">Цвет по умолчанию</string>
 
+    <string name="log_view">Просмотреть лог приложения</string>
+    <string name="log_view_title">Выберите программу для просмотра файла</string>
 </resources>

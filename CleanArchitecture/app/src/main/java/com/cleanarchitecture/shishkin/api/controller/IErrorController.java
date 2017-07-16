@@ -6,6 +6,18 @@ package com.cleanarchitecture.shishkin.api.controller;
 public interface IErrorController extends IModule {
 
     /**
+     * Получить путь к логу приложения
+     *
+     * @return путь к логу приложения
+     */
+    public String getPath();
+
+    /**
+     * Удалить файл лога
+     */
+    void clearLog();
+
+    /**
      * Ошибка
      *
      * @param source источник ошибки
