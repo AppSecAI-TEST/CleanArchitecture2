@@ -39,6 +39,7 @@ public class TransformDataModule extends AbstractModule implements ITransformDat
         return jsonString;
     }
 
+    @Override
     public synchronized <T> T fromJson(Object jsonObject, Class<T> clazz) {
         if (jsonObject == null && clazz == null) {
             return null;
@@ -53,6 +54,7 @@ public class TransformDataModule extends AbstractModule implements ITransformDat
         return null;
     }
 
+    @Override
     public synchronized <T> T fromJson(Object jsonObject, TypeToken<T> typeToken) {
         if (jsonObject == null && typeToken == null) {
             return null;
@@ -67,6 +69,7 @@ public class TransformDataModule extends AbstractModule implements ITransformDat
         return null;
     }
 
+    @Override
     public synchronized <T, Collection, Value> T fromJsonCollection(Object jsonObject, GenericCollection<Collection, Value> genericCollection) {
         if (jsonObject == null && genericCollection == null) {
             return null;
@@ -81,6 +84,7 @@ public class TransformDataModule extends AbstractModule implements ITransformDat
         return null;
     }
 
+    @Override
     public synchronized <T, Map, Key, Value> T fromJsonMap(Object jsonObject, GenericMap<Map, Key, Value> genericMap) {
         if (jsonObject == null || genericMap == null) {
             return null;
@@ -95,6 +99,7 @@ public class TransformDataModule extends AbstractModule implements ITransformDat
         return null;
     }
 
+    @Override
     public synchronized <T> Serializable toJson(final T obj) {
         try {
             return mGson.toJson(obj);
@@ -104,6 +109,7 @@ public class TransformDataModule extends AbstractModule implements ITransformDat
         return null;
     }
 
+    @Override
     public synchronized <T> Serializable toJson(final T obj, final TypeToken<T> typeToken) {
         if (obj == null || typeToken == null) {
             return null;
