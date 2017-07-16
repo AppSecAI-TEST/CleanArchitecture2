@@ -62,6 +62,11 @@ public class ApplicationController extends MultiDexApplication implements IAppli
     }
 
     @Override
+    public String getDataApplicationPath() {
+        return getFilesDir().getAbsolutePath() + File.separator;
+    }
+
+    @Override
     public String getExternalApplicationPath() {
         return EXTERNAL_STORAGE_APPLICATION_PATH;
     }
@@ -88,7 +93,6 @@ public class ApplicationController extends MultiDexApplication implements IAppli
 
     @Override
     public void onUnRegister() {
-
     }
 
     @Override

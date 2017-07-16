@@ -225,6 +225,8 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
             if (controller != null) {
                 controller.setDesktopOrder(this);
             }
+        } else if (item.getItemId() == R.id.log_view) {
+            AdminUtils.viewLog();
         }
     }
 
