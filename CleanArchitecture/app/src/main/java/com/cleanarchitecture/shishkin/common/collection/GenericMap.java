@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.common.collections;
+package com.cleanarchitecture.shishkin.common.collection;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

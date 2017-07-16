@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.ChoiceMode;
-import com.cleanarchitecture.shishkin.common.collections.LongArrayList;
+import com.cleanarchitecture.shishkin.common.collection.LongArrayList;
 
 /**
  * {@link ChoiceMode} that allows any number of items to be chosen

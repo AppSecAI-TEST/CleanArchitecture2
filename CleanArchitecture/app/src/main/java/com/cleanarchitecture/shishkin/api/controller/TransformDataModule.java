@@ -2,12 +2,13 @@ package com.cleanarchitecture.shishkin.api.controller;
 
 import com.annimon.stream.Stream;
 import com.annimon.stream.function.Predicate;
-import com.cleanarchitecture.shishkin.common.collections.GenericCollection;
-import com.cleanarchitecture.shishkin.common.collections.GenericMap;
+import com.cleanarchitecture.shishkin.common.collection.GenericCollection;
+import com.cleanarchitecture.shishkin.common.collection.GenericMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class TransformDataModule extends AbstractModule implements ITransformDataModule {
@@ -38,66 +39,83 @@ public class TransformDataModule extends AbstractModule implements ITransformDat
         return jsonString;
     }
 
-    public synchronized <T> T parse(Object jsonObject, Class<T> clazz) {
+    public synchronized <T> T fromJson(Object jsonObject, Class<T> clazz) {
         if (jsonObject == null && clazz == null) {
             return null;
         }
 
-        T object = null;
         try {
-            String jsonString = getJsonString(jsonObject, mGson);
-            object = mGson.fromJson(jsonString, clazz);
+            final String jsonString = getJsonString(jsonObject, mGson);
+            return mGson.fromJson(jsonString, clazz);
         } catch (Exception e) {
             ErrorController.getInstance().onError(LOG_TAG, e);
         }
-        return object;
+        return null;
     }
 
-    public synchronized <T> T parse(Object jsonObject, TypeToken<T> typeToken) {
+    public synchronized <T> T fromJson(Object jsonObject, TypeToken<T> typeToken) {
         if (jsonObject == null && typeToken == null) {
             return null;
         }
 
-        T object = null;
         try {
-            String jsonString = getJsonString(jsonObject, mGson);
-            object = mGson.fromJson(jsonString, typeToken.getType());
+            final String jsonString = getJsonString(jsonObject, mGson);
+            return mGson.fromJson(jsonString, typeToken.getType());
         } catch (Exception e) {
             ErrorController.getInstance().onError(LOG_TAG, e);
         }
-        return object;
+        return null;
     }
 
-    public synchronized <T, Collection, Value> T parseCollection(Object jsonObject, GenericCollection<Collection, Value> genericCollection) {
+    public synchronized <T, Collection, Value> T fromJsonCollection(Object jsonObject, GenericCollection<Collection, Value> genericCollection) {
         if (jsonObject == null && genericCollection == null) {
             return null;
         }
 
-        T object = null;
         try {
-            String jsonString = getJsonString(jsonObject, mGson);
-            object = mGson.fromJson(jsonString, genericCollection);
+            final String jsonString = getJsonString(jsonObject, mGson);
+            return mGson.fromJson(jsonString, genericCollection);
         } catch (Exception e) {
             ErrorController.getInstance().onError(LOG_TAG, e);
         }
-        return object;
+        return null;
     }
 
-    public synchronized <T, Map, Key, Value> T parseMap(Object jsonObject, GenericMap<Map, Key, Value> genericMap) {
+    public synchronized <T, Map, Key, Value> T fromJsonMap(Object jsonObject, GenericMap<Map, Key, Value> genericMap) {
         if (jsonObject == null || genericMap == null) {
             return null;
         }
 
-        T object = null;
         try {
             String jsonString = getJsonString(jsonObject, mGson);
-            object = mGson.fromJson(jsonString, genericMap);
+            return mGson.fromJson(jsonString, genericMap);
         } catch (Exception e) {
             ErrorController.getInstance().onError(LOG_TAG, e);
         }
-        return object;
+        return null;
     }
 
+    public synchronized <T> Serializable toJson(final T obj) {
+        try {
+            return mGson.toJson(obj);
+        } catch (Exception e) {
+            ErrorController.getInstance().onError(LOG_TAG, e);
+        }
+        return null;
+    }
+
+    public synchronized <T> Serializable toJson(final T obj, final TypeToken<T> typeToken) {
+        if (obj == null || typeToken == null) {
+            return null;
+        }
+        //use example : type = new com.google.gson.reflect.TypeToken<List<ContactItem>>(){}.getType()
+        try {
+            return mGson.toJson(obj, typeToken.getType());
+        } catch (Exception e) {
+            ErrorController.getInstance().onError(LOG_TAG, e);
+        }
+        return null;
+    }
 
     @Override
     public String getName() {
