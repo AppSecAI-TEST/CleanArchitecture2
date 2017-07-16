@@ -16,6 +16,7 @@
         android:title="@string/settings_order_title" />
     <item
         android:id="@+id/log_view"
+        android:icon="@mipmap/ic_content_paste"
         android:orderInCategory="350"
         android:title="@string/log_view" />
     <item
