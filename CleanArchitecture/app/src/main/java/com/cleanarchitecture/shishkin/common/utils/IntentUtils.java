@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.webkit.MimeTypeMap;
+
+import java.io.File;
 
 /**
  * {@code IntentUtils} contains static methods which operate with {@code Intent}.
@@ -127,6 +130,29 @@ public class IntentUtils {
         return intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 
+    public static Intent getViewImageIntent(String path) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.parse("file://" + path), "image/*");
+        return intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    }
+
+    public static Intent getViewDocumentIntent(@NonNull Context context, @NonNull File file) {
+        MimeTypeMap map = MimeTypeMap.getSingleton();
+        String ext = MimeTypeMap.getFileExtensionFromUrl(file.getName());
+        String type = map.getMimeTypeFromExtension(ext);
+
+        if (type == null) {
+            type = "*/*";
+        }
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri data = Uri.fromFile(file);
+        intent.setDataAndType(data, type);
+        return intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    }
+
+
     public static Intent getComponentIntent(String packageName, String className) {
         return getComponentIntent(packageName, className, null);
     }
@@ -148,6 +174,23 @@ public class IntentUtils {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, outUri);
         return intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_NEW_TASK);
+    }
+
+    public static Intent sendEmailIntent(
+                                 @NonNull String[] recipients,
+                                 @NonNull String subject,
+                                 @NonNull String body,
+                                 @Nullable String path) {
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("message/rfc822");
+        intent.putExtra(Intent.EXTRA_EMAIL, recipients);
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        intent.putExtra(Intent.EXTRA_TEXT, body);
+        if (path != null) {
+            intent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + path));
+        }
+        return intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 
     private IntentUtils() {
