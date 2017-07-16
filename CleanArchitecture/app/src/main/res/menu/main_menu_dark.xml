@@ -17,6 +17,7 @@
     <item
         android:id="@+id/log_view"
         android:orderInCategory="350"
+        android:icon="@mipmap/ic_content_paste_white"
         android:title="@string/log_view" />
     <item
         android:id="@+id/exit"
