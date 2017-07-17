@@ -1,6 +1,9 @@
 package com.cleanarchitecture.shishkin.common.utils;
 
+import android.content.ContentUris;
+import android.content.Context;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
@@ -13,6 +16,12 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.media.ExifInterface;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
@@ -283,6 +292,93 @@ public class ImageUtils {
     public static Bitmap getBitmapFromString(final String jsonString) {
         final byte[] decodedString = Base64.decode(jsonString, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+    }
+
+    public static String getPath(final Context context, final Uri fileUri) {
+        if (context == null || fileUri == null) {
+            return null;
+        }
+
+        // DocumentProvider
+        if (ApplicationUtils.hasKitKat() && DocumentsContract.isDocumentUri(context, fileUri)) {
+            // ExternalStorageProvider
+            if (isExternalStorageDocument(fileUri)) {
+                final String docId = DocumentsContract.getDocumentId(fileUri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+
+                if ("primary".equalsIgnoreCase(type)) {
+                    return Environment.getExternalStorageDirectory() + "/" + split[1];
+                }
+            }
+            // DownloadsProvider
+            else if (isDownloadsDocument(fileUri)) {
+                final String id = DocumentsContract.getDocumentId(fileUri);
+                final Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+
+                return getDataColumn(context, contentUri, null, null);
+            }
+            // MediaProvider
+            else if (isMediaDocument(fileUri)) {
+                final String docId = DocumentsContract.getDocumentId(fileUri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+
+                Uri contentUri = null;
+                if ("image".equals(type)) {
+                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                } else if ("video".equals(type)) {
+                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                } else if ("audio".equals(type)) {
+                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                }
+
+                final String selection = "_id=?";
+                final String[] selectionArgs = new String[] { split[1] };
+
+                return getDataColumn(context, contentUri, selection, selectionArgs);
+            }
+        }
+        // MediaStore (and general)
+        else if ("content".equalsIgnoreCase(fileUri.getScheme())) {
+            return getDataColumn(context, fileUri, null, null);
+        }
+        // File
+        else if ("file".equalsIgnoreCase(fileUri.getScheme())) {
+            return fileUri.getPath();
+        }
+        return null;
+    }
+
+    private static boolean isExternalStorageDocument(@NonNull Uri uri) {
+        return "com.android.externalstorage.documents".equals(uri.getAuthority());
+    }
+
+    private static boolean isDownloadsDocument(@NonNull Uri uri) {
+        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
+    }
+
+    private static boolean isMediaDocument(@NonNull Uri uri) {
+        return "com.android.providers.media.documents".equals(uri.getAuthority());
+    }
+
+    private static String getDataColumn(@NonNull Context context, @NonNull Uri uri, @NonNull String selection, @NonNull String[] selectionArgs) {
+        Cursor cursor = null;
+        final String column = "_data";
+        final String[] projection = { column };
+
+        try {
+            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                final int column_index = cursor.getColumnIndexOrThrow(column);
+                return cursor.getString(column_index);
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return null;
     }
 
 }
