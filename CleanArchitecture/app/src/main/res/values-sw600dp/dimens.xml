@@ -21,5 +21,8 @@
     <dimen name="toolbar_title_margin">112dp</dimen>
     <dimen name="setting_min_high">56dp</dimen>
 
+    <dimen name="color_picker_top">128dp</dimen>
+    <dimen name="color_picker_bar">32dp</dimen>
+
 
 </resources>
