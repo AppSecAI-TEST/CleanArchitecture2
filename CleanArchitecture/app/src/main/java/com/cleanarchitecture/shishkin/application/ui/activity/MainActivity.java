@@ -28,7 +28,7 @@ public class MainActivity extends AbstractContentActivity {
 
         AdminUtils.postEvent(new UseCaseStartApplicationEvent());
 
-        ViewUtils.setStatusBarColor(this, R.color.blue);
+        //ViewUtils.setStatusBarColor(this, R.color.blue);
 
         setContentView(R.layout.activity_main);
 

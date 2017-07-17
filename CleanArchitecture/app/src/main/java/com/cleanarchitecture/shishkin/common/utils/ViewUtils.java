@@ -153,7 +153,7 @@ public class ViewUtils {
         return (Configuration.ORIENTATION_PORTRAIT == getOrientation(context));
     }
 
-    public static void setStatusBarColor(Activity activity, int color_res) {
+    public static void setStatusBarColor(Activity activity, int color) {
         if (ApplicationUtils.hasLollipop()) {
             final Window window = activity.getWindow();
 
@@ -164,7 +164,7 @@ public class ViewUtils {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
             // finally change the color
-            window.setStatusBarColor(ViewUtils.getColor(activity, color_res));
+            window.setStatusBarColor(color);
         }
     }
 
