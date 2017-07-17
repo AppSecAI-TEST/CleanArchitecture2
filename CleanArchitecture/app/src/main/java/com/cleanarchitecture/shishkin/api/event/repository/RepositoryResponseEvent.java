@@ -1,6 +1,7 @@
 package com.cleanarchitecture.shishkin.api.event.repository;
 
 import com.cleanarchitecture.shishkin.api.event.AbstractEvent;
+import com.cleanarchitecture.shishkin.api.repository.data.Result;
 
 public class RepositoryResponseEvent<T> extends AbstractEvent {
 
@@ -16,6 +17,15 @@ public class RepositoryResponseEvent<T> extends AbstractEvent {
 
     public RepositoryResponseEvent setResponse(T response) {
         this.mResponse = response;
+        return this;
+    }
+
+    public RepositoryResponseEvent setResponse(Result<T> result) {
+        mResponse = result.getResult();
+
+        if (result.hasError()) {
+            setError(result.getError());
+        }
         return this;
     }
 

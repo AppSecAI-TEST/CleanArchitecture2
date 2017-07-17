@@ -1,52 +1,30 @@
 package com.cleanarchitecture.shishkin.api.event;
 
-import com.cleanarchitecture.shishkin.api.controller.ErrorController;
-import com.cleanarchitecture.shishkin.common.utils.StringUtils;
+import com.cleanarchitecture.shishkin.api.repository.data.ExtError;
 
 public abstract class AbstractEvent implements IEvent {
 
-    private String mErrorText = null;
-    private int mErrorCode = 0;
     private int mId = -1;
+    private ExtError mError;
     private String mSender = null;
 
     @Override
-    public String getErrorText() {
-        return mErrorText;
+    public ExtError getError() {
+        return mError;
     }
 
     @Override
-    public IEvent setErrorText(final String sender, final String error) {
-        mSender = sender;
-        mErrorText = error;
-        ErrorController.getInstance().onError(sender, error, true);
-        return this;
-    }
-
-    @Override
-    public IEvent setErrorText(final String sender, final Exception e, final String error) {
-        mSender = sender;
-        mErrorText = error;
-        ErrorController.getInstance().onError(sender, e, error);
-        return this;
-    }
-
-    @Override
-    public int getErrorCode() {
-        return mErrorCode;
-    }
-
-    @Override
-    public IEvent setErrorCode(final String sender, final int code) {
-        mSender = sender;
-        mErrorCode = code;
-        ErrorController.getInstance().onError(sender, code, true);
+    public IEvent setError(final ExtError error) {
+        this.mError = error;
         return this;
     }
 
     @Override
     public boolean hasError() {
-        return !(StringUtils.isNullOrEmpty(mErrorText) && mErrorCode == 0);
+        if (mError == null) {
+            return false;
+        }
+        return mError.hasError();
     }
 
     @Override

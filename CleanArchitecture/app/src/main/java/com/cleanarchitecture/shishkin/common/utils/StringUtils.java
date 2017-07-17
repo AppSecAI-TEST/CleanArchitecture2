@@ -1,14 +1,11 @@
 package com.cleanarchitecture.shishkin.common.utils;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.util.Base64;
 import android.util.SparseArray;
 
 import com.google.common.base.Charsets;
 
-import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.util.ArrayList;
@@ -938,7 +935,7 @@ public class StringUtils {
 
         final StringBuilder textCapitalize = new StringBuilder();
         final int cnt = numToken(text, " ");
-        for (int i = 1; i <= cnt; i++){
+        for (int i = 1; i <= cnt; i++) {
             textCapitalize.append(getFirstCapitalize(token(text, " ", i)));
             if (i < cnt) {
                 textCapitalize.append(" ");

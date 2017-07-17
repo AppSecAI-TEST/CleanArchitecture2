@@ -103,31 +103,37 @@ public class ErrorController implements IErrorController {
     public synchronized void onError(final String source, final Exception e, final String displayMessage) {
         onError(source, e);
 
-        AdminUtils.postEvent(new ShowErrorMessageEvent(displayMessage));
+        if (!StringUtils.isNullOrEmpty(displayMessage)) {
+            AdminUtils.postEvent(new ShowErrorMessageEvent(displayMessage));
+        }
     }
 
     @Override
     public synchronized void onError(final String source, final Exception e, final int errorCode) {
         onError(source, e);
 
-        AdminUtils.postEvent(new ShowErrorMessageEvent(errorCode));
+        if (errorCode != 0) {
+            AdminUtils.postEvent(new ShowErrorMessageEvent(errorCode));
+        }
     }
 
     @Override
     public synchronized void onError(final String source, final String message, final boolean isDisplay) {
-        if (isDisplay) {
-            AdminUtils.postEvent(new ShowErrorMessageEvent(message));
-        } else {
+        if (StringUtils.isNullOrEmpty(message)) {
             Log.e(source, message);
+            if (isDisplay) {
+                AdminUtils.postEvent(new ShowErrorMessageEvent(message));
+            }
         }
     }
 
     @Override
     public synchronized void onError(final String source, final int errorCode, final boolean isDisplay) {
-        if (isDisplay) {
-            AdminUtils.postEvent(new ShowErrorMessageEvent(errorCode));
-        } else {
+        if (errorCode != 0) {
             Log.e(source, AdminUtils.getErrorText(errorCode));
+            if (isDisplay) {
+                AdminUtils.postEvent(new ShowErrorMessageEvent(errorCode));
+            }
         }
     }
 
