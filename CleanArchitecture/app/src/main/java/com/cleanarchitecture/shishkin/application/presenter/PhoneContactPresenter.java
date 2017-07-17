@@ -23,10 +23,7 @@ import com.cleanarchitecture.shishkin.api.debounce.Debounce;
 import com.cleanarchitecture.shishkin.api.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.EditTextAfterTextChangedEvent;
-import com.cleanarchitecture.shishkin.api.event.ui.HideCircleProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.HideKeyboardEvent;
-import com.cleanarchitecture.shishkin.api.event.ui.ShowCircleProgressBarEvent;
-import com.cleanarchitecture.shishkin.api.event.ui.ShowKeyboardEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowListDialogEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowToastEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowTooltipEvent;
@@ -117,22 +114,6 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
 
         if (mDbProvider != null) {
             mDbProvider.observe(AdminUtils.getActivity(), PhoneContactViewModel.NAME, PhoneContactViewModel.class, this);
-        }
-
-        for (int i = 0; i <= 11; i++) {
-            if (i < 11) {
-                final int ii = i;
-                root.postDelayed(() -> AdminUtils.postEvent(new ShowCircleProgressBarEvent(ii * 10)), 100 * i);
-            } else {
-                root.postDelayed(() -> AdminUtils.postEvent(new HideCircleProgressBarEvent()), 100 * i);
-                root.postDelayed(() -> {
-                    if (validate()) {
-                        mSearchView.get().requestFocus();
-                        mSearchView.get().requestFocusFromTouch();
-                        AdminUtils.postEvent(new ShowKeyboardEvent());
-                    }
-                }, 100 * i);
-            }
         }
     }
 

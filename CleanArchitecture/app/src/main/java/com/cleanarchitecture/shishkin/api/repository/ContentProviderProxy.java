@@ -26,14 +26,17 @@ public class ContentProviderProxy extends AbstractModule implements IModuleSubsc
                     .setResponse(list)
                     .setFrom(Repository.FROM_CACHE));
         } else {
-            final RepositoryResponseGetContactsEvent responseEvent = (RepositoryResponseGetContactsEvent) AdminUtils.getContentProvider().getContacts();
-            responseEvent.setFrom(Repository.FROM_CONTENT_PROVIDER);
+            final IContentProvider contentProvider = AdminUtils.getContentProvider();
+            if (contentProvider != null) {
+                final RepositoryResponseGetContactsEvent responseEvent = (RepositoryResponseGetContactsEvent) contentProvider.getContacts();
+                responseEvent.setFrom(Repository.FROM_CONTENT_PROVIDER);
 
-            if (!responseEvent.hasError()) {
-                CacheUtils.put(String.valueOf(event.getId()), event.getCacheType(), responseEvent.getResponse(), event.getExpired());
+                if (!responseEvent.hasError()) {
+                    CacheUtils.put(String.valueOf(event.getId()), event.getCacheType(), responseEvent.getResponse(), event.getExpired());
+                }
+
+                AdminUtils.postEvent(responseEvent);
             }
-
-            AdminUtils.postEvent(responseEvent);
         }
     }
 
