@@ -2,6 +2,7 @@ package com.cleanarchitecture.shishkin.common.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
 import android.util.Base64;
 import android.util.SparseArray;
 
@@ -14,11 +15,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 public class StringUtils {
     public static final String SPACE = " ";
     public static final String EMPTY = "";
     public static final String COMMA = ",";
+    private static final String EMAIL_PATTERN = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+    private static Pattern pattern;
 
     private StringUtils() {
     }
@@ -898,26 +902,49 @@ public class StringUtils {
         return false;
     }
 
-    /*
-    * This functions converts Bitmap picture to a string which can be
-    * JSONified.
-    */
-    public static String toStringFromBitmap(final Bitmap bitmapPicture) {
-        final int COMPRESSION_QUALITY = 100;
-        String encodedImage = null;
-        ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
-        bitmapPicture.compress(Bitmap.CompressFormat.PNG, COMPRESSION_QUALITY,
-                byteArrayBitmapStream);
-        final byte[] b = byteArrayBitmapStream.toByteArray();
-        return Base64.encodeToString(b, Base64.DEFAULT);
+    /**
+     * Validate hex with regular expression
+     *
+     * @param email hex for validation
+     * @return true valid hex, false invalid hex
+     */
+    public static boolean isEmailValid(@NonNull final String email) {
+        if (isNullOrEmpty(email)) {
+            return false;
+        }
+
+        boolean isValid = false;
+        if (pattern == null) {
+            pattern = Pattern.compile(EMAIL_PATTERN);
+        }
+        isValid = pattern.matcher(email).matches();
+        return isValid;
     }
 
-    /*
-    * This Function converts the String back to Bitmap
-    * */
-    public static Bitmap toBitmapFromString(final String jsonString) {
-        final byte[] decodedString = Base64.decode(jsonString, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+    public static String getFirstCapitalize(@NonNull String text) {
+        if (isNullOrEmpty(text)) {
+            return null;
+        }
+
+        final StringBuilder textCapitalize = new StringBuilder();
+        textCapitalize.append(text.substring(0, 1).toUpperCase()).append(text.substring(1, text.length()));
+        return textCapitalize.toString();
+    }
+
+    public static String getAllFirstCapitalize(@NonNull String text) {
+        if (isNullOrEmpty(text)) {
+            return null;
+        }
+
+        final StringBuilder textCapitalize = new StringBuilder();
+        final int cnt = numToken(text, " ");
+        for (int i = 1; i <= cnt; i++){
+            textCapitalize.append(getFirstCapitalize(token(text, " ", i)));
+            if (i < cnt) {
+                textCapitalize.append(" ");
+            }
+        }
+        return textCapitalize.toString();
     }
 
 }

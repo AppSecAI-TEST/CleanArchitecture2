@@ -122,16 +122,16 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
         for (int i = 0; i <= 11; i++) {
             if (i < 11) {
                 final int ii = i;
-                root.postDelayed(() -> AdminUtils.postEvent(new ShowCircleProgressBarEvent(ii * 10)), 200 * i);
+                root.postDelayed(() -> AdminUtils.postEvent(new ShowCircleProgressBarEvent(ii * 10)), 100 * i);
             } else {
-                root.postDelayed(() -> AdminUtils.postEvent(new HideCircleProgressBarEvent()), 200 * i);
+                root.postDelayed(() -> AdminUtils.postEvent(new HideCircleProgressBarEvent()), 100 * i);
                 root.postDelayed(() -> {
                     if (validate()) {
                         mSearchView.get().requestFocus();
                         mSearchView.get().requestFocusFromTouch();
                         AdminUtils.postEvent(new ShowKeyboardEvent());
                     }
-                }, 200 * i);
+                }, 100 * i);
             }
         }
     }

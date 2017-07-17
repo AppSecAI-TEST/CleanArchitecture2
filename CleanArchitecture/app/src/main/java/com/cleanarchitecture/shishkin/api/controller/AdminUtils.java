@@ -617,7 +617,7 @@ public class AdminUtils {
     }
 
     public static void startChooser(final Intent intent, final String title) {
-        if (intent == null) {
+        if (intent == null || StringUtils.isNullOrEmpty(title)) {
             return;
         }
 

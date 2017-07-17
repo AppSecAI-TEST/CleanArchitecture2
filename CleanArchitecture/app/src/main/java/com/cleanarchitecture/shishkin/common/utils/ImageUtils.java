@@ -245,6 +245,22 @@ public class ImageUtils {
         return encodedImage;
     }
 
+    public static String getImageEncodedInBase64(final Bitmap bitmapPicture) {
+        final int COMPRESSION_QUALITY = 100;
+        String encodedImage = null;
+        final ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
+        try {
+            bitmapPicture.compress(Bitmap.CompressFormat.PNG, COMPRESSION_QUALITY,
+                    byteArrayBitmapStream);
+            final byte[] b = byteArrayBitmapStream.toByteArray();
+            return Base64.encodeToString(b, Base64.DEFAULT);
+        } catch (OutOfMemoryError e) {
+            return null;
+        } finally {
+            CloseUtils.close(byteArrayBitmapStream);
+        }
+    }
+
     public static Bitmap getBitmapFromURL(final String imageUrl) {
         InputStream input = null;
 
@@ -264,5 +280,9 @@ public class ImageUtils {
         }
     }
 
+    public static Bitmap getBitmapFromString(final String jsonString) {
+        final byte[] decodedString = Base64.decode(jsonString, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+    }
 
 }
