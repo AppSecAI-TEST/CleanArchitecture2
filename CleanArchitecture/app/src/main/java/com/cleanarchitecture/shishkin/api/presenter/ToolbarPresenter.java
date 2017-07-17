@@ -483,6 +483,11 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
                     final String color = String.valueOf(ViewUtils.getColor(context, R.color.blue));
                     final int bg = Integer.valueOf(module.getSettingColor(AppPreferencesModule.COLOR_ON_NETWORK_CONNECTED, color));
                     mToolbar.get().setBackgroundColor(bg);
+
+                    final AbstractActivity activity = AdminUtils.getActivity();
+                    if (activity != null) {
+                        ViewUtils.setStatusBarColor(activity, bg);
+                    }
                 }
             }
         }
@@ -497,6 +502,11 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
                     final String color = String.valueOf(ViewUtils.getColor(context, R.color.orange));
                     final int bg = Integer.valueOf(module.getSettingColor(AppPreferencesModule.COLOR_ON_NETWORK_DISCONNECTED, color));
                     mToolbar.get().setBackgroundColor(bg);
+
+                    final AbstractActivity activity = AdminUtils.getActivity();
+                    if (activity != null) {
+                        ViewUtils.setStatusBarColor(activity, bg);
+                    }
                 }
             }
         }

@@ -14,16 +14,20 @@ import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBackNavigation
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetTitleEvent;
 import com.cleanarchitecture.shishkin.api.repository.data.ApplicationSetting;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
-import com.madrapps.eyedropper.EyeDropper;
+import com.larswerkman.holocolorpicker.ColorPicker;
+import com.larswerkman.holocolorpicker.OpacityBar;
+import com.larswerkman.holocolorpicker.SVBar;
+import com.larswerkman.holocolorpicker.SaturationBar;
+import com.larswerkman.holocolorpicker.ValueBar;
 
-public class SettingsColorPickerFragment extends AbstractContentFragment {
+public class SettingsColorPickerFragment extends AbstractContentFragment implements ColorPicker.OnColorChangedListener {
 
     public static final String NAME = SettingsColorPickerFragment.class.getName();
     public static final String SETTING = "SETTING";
 
-    private View mRoot;
     private int mDefaultColor;
     private ApplicationSetting mSetting;
+    private ColorPicker mPicker;
 
     public static SettingsColorPickerFragment newInstance(final ApplicationSetting setting) {
         final SettingsColorPickerFragment fragment = new SettingsColorPickerFragment();
@@ -56,23 +60,30 @@ public class SettingsColorPickerFragment extends AbstractContentFragment {
         } else {
             color = Integer.valueOf(currentValue);
         }
-        mRoot = ViewUtils.findView(view, R.id.root);
-        mRoot.setBackgroundColor(color);
         final View button = ViewUtils.findView(view, R.id.button);
         button.setBackgroundColor(mDefaultColor);
         button.setOnClickListener(this::onClickButton);
 
-        final View colorPicker = ViewUtils.findView(view, R.id.color_picket);
-        final EyeDropper eyeDropper = new EyeDropper(colorPicker, color1 -> {
-            ViewUtils.findView(view, R.id.root).setBackgroundColor(color1);
+        mPicker = ViewUtils.findView(view, R.id.color_picket);
 
-            mSetting.setCurrentValue(String.valueOf(color1));
-            AdminUtils.postEvent(new RepositoryRequestSetApplicationSettingEvent(mSetting));
-        });
+        final SVBar svBar = ViewUtils.findView(view, R.id.svbar);
+        final OpacityBar opacityBar = ViewUtils.findView(view, R.id.opacitybar);
+        final SaturationBar saturationBar = ViewUtils.findView(view, R.id.saturationbar);
+        final ValueBar valueBar = ViewUtils.findView(view, R.id.valuebar);
+
+        mPicker.addSVBar(svBar);
+        mPicker.addOpacityBar(opacityBar);
+        mPicker.addSaturationBar(saturationBar);
+        mPicker.addValueBar(valueBar);
+
+        mPicker.setOldCenterColor(color);
+        mPicker.setColor(color);
+        mPicker.setOnColorChangedListener(this);
+
     }
 
     private void onClickButton(View view) {
-        mRoot.setBackgroundColor(mDefaultColor);
+        mPicker.setColor(mDefaultColor);
         mSetting.setCurrentValue(String.valueOf(mDefaultColor));
         AdminUtils.postEvent(new RepositoryRequestSetApplicationSettingEvent(mSetting));
     }
@@ -93,4 +104,9 @@ public class SettingsColorPickerFragment extends AbstractContentFragment {
         return false;
     }
 
+    @Override
+    public void onColorChanged(int color) {
+        mSetting.setCurrentValue(String.valueOf(color));
+        AdminUtils.postEvent(new RepositoryRequestSetApplicationSettingEvent(mSetting));
+    }
 }
