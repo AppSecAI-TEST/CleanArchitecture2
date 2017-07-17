@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.cleanarchitecture.shishkin.application.data.dao.PhoneContactDAO;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
@@ -13,6 +14,7 @@ public class PhoneContactCursor {
     private PhoneContactCursor() {
     }
 
+    @Nullable
     public static Cursor getCursor(@NonNull final Context context) {
         final String selection = PhoneContactDAO.Columns.HAS_PHONE_NUMBER + " > 0";
         Cursor cur = null;
@@ -23,6 +25,7 @@ public class PhoneContactCursor {
         return cur;
     }
 
+    @Nullable
     public static Cursor getCursor(@NonNull final Context context, final String search) {
         Cursor cur = null;
         final ContentResolver cr = context.getContentResolver();
