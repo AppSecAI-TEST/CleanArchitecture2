@@ -1,5 +1,6 @@
 package com.cleanarchitecture.shishkin.api.validate;
 
+import com.cleanarchitecture.shishkin.api.repository.data.Result;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
 import java.util.Collections;
@@ -11,17 +12,17 @@ public abstract class AbstractValidator implements IValidator {
     private Map<String, IValidator> mValidators = Collections.synchronizedMap(new ConcurrentHashMap<String, IValidator>());
 
     @Override
-    public boolean execValidate(Object object) {
-        if (validate(object)) {
+    public Result<Boolean> execValidate(Object object) {
+        Result<Boolean> result = validate(object);
+        if (result.getResult()) {
             for (IValidator validator : mValidators.values()) {
-                if (!validator.validate(object)) {
-                    return false;
+                result = validator.validate(object);
+                if (!result.getResult()) {
+                    return result;
                 }
             }
-        } else {
-            return false;
         }
-        return true;
+        return result;
     }
 
     @Override

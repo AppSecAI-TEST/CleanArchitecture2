@@ -572,20 +572,21 @@ public class AdminUtils {
     }
 
     /**
+     * Получить модуль валидации
+     *
+     * @return модуль валидации
+     */
+    public static IValidateController getValidateController() {
+        return Admin.getInstance().get(ValidateController.NAME);
+    }
+
+    /**
      * Получить модуль Application Preferences
      *
      * @return модуль Application Preferences
      */
     public static IAppPreferencesModule getPreferences() {
         return Admin.getInstance().get(AppPreferencesModule.NAME);
-    }
-
-    public static boolean validate(IValidateSubscriber subscriber, Object object) {
-        final IValidateController controller = Admin.getInstance().get(ValidateController.NAME);
-        if (controller != null) {
-            return controller.validate(subscriber, object);
-        }
-        return false;
     }
 
     public static void viewLog() {

@@ -1,5 +1,6 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
+import com.cleanarchitecture.shishkin.api.repository.data.Result;
 import com.cleanarchitecture.shishkin.api.validate.IValidator;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
@@ -41,16 +42,19 @@ public class ValidateController extends AbstractController<IValidateSubscriber> 
     }
 
     @Override
-    public boolean validate(IValidateSubscriber subscriber, Object object) {
+    public Result<Boolean> validate(IValidateSubscriber subscriber, Object object) {
+        Result<Boolean> result = new Result<>();
+        result.setResult(false);
+
         if (subscriber == null || object == null) {
-            return false;
+            return result;
         }
 
         if (mValidators.containsKey(subscriber.getName())) {
             final IValidator validator = mValidators.get(subscriber.getName());
             return validator.execValidate(object);
         }
-        return false;
+        return result;
     }
 
     @Override

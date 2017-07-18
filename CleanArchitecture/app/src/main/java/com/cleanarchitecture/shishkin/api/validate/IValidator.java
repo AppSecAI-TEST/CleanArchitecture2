@@ -1,15 +1,16 @@
 package com.cleanarchitecture.shishkin.api.validate;
 
 import com.cleanarchitecture.shishkin.api.controller.ISubscriber;
+import com.cleanarchitecture.shishkin.api.repository.data.Result;
 
 public interface IValidator extends ISubscriber {
 
-    boolean validate(Object object);
+    Result<Boolean> validate(Object object);
 
     Object fix(Object object);
 
     void add(IValidator validator);
 
-    boolean execValidate(Object object);
+    Result<Boolean> execValidate(Object object);
 
 }
