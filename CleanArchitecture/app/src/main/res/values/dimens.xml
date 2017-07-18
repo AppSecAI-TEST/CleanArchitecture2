@@ -75,6 +75,7 @@
 
 	<dimen name="board_min_height">40dp</dimen>
 	<dimen name="board_max_height">128dp</dimen>
+	<dimen name="board_height">24dp</dimen>
 
 	<dimen name="toolbar_title_margin">70dp</dimen>
 	<dimen name="setting_min_high">48dp</dimen>
