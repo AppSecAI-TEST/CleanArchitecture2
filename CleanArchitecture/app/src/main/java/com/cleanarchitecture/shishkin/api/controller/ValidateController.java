@@ -1,5 +1,8 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
+import android.content.Context;
+
+import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.data.Result;
 import com.cleanarchitecture.shishkin.api.validate.IValidator;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
@@ -17,19 +20,22 @@ public class ValidateController extends AbstractController<IValidateSubscriber> 
 
     @Override
     public synchronized void register(final IValidateSubscriber subscriber) {
+        super.register(subscriber);
+
         if (subscriber == null) {
             return;
         }
 
-        super.register(subscriber);
-
-        if (!StringUtils.isNullOrEmpty(subscriber.getName()) && subscriber.getValidator() != null) {
-            mValidators.put(subscriber.getName(), subscriber.getValidator());
+        final IValidator validator = subscriber.getValidator();
+        if (validator != null) {
+            mValidators.put(subscriber.getName(), validator);
         }
     }
 
     @Override
     public synchronized void unregister(final IValidateSubscriber subscriber) {
+        super.unregister(subscriber);
+
         if (subscriber == null) {
             return;
         }
@@ -37,24 +43,32 @@ public class ValidateController extends AbstractController<IValidateSubscriber> 
         if (!StringUtils.isNullOrEmpty(subscriber.getName())) {
             mValidators.remove(subscriber.getName());
         }
-
-        super.unregister(subscriber);
     }
 
     @Override
-    public Result<Boolean> validate(IValidateSubscriber subscriber, Object object) {
-        Result<Boolean> result = new Result<>();
-        result.setResult(false);
+    public Result<Boolean> validate(final IValidateSubscriber subscriber, final Object object) {
+        final Result<Boolean> result = new Result<>();
 
-        if (subscriber == null || object == null) {
-            return result;
+        if (subscriber == null) {
+            return result.setResult(false);
         }
 
         if (mValidators.containsKey(subscriber.getName())) {
-            final IValidator validator = mValidators.get(subscriber.getName());
-            return validator.execValidate(object);
+            return mValidators.get(subscriber.getName()).execValidate(object);
+        } else {
+            final IValidator validator = subscriber.getValidator();
+            if (validator != null) {
+                mValidators.put(subscriber.getName(), validator);
+                return validator.execValidate(object);
+            } else {
+                result.setResult(false);
+                final Context context = AdminUtils.getContext();
+                if (context != null) {
+                    result.setError(NAME, context.getString(R.string.error_validator_not_found));
+                }
+                return result;
+            }
         }
-        return result;
     }
 
     @Override

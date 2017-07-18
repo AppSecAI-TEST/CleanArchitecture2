@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
-import com.cleanarchitecture.shishkin.api.data.ExtError;
 import com.cleanarchitecture.shishkin.api.data.Result;
 import com.cleanarchitecture.shishkin.api.validate.AbstractValidator;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
@@ -17,10 +16,9 @@ public class PhoneContactItemValidator extends AbstractValidator {
     @Override
     public Result<Boolean> validate(final Object object) {
         final Result<Boolean> result = new Result<>();
-        result.setResult(false);
 
         if (object == null) {
-            return result.setError(new ExtError().setError(NAME, "Объект пуст"));
+            return result.setResult(false).setError(NAME, "Объект пуст");
         }
 
         if (object instanceof PhoneContactItem) {
@@ -29,7 +27,7 @@ public class PhoneContactItemValidator extends AbstractValidator {
             if (!StringUtils.isNullOrEmpty(phones)) {
                 return result.setResult(true);
             } else {
-                return result.setError(new ExtError().setError(NAME, "Нет телефонов"));
+                return result.setResult(false).setError(NAME, "Нет телефонов");
             }
         } else if (object instanceof String) {
             final String phone = (String) object;
@@ -42,12 +40,12 @@ public class PhoneContactItemValidator extends AbstractValidator {
                 } else if (length > 11) {
                     final Context context = AdminUtils.getContext();
                     if (context != null) {
-                        return result.setError(new ExtError().setError(NAME, context.getString(R.string.error_phone_max_length, phone)));
+                        return result.setResult(false).setError(NAME, context.getString(R.string.error_phone_max_length, phone));
                     }
                 }
             }
         }
-        return result;
+        return result.setResult(false).setError(NAME, "Прочие ошибки");
     }
 
     @Override

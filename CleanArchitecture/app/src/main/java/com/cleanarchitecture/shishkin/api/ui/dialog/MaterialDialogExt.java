@@ -3,11 +3,14 @@ package com.cleanarchitecture.shishkin.api.ui.dialog;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.event.OnUserIteractionEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
+import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -214,6 +217,13 @@ public class MaterialDialogExt {
     public void show() {
         if (mMaterialDialog != null) {
             AdminUtils.postEvent(new OnUserIteractionEvent());
+            float size = ViewUtils.px2sp(mMaterialDialog.getContext(), mMaterialDialog.getContext().getResources().getDimension(R.dimen.text_size_large));
+            mMaterialDialog.getActionButton(DialogAction.POSITIVE).setTextSize(size);
+            mMaterialDialog.getActionButton(DialogAction.NEGATIVE).setTextSize(size);
+            mMaterialDialog.getActionButton(DialogAction.NEUTRAL).setTextSize(size);
+            mMaterialDialog.getContentView().setTextSize(size);
+            size = ViewUtils.px2sp(mMaterialDialog.getContext(), mMaterialDialog.getContext().getResources().getDimension(R.dimen.text_size_xlarge));
+            mMaterialDialog.getTitleView().setTextSize(size);
             mMaterialDialog.show();
         }
     }

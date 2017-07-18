@@ -1,6 +1,9 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
+import android.content.Context;
+
 import com.cleanarchitecture.shishkin.BuildConfig;
+import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.data.ExtError;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowErrorMessageEvent;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
@@ -105,7 +108,7 @@ public class ErrorController implements IErrorController {
         onError(source, e);
 
         if (!StringUtils.isNullOrEmpty(displayMessage)) {
-            AdminUtils.postEvent(new ShowErrorMessageEvent(displayMessage));
+            AdminUtils.postEvent(new ShowErrorMessageEvent(displayMessage + getSufix()));
         }
     }
 
@@ -114,7 +117,7 @@ public class ErrorController implements IErrorController {
         onError(source, e);
 
         if (errorCode != 0) {
-            AdminUtils.postEvent(new ShowErrorMessageEvent(errorCode));
+            AdminUtils.postEvent(new ShowErrorMessageEvent(AdminUtils.getErrorText(errorCode) + getSufix()));
         }
     }
 
@@ -123,7 +126,7 @@ public class ErrorController implements IErrorController {
         if (StringUtils.isNullOrEmpty(message)) {
             Log.e(source, message);
             if (isDisplay) {
-                AdminUtils.postEvent(new ShowErrorMessageEvent(message));
+                AdminUtils.postEvent(new ShowErrorMessageEvent(message + getSufix()));
             }
         }
     }
@@ -133,7 +136,7 @@ public class ErrorController implements IErrorController {
         if (errorCode != 0) {
             Log.e(source, AdminUtils.getErrorText(errorCode));
             if (isDisplay) {
-                AdminUtils.postEvent(new ShowErrorMessageEvent(errorCode));
+                AdminUtils.postEvent(new ShowErrorMessageEvent(AdminUtils.getErrorText(errorCode) + getSufix()));
             }
         }
     }
@@ -141,7 +144,7 @@ public class ErrorController implements IErrorController {
     @Override
     public synchronized void onError(final ExtError extError) {
         if (extError != null && extError.hasError()) {
-            AdminUtils.postEvent(new ShowErrorMessageEvent(extError.getErrorText()));
+            AdminUtils.postEvent(new ShowErrorMessageEvent(extError.getErrorText() + getSufix()));
         }
     }
 
@@ -175,6 +178,14 @@ public class ErrorController implements IErrorController {
 
     @Override
     public void onUnRegister() {
+    }
+
+    private String getSufix() {
+        final Context context = AdminUtils.getContext();
+        if (context != null) {
+            return context.getString(R.string.error_sufix);
+        }
+        return "";
     }
 
 }

@@ -29,6 +29,7 @@ import com.cleanarchitecture.shishkin.api.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.EditTextAfterTextChangedEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.HideKeyboardEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowListDialogEvent;
+import com.cleanarchitecture.shishkin.api.event.ui.ShowMessageEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowToastEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowTooltipEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseRequestPermissionEvent;
@@ -235,45 +236,42 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public synchronized void onSearchPresenterItemClick(OnPhoneContactPresenterItemClick event) {
-        Result<Boolean> result;
+        final PhoneContactItem item = event.getContactItem();
+        if (item == null || mValidateController == null) {
+            return;
+        }
+
         if (AdminUtils.checkPermission(Manifest.permission.CALL_PHONE)) {
-            if (event.getContactItem() != null) {
-                if (mValidateController != null) {
-                    final PhoneContactItem item = event.getContactItem();
+            Result<Boolean> result = mValidateController.validate(this, item);
+            if (!result.getResult()) {
+                ErrorController.getInstance().onError(result.getError());
+                AdminUtils.postEvent(new ShowMessageEvent("1"));
+                return;
+            }
 
-                    result = mValidateController.validate(this, item);
-                    if (!result.getResult()) {
-                        AdminUtils.postEvent(new ShowToastEvent(result.getError().getErrorText()));
-                        return;
+            final ExtError err = new ExtError();
+            final ArrayList<String> list = new ArrayList<>();
+            for (int i = 1; i <= StringUtils.numToken(item.getPhones(), ";"); i++) {
+                String phone = StringUtils.token(item.getPhones(), ";", i);
+                result = mValidateController.validate(this, phone);
+                if (result.getResult()) {
+                    String phone1 = null;
+                    if (ApplicationUtils.hasLollipop()) {
+                        phone1 = PhoneNumberUtils.formatNumber(phone, Locale.getDefault().getCountry());
                     }
-
-                    final ExtError err = new ExtError();
-                    final ArrayList<String> list = new ArrayList<>();
-                    for (int i = 1; i <= StringUtils.numToken(item.getPhones(), ";"); i++) {
-                        String phone = StringUtils.token(item.getPhones(), ";", i);
-                        result = mValidateController.validate(this, phone);
-                        if (result.getResult()) {
-                            String phone1 = null;
-                            if (ApplicationUtils.hasLollipop()) {
-                                phone1 = PhoneNumberUtils.formatNumber(phone, Locale.getDefault().getCountry());
-                            }
-                            if (StringUtils.isNullOrEmpty(phone1)) {
-                                list.add(phone);
-                            } else {
-                                list.add(phone1);
-                            }
-                        } else {
-                            err.setError(result.getError().getSender(), result.getError().getErrorText());
-                        }
-                    }
-                    if (!list.isEmpty()) {
-                        AdminUtils.postEvent(new ShowListDialogEvent(R.id.dialog_call_phone, R.string.phone_call, null, list, -1, R.string.exit, true));
+                    if (StringUtils.isNullOrEmpty(phone1)) {
+                        list.add(phone);
                     } else {
-                        ErrorController.getInstance().onError(err);
+                        list.add(phone1);
                     }
                 } else {
-                    AdminUtils.postEvent(new ShowToastEvent("Отсутствует валидатор"));
+                    err.addError(result.getSender(), result.getErrorText());
                 }
+            }
+            if (!list.isEmpty()) {
+                AdminUtils.postEvent(new ShowListDialogEvent(R.id.dialog_call_phone, R.string.phone_call, null, list, -1, R.string.exit, true));
+            } else {
+                ErrorController.getInstance().onError(err);
             }
         } else {
             AdminUtils.postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.CALL_PHONE));

@@ -125,7 +125,7 @@ public class PhoneContactDAO extends AbstractReadOnlyDAO<PhoneContactItem> {
             }
             result.setResult(list);
         } catch (Exception e) {
-            result.setError(new ExtError().setError(LOG_TAG, context.getString(R.string.error_read_phone_contacts)));
+            result.setError(new ExtError().addError(LOG_TAG, context.getString(R.string.error_read_phone_contacts)));
         } finally {
             AdminUtils.postEvent(new HideCircleProgressBarEvent());
             CloseUtils.close(cursor);

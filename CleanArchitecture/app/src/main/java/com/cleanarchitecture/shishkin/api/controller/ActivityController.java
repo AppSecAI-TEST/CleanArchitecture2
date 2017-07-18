@@ -31,6 +31,7 @@ import com.cleanarchitecture.shishkin.api.ui.activity.AbstractContentActivity;
 import com.cleanarchitecture.shishkin.api.ui.activity.IActivity;
 import com.cleanarchitecture.shishkin.api.ui.dialog.MaterialDialogExt;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
+import com.cleanarchitecture.shishkin.common.lifecycle.Lifecycle;
 import com.cleanarchitecture.shishkin.common.ui.widget.BaseSnackbar;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
@@ -68,7 +69,7 @@ public class ActivityController extends AbstractController<IActivity> implements
     public synchronized boolean checkPermission(String permission) {
         if (ApplicationUtils.hasMarshmallow()) {
             final IActivity subscriber = getSubscriber();
-            if (subscriber != null && subscriber.validate()) {
+            if (subscriber != null && subscriber.validate() && (subscriber.getActivity().getState() == Lifecycle.STATE_RESUME || subscriber.getActivity().getState() == Lifecycle.STATE_PAUSE)) {
                 if (ActivityCompat.checkSelfPermission(subscriber.getActivity(), permission) != PackageManager.PERMISSION_GRANTED) {
                     return false;
                 }
@@ -81,7 +82,7 @@ public class ActivityController extends AbstractController<IActivity> implements
     public void checkGooglePlayServices() {
         ApplicationUtils.runOnUiThread(() -> {
             final IActivity subscriber = getSubscriber();
-            if (subscriber != null && subscriber.validate()) {
+            if (subscriber != null && subscriber.validate() && (subscriber.getActivity().getState() == Lifecycle.STATE_RESUME || subscriber.getActivity().getState() == Lifecycle.STATE_PAUSE)) {
                 final GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
                 final int result = googleAPI.isGooglePlayServicesAvailable(subscriber.getActivity());
                 if (result != ConnectionResult.SUCCESS) {
@@ -100,7 +101,7 @@ public class ActivityController extends AbstractController<IActivity> implements
         ApplicationUtils.runOnUiThread(() -> {
             if (ApplicationUtils.hasMarshmallow()) {
                 final IActivity subscriber = getSubscriber();
-                if (subscriber != null && subscriber.validate()) {
+                if (subscriber != null && subscriber.validate() && (subscriber.getActivity().getState() == Lifecycle.STATE_RESUME || subscriber.getActivity().getState() == Lifecycle.STATE_PAUSE)) {
                     if (ActivityCompat.shouldShowRequestPermissionRationale(subscriber.getActivity(), permission)) {
                         AdminUtils.postEvent(new ShowDialogEvent(R.id.dialog_request_permissions, -1, helpMessage, R.string.setting, R.string.cancel, false));
                     } else {
@@ -152,7 +153,7 @@ public class ActivityController extends AbstractController<IActivity> implements
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onShowErrorMessageEvent(ShowErrorMessageEvent event) {
         final IActivity subscriber = getSubscriber();
-        if (subscriber != null && subscriber.validate()) {
+        if (subscriber != null && subscriber.validate() && (subscriber.getActivity().getState() == Lifecycle.STATE_RESUME || subscriber.getActivity().getState() == Lifecycle.STATE_PAUSE)) {
             new MaterialDialogExt(subscriber.getActivity(), event.getId(), R.string.error, event.getMessage(), R.string.ok_upper, MaterialDialogExt.NO_BUTTON, false).show();
         }
     }
@@ -324,7 +325,7 @@ public class ActivityController extends AbstractController<IActivity> implements
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onShowListDialogEvent(ShowListDialogEvent event) {
         final IActivity subscriber = getSubscriber();
-        if (subscriber != null && subscriber.validate()) {
+        if (subscriber != null && subscriber.validate() && (subscriber.getActivity().getState() == Lifecycle.STATE_RESUME || subscriber.getActivity().getState() == Lifecycle.STATE_PAUSE)) {
             new MaterialDialogExt(subscriber.getActivity(), event.getId(),
                     event.getTitle(), event.getMessage(), event.getList(), event.getSelected(), event.isMultiselect(), event.getButtonPositive(),
                     event.getButtonNegative(), event.isCancelable()).show();
@@ -335,7 +336,7 @@ public class ActivityController extends AbstractController<IActivity> implements
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onShowEditDialogEvent(ShowEditDialogEvent event) {
         final IActivity subscriber = getSubscriber();
-        if (subscriber != null && subscriber.validate()) {
+        if (subscriber != null && subscriber.validate() && (subscriber.getActivity().getState() == Lifecycle.STATE_RESUME || subscriber.getActivity().getState() == Lifecycle.STATE_PAUSE)) {
             new MaterialDialogExt(subscriber.getActivity(), event.getId(), event.getTitle(), event.getMessage(), event.getEditText(), event.getHint(), event.getInputType(), event.getButtonPositive(),
                     event.getButtonNegative(), event.isCancelable()).show();
         }
@@ -345,7 +346,7 @@ public class ActivityController extends AbstractController<IActivity> implements
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onShowDialogEvent(ShowDialogEvent event) {
         final IActivity subscriber = getSubscriber();
-        if (subscriber != null && subscriber.validate()) {
+        if (subscriber != null && subscriber.validate() && (subscriber.getActivity().getState() == Lifecycle.STATE_RESUME || subscriber.getActivity().getState() == Lifecycle.STATE_PAUSE)) {
             new MaterialDialogExt(subscriber.getActivity(), event.getId(), event.getTitle(), event.getMessage(), event.getButtonPositive(), event.getButtonNegative(), event.isCancelable()).show();
         }
     }
