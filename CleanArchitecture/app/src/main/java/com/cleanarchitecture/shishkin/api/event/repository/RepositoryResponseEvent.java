@@ -1,7 +1,7 @@
 package com.cleanarchitecture.shishkin.api.event.repository;
 
+import com.cleanarchitecture.shishkin.api.data.Result;
 import com.cleanarchitecture.shishkin.api.event.AbstractEvent;
-import com.cleanarchitecture.shishkin.api.repository.data.Result;
 
 public class RepositoryResponseEvent<T> extends AbstractEvent {
 

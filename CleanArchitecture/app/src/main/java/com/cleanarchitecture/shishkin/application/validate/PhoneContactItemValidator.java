@@ -4,8 +4,8 @@ import android.content.Context;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
-import com.cleanarchitecture.shishkin.api.repository.data.ExtError;
-import com.cleanarchitecture.shishkin.api.repository.data.Result;
+import com.cleanarchitecture.shishkin.api.data.ExtError;
+import com.cleanarchitecture.shishkin.api.data.Result;
 import com.cleanarchitecture.shishkin.api.validate.AbstractValidator;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
@@ -41,7 +41,7 @@ public class PhoneContactItemValidator extends AbstractValidator {
                     result.setResult(false);
                     final Context context = AdminUtils.getContext();
                     if (context != null) {
-                        result.setError(new ExtError().setErrorText(NAME, context.getString(R.string.error_phone_max_length, phone)));
+                        result.setError(new ExtError().setError(NAME, context.getString(R.string.error_phone_max_length, phone)));
                     }
                 }
             }

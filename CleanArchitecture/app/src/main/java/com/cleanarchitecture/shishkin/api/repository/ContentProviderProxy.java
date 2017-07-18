@@ -1,9 +1,12 @@
 package com.cleanarchitecture.shishkin.api.repository;
 
+import android.Manifest;
+
 import com.cleanarchitecture.shishkin.api.controller.AbstractModule;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
+import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseRequestPermissionEvent;
 import com.cleanarchitecture.shishkin.api.storage.CacheUtils;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
@@ -26,16 +29,20 @@ public class ContentProviderProxy extends AbstractModule implements IModuleSubsc
                     .setResponse(list)
                     .setFrom(Repository.FROM_CACHE));
         } else {
-            final IContentProvider contentProvider = AdminUtils.getContentProvider();
-            if (contentProvider != null) {
-                final RepositoryResponseGetContactsEvent responseEvent = (RepositoryResponseGetContactsEvent) contentProvider.getContacts();
-                responseEvent.setFrom(Repository.FROM_CONTENT_PROVIDER);
+            if (AdminUtils.checkPermission(Manifest.permission.READ_CONTACTS)) {
+                final IContentProvider contentProvider = AdminUtils.getContentProvider();
+                if (contentProvider != null) {
+                    final RepositoryResponseGetContactsEvent responseEvent = (RepositoryResponseGetContactsEvent) contentProvider.getContacts();
+                    responseEvent.setFrom(Repository.FROM_CONTENT_PROVIDER);
 
-                if (!responseEvent.hasError()) {
-                    CacheUtils.put(String.valueOf(event.getId()), event.getCacheType(), responseEvent.getResponse(), event.getExpired());
+                    if (!responseEvent.hasError()) {
+                        CacheUtils.put(String.valueOf(event.getId()), event.getCacheType(), responseEvent.getResponse(), event.getExpired());
+                    }
+
+                    AdminUtils.postEvent(responseEvent);
                 }
-
-                AdminUtils.postEvent(responseEvent);
+            } else {
+                AdminUtils.postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.READ_CONTACTS));
             }
         }
     }

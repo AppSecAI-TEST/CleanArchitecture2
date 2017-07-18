@@ -11,11 +11,7 @@ public class ShowErrorMessageEvent extends AbstractEvent {
     private String mMessage;
 
     public ShowErrorMessageEvent(final IEvent event) {
-        if (getError().getErrorCode() != 0) {
-            mMessage = AdminUtils.getErrorText(getError().getErrorCode());
-        } else {
-            mMessage = getError().getErrorText();
-        }
+        mMessage = getError().getErrorText();
     }
 
     public ShowErrorMessageEvent(final String message) {

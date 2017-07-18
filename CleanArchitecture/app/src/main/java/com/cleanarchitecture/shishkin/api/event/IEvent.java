@@ -1,6 +1,6 @@
 package com.cleanarchitecture.shishkin.api.event;
 
-import com.cleanarchitecture.shishkin.api.repository.data.ExtError;
+import com.cleanarchitecture.shishkin.api.data.ExtError;
 
 @SuppressWarnings("unused")
 public interface IEvent {

@@ -1,6 +1,6 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
-import com.cleanarchitecture.shishkin.api.repository.data.Result;
+import com.cleanarchitecture.shishkin.api.data.Result;
 
 @SuppressWarnings("unused")
 public interface IValidateController extends IController<IValidateSubscriber> {

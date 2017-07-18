@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.api.data.ApplicationSetting;
 import com.cleanarchitecture.shishkin.api.event.repository.RepositoryRequestSetApplicationSettingEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBackNavigationEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetTitleEvent;
-import com.cleanarchitecture.shishkin.api.repository.data.ApplicationSetting;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 import com.larswerkman.holocolorpicker.ColorPicker;
 import com.larswerkman.holocolorpicker.OpacityBar;

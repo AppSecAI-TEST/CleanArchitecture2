@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.api.repository.data;
+package com.cleanarchitecture.shishkin.api.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;

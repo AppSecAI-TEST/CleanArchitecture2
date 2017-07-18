@@ -3,11 +3,11 @@ package com.cleanarchitecture.shishkin.api.controller;
 import android.content.Context;
 
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.api.data.ApplicationSetting;
 import com.cleanarchitecture.shishkin.api.event.repository.RepositoryRequestGetApplicationSettingsEvent;
 import com.cleanarchitecture.shishkin.api.event.repository.RepositoryRequestSetApplicationSettingEvent;
 import com.cleanarchitecture.shishkin.api.event.repository.RepositoryResponseGetApplicationSettingsEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowDialogEvent;
-import com.cleanarchitecture.shishkin.api.repository.data.ApplicationSetting;
 import com.cleanarchitecture.shishkin.api.ui.dialog.MaterialDialogExt;
 import com.cleanarchitecture.shishkin.common.utils.AppPreferencesUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
