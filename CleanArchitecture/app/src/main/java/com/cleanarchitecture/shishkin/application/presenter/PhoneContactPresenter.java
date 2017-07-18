@@ -245,7 +245,6 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
             Result<Boolean> result = mValidateController.validate(this, item);
             if (!result.getResult()) {
                 ErrorController.getInstance().onError(result.getError());
-                AdminUtils.postEvent(new ShowMessageEvent("1"));
                 return;
             }
 
