@@ -29,6 +29,7 @@ import com.cleanarchitecture.shishkin.api.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.EditTextAfterTextChangedEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.HideKeyboardEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowListDialogEvent;
+import com.cleanarchitecture.shishkin.api.event.ui.ShowMessageEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowToastEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowTooltipEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseRequestPermissionEvent;
@@ -244,6 +245,7 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
             Result<Boolean> result = mValidateController.validate(this, item);
             if (!result.getResult()) {
                 ErrorController.getInstance().onError(result.getError());
+                AdminUtils.postEvent(new ShowMessageEvent("1"));
                 return;
             }
 
