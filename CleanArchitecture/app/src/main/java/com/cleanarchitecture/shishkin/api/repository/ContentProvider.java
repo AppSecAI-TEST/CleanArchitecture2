@@ -22,7 +22,7 @@ public class ContentProvider extends AbstractModule implements IContentProvider 
 
         final Context context = AdminUtils.getContext();
         if (context == null) {
-            return event.setError(new ExtError().setError(NAME, ErrorController.ERROR_LOST_APPLICATION_CONTEXT));
+            return event.setError(new ExtError().addError(NAME, ErrorController.ERROR_LOST_APPLICATION_CONTEXT));
         }
 
         return event.setResponse(new PhoneContactDAO(context).getItems(context));
