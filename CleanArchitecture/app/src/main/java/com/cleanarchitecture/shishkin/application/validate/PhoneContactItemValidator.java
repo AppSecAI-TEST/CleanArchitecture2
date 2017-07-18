@@ -20,6 +20,7 @@ public class PhoneContactItemValidator extends AbstractValidator {
         result.setResult(false);
 
         if (object == null) {
+            result.setError(new ExtError().setError(NAME, "Объект пуст"));
             return result;
         }
 
@@ -28,6 +29,8 @@ public class PhoneContactItemValidator extends AbstractValidator {
             final String phones = item.getPhones();
             if (!StringUtils.isNullOrEmpty(phones)) {
                 result.setResult(true);
+            } else {
+                result.setError(new ExtError().setError(NAME, "Нет телефонов"));
             }
         } else if (object instanceof String) {
             final String phone = (String) object;

@@ -235,11 +235,15 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public synchronized void onSearchPresenterItemClick(OnPhoneContactPresenterItemClick event) {
+        Result<Boolean> result;
         if (AdminUtils.checkPermission(Manifest.permission.CALL_PHONE)) {
             if (event.getContactItem() != null) {
                 if (mValidateController != null) {
                     final PhoneContactItem item = event.getContactItem();
-                    if (!mValidateController.validate(this, item).getResult()) {
+
+                    result = mValidateController.validate(this, item);
+                    if (!result.getResult()) {
+                        AdminUtils.postEvent(new ShowToastEvent(result.getError().getErrorText()));
                         return;
                     }
 
@@ -247,7 +251,7 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
                     final ArrayList<String> list = new ArrayList<>();
                     for (int i = 1; i <= StringUtils.numToken(item.getPhones(), ";"); i++) {
                         String phone = StringUtils.token(item.getPhones(), ";", i);
-                        Result<Boolean> result = mValidateController.validate(this, phone);
+                        result = mValidateController.validate(this, phone);
                         if (result.getResult()) {
                             String phone1 = null;
                             if (ApplicationUtils.hasLollipop()) {
@@ -267,6 +271,8 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
                     } else {
                         ErrorController.getInstance().onError(err);
                     }
+                } else {
+                    AdminUtils.postEvent(new ShowToastEvent("Отсутствует валидатор"));
                 }
             }
         } else {
