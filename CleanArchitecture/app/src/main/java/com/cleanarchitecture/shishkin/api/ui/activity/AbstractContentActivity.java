@@ -71,6 +71,13 @@ public abstract class AbstractContentActivity extends AbstractActivity
                              final boolean clearBackStack,
                              final boolean animate, final boolean allowingStateLoss) {
 
+        final AbstractContentFragment current = getContentFragment(AbstractContentFragment.class);
+        if (current != null) {
+            if (fragment.getClass().toString().equalsIgnoreCase(current.getClass().toString())) {
+                return;
+            }
+        }
+
         runOnUiThread(() -> {
             String tag;
             if (fragment instanceof ISubscriber) {

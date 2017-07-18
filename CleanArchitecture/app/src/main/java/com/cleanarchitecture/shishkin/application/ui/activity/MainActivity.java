@@ -28,8 +28,6 @@ public class MainActivity extends AbstractContentActivity {
 
         AdminUtils.postEvent(new UseCaseStartApplicationEvent());
 
-        //ViewUtils.setStatusBarColor(this, R.color.blue);
-
         setContentView(R.layout.activity_main);
 
         mFloatingActionMenuPresenter.bindView(findViewById(R.id.root));
@@ -47,7 +45,9 @@ public class MainActivity extends AbstractContentActivity {
             }
         }
 
-        onNewIntent(getIntent());
+        if (savedInstanceState == null) {
+            onNewIntent(getIntent());
+        }
     }
 
     @Override
