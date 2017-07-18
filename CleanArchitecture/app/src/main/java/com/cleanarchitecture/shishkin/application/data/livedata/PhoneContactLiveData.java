@@ -2,6 +2,7 @@ package com.cleanarchitecture.shishkin.application.data.livedata;
 
 import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.api.controller.ErrorController;
 import com.cleanarchitecture.shishkin.api.event.ui.HideHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.model.AbstractContentProviderLiveData;
@@ -64,6 +65,8 @@ public class PhoneContactLiveData extends AbstractContentProviderLiveData<List<P
         AdminUtils.postEvent(new HideHorizontalProgressBarEvent());
         if (!event.hasError()) {
             setValue(event.getResponse());
+        } else {
+            ErrorController.getInstance().onError(event.getError());
         }
     }
 

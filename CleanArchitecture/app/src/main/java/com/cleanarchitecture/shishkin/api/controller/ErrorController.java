@@ -1,6 +1,7 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
+import com.cleanarchitecture.shishkin.api.data.ExtError;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowErrorMessageEvent;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
@@ -134,6 +135,13 @@ public class ErrorController implements IErrorController {
             if (isDisplay) {
                 AdminUtils.postEvent(new ShowErrorMessageEvent(errorCode));
             }
+        }
+    }
+
+    @Override
+    public synchronized void onError(final ExtError extError) {
+        if (extError != null && extError.hasError()) {
+            AdminUtils.postEvent(new ShowErrorMessageEvent(extError.getErrorText()));
         }
     }
 

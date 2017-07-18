@@ -1,5 +1,6 @@
-package com.cleanarchitecture.shishkin.api.repository.data;
+package com.cleanarchitecture.shishkin.api.data;
 
+@SuppressWarnings("unused")
 public interface IExtError {
     /**
      * Получить текст ошибки
@@ -15,7 +16,7 @@ public interface IExtError {
      * @param error  текст ошибки
      * @return ошибка
      */
-    ExtError setErrorText(String sender, String error);
+    ExtError setError(String sender, String error);
 
     /**
      * Установить текст ошибки
@@ -25,14 +26,17 @@ public interface IExtError {
      * @param error  текст ошибки
      * @return ошибка
      */
-    ExtError setErrorText(String sender, Exception e, String error);
+    ExtError setError(String sender, Exception e, String error);
 
     /**
-     * Получить код ошибки
+     * Установить текст ошибки
      *
-     * @return код ошибки
+     * @param sender источник ошибки
+     * @param e      Exception
+     * @param code   код ошибки
+     * @return ошибка
      */
-    int getErrorCode();
+    ExtError setError(final String sender, final Exception e, final int code);
 
     /**
      * Установить код ошибки
@@ -41,7 +45,7 @@ public interface IExtError {
      * @param code   код ошибки
      * @return ошибка
      */
-    ExtError setErrorCode(String sender, int code);
+    ExtError setError(String sender, int code);
 
     /**
      * Флаг - имеется ли ошибка

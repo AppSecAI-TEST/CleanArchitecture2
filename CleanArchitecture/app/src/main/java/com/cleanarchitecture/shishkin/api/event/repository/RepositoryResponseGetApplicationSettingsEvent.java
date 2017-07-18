@@ -1,6 +1,6 @@
 package com.cleanarchitecture.shishkin.api.event.repository;
 
-import com.cleanarchitecture.shishkin.api.repository.data.ApplicationSetting;
+import com.cleanarchitecture.shishkin.api.data.ApplicationSetting;
 
 import java.util.List;
 

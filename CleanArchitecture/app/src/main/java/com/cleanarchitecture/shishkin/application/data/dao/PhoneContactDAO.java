@@ -11,10 +11,10 @@ import android.support.annotation.Nullable;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.api.data.ExtError;
+import com.cleanarchitecture.shishkin.api.data.Result;
 import com.cleanarchitecture.shishkin.api.event.ui.HideCircleProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowCircleProgressBarEvent;
-import com.cleanarchitecture.shishkin.api.repository.data.ExtError;
-import com.cleanarchitecture.shishkin.api.repository.data.Result;
 import com.cleanarchitecture.shishkin.application.data.cursor.PhoneContactCursor;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.common.content.dao.AbstractReadOnlyDAO;
@@ -125,7 +125,7 @@ public class PhoneContactDAO extends AbstractReadOnlyDAO<PhoneContactItem> {
             }
             result.setResult(list);
         } catch (Exception e) {
-            result.setError(new ExtError().setErrorText(LOG_TAG, context.getString(R.string.error_read_phone_contacts)));
+            result.setError(new ExtError().setError(LOG_TAG, context.getString(R.string.error_read_phone_contacts)));
         } finally {
             AdminUtils.postEvent(new HideCircleProgressBarEvent());
             CloseUtils.close(cursor);

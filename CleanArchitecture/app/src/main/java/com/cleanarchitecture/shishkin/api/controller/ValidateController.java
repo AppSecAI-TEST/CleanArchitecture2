@@ -1,6 +1,6 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
-import com.cleanarchitecture.shishkin.api.repository.data.Result;
+import com.cleanarchitecture.shishkin.api.data.Result;
 import com.cleanarchitecture.shishkin.api.validate.IValidator;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 

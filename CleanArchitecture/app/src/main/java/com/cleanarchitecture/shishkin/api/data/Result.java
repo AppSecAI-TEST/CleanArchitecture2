@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.api.repository.data;
+package com.cleanarchitecture.shishkin.api.data;
 
 public class Result<T> {
 
