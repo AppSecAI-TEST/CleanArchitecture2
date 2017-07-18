@@ -20,31 +20,29 @@ public class PhoneContactItemValidator extends AbstractValidator {
         result.setResult(false);
 
         if (object == null) {
-            result.setError(new ExtError().setError(NAME, "Объект пуст"));
-            return result;
+            return result.setError(new ExtError().setError(NAME, "Объект пуст"));
         }
 
         if (object instanceof PhoneContactItem) {
             final PhoneContactItem item = (PhoneContactItem) object;
             final String phones = item.getPhones();
             if (!StringUtils.isNullOrEmpty(phones)) {
-                result.setResult(true);
+                return result.setResult(true);
             } else {
-                result.setError(new ExtError().setError(NAME, "Нет телефонов"));
+                return result.setError(new ExtError().setError(NAME, "Нет телефонов"));
             }
         } else if (object instanceof String) {
             final String phone = (String) object;
             if (!StringUtils.isNullOrEmpty(phone)) {
                 final int length = StringUtils.getDigits(phone).length();
                 if (length == 7 || length == 11) {
-                    result.setResult(true);
+                    return result.setResult(true);
                 } else if (length == 3) {
-                    result.setResult(true);
+                    return result.setResult(true);
                 } else if (length > 11) {
-                    result.setResult(false);
                     final Context context = AdminUtils.getContext();
                     if (context != null) {
-                        result.setError(new ExtError().setError(NAME, context.getString(R.string.error_phone_max_length, phone)));
+                        return result.setError(new ExtError().setError(NAME, context.getString(R.string.error_phone_max_length, phone)));
                     }
                 }
             }
