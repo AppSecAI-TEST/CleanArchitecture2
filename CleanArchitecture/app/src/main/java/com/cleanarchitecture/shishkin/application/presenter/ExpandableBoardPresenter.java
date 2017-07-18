@@ -18,10 +18,12 @@ public class ExpandableBoardPresenter extends AbstractPresenter {
 
     private ExpandableRelativeLayout mBoardLayout;
     private View mBoardButton;
+    private View mBoardRoot;
     private TextView mBoardTextView;
 
     public void bindView(@NonNull final View root) {
         mBoardLayout = ViewUtils.findView(root, R.id.expandableLayout);
+        mBoardRoot = ViewUtils.findView(root, R.id.board_root);
         mBoardTextView = ViewUtils.findView(root, R.id.board);
         mBoardTextView.setOnClickListener(this::onClick);
         mBoardButton = ViewUtils.findView(root, R.id.board_button);
@@ -32,6 +34,7 @@ public class ExpandableBoardPresenter extends AbstractPresenter {
     public boolean validate() {
         return (super.validate()
                 && mBoardLayout != null
+                && mBoardRoot != null
                 && mBoardButton != null
                 && mBoardTextView != null
         );
@@ -59,6 +62,18 @@ public class ExpandableBoardPresenter extends AbstractPresenter {
             } else {
                 mBoardTextView.setText(text);
             }
+        }
+    }
+
+    public void hideBoard() {
+        if (validate()) {
+            mBoardRoot.setVisibility(View.GONE);
+        }
+    }
+
+    public void showBoard() {
+        if (validate()) {
+            mBoardRoot.setVisibility(View.VISIBLE);
         }
     }
 
