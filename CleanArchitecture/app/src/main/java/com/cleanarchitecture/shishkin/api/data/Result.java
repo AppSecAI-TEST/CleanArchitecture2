@@ -9,7 +9,7 @@ public class Result<T> {
         return mResult;
     }
 
-    public Result setResult(final T result) {
+    public Result<T> setResult(final T result) {
         mResult = result;
         return this;
     }
@@ -18,8 +18,9 @@ public class Result<T> {
         return mError;
     }
 
-    public void setError(final ExtError error) {
+    public Result<T> setError(final ExtError error) {
         this.mError = error;
+        return this;
     }
 
     public boolean hasError() {
