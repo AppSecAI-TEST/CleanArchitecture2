@@ -54,12 +54,12 @@ public class ValidateController extends AbstractController<IValidateSubscriber> 
         }
 
         if (mValidators.containsKey(subscriber.getName())) {
-            return mValidators.get(subscriber.getName()).execValidate(object);
+            return mValidators.get(subscriber.getName()).validate(object);
         } else {
             final IValidator validator = subscriber.getValidator();
             if (validator != null) {
                 mValidators.put(subscriber.getName(), validator);
-                return validator.execValidate(object);
+                return validator.validate(object);
             } else {
                 result.setResult(false);
                 final Context context = AdminUtils.getContext();

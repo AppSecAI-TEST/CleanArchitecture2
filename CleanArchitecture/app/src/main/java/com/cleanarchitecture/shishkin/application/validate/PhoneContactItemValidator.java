@@ -1,9 +1,5 @@
 package com.cleanarchitecture.shishkin.application.validate;
 
-import android.content.Context;
-
-import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.data.Result;
 import com.cleanarchitecture.shishkin.api.validate.AbstractValidator;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
@@ -13,12 +9,16 @@ public class PhoneContactItemValidator extends AbstractValidator {
 
     public static final String NAME = PhoneContactItemValidator.class.getName();
 
+    public PhoneContactItemValidator() {
+        add(new PhoneValidator());
+    }
+
     @Override
     public Result<Boolean> validate(final Object object) {
-        final Result<Boolean> result = new Result<>();
+        Result<Boolean> result = new Result<>();
 
         if (object == null) {
-            return result.setResult(false).setError(NAME, "Объект пуст");
+            return result.setResult(false);
         }
 
         if (object instanceof PhoneContactItem) {
@@ -30,22 +30,9 @@ public class PhoneContactItemValidator extends AbstractValidator {
                 return result.setResult(false).setError(NAME, "Нет телефонов");
             }
         } else if (object instanceof String) {
-            final String phone = (String) object;
-            if (!StringUtils.isNullOrEmpty(phone)) {
-                final int length = StringUtils.getDigits(phone).length();
-                if (length == 7 || length == 11) {
-                    return result.setResult(true);
-                } else if (length == 3) {
-                    return result.setResult(true);
-                } else if (length > 11) {
-                    final Context context = AdminUtils.getContext();
-                    if (context != null) {
-                        return result.setResult(false).setError(NAME, context.getString(R.string.error_phone_max_length, phone));
-                    }
-                }
-            }
+            return get(PhoneValidator.NAME).validate(object);
         }
-        return result.setResult(false).setError(NAME, "Прочие ошибки");
+        return result.setResult(true);
     }
 
     @Override
