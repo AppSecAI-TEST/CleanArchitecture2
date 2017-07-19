@@ -50,6 +50,7 @@
     <string name="error_activity_not_valid">Activity уже уничтожена</string>
     <string name="error_geocoder_not_found">Служба геодекодирования не найдена. Перегрузите устройство. При повторяющейся ошибке запретите определение местоположения приложению</string>
     <string name="error_phone_max_length">Количество цифр в номере телефона %s превышает 11</string>
+    <string name="error_phone_min_length">Количество цифр в номере телефона %s менее 3</string>
     <string name="error_subscriber_empty">Подписчик проверки пуст</string>
     <string name="error_validator_not_found">Не найден валидатор</string>
     <string name="error_sufix">\nЕсли Вам не понятна ошибка свяжитесь с разработчиками программы</string>
