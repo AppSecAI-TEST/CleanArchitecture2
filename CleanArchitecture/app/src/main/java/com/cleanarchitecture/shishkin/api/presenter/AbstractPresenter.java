@@ -56,11 +56,13 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IMailSubscr
         mModel = model;
 
         if (validate()) {
-            if (getState() == Lifecycle.STATE_RESUME || getState() == Lifecycle.STATE_READY) {
-                updateView();
-            } else {
-                AdminUtils.addMail(new UpdateViewPresenterMail(getName()));
-            }
+            updateView();
+
+            //if (getState() == Lifecycle.STATE_RESUME || getState() == Lifecycle.STATE_READY) {
+            //    updateView();
+            //} else {
+            //    AdminUtils.addMail(new UpdateViewPresenterMail(getName()));
+            //}
         }
     }
 

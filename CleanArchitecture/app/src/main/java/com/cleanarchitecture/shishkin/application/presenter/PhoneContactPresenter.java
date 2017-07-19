@@ -124,6 +124,8 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
 
     @Override
     public void onResumeLifecycle() {
+        super.onResumeLifecycle();
+
         if (AdminUtils.getPreferences().getSettingShowTooltip()) {
             AdminUtils.postEvent(new ShowTooltipEvent(mSearchView.get(), R.string.tooltip_search, Gravity.BOTTOM));
         }
