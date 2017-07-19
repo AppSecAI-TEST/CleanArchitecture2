@@ -40,6 +40,8 @@ import com.google.common.io.Files;
 import java.io.File;
 import java.util.List;
 
+import me.leolin.shortcutbadger.ShortcutBadger;
+
 @SuppressWarnings("unused")
 public class AdminUtils {
 
@@ -634,6 +636,21 @@ public class AdminUtils {
         }
     }
 
+    public static void showShortcutBadger(final int count) {
+        if (count >= 0) {
+            final Context context = getContext();
+            if (context != null) {
+                ShortcutBadger.applyCount(context, count);
+            }
+        }
+    }
+
+    public static void hideShortcutBadger() {
+        final Context context = getContext();
+        if (context != null) {
+            ShortcutBadger.removeCount(context);
+        }
+    }
 
     private AdminUtils() {
     }

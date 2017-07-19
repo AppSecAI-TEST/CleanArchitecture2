@@ -140,4 +140,7 @@ dependencies {
     // Color Picker
     compile 'com.larswerkman:HoloColorPicker:1.5'
 
+    // ShortcutBadger
+    compile "me.leolin:ShortcutBadger:1.1.17"
+
 }
