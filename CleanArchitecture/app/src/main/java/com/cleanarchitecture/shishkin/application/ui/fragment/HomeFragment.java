@@ -147,6 +147,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
         AdminUtils.postEvent(new ToolbarSetBackNavigationEvent(true));
         AdminUtils.postEvent(new ToolbarSetItemEvent(R.mipmap.ic_share_variant, true));
         AdminUtils.postEvent(new ToolbarSetBadgeEvent(2, true));
+        AdminUtils.showShortcutBadger(2);
         //AdminUtils.postEvent(new ToolbarSetStatePopupMenuItemEvent(R.id.desktop_order, ToolbarPresenter.POPOP_MENU_ITEM_STATE_DISABLED));
     }
 
@@ -239,6 +240,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
             } else if (event.getView().getId() == R.id.title) {
                 AdminUtils.postEvent(new ToolbarSetBadgeEvent(0, false));
                 AdminUtils.postEvent(new ShowToastEvent("Click on Toolbar title"));
+                AdminUtils.hideShortcutBadger();
             }
         }
     }
