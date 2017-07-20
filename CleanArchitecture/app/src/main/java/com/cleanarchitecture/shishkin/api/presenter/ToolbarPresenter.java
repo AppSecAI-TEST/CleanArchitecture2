@@ -315,7 +315,7 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     public void setBadge(final int count, final boolean isVisible) {
         ApplicationUtils.runOnUiThread(() -> {
             if (validate()) {
-                if (isVisible) {
+                if (isVisible && count > 0) {
                     mBadgeView.get().showCirclePointBadge();
                     mBadgeView.get().showTextBadge(String.valueOf(count));
                 } else {
@@ -332,7 +332,6 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         setTitle(0, null);
         setMenu(0, false);
         setItem(0, false);
-        setBadge(0, false);
         setBackNavigation(false);
 
         checkNetStatus();
