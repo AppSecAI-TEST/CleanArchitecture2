@@ -154,7 +154,7 @@ public class ActivityController extends AbstractController<IActivity> implements
     public void onShowErrorMessageEvent(ShowErrorMessageEvent event) {
         final IActivity subscriber = getSubscriber();
         if (subscriber != null && subscriber.validate() && (subscriber.getActivity().getState() == Lifecycle.STATE_RESUME || subscriber.getActivity().getState() == Lifecycle.STATE_PAUSE)) {
-            new MaterialDialogExt(subscriber.getActivity(), event.getId(), R.string.error, event.getMessage(), R.string.ok_upper, MaterialDialogExt.NO_BUTTON, false).show();
+            new MaterialDialogExt(subscriber.getActivity(), event.getId(), R.string.warning, event.getMessage(), R.string.ok_upper, MaterialDialogExt.NO_BUTTON, false).show();
         }
     }
 
