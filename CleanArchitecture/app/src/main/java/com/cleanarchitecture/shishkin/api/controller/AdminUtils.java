@@ -583,6 +583,15 @@ public class AdminUtils {
     }
 
     /**
+     * Получить модуль уведомлений
+     *
+     * @return модуль уведомлений
+     */
+    public static INotificationModule getNotificationModule() {
+        return Admin.getInstance().get(NotificationModule.NAME);
+    }
+
+    /**
      * Получить модуль Application Preferences
      *
      * @return модуль Application Preferences

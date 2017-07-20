@@ -19,6 +19,7 @@ import com.cleanarchitecture.shishkin.api.controller.IDesktopController;
 import com.cleanarchitecture.shishkin.api.controller.IDesktopSubscriber;
 import com.cleanarchitecture.shishkin.api.controller.ILocationController;
 import com.cleanarchitecture.shishkin.api.controller.ILocationSubscriber;
+import com.cleanarchitecture.shishkin.api.controller.INotificationModule;
 import com.cleanarchitecture.shishkin.api.controller.LocationController;
 import com.cleanarchitecture.shishkin.api.event.ShowFragmentEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.OnToolbarClickEvent;
@@ -34,7 +35,6 @@ import com.cleanarchitecture.shishkin.api.event.ui.ShowToastEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseFinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.api.presenter.OnBackPressedPresenter;
-import com.cleanarchitecture.shishkin.api.service.NotificationService;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.api.ui.fragment.SettingApplicationFragment;
 import com.cleanarchitecture.shishkin.api.ui.item.SettingsDesktopOrderItem;
@@ -171,7 +171,10 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
             }
         }
 
-        NotificationService.replaceMessage(getContext(), sb.toString());
+        final INotificationModule module = AdminUtils.getNotificationModule();
+        if (module != null) {
+            module.replaceMessage(sb.toString());
+        }
     }
 
     @Override
