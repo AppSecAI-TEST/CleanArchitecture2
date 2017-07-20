@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.common.lifecycle;
+package com.cleanarchitecture.shishkin.common.state;
 
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.IPresenterController;
@@ -10,29 +10,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * State machine.
- */
-public class StateMachine implements IStateable {
+public class StateObservable implements IStateable {
     private List<WeakReference<IStateable>> mList = Collections.synchronizedList(new ArrayList<>());
-    private int mState = Lifecycle.STATE_CREATE;
+    private int mState = ViewStateObserver.STATE_CREATE;
     private boolean mLostStateData = false;
 
-    public StateMachine(final int state) {
+    public StateObservable(final int state) {
         setState(state);
     }
 
-    /**
-     * Установить текущее состояние объекта
-     *
-     * @param state текущее состояние объекта
-     */
     @Override
     public synchronized void setState(final int state) {
         mState = state;
         for (WeakReference<IStateable> stateable : mList) {
             if (stateable != null && stateable.get() != null) {
-                if (mState == Lifecycle.STATE_DESTROY) {
+                if (mState == ViewStateObserver.STATE_DESTROY) {
                     saveOrClearStateData(stateable.get());
                 }
                 stateable.get().setState(mState);
@@ -40,11 +32,6 @@ public class StateMachine implements IStateable {
         }
     }
 
-    /**
-     * Получить текущее состояние объекта
-     *
-     * @return текущее состояние объекта
-     */
     public synchronized int getState() {
         return mState;
     }

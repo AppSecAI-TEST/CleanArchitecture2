@@ -3,12 +3,13 @@ package com.cleanarchitecture.shishkin.api.validate;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class AbstractValidator<T> implements IValidator<T> {
 
-    private Map<String, IValidator> mValidators = Collections.synchronizedMap(new ConcurrentHashMap<String, IValidator>());
+    private Map<String, IValidator> mValidators = new HashMap<>();
 
     @Override
     public T fix(T object) {

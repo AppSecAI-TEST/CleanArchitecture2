@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.common.lifecycle;
+package com.cleanarchitecture.shishkin.common.state;
 
 public interface IStateable {
 

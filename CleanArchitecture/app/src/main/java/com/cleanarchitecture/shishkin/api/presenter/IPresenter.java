@@ -4,9 +4,9 @@ import android.os.Bundle;
 
 import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.api.ui.IView;
-import com.cleanarchitecture.shishkin.common.lifecycle.ILifecycle;
+import com.cleanarchitecture.shishkin.common.state.IViewStateListener;
 
-public interface IPresenter<M> extends ILifecycle, IView, IModuleSubscriber {
+public interface IPresenter<M> extends IViewStateListener, IView, IModuleSubscriber {
 
     /**
      * Установить модель презентера

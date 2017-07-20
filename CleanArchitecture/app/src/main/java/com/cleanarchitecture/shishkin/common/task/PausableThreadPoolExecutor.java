@@ -1,7 +1,7 @@
 package com.cleanarchitecture.shishkin.common.task;
 
-import com.cleanarchitecture.shishkin.common.lifecycle.ILifecycle;
-import com.cleanarchitecture.shishkin.common.lifecycle.Lifecycle;
+import com.cleanarchitecture.shishkin.common.state.IViewStateListener;
+import com.cleanarchitecture.shishkin.common.state.ViewStateObserver;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -9,11 +9,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class PausableThreadPoolExecutor extends ThreadPoolExecutor implements ILifecycle {
+public class PausableThreadPoolExecutor extends ThreadPoolExecutor implements IViewStateListener {
     private boolean isPaused;
     private ReentrantLock mLock;
     private Condition mCondition;
-    private Lifecycle mLifecycle;
+    private ViewStateObserver mLifecycle;
 
     /**
      * @param corePoolSize    The size of the pool
@@ -27,7 +27,7 @@ public class PausableThreadPoolExecutor extends ThreadPoolExecutor implements IL
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
         mLock = new ReentrantLock();
         mCondition = mLock.newCondition();
-        mLifecycle = new Lifecycle(this);
+        mLifecycle = new ViewStateObserver(this);
     }
 
     /**
@@ -92,25 +92,25 @@ public class PausableThreadPoolExecutor extends ThreadPoolExecutor implements IL
     }
 
     @Override
-    public void onCreateLifecycle() {
+    public void onCreateState() {
     }
 
     @Override
-    public void onReadyLifecycle() {
+    public void onReadyState() {
     }
 
     @Override
-    public void onResumeLifecycle() {
+    public void onResumeState() {
         resume();
     }
 
     @Override
-    public void onPauseLifecycle() {
+    public void onPauseState() {
         pause();
     }
 
     @Override
-    public void onDestroyLifecycle() {
+    public void onDestroyState() {
         if (!isShutdown()) {
             shutdown();
         }

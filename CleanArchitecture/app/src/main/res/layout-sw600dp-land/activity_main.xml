@@ -30,7 +30,7 @@
                 android:layout_width="@dimen/sidemenu_width"
                 android:layout_height="match_parent" />
 
-            <View style="@style/VerticalDivider" />
+            <View style="@style/VerticalDividerDark" />
 
             <FrameLayout
                 android:id="@+id/content"

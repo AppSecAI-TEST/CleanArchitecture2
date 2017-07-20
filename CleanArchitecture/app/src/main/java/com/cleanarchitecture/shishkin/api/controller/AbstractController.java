@@ -1,7 +1,7 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
-import com.cleanarchitecture.shishkin.common.lifecycle.IStateable;
-import com.cleanarchitecture.shishkin.common.lifecycle.Lifecycle;
+import com.cleanarchitecture.shishkin.common.state.IStateable;
+import com.cleanarchitecture.shishkin.common.state.ViewStateObserver;
 
 import java.lang.ref.WeakReference;
 import java.util.Map;
@@ -69,7 +69,7 @@ public abstract class AbstractController<T extends ISubscriber> extends Abstract
         if (!mSubscribers.isEmpty()) {
             for (WeakReference<T> ref : mSubscribers.values()) {
                 if (ref.get() instanceof IStateable) {
-                    if (((IStateable) ref.get()).getState() == Lifecycle.STATE_RESUME) {
+                    if (((IStateable) ref.get()).getState() == ViewStateObserver.STATE_RESUME) {
                         return ref.get();
                     }
                 }

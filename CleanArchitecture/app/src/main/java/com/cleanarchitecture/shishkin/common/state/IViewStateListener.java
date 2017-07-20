@@ -1,32 +1,32 @@
-package com.cleanarchitecture.shishkin.common.lifecycle;
+package com.cleanarchitecture.shishkin.common.state;
 
 /**
- * Интерфейс объекта, имеющего состояния
+ * Интерфейс слушателя View объекта, имеющего состояния
  */
-public interface ILifecycle extends IStateable {
+public interface IViewStateListener extends IStateable {
     /**
      * Событие - объект на этапе создания
      */
-    void onCreateLifecycle();
+    void onCreateState();
 
     /**
      * Событие - объект готов к использованию
      */
-    void onReadyLifecycle();
+    void onReadyState();
 
     /**
      * Событие - объект становиться видимым на экране
      */
-    void onResumeLifecycle();
+    void onResumeState();
 
     /**
      * Событие - объект уходит в фон
      */
-    void onPauseLifecycle();
+    void onPauseState();
 
     /**
      * Событие - уничтожение объекта
      */
-    void onDestroyLifecycle();
+    void onDestroyState();
 
 }
