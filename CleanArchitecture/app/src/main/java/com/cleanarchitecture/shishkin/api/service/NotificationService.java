@@ -12,6 +12,7 @@ import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
+import com.cleanarchitecture.shishkin.api.controller.NotificationModule;
 import com.cleanarchitecture.shishkin.application.ui.activity.MainActivity;
 import com.cleanarchitecture.shishkin.common.utils.IntentUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
@@ -27,22 +28,16 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings("unused")
 public class NotificationService extends LiveLongBackgroundIntentService {
 
-    private static final String NAME = NotificationService.class.getName();
+    public static final String NAME = NotificationService.class.getName();
+
     private static final String LOG_TAG = "NotificationService:";
     private static final String CANAL_ID = "CANAL_" + BuildConfig.APPLICATION_ID;
     private static final String CANAL_NAME = "Notification Service Canal";
-
     public static final String ACTION_CLICK = BuildConfig.APPLICATION_ID + ".NotificationService.ACTION_CLICK";
     public static final String ACTION_DELETE_MESSAGES = BuildConfig.APPLICATION_ID + "action.NotificationBroadcastReceiver.ACTION_DELETE_MESSAGES";
-    private static final String ACTION_ADD_MESSAGE = BuildConfig.APPLICATION_ID + ".NotificationService.ACTION_ADD_MESSAGE";
-    private static final String ACTION_ADD_DISTINCT_MESSAGE = BuildConfig.APPLICATION_ID + ".NotificationService.ACTION_ADD_DISTINCT_MESSAGE";
-    private static final String ACTION_REPLACE_MESSAGE = BuildConfig.APPLICATION_ID + ".NotificationService.ACTION_REPLACE_MESSAGE";
-    private static final String ACTION_REFRESH = BuildConfig.APPLICATION_ID + ".NotificationService.ACTION_REFRESH";
-    private static final String ACTION_CLEAR = BuildConfig.APPLICATION_ID + ".NotificationService.ACTION_CLEAR";
-    private static final String ACTION_SET_MESSAGES_COUNT = BuildConfig.APPLICATION_ID + ".NotificationService.ACTION_SET_MESSAGES_COUNT";
+
     private List<String> mMessages;
     private int mMessagesCount = 5;
-
     private static final TimeUnit TIMEUNIT = TimeUnit.MINUTES;
     private static final long TIMEUNIT_DURATION = 5L;
 
@@ -59,90 +54,13 @@ public class NotificationService extends LiveLongBackgroundIntentService {
         setShutdownTimeout(TIMEUNIT.toMillis(TIMEUNIT_DURATION));
     }
 
-
     /**
-     * Добавить сообщщение.
-     *
-     * @param text текст сообщения
-     */
-    public static synchronized void addMessage(final Context context, final String text) {
-        if (context != null) {
-            final Intent intent = IntentUtils.createActionIntent(context, NotificationService.class,
-                    ACTION_ADD_MESSAGE);
-            intent.putExtra(Intent.EXTRA_TEXT, text);
-            context.startService(intent);
-        }
-    }
-
-    /**
-     * Добавить сообщение, если его нет в списке сообщений
-     *
-     * @param text текст сообщения
-     */
-    public static synchronized void addDistinctMessage(final Context context, final String text) {
-        if (context != null) {
-            final Intent intent = IntentUtils.createActionIntent(context, NotificationService.class,
-                    ACTION_ADD_DISTINCT_MESSAGE);
-            intent.putExtra(Intent.EXTRA_TEXT, text);
-            context.startService(intent);
-        }
-    }
-
-    /**
-     * Заменить сообщение
-     *
-     * @param text текст сообщения
-     */
-    public static synchronized void replaceMessage(final Context context, final String text) {
-        if (context != null) {
-            final Intent intent = IntentUtils.createActionIntent(context, NotificationService.class,
-                    ACTION_REPLACE_MESSAGE);
-            intent.putExtra(Intent.EXTRA_TEXT, text);
-            context.startService(intent);
-        }
-    }
-
-    /**
-     * Обновить зону уведомлений
-     */
-    public static synchronized void refresh(final Context context) {
-        if (context != null) {
-            final Intent intent = IntentUtils.createActionIntent(context, NotificationService.class,
-                    ACTION_REFRESH);
-            context.startService(intent);
-        }
-    }
-
-    /**
-     * Очистить зону уведомлений
-     */
-    public static synchronized void clear(final Context context) {
-        if (context != null) {
-            final Intent intent = IntentUtils.createActionIntent(context, NotificationService.class,
-                    ACTION_CLEAR);
-            context.startService(intent);
-        }
-    }
-
-    /**
-     * Очистить список сообщений
+     * Очистить список сообщений в зоне уведомлениц
      */
     public static synchronized void clearMessages(final Context context) {
         if (context != null) {
             final Intent intent = IntentUtils.createActionIntent(context, NotificationService.class,
                     ACTION_DELETE_MESSAGES);
-            context.startService(intent);
-        }
-    }
-
-    /**
-     * установить максимальное кол-во сообщений
-     */
-    public static synchronized void setMessagesCount(final Context context, final int count) {
-        if (context != null) {
-            final Intent intent = IntentUtils.createActionIntent(context, NotificationService.class,
-                    ACTION_SET_MESSAGES_COUNT);
-            intent.putExtra(Intent.EXTRA_TEXT, String.valueOf(count));
             context.startService(intent);
         }
     }
@@ -156,28 +74,28 @@ public class NotificationService extends LiveLongBackgroundIntentService {
 
         final String action = intent.getAction();
 
-        if (ACTION_ADD_MESSAGE.equals(action)) {
+        if (NotificationModule.ACTION_ADD_MESSAGE.equals(action)) {
             final String text = intent.getStringExtra(Intent.EXTRA_TEXT);
             onHandleAddMessageAction(text);
 
-        } else if (ACTION_ADD_DISTINCT_MESSAGE.equals(action)) {
+        } else if (NotificationModule.ACTION_ADD_DISTINCT_MESSAGE.equals(action)) {
             final String text = intent.getStringExtra(Intent.EXTRA_TEXT);
             onHandleAddDistinctMessageAction(text);
 
-        } else if (ACTION_REPLACE_MESSAGE.equals(action)) {
+        } else if (NotificationModule.ACTION_REPLACE_MESSAGE.equals(action)) {
             final String text = intent.getStringExtra(Intent.EXTRA_TEXT);
             onHandleReplaceMessageAction(text);
 
-        } else if (ACTION_REFRESH.equals(action)) {
+        } else if (NotificationModule.ACTION_REFRESH_MESSAGES.equals(action)) {
             onHandleRefreshAction();
 
-        } else if (ACTION_CLEAR.equals(action)) {
+        } else if (NotificationModule.ACTION_CLEAR_MESSAGES.equals(action)) {
             onHandleClearAction();
 
         } else if (ACTION_DELETE_MESSAGES.equals(action)) {
             onHandleDeleteMessagesAction();
 
-        } else if (ACTION_SET_MESSAGES_COUNT.equals(action)) {
+        } else if (NotificationModule.ACTION_SET_MESSAGES_COUNT.equals(action)) {
             final int count = StringUtils.toInt(intent.getStringExtra(Intent.EXTRA_TEXT));
             onHandleSetMessagesCount(count);
         }
