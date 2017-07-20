@@ -2,10 +2,8 @@ package com.cleanarchitecture.shishkin.api.validate;
 
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class AbstractValidator<T> implements IValidator<T> {
 
