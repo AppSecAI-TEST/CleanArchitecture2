@@ -2,7 +2,7 @@ package com.cleanarchitecture.shishkin.api.controller;
 
 import com.annimon.stream.Stream;
 import com.cleanarchitecture.shishkin.api.mail.IMail;
-import com.cleanarchitecture.shishkin.common.lifecycle.Lifecycle;
+import com.cleanarchitecture.shishkin.common.state.ViewStateObserver;
 import com.cleanarchitecture.shishkin.common.task.BaseAsyncTask;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
@@ -113,7 +113,7 @@ public class MailController extends AbstractController<IMailSubscriber> implemen
             if (reference != null && reference.get() != null) {
                 final IMailSubscriber subscriber = reference.get();
                 if (address.equalsIgnoreCase(subscriber.getName())) {
-                    if (subscriber.getState() == Lifecycle.STATE_RESUME) {
+                    if (subscriber.getState() == ViewStateObserver.STATE_RESUME) {
                         new BaseAsyncTask() {
                             @Override
                             public void run() {

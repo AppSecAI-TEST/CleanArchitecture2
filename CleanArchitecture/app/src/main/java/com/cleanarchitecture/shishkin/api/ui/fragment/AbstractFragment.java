@@ -19,8 +19,8 @@ import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.api.controller.MailController;
 import com.cleanarchitecture.shishkin.api.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.api.ui.activity.IActivity;
-import com.cleanarchitecture.shishkin.common.lifecycle.Lifecycle;
-import com.cleanarchitecture.shishkin.common.lifecycle.StateMachine;
+import com.cleanarchitecture.shishkin.common.state.ViewStateObserver;
+import com.cleanarchitecture.shishkin.common.state.StateObservable;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 import com.github.lzyzsd.circleprogress.DonutProgress;
@@ -37,7 +37,7 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
         , IMailSubscriber, IModuleSubscriber {
 
     private Map<String, IPresenter> mPresenters = Collections.synchronizedMap(new ConcurrentHashMap<String, IPresenter>());
-    private StateMachine mStateMachine = new StateMachine(Lifecycle.STATE_CREATE);
+    private StateObservable mStateObservable = new StateObservable(ViewStateObserver.STATE_CREATE);
 
     @Override
     public <V extends View> V findView(@IdRes final int id) {
@@ -52,7 +52,7 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mStateMachine.setState(Lifecycle.STATE_READY);
+        mStateObservable.setState(ViewStateObserver.STATE_READY);
 
         AdminUtils.register(this);
     }
@@ -61,14 +61,14 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
     public void onPause() {
         super.onPause();
 
-        mStateMachine.setState(Lifecycle.STATE_PAUSE);
+        mStateObservable.setState(ViewStateObserver.STATE_PAUSE);
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        mStateMachine.setState(Lifecycle.STATE_RESUME);
+        mStateObservable.setState(ViewStateObserver.STATE_RESUME);
 
         AdminUtils.readMail(this);
     }
@@ -77,16 +77,13 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
     public void onDestroyView() {
         super.onDestroyView();
 
-        mStateMachine.setState(Lifecycle.STATE_DESTROY);
-        mStateMachine.clear();
+        mStateObservable.setState(ViewStateObserver.STATE_DESTROY);
+        mStateObservable.clear();
 
         mPresenters.clear();
 
         AdminUtils.unregister(this);
     }
-
-    @Override
-    public abstract String getName();
 
     @Override
     public List<String> hasSubscriberType() {
@@ -131,7 +128,7 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
     public synchronized void registerPresenter(final IPresenter presenter) {
         AdminUtils.register(presenter);
         mPresenters.put(presenter.getName(), presenter);
-        mStateMachine.addObserver(presenter);
+        mStateObservable.addObserver(presenter);
     }
 
     @Override
@@ -144,7 +141,7 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
 
     @Override
     public int getState() {
-        return mStateMachine.getState();
+        return mStateObservable.getState();
     }
 
     @Override
@@ -153,7 +150,7 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
 
     @Override
     public boolean validate() {
-        return (getState() != Lifecycle.STATE_DESTROY);
+        return (getState() != ViewStateObserver.STATE_DESTROY);
     }
 
     @Override
@@ -161,9 +158,7 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
         if (validate()) {
             final View view = findView(R.id.presenterProgressBar);
             if (view != null) {
-                ApplicationUtils.runOnUiThread(() -> {
-                    view.setVisibility(View.VISIBLE);
-                });
+                ApplicationUtils.runOnUiThread(() -> view.setVisibility(View.VISIBLE));
             }
         }
     }
@@ -187,9 +182,7 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
         if (validate()) {
             final View view = findView(R.id.presenterProgressBar);
             if (view != null) {
-                ApplicationUtils.runOnUiThread(() -> {
-                    view.setVisibility(View.INVISIBLE);
-                });
+                ApplicationUtils.runOnUiThread(() -> view.setVisibility(View.INVISIBLE));
             }
         }
     }
@@ -199,16 +192,14 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
         if (validate()) {
             final View view = findView(R.id.presenterCircleProgressBarLL);
             if (view != null) {
-                ApplicationUtils.runOnUiThread(() -> {
-                    view.setVisibility(View.INVISIBLE);
-                });
+                ApplicationUtils.runOnUiThread(() -> view.setVisibility(View.INVISIBLE));
             }
         }
     }
 
     @Override
     public void setLostStateData(boolean lostStateData) {
-        mStateMachine.setLostStateData(lostStateData);
+        mStateObservable.setLostStateData(lostStateData);
     }
 
     @Override
@@ -218,19 +209,17 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
         }
 
         if (validate()) {
-            ApplicationUtils.runOnUiThread(() -> {
-                new Tooltip.Builder(anchorView)
-                        .setText(getString(resId))
-                        .setCancelable(true)
-                        .setDismissOnClick(true)
-                        .setBackgroundColor(ViewUtils.getColor(getContext(), R.color.tooltip_background))
-                        .setGravity(gravity)
-                        .setCornerRadius(R.dimen.dimen_8dp)
-                        .setPadding(R.dimen.dimen_8dp)
-                        .setTextColor(ViewUtils.getColor(getContext(), R.color.text_dark))
-                        .setTextSize(R.dimen.text_size_large)
-                        .show();
-            });
+            ApplicationUtils.runOnUiThread(() -> new Tooltip.Builder(anchorView)
+                    .setText(getString(resId))
+                    .setCancelable(true)
+                    .setDismissOnClick(true)
+                    .setBackgroundColor(ViewUtils.getColor(getContext(), R.color.tooltip_background))
+                    .setGravity(gravity)
+                    .setCornerRadius(R.dimen.dimen_8dp)
+                    .setPadding(R.dimen.dimen_8dp)
+                    .setTextColor(ViewUtils.getColor(getContext(), R.color.text_dark))
+                    .setTextSize(R.dimen.text_size_large)
+                    .show());
         }
     }
 

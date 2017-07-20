@@ -67,8 +67,8 @@ public class SideMenuPresenter extends AbstractPresenter<Void> implements View.O
     }
 
     @Override
-    public void onDestroyLifecycle() {
-        super.onDestroyLifecycle();
+    public void onDestroyState() {
+        super.onDestroyState();
 
         mSideMenuLL = null;
         mHeader = null;

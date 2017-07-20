@@ -72,8 +72,8 @@ public class SettingsDesktopOrderPresenter extends AbstractPresenter<Void> {
     }
 
     @Override
-    public void onDestroyLifecycle() {
-        super.onDestroyLifecycle();
+    public void onDestroyState() {
+        super.onDestroyState();
 
         mRecyclerView.setAdapter(null);
     }

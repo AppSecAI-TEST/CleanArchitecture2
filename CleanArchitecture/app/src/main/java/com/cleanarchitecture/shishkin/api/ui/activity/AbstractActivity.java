@@ -36,8 +36,8 @@ import com.cleanarchitecture.shishkin.api.event.OnUserIteractionEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.api.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.api.ui.dialog.MaterialDialogExt;
-import com.cleanarchitecture.shishkin.common.lifecycle.Lifecycle;
-import com.cleanarchitecture.shishkin.common.lifecycle.StateMachine;
+import com.cleanarchitecture.shishkin.common.state.ViewStateObserver;
+import com.cleanarchitecture.shishkin.common.state.StateObservable;
 import com.cleanarchitecture.shishkin.common.utils.AppPreferencesUtils;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
@@ -55,7 +55,7 @@ public abstract class AbstractActivity extends LifecycleActivity
         implements IActivity, IBackStack, IMailSubscriber {
 
     private Map<String, IPresenter> mPresenters = Collections.synchronizedMap(new ConcurrentHashMap<String, IPresenter>());
-    private StateMachine mStateMachine = new StateMachine(Lifecycle.STATE_CREATE);
+    private StateObservable mStateObservable = new StateObservable(ViewStateObserver.STATE_CREATE);
 
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
@@ -67,7 +67,7 @@ public abstract class AbstractActivity extends LifecycleActivity
 
         AdminUtils.register(this);
 
-        mStateMachine.setState(Lifecycle.STATE_CREATE);
+        mStateObservable.setState(ViewStateObserver.STATE_CREATE);
     }
 
     @Override
@@ -84,7 +84,7 @@ public abstract class AbstractActivity extends LifecycleActivity
     protected void onStart() {
         super.onStart();
 
-        mStateMachine.setState(Lifecycle.STATE_READY);
+        mStateObservable.setState(ViewStateObserver.STATE_READY);
 
         AdminUtils.postEvent(new OnUserIteractionEvent());
     }
@@ -93,8 +93,8 @@ public abstract class AbstractActivity extends LifecycleActivity
     protected void onDestroy() {
         super.onDestroy();
 
-        mStateMachine.setState(Lifecycle.STATE_DESTROY);
-        mStateMachine.clear();
+        mStateObservable.setState(ViewStateObserver.STATE_DESTROY);
+        mStateObservable.clear();
 
         mPresenters.clear();
 
@@ -107,7 +107,7 @@ public abstract class AbstractActivity extends LifecycleActivity
 
         Admin.getInstance().setCurrentSubscriber(this);
 
-        mStateMachine.setState(Lifecycle.STATE_RESUME);
+        mStateObservable.setState(ViewStateObserver.STATE_RESUME);
 
         AdminUtils.readMail(this);
     }
@@ -116,7 +116,7 @@ public abstract class AbstractActivity extends LifecycleActivity
     protected void onPause() {
         super.onPause();
 
-        mStateMachine.setState(Lifecycle.STATE_PAUSE);
+        mStateObservable.setState(ViewStateObserver.STATE_PAUSE);
     }
 
     /**
@@ -188,7 +188,7 @@ public abstract class AbstractActivity extends LifecycleActivity
     public synchronized void registerPresenter(final IPresenter presenter) {
         AdminUtils.register(presenter);
         mPresenters.put(presenter.getName(), presenter);
-        mStateMachine.addObserver(presenter);
+        mStateObservable.addObserver(presenter);
     }
 
     @Override
@@ -201,7 +201,7 @@ public abstract class AbstractActivity extends LifecycleActivity
 
     @Override
     public int getState() {
-        return mStateMachine.getState();
+        return mStateObservable.getState();
     }
 
     @Override
@@ -226,9 +226,17 @@ public abstract class AbstractActivity extends LifecycleActivity
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                 break;
 
+            // Reversed portrait
+            case Surface.ROTATION_180:
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT);
+                break;
+
             // Reversed landscape
             case Surface.ROTATION_270:
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+                break;
+
+            default:
                 break;
         }
     }
@@ -240,12 +248,12 @@ public abstract class AbstractActivity extends LifecycleActivity
 
     @Override
     public boolean validate() {
-        return (getState() != Lifecycle.STATE_DESTROY && !isFinishing());
+        return (getState() != ViewStateObserver.STATE_DESTROY && !isFinishing());
     }
 
     @Override
     public void setLostStateData(boolean lostStateData) {
-        mStateMachine.setLostStateData(lostStateData);
+        mStateObservable.setLostStateData(lostStateData);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

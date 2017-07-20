@@ -36,8 +36,8 @@ public class SwipeRefreshPresenter extends AbstractPresenter {
     }
 
     @Override
-    public void onDestroyLifecycle() {
-        super.onDestroyLifecycle();
+    public void onDestroyState() {
+        super.onDestroyState();
 
         mSwipeRefreshLayout = null;
     }

@@ -123,8 +123,8 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
     }
 
     @Override
-    public void onResumeLifecycle() {
-        super.onResumeLifecycle();
+    public void onResumeState() {
+        super.onResumeState();
 
         if (AdminUtils.getPreferences().getSettingShowTooltip()) {
             AdminUtils.postEvent(new ShowTooltipEvent(mSearchView.get(), R.string.tooltip_search, Gravity.BOTTOM));
@@ -132,8 +132,8 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
     }
 
     @Override
-    public void onDestroyLifecycle() {
-        super.onDestroyLifecycle();
+    public void onDestroyState() {
+        super.onDestroyState();
 
         if (mDbProvider != null) {
             mDbProvider.removeObserver(PhoneContactViewModel.NAME, this);

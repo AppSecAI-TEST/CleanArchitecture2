@@ -6,8 +6,7 @@ import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.IMailSubscriber;
 import com.cleanarchitecture.shishkin.api.controller.MailController;
 import com.cleanarchitecture.shishkin.api.controller.PresenterController;
-import com.cleanarchitecture.shishkin.api.mail.UpdateViewPresenterMail;
-import com.cleanarchitecture.shishkin.common.lifecycle.Lifecycle;
+import com.cleanarchitecture.shishkin.common.state.ViewStateObserver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.List;
 public abstract class AbstractPresenter<M> implements IPresenter<M>, IMailSubscriber {
 
     private M mModel = null;
-    private Lifecycle mLifecycle = new Lifecycle(this);
+    private ViewStateObserver mLifecycle = new ViewStateObserver(this);
 
     @Override
     public synchronized int getState() {
@@ -28,26 +27,26 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IMailSubscr
     }
 
     @Override
-    public void onCreateLifecycle() {
+    public void onCreateState() {
     }
 
     @Override
-    public void onReadyLifecycle() {
+    public void onReadyState() {
         AdminUtils.register(this);
         updateView();
     }
 
     @Override
-    public void onResumeLifecycle() {
+    public void onResumeState() {
         AdminUtils.readMail(this);
     }
 
     @Override
-    public void onPauseLifecycle() {
+    public void onPauseState() {
     }
 
     @Override
-    public void onDestroyLifecycle() {
+    public void onDestroyState() {
         AdminUtils.unregister(this);
     }
 
@@ -77,7 +76,7 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IMailSubscr
 
     @Override
     public synchronized boolean validate() {
-        return (mLifecycle.getState() != Lifecycle.STATE_DESTROY && mLifecycle.getState() != Lifecycle.STATE_CREATE);
+        return (mLifecycle.getState() != ViewStateObserver.STATE_DESTROY && mLifecycle.getState() != ViewStateObserver.STATE_CREATE);
     }
 
     @Override

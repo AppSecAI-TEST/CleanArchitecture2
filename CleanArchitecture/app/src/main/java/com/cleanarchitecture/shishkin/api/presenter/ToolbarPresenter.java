@@ -137,8 +137,8 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     }
 
     @Override
-    public void onDestroyLifecycle() {
-        super.onDestroyLifecycle();
+    public void onDestroyState() {
+        super.onDestroyState();
 
         dismissMenu();
         mToolbarLL = null;
@@ -197,8 +197,8 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     }
 
     @Override
-    public void onResumeLifecycle() {
-        super.onResumeLifecycle();
+    public void onResumeState() {
+        super.onResumeState();
 
         AdminUtils.postStickyEvent(new ToolbarInitEvent());
     }

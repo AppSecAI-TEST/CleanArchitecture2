@@ -1,11 +1,11 @@
-package com.cleanarchitecture.shishkin.common.lifecycle;
+package com.cleanarchitecture.shishkin.common.state;
 
 import java.lang.ref.WeakReference;
 
 /**
  * Объект, отвечающий за текущее состояние внешнего объекта
  */
-public class Lifecycle {
+public class ViewStateObserver implements IStateable {
     public static final int STATE_CREATE = 0;
     public static final int STATE_READY = 1;
     public static final int STATE_DESTROY = 2;
@@ -13,9 +13,9 @@ public class Lifecycle {
     public static final int STATE_RESUME = 4;
 
     private int mState = STATE_CREATE;
-    private WeakReference<ILifecycle> mListener;
+    private WeakReference<IViewStateListener> mListener;
 
-    public Lifecycle(final ILifecycle listener) {
+    public ViewStateObserver(final IViewStateListener listener) {
         if (listener != null) {
             mListener = new WeakReference<>(listener);
         }
@@ -27,6 +27,7 @@ public class Lifecycle {
      *
      * @return состояние объекта
      */
+    @Override
     public int getState() {
         return mState;
     }
@@ -36,27 +37,28 @@ public class Lifecycle {
      *
      * @param state состояние объекта
      */
+    @Override
     public void setState(final int state) {
         mState = state;
         switch (mState) {
             case STATE_CREATE:
-                onCreateLifecycle();
+                onCreateState();
                 break;
 
             case STATE_READY:
-                onViewCreatedLifecycle();
+                onViewCreatedState();
                 break;
 
             case STATE_DESTROY:
-                onDestroyLifecycle();
+                onDestroyState();
                 break;
 
             case STATE_PAUSE:
-                onPauseLifecycle();
+                onPauseState();
                 break;
 
             case STATE_RESUME:
-                onResumeLifecycle();
+                onResumeState();
                 break;
 
             default:
@@ -65,33 +67,33 @@ public class Lifecycle {
         }
     }
 
-    private void onCreateLifecycle() {
+    private void onCreateState() {
         if (mListener != null && mListener.get() != null) {
-            mListener.get().onCreateLifecycle();
+            mListener.get().onCreateState();
         }
     }
 
-    private void onViewCreatedLifecycle() {
+    private void onViewCreatedState() {
         if (mListener != null && mListener.get() != null) {
-            mListener.get().onReadyLifecycle();
+            mListener.get().onReadyState();
         }
     }
 
-    private void onResumeLifecycle() {
+    private void onResumeState() {
         if (mListener != null && mListener.get() != null) {
-            mListener.get().onResumeLifecycle();
+            mListener.get().onResumeState();
         }
     }
 
-    private void onPauseLifecycle() {
+    private void onPauseState() {
         if (mListener != null && mListener.get() != null) {
-            mListener.get().onPauseLifecycle();
+            mListener.get().onPauseState();
         }
     }
 
-    private void onDestroyLifecycle() {
+    private void onDestroyState() {
         if (mListener != null && mListener.get() != null) {
-            mListener.get().onDestroyLifecycle();
+            mListener.get().onDestroyState();
         }
     }
 }

@@ -8,7 +8,7 @@ import android.telephony.TelephonyManager;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.repository.requests.AbstractRequest;
 import com.cleanarchitecture.shishkin.api.repository.requests.IRequest;
-import com.cleanarchitecture.shishkin.common.lifecycle.Lifecycle;
+import com.cleanarchitecture.shishkin.common.state.ViewStateObserver;
 import com.cleanarchitecture.shishkin.common.net.Connectivity;
 import com.cleanarchitecture.shishkin.common.task.PausableThreadPoolExecutor;
 
@@ -99,7 +99,7 @@ public class PhonePausableThreadPoolExecutor implements IPhonePausableThreadPool
     @Override
     public synchronized void setPaused(final boolean paused) {
         if (paused && !mPausableThreadPoolExecutor.isPaused()) {
-            mPausableThreadPoolExecutor.setState(Lifecycle.STATE_PAUSE);
+            mPausableThreadPoolExecutor.setState(ViewStateObserver.STATE_PAUSE);
         }
 
         final Context context = AdminUtils.getContext();
@@ -108,7 +108,7 @@ public class PhonePausableThreadPoolExecutor implements IPhonePausableThreadPool
                 setThreadCount(Connectivity.getActiveNetworkInfo(context));
                 mPausableThreadPoolExecutor.setCorePoolSize(mThreadCount);
                 mPausableThreadPoolExecutor.setMaximumPoolSize(mMaxThreadCount);
-                mPausableThreadPoolExecutor.setState(Lifecycle.STATE_RESUME);
+                mPausableThreadPoolExecutor.setState(ViewStateObserver.STATE_RESUME);
             }
         }
     }
