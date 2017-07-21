@@ -129,7 +129,6 @@ dependencies {
     compile 'com.github.vihtarb:tooltip:0.1.9'
 
     // Expandable Layout
-    //compile 'com.github.aakira:expandable-layout:1.6.0'
     compile 'net.cachapa.expandablelayout:expandablelayout:2.9.1'
 
     // BadgeView
