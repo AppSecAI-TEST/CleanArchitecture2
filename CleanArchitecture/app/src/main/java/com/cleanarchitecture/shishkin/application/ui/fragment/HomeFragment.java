@@ -33,6 +33,7 @@ import com.cleanarchitecture.shishkin.api.event.ui.HideHorizontalProgressBarEven
 import com.cleanarchitecture.shishkin.api.event.ui.HideKeyboardEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowToastEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseFinishApplicationEvent;
+import com.cleanarchitecture.shishkin.api.presenter.ExpandableBoardPresenter;
 import com.cleanarchitecture.shishkin.api.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.api.presenter.OnBackPressedPresenter;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
@@ -40,7 +41,6 @@ import com.cleanarchitecture.shishkin.api.ui.fragment.SettingApplicationFragment
 import com.cleanarchitecture.shishkin.api.ui.item.SettingsDesktopOrderItem;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewIdleEvent;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewScrolledEvent;
-import com.cleanarchitecture.shishkin.application.presenter.ExpandableBoardPresenter;
 import com.cleanarchitecture.shishkin.application.presenter.FloatingActionMenuPresenter;
 import com.cleanarchitecture.shishkin.application.presenter.PhoneContactPresenter;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
@@ -124,7 +124,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
 
     @Override
     public boolean onBackPressed() {
-        setLostStateData(true);
+        mSearchPresenter.setLostStateData(true);
 
         final boolean result = super.onBackPressed();
         if (!result) {
@@ -146,8 +146,6 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
         }
         AdminUtils.postEvent(new ToolbarSetBackNavigationEvent(true));
         AdminUtils.postEvent(new ToolbarSetItemEvent(R.mipmap.ic_share_variant, true));
-        AdminUtils.postEvent(new ToolbarSetBadgeEvent(2, true));
-        AdminUtils.showShortcutBadger(2);
         //AdminUtils.postEvent(new ToolbarSetStatePopupMenuItemEvent(R.id.desktop_order, ToolbarPresenter.POPOP_MENU_ITEM_STATE_DISABLED));
     }
 
@@ -173,7 +171,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
 
         final INotificationModule module = AdminUtils.getNotificationModule();
         if (module != null) {
-            module.replaceMessage(sb.toString());
+            module.replaceMessageAll(sb.toString());
         }
     }
 
@@ -244,6 +242,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
                 AdminUtils.postEvent(new ToolbarSetBadgeEvent(0, false));
                 AdminUtils.postEvent(new ShowToastEvent("Click on Toolbar title"));
                 AdminUtils.hideShortcutBadger();
+                AdminUtils.getNotificationModule().clearAll();
             }
         }
     }

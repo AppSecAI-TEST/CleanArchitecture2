@@ -60,13 +60,6 @@ public interface IFragment extends ISubscriber, IView {
     boolean validate();
 
     /**
-     * Установить флаг, очищать данные о состоянии презентеров
-     *
-     * @param lostStateData true - очищать данные
-     */
-    void setLostStateData(boolean lostStateData);
-
-    /**
      * Показать Circle Progress Bar
      *
      * @param progress текущая позиция

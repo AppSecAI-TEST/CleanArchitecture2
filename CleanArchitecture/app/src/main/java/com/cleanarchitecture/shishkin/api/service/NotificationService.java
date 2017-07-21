@@ -13,6 +13,7 @@ import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
 import com.cleanarchitecture.shishkin.api.controller.NotificationModule;
+import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBadgeEvent;
 import com.cleanarchitecture.shishkin.application.ui.activity.MainActivity;
 import com.cleanarchitecture.shishkin.common.utils.IntentUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
@@ -103,8 +104,18 @@ public class NotificationService extends LiveLongBackgroundIntentService {
 
     private synchronized void sendNotification(final String message) {
         try {
+
+            final int count = mMessages.size();
+            if (mMessages.size() > 0) {
+                AdminUtils.showShortcutBadger(count);
+                AdminUtils.postEvent(new ToolbarSetBadgeEvent(count, true));
+            } else {
+                AdminUtils.hideShortcutBadger();
+                AdminUtils.postEvent(new ToolbarSetBadgeEvent(count, false));
+            }
+
             final StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < mMessages.size(); i++) {
+            for (int i = 0; i < count; i++) {
                 sb.append(mMessages.get(i));
                 sb.append("\n\n");
             }
@@ -209,6 +220,9 @@ public class NotificationService extends LiveLongBackgroundIntentService {
     private void onHandleClearAction() {
         mMessages.clear();
 
+        AdminUtils.hideShortcutBadger();
+        AdminUtils.postEvent(new ToolbarSetBadgeEvent(0, false));
+
         final NotificationManager nm = AdminUtils.getSystemService(Context.NOTIFICATION_SERVICE);
         if (nm != null) {
             nm.cancelAll();
@@ -217,6 +231,9 @@ public class NotificationService extends LiveLongBackgroundIntentService {
 
     @WorkerThread
     private void onHandleDeleteMessagesAction() {
+        AdminUtils.hideShortcutBadger();
+        AdminUtils.postEvent(new ToolbarSetBadgeEvent(0, false));
+
         mMessages.clear();
     }
 

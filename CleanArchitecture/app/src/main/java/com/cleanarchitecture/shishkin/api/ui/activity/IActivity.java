@@ -105,11 +105,4 @@ public interface IActivity extends IModuleSubscriber {
      * @param event событие
      */
     void onDialogResultEvent(DialogResultEvent event);
-
-    /**
-     * Установить флаг, очищать данные о состоянии презентеров
-     *
-     * @param lostStateData true - очищать данные
-     */
-    void setLostStateData(boolean lostStateData);
 }

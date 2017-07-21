@@ -4,8 +4,10 @@ import android.os.Bundle;
 
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.IMailSubscriber;
+import com.cleanarchitecture.shishkin.api.controller.IPresenterController;
 import com.cleanarchitecture.shishkin.api.controller.MailController;
 import com.cleanarchitecture.shishkin.api.controller.PresenterController;
+import com.cleanarchitecture.shishkin.api.mail.UpdateViewPresenterMail;
 import com.cleanarchitecture.shishkin.common.state.ViewStateObserver;
 
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IMailSubscr
 
     private M mModel = null;
     private ViewStateObserver mLifecycle = new ViewStateObserver(this);
+    private boolean mLostStateData = false;
 
     @Override
     public synchronized int getState() {
@@ -48,20 +51,25 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IMailSubscr
     @Override
     public void onDestroyState() {
         AdminUtils.unregister(this);
+
+        final IPresenterController controller = AdminUtils.getPresenterController();
+        if (controller != null) {
+            if (!mLostStateData) {
+                controller.saveStateData(getName(), getStateData());
+            } else {
+                controller.clearStateData(getName());
+            }
+        }
     }
 
     @Override
     public synchronized void setModel(final M model) {
         mModel = model;
 
-        if (validate()) {
+        if (getState() == ViewStateObserver.STATE_RESUME || getState() == ViewStateObserver.STATE_READY) {
             updateView();
-
-            //if (getState() == Lifecycle.STATE_RESUME || getState() == Lifecycle.STATE_READY) {
-            //    updateView();
-            //} else {
-            //    AdminUtils.addMail(new UpdateViewPresenterMail(getName()));
-            //}
+        } else {
+            AdminUtils.addMail(new UpdateViewPresenterMail(getName()));
         }
     }
 
@@ -99,4 +107,10 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IMailSubscr
     public Bundle getStateData() {
         return null;
     }
+
+    public void setLostStateData(boolean lostStateData) {
+        mLostStateData = lostStateData;
+    }
+
+
 }
