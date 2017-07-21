@@ -45,7 +45,7 @@ import java.util.List;
  * @see android.os.AsyncTask
  */
 @SuppressWarnings("unused")
-public abstract class LiveLongBackgroundIntentService extends Service
+public abstract class ShortlyLiveBackgroundIntentService extends Service
         implements AutoCompleteHandler.OnHandleEventListener<Intent>,
         AutoCompleteHandler.OnShutdownListener, IModuleSubscriber {
 
@@ -59,7 +59,7 @@ public abstract class LiveLongBackgroundIntentService extends Service
      *
      * @param name Used to name the worker thread, important only for debugging.
      */
-    public LiveLongBackgroundIntentService(final String name) {
+    public ShortlyLiveBackgroundIntentService(final String name) {
         super();
         mName = name;
     }
@@ -77,7 +77,7 @@ public abstract class LiveLongBackgroundIntentService extends Service
 
         AdminUtils.register(this);
 
-        mServiceHandler = new AutoCompleteHandler<>("LiveLongAndProsperIntentService [" + mName + "]");
+        mServiceHandler = new AutoCompleteHandler<>("ShortlyLiveBackgroundIntentService [" + mName + "]");
         mServiceHandler.setOnHandleEventListener(this);
         mServiceHandler.setOnShutdownListener(this);
     }

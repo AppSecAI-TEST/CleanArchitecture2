@@ -38,7 +38,7 @@ public class PhoneContactLiveData extends AbstractContentProviderLiveData<List<P
         AdminUtils.postEvent(new ShowHorizontalProgressBarEvent());
         AdminUtils.postEvent(new RepositoryRequestGetContactsEvent()
                 .setExpired(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1))
-                .setCacheType(CacheUtils.USE_CACHE)
+                .setCacheType(CacheUtils.USE_ONLY_CACHE)
                 .setId(Constant.REPOSITORY_GET_CONTACTS));
     }
 

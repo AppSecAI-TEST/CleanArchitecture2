@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-//import com.github.snowdream.android.util.Log;
-
 @SuppressWarnings("unused")
 public abstract class AbstractAdmin implements IAdmin {
     private static final String NAME = AbstractAdmin.class.getName();
@@ -17,18 +15,18 @@ public abstract class AbstractAdmin implements IAdmin {
     private Map<String, IModule> mModules = Collections.synchronizedMap(new ConcurrentHashMap<String, IModule>());
 
     @Override
-    public synchronized <C> C get(final String controllerName) {
-        if (!containsModule(controllerName)) {
-            if (!registerModule(controllerName)) {
+    public synchronized <C> C get(final String name) {
+        if (!containsModule(name)) {
+            if (!registerModule(name)) {
                 return null;
             }
         }
 
         try {
-            if (mModules.get(controllerName) != null) {
-                return (C) mModules.get(controllerName);
+            if (mModules.get(name) != null) {
+                return (C) mModules.get(name);
             } else {
-                mModules.remove(controllerName);
+                mModules.remove(name);
             }
         } catch (Exception e) {
             ErrorController.getInstance().onError(LOG_TAG, e);

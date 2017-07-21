@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
  * Сервис вывода сообщений в зону уведомлений
  */
 @SuppressWarnings("unused")
-public class NotificationService extends LiveLongBackgroundIntentService {
+public class NotificationService extends ShortlyLiveBackgroundIntentService {
 
     public static final String NAME = NotificationService.class.getName();
 

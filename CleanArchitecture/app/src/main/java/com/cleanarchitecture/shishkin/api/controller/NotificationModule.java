@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class NotificationModule extends AbstractModule implements INotificationModule {
+public class NotificationModule extends AbstractShortlyLiveModule implements INotificationModule {
 
     public static final String NAME = NotificationModule.class.getName();
 
@@ -32,6 +32,8 @@ public class NotificationModule extends AbstractModule implements INotificationM
     }
 
     private synchronized void sendIntent(final String name, final String action, final String message) {
+        post();
+
         final Context context = AdminUtils.getContext();
         if (context != null) {
             final Class clss = mServices.get(name);
@@ -44,6 +46,8 @@ public class NotificationModule extends AbstractModule implements INotificationM
     }
 
     private synchronized void sendIntentAll(final String action, final String message) {
+        post();
+
         final Context context = AdminUtils.getContext();
         if (context != null) {
             for (Class clss : mServices.values()) {
@@ -55,6 +59,8 @@ public class NotificationModule extends AbstractModule implements INotificationM
     }
 
     private synchronized void sendIntentAll(final String action) {
+        post();
+
         final Context context = AdminUtils.getContext();
         if (context != null) {
             for (Class clss : mServices.values()) {
@@ -65,6 +71,8 @@ public class NotificationModule extends AbstractModule implements INotificationM
     }
 
     private synchronized void sendIntent(final String name, final String action) {
+        post();
+
         final Context context = AdminUtils.getContext();
         if (context != null) {
             final Class clss = mServices.get(name);
@@ -77,6 +85,8 @@ public class NotificationModule extends AbstractModule implements INotificationM
 
     @Override
     public synchronized void addService(final String name, final Class clss) {
+        post();
+
         if (!StringUtils.isNullOrEmpty(name) && clss != null) {
             mServices.put(name, clss);
         }
@@ -158,6 +168,8 @@ public class NotificationModule extends AbstractModule implements INotificationM
 
     @Override
     public synchronized void setMessagesCount(final String name, final int count) {
+        post();
+
         final Context context = AdminUtils.getContext();
         if (context != null) {
             final Class clss = mServices.get(name);
