@@ -48,4 +48,10 @@ public interface IPresenter<M> extends IViewStateListener, IView, IModuleSubscri
      */
     Bundle getStateData();
 
+    /**
+     * Флаг - сохранять/стирать состояние при уничтожении презентера
+     *
+     * @param lostStateData true - сохранять состояние, false - стирать состояние
+     */
+    void setLostStateData(boolean lostStateData);
 }

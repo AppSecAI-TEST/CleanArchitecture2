@@ -197,8 +197,8 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     }
 
     @Override
-    public void onResumeState() {
-        super.onResumeState();
+    public void onReadyState() {
+        super.onReadyState();
 
         AdminUtils.postStickyEvent(new ToolbarInitEvent());
     }

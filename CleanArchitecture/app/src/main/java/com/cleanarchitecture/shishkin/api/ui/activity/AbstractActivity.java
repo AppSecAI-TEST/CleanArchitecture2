@@ -251,11 +251,6 @@ public abstract class AbstractActivity extends LifecycleActivity
         return (getState() != ViewStateObserver.STATE_DESTROY && !isFinishing());
     }
 
-    @Override
-    public void setLostStateData(boolean lostStateData) {
-        mStateObservable.setLostStateData(lostStateData);
-    }
-
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void setStatusBarColor(final int color) {

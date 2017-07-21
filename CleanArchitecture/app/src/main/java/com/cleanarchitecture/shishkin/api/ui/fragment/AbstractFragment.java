@@ -198,11 +198,6 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
     }
 
     @Override
-    public void setLostStateData(boolean lostStateData) {
-        mStateObservable.setLostStateData(lostStateData);
-    }
-
-    @Override
     public void showTooltip(final View anchorView, final int resId, final int gravity) {
         if (anchorView == null) {
             return;

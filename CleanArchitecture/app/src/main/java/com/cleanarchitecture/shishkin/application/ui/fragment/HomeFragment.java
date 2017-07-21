@@ -124,7 +124,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
 
     @Override
     public boolean onBackPressed() {
-        setLostStateData(true);
+        mSearchPresenter.setLostStateData(true);
 
         final boolean result = super.onBackPressed();
         if (!result) {
