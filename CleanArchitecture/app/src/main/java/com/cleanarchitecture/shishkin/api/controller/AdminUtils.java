@@ -28,6 +28,7 @@ import com.cleanarchitecture.shishkin.api.repository.Repository;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractActivity;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractContentActivity;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
+import com.cleanarchitecture.shishkin.common.state.ViewStateObserver;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.IntentUtils;
 import com.cleanarchitecture.shishkin.common.utils.SafeUtils;
@@ -228,8 +229,10 @@ public class AdminUtils {
         if (controller != null) {
             final List<IMail> list = controller.getMail(subscriber);
             for (IMail mail : list) {
-                mail.read(subscriber);
-                controller.removeMail(mail);
+                if (subscriber.getState() == ViewStateObserver.STATE_RESUME) {
+                    mail.read(subscriber);
+                    controller.removeMail(mail);
+                }
             }
         }
     }

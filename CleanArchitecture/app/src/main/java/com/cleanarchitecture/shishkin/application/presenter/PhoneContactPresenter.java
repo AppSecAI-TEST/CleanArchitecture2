@@ -183,12 +183,12 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
             return getModel();
         } else if (pattern.endsWith("*") && pattern.length() > 1) {
             final String templ = StringUtils.mid(pattern, 0, pattern.length() - 1);
-            return module.filter(getModel(), item -> StringUtils.startsWith(item.getName(), templ));
+            return module.filter(getModel(), item -> StringUtils.startsWith(item.getName(), templ)).toList();
         } else if (pattern.startsWith("*") && pattern.length() > 1) {
             final String templ = StringUtils.mid(pattern, 1);
-            return module.filter(getModel(), item -> StringUtils.endsWith(item.getName(), templ));
+            return module.filter(getModel(), item -> StringUtils.endsWith(item.getName(), templ)).toList();
         } else {
-            return module.filter(getModel(), item -> StringUtils.containsIgnoreCase(item.getName(), pattern));
+            return module.filter(getModel(), item -> StringUtils.containsIgnoreCase(item.getName(), pattern)).toList();
         }
     }
 
