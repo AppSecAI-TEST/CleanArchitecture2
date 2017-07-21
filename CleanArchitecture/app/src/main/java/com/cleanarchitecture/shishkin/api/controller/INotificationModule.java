@@ -8,14 +8,14 @@ public interface INotificationModule {
      * @param name имя сервиса
      * @param clss Сlass сервиса
      */
-    void addService(final String name, final Class clss);
+    void addService(String name, Class clss);
 
     /**
      * Добавить сообщщение.
      *
      * @param message текст сообщения
      */
-    void addMessage(final String message);
+    void addMessage(String message);
 
 
     /**
@@ -23,14 +23,14 @@ public interface INotificationModule {
      *
      * @param message текст сообщения
      */
-    void addDistinctMessage(final String message);
+    void addDistinctMessage(String message);
 
     /**
      * Заменить сообщение
      *
      * @param message текст сообщения
      */
-    void replaceMessage(final String message);
+    void replaceMessage(String message);
 
     /**
      * Обновить
@@ -44,6 +44,9 @@ public interface INotificationModule {
 
     /**
      * установить максимальное кол-во сообщений
+     *
+     * @param name имя сервиса
+     * @param count максимальное количество сообщений
      */
-    void setMessagesCount(final int count);
+    void setMessagesCount(String name, int count);
 }

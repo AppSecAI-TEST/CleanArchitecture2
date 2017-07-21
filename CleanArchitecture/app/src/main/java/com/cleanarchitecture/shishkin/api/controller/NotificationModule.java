@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
+import com.cleanarchitecture.shishkin.api.service.BoardService;
 import com.cleanarchitecture.shishkin.api.service.NotificationService;
 import com.cleanarchitecture.shishkin.common.utils.IntentUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
@@ -27,6 +28,7 @@ public class NotificationModule extends AbstractModule implements INotificationM
 
     public NotificationModule() {
         mServices.put(NotificationService.NAME, NotificationService.class);
+        mServices.put(BoardService.NAME, BoardService.class);
     }
 
     private synchronized void sendIntent(final String action, final String message) {
@@ -95,8 +97,16 @@ public class NotificationModule extends AbstractModule implements INotificationM
     }
 
     @Override
-    public synchronized void setMessagesCount(final int count) {
-        sendIntent(ACTION_SET_MESSAGES_COUNT);
+    public synchronized void setMessagesCount(final String name, final int count) {
+        final Context context = AdminUtils.getContext();
+        if (context != null) {
+            final Class clss = mServices.get(name);
+            if (clss != null) {
+                final Intent intent = IntentUtils.createActionIntent(context, clss, ACTION_SET_MESSAGES_COUNT);
+                intent.putExtra(Intent.EXTRA_TEXT, String.valueOf(count));
+                context.startService(intent);
+            }
+        }
     }
 
     @Override

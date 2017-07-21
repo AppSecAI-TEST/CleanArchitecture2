@@ -29,13 +29,14 @@
                 android:id="@+id/board"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:maxHeight="@dimen/dimen_128dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
                 android:minHeight="@dimen/board_min_height"
-                android:text="Просто пример"
+                android:maxHeight="@dimen/dimen_128dp"
+                android:paddingLeft="@dimen/dimen_8dp"
+                android:paddingRight="@dimen/dimen_8dp"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_xlarge"/>
+                android:textSize="@dimen/text_size_large"/>
         </com.balysv.materialripple.MaterialRippleLayout>
 
     </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
