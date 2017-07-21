@@ -31,7 +31,19 @@ public class NotificationModule extends AbstractModule implements INotificationM
         mServices.put(BoardService.NAME, BoardService.class);
     }
 
-    private synchronized void sendIntent(final String action, final String message) {
+    private synchronized void sendIntent(final String name, final String action, final String message) {
+        final Context context = AdminUtils.getContext();
+        if (context != null) {
+            final Class clss = mServices.get(name);
+            if (clss != null) {
+                final Intent intent = IntentUtils.createActionIntent(context, clss, action);
+                intent.putExtra(Intent.EXTRA_TEXT, message);
+                context.startService(intent);
+            }
+        }
+    }
+
+    private synchronized void sendIntentAll(final String action, final String message) {
         final Context context = AdminUtils.getContext();
         if (context != null) {
             for (Class clss : mServices.values()) {
@@ -42,10 +54,21 @@ public class NotificationModule extends AbstractModule implements INotificationM
         }
     }
 
-    private synchronized void sendIntent(final String action) {
+    private synchronized void sendIntentAll(final String action) {
         final Context context = AdminUtils.getContext();
         if (context != null) {
             for (Class clss : mServices.values()) {
+                final Intent intent = IntentUtils.createActionIntent(context, clss, action);
+                context.startService(intent);
+            }
+        }
+    }
+
+    private synchronized void sendIntent(final String name, final String action) {
+        final Context context = AdminUtils.getContext();
+        if (context != null) {
+            final Class clss = mServices.get(name);
+            if (clss != null) {
                 final Intent intent = IntentUtils.createActionIntent(context, clss, action);
                 context.startService(intent);
             }
@@ -60,40 +83,77 @@ public class NotificationModule extends AbstractModule implements INotificationM
     }
 
     @Override
-    public synchronized void addMessage(final String message) {
+    public synchronized void addMessageAll(final String message) {
         if (StringUtils.isNullOrEmpty(message)) {
             return;
         }
 
-        sendIntent(ACTION_ADD_MESSAGE, message);
+        sendIntentAll(ACTION_ADD_MESSAGE, message);
     }
 
     @Override
-    public synchronized void addDistinctMessage(final String message) {
+    public synchronized void addMessage(final String name, final String message) {
         if (StringUtils.isNullOrEmpty(message)) {
             return;
         }
 
-        sendIntent(ACTION_ADD_DISTINCT_MESSAGE, message);
+        sendIntent(name, ACTION_ADD_MESSAGE, message);
     }
 
     @Override
-    public synchronized void replaceMessage(final String message) {
+    public synchronized void addDistinctMessageAll(final String message) {
         if (StringUtils.isNullOrEmpty(message)) {
             return;
         }
 
-        sendIntent(ACTION_REPLACE_MESSAGE, message);
+        sendIntentAll(ACTION_ADD_DISTINCT_MESSAGE, message);
     }
 
     @Override
-    public synchronized void refresh() {
-        sendIntent(ACTION_REFRESH_MESSAGES);
+    public synchronized void addDistinctMessage(final String name, final String message) {
+        if (StringUtils.isNullOrEmpty(message)) {
+            return;
+        }
+
+        sendIntent(name, ACTION_ADD_DISTINCT_MESSAGE, message);
     }
 
     @Override
-    public synchronized void clear() {
-        sendIntent(ACTION_CLEAR_MESSAGES);
+    public synchronized void replaceMessageAll(final String message) {
+        if (StringUtils.isNullOrEmpty(message)) {
+            return;
+        }
+
+        sendIntentAll(ACTION_REPLACE_MESSAGE, message);
+    }
+
+    @Override
+    public synchronized void replaceMessage(final String name, final String message) {
+        if (StringUtils.isNullOrEmpty(message)) {
+            return;
+        }
+
+        sendIntent(name, ACTION_REPLACE_MESSAGE, message);
+    }
+
+    @Override
+    public synchronized void refreshAll() {
+        sendIntentAll(ACTION_REFRESH_MESSAGES);
+    }
+
+    @Override
+    public synchronized void refresh(final String name) {
+        sendIntent(name, ACTION_REFRESH_MESSAGES);
+    }
+
+    @Override
+    public synchronized void clearAll() {
+        sendIntentAll(ACTION_CLEAR_MESSAGES);
+    }
+
+    @Override
+    public synchronized void clear(final String name) {
+        sendIntent(name, ACTION_CLEAR_MESSAGES);
     }
 
     @Override

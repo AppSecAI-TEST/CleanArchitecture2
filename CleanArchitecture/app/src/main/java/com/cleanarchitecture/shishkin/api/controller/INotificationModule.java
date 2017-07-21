@@ -11,41 +11,78 @@ public interface INotificationModule {
     void addService(String name, Class clss);
 
     /**
-     * Добавить сообщщение.
+     * Добавить сообщщение всем.
      *
      * @param message текст сообщения
      */
-    void addMessage(String message);
+    void addMessageAll(String message);
 
+    /**
+     * Добавить сообщщение
+     *
+     * @param name    имя сервиса
+     * @param message текст сообщения
+     */
+    void addMessage(String name, String message);
+
+    /**
+     * Добавить сообщение всем, если его нет в списке сообщений
+     *
+     * @param message текст сообщения
+     */
+    void addDistinctMessageAll(String message);
 
     /**
      * Добавить сообщение, если его нет в списке сообщений
      *
+     * @param name    имя сервиса
      * @param message текст сообщения
      */
-    void addDistinctMessage(String message);
+    void addDistinctMessage(String name, String message);
+
+    /**
+     * Заменить сообщение всем
+     *
+     * @param message текст сообщения
+     */
+    void replaceMessageAll(String message);
 
     /**
      * Заменить сообщение
      *
+     * @param name    имя сервиса
      * @param message текст сообщения
      */
-    void replaceMessage(String message);
+    void replaceMessage(String name, String message);
+
+    /**
+     * Обновить все
+     */
+    void refreshAll();
 
     /**
      * Обновить
+     *
+     * @param name имя сервиса
      */
-    void refresh();
+    void refresh(String name);
+
+    /**
+     * Очистить все
+     */
+    void clearAll();
 
     /**
      * Очистить
+     *
+     * @param name имя сервиса
      */
-    void clear();
+    void clear(String name);
 
     /**
      * установить максимальное кол-во сообщений
      *
-     * @param name имя сервиса
+     * @param name  имя сервиса
      * @param count максимальное количество сообщений
      */
     void setMessagesCount(String name, int count);

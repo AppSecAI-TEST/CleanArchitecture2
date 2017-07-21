@@ -7,13 +7,13 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+    <net.cachapa.expandablelayout.ExpandableLayout
         android:id="@+id/expandableLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:background="@color/red"
-        app:ael_duration="200"
-        app:ael_orientation="vertical">
+        app:el_duration="300"
+        app:el_expanded="false">
 
         <com.balysv.materialripple.MaterialRippleLayout
             android:layout_width="match_parent"
@@ -37,7 +37,7 @@
                 android:textSize="@dimen/text_size_xlarge"/>
 
         </com.balysv.materialripple.MaterialRippleLayout>
-    </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+    </net.cachapa.expandablelayout.ExpandableLayout>
 
     <LinearLayout
         android:id="@+id/board_button"

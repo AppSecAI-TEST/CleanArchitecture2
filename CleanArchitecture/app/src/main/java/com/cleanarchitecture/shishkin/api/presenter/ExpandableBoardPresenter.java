@@ -8,16 +8,18 @@ import android.widget.TextView;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.application.event.expandableboard.OnExpandableBoardClick;
+import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
-import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
+
+import net.cachapa.expandablelayout.ExpandableLayout;
 
 public class ExpandableBoardPresenter extends AbstractPresenter {
 
     public static final String NAME = ExpandableBoardPresenter.class.getName();
     private static final String MESSAGE = "MESSAGE";
 
-    private ExpandableRelativeLayout mBoardLayout;
+    private ExpandableLayout mBoardLayout;
     private View mBoardButton;
     private View mBoardRoot;
     private TextView mBoardTextView;
@@ -63,23 +65,35 @@ public class ExpandableBoardPresenter extends AbstractPresenter {
 
     public void setText(final String text) {
         if (validate()) {
-            if (StringUtils.isNullOrEmpty(text)) {
-                mBoardTextView.setText("");
-            } else {
-                mBoardTextView.setText(text);
-            }
+            ApplicationUtils.runOnUiThread(
+                    () -> {
+                        if (StringUtils.isNullOrEmpty(text)) {
+                            mBoardTextView.setText("");
+                        } else {
+                            mBoardTextView.setText(text);
+                        }
+                    }
+            );
         }
     }
 
     public void hideBoard() {
         if (validate()) {
-            mBoardRoot.setVisibility(View.GONE);
+            ApplicationUtils.runOnUiThread(
+                    () -> {
+                        mBoardRoot.setVisibility(View.GONE);
+                    }
+            );
         }
     }
 
     public void showBoard() {
         if (validate()) {
-            mBoardRoot.setVisibility(View.VISIBLE);
+            ApplicationUtils.runOnUiThread(
+                    () -> {
+                        mBoardRoot.setVisibility(View.VISIBLE);
+                    }
+            );
         }
     }
 
