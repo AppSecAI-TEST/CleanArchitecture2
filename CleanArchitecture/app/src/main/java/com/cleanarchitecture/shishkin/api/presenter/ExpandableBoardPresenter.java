@@ -81,6 +81,7 @@ public class ExpandableBoardPresenter extends AbstractPresenter {
         if (validate()) {
             ApplicationUtils.runOnUiThread(
                     () -> {
+                        mBoardLayout.collapse();
                         mBoardRoot.setVisibility(View.GONE);
                     }
             );

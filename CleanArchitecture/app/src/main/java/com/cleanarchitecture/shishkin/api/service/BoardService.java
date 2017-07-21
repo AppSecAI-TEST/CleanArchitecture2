@@ -7,6 +7,9 @@ import android.support.annotation.WorkerThread;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.IPresenterController;
 import com.cleanarchitecture.shishkin.api.controller.NotificationModule;
+import com.cleanarchitecture.shishkin.api.mail.HideBoardMail;
+import com.cleanarchitecture.shishkin.api.mail.SetTextBoardMail;
+import com.cleanarchitecture.shishkin.api.mail.ShowBoardMail;
 import com.cleanarchitecture.shishkin.api.presenter.ExpandableBoardPresenter;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
@@ -87,11 +90,11 @@ public class BoardService extends LiveLongBackgroundIntentService {
             final ExpandableBoardPresenter presenter = (ExpandableBoardPresenter) controller.getPresenter(ExpandableBoardPresenter.NAME);
             if (presenter != null) {
                 if (count > 0) {
-                    presenter.setText(sb.toString());
-                    presenter.showBoard();
+                    AdminUtils.addMail(new SetTextBoardMail(sb.toString()));
+                    AdminUtils.addMail(new ShowBoardMail());
                 } else {
-                    presenter.setText("");
-                    presenter.hideBoard();
+                    AdminUtils.addMail(new SetTextBoardMail(""));
+                    AdminUtils.addMail(new HideBoardMail());
                 }
             }
         }

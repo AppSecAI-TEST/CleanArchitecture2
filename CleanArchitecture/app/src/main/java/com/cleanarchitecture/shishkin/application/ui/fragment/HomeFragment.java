@@ -171,7 +171,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
 
         final INotificationModule module = AdminUtils.getNotificationModule();
         if (module != null) {
-            module.replaceMessage(sb.toString());
+            module.replaceMessageAll(sb.toString());
         }
     }
 
@@ -242,6 +242,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
                 AdminUtils.postEvent(new ToolbarSetBadgeEvent(0, false));
                 AdminUtils.postEvent(new ShowToastEvent("Click on Toolbar title"));
                 AdminUtils.hideShortcutBadger();
+                AdminUtils.getNotificationModule().clearAll();
             }
         }
     }
