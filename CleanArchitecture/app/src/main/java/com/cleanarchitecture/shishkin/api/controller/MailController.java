@@ -1,6 +1,5 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
-import com.annimon.stream.Stream;
 import com.cleanarchitecture.shishkin.api.mail.IMail;
 import com.cleanarchitecture.shishkin.common.state.ViewStateObserver;
 import com.cleanarchitecture.shishkin.common.task.BaseAsyncTask;
@@ -63,7 +62,8 @@ public class MailController extends AbstractController<IMailSubscriber> implemen
             // удаляем старые письма
             final String name = subscriber.getName();
             final long currentTime = System.currentTimeMillis();
-            final List<IMail> list = Stream.of(mMail.values()).filter(mail -> (mail.contains(name) && mail.getEndTime() != -1 && mail.getEndTime() < currentTime)).toList();
+            final ITransformDataModule module = AdminUtils.getTransformDataModule();
+            final List<IMail> list = module.filter(mMail.values(), mail -> (mail.contains(name) && mail.getEndTime() != -1 && mail.getEndTime() < currentTime)).toList();
             if (!list.isEmpty()) {
                 for (IMail mail : list) {
                     mMail.remove(mail.getId());
@@ -75,7 +75,7 @@ public class MailController extends AbstractController<IMailSubscriber> implemen
             }
 
             final Comparator<IMail> byId = (left, right) -> left.getId().compareTo(right.getId());
-            return Stream.of(mMail.values()).filter(mail -> mail.contains(name) && (mail.getEndTime() == -1 || (mail.getEndTime() != -1 && mail.getEndTime() > currentTime))).sorted(byId).toList();
+            return module.filter(mMail.values(), mail -> mail.contains(name) && (mail.getEndTime() == -1 || (mail.getEndTime() != -1 && mail.getEndTime() > currentTime))).sorted(byId).toList();
         }
         return new ArrayList<>();
     }
