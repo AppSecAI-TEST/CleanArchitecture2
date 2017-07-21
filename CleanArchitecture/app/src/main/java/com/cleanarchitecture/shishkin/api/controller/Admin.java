@@ -122,8 +122,6 @@ public class Admin extends AbstractAdmin {
         // Модуль валидации
         registerModule(ValidateController.NAME);
 
-        // Модуль Notification
-        registerModule(NotificationModule.NAME);
     }
 
     @Override

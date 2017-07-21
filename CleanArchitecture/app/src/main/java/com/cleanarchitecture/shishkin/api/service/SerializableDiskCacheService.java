@@ -15,7 +15,7 @@ import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("unused")
-public class SerializableDiskCacheService extends LiveLongBackgroundIntentService {
+public class SerializableDiskCacheService extends ShortlyLiveBackgroundIntentService {
 
     private static final String NAME = SerializableDiskCacheService.class.getName();
 

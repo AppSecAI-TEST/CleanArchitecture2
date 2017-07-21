@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("unused")
-public class ParcelableDiskCacheService extends LiveLongBackgroundIntentService {
+public class ParcelableDiskCacheService extends ShortlyLiveBackgroundIntentService {
 
     private static final String NAME = ParcelableDiskCacheService.class.getName();
 

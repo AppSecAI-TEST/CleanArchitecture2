@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
  * Сервис вывода сообщений в зону Expandable Board
  */
 @SuppressWarnings("unused")
-public class BoardService extends LiveLongBackgroundIntentService {
+public class BoardService extends ShortlyLiveBackgroundIntentService {
 
     public static final String NAME = BoardService.class.getName();
 
