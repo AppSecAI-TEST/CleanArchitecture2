@@ -8,7 +8,6 @@ import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
 import com.cleanarchitecture.shishkin.api.data.ExtError;
 import com.cleanarchitecture.shishkin.api.event.IEvent;
-import com.cleanarchitecture.shishkin.application.Constant;
 import com.cleanarchitecture.shishkin.application.data.dao.PhoneContactDAO;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryResponseGetContactsEvent;
 
@@ -17,8 +16,7 @@ public class ContentProvider extends AbstractModule implements IContentProvider 
 
     @NonNull
     public synchronized IEvent getContacts() {
-        final RepositoryResponseGetContactsEvent event = (RepositoryResponseGetContactsEvent) new RepositoryResponseGetContactsEvent()
-                .setId(Constant.REPOSITORY_GET_CONTACTS);
+        final RepositoryResponseGetContactsEvent event = (RepositoryResponseGetContactsEvent) new RepositoryResponseGetContactsEvent();
 
         final Context context = AdminUtils.getContext();
         if (context == null) {

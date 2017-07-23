@@ -196,7 +196,6 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
         AdminUtils.postEvent(new RepositoryRequestGetContactsEvent()
                 .setExpired(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1))
                 .setCacheType(CacheUtils.USE_SAVE_CACHE)
-                .setId(Constant.REPOSITORY_GET_CONTACTS)
         );
     }
 

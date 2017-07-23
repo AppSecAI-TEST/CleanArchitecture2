@@ -8,6 +8,13 @@ public abstract class AbstractEvent implements IEvent {
     private ExtError mError;
     private String mSender = null;
 
+    public AbstractEvent() {
+    }
+
+    public AbstractEvent(int id) {
+        mId = id;
+    }
+
     @Override
     public ExtError getError() {
         return mError;
