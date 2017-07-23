@@ -76,6 +76,8 @@ public class ContentProviderProxy extends AbstractModule implements IModuleSubsc
 
             final Context context = AdminUtils.getContext();
             if (context != null) {
+                removeCursor(event.getId());
+
                 final Cursor cursor = PhoneContactCursor.getCursor(context);
                 if (AbstractReadOnlyDAO.isCursorValid(cursor)) {
                     mCursors.put(event.getId(), cursor);
@@ -83,8 +85,7 @@ public class ContentProviderProxy extends AbstractModule implements IModuleSubsc
                     final RepositoryResponseCursorGetContactsEvent responseEvent = new RepositoryResponseCursorGetContactsEvent();
                     responseEvent.setResponse(new PhoneContactDAO(context).getItems(context, cursor, event.getRows()));
                     if (cursor.isAfterLast()) {
-                        CloseUtils.close(cursor);
-                        mCursors.remove(event.getId());
+                        removeCursor(event.getId());
                         responseEvent.setBOF(true);
                     }
                     AdminUtils.postEvent(responseEvent);
@@ -105,8 +106,7 @@ public class ContentProviderProxy extends AbstractModule implements IModuleSubsc
                     final RepositoryResponseCursorGetContactsEvent responseEvent = new RepositoryResponseCursorGetContactsEvent();
                     responseEvent.setResponse(new PhoneContactDAO(context).getItems(context, cursor, event.getRows()));
                     if (cursor.isAfterLast()) {
-                        CloseUtils.close(cursor);
-                        mCursors.remove(event.getId());
+                        removeCursor(event.getId());
                         responseEvent.setBOF(true);
                     }
                     AdminUtils.postEvent(responseEvent);
