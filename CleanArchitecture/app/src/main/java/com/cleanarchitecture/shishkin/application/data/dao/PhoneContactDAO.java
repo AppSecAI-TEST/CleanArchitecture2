@@ -132,4 +132,21 @@ public class PhoneContactDAO extends AbstractReadOnlyDAO<PhoneContactItem> {
         }
         return result;
     }
+
+    public Result<List<PhoneContactItem>> getItems(final Context context, final Cursor cursor, final int rows) {
+        final Result<List<PhoneContactItem>> result = new Result<>();
+        final LinkedList<PhoneContactItem> list = new LinkedList<>();
+        try {
+                int i = 0;
+                while (cursor.moveToNext() && i < rows) {
+                    list.add(getItemFromCursor(cursor));
+                    i++;
+                }
+            result.setResult(list);
+        } catch (Exception e) {
+            result.setError(new ExtError().addError(LOG_TAG, context.getString(R.string.error_read_phone_contacts)));
+        }
+        return result;
+    }
+
 }

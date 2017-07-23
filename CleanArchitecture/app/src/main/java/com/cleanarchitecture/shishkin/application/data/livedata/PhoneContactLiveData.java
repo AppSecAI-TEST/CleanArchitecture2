@@ -1,5 +1,6 @@
 package com.cleanarchitecture.shishkin.application.data.livedata;
 
+import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
@@ -39,19 +40,19 @@ public class PhoneContactLiveData extends AbstractContentProviderLiveData<List<P
         AdminUtils.postEvent(new RepositoryRequestGetContactsEvent()
                 .setExpired(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1))
                 .setCacheType(CacheUtils.USE_ONLY_CACHE)
-                .setId(Constant.REPOSITORY_GET_CONTACTS));
+                .setId(Constant.REPOSITORY_REQUEST_GET_CONTACTS_EVENT));
     }
 
     @Override
     public void onChanged() {
         final IParcelableStorage memoryCache = Admin.getInstance().get(ParcelableMemoryCache.NAME);
         if (memoryCache != null) {
-            memoryCache.clear(String.valueOf(Constant.REPOSITORY_GET_CONTACTS));
+            memoryCache.clear(String.valueOf(Constant.REPOSITORY_REQUEST_GET_CONTACTS_EVENT));
         }
 
         final IExpiredParcelableStorage diskCache = Admin.getInstance().get(ParcelableDiskCache.NAME);
         if (diskCache != null) {
-            diskCache.clear(String.valueOf(Constant.REPOSITORY_GET_CONTACTS));
+            diskCache.clear(String.valueOf(Constant.REPOSITORY_REQUEST_GET_CONTACTS_EVENT));
         }
     }
 

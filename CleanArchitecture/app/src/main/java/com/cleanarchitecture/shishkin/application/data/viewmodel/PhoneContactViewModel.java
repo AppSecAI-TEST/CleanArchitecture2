@@ -5,6 +5,7 @@ import android.arch.lifecycle.LiveData;
 
 import com.cleanarchitecture.shishkin.api.model.AbstractViewModel;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
+import com.cleanarchitecture.shishkin.application.data.livedata.CursorPhoneContactLiveData;
 import com.cleanarchitecture.shishkin.application.data.livedata.PhoneContactLiveData;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 public class PhoneContactViewModel extends AbstractViewModel<List<PhoneContactItem>> {
     public static final String NAME = PhoneContactViewModel.class.getName();
 
-    private PhoneContactLiveData mData;
+    private CursorPhoneContactLiveData mData;
 
     public PhoneContactViewModel(Application application) {
         super(application);
@@ -20,7 +21,7 @@ public class PhoneContactViewModel extends AbstractViewModel<List<PhoneContactIt
 
     @Override
     public void subscribe() {
-        mData = new PhoneContactLiveData();
+        mData = new CursorPhoneContactLiveData();
     }
 
     @Override

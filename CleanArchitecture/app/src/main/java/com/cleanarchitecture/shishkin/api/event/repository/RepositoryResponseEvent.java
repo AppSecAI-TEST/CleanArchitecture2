@@ -11,6 +11,10 @@ public class RepositoryResponseEvent<T> extends AbstractEvent {
     public RepositoryResponseEvent() {
     }
 
+    public RepositoryResponseEvent(int id) {
+        super(id);
+    }
+
     public T getResponse() {
         return mResponse;
     }

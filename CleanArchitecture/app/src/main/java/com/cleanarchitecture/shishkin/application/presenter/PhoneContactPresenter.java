@@ -39,11 +39,13 @@ import com.cleanarchitecture.shishkin.api.repository.IObserver;
 import com.cleanarchitecture.shishkin.api.storage.CacheUtils;
 import com.cleanarchitecture.shishkin.api.ui.dialog.MaterialDialogExt;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.OnScrollListener;
+import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewHasDataEvent;
 import com.cleanarchitecture.shishkin.api.validate.IValidator;
 import com.cleanarchitecture.shishkin.application.Constant;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.data.viewmodel.PhoneContactViewModel;
 import com.cleanarchitecture.shishkin.application.event.phonecontactpresenter.OnPhoneContactPresenterItemClick;
+import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestCursorHasContactsEvent;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.ui.adapter.PhoneContactRecyclerViewAdapter;
 import com.cleanarchitecture.shishkin.application.validate.PhoneContactItemValidator;
@@ -196,7 +198,6 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
         AdminUtils.postEvent(new RepositoryRequestGetContactsEvent()
                 .setExpired(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1))
                 .setCacheType(CacheUtils.USE_SAVE_CACHE)
-                .setId(Constant.REPOSITORY_GET_CONTACTS)
         );
     }
 
