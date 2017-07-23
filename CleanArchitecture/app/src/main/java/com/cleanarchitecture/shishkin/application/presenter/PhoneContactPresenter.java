@@ -25,7 +25,6 @@ import com.cleanarchitecture.shishkin.api.data.ExtError;
 import com.cleanarchitecture.shishkin.api.data.Result;
 import com.cleanarchitecture.shishkin.api.debounce.Debounce;
 import com.cleanarchitecture.shishkin.api.event.OnPermisionGrantedEvent;
-import com.cleanarchitecture.shishkin.api.event.repository.RemoveCursorEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.EditTextAfterTextChangedEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.HideKeyboardEvent;
@@ -39,7 +38,6 @@ import com.cleanarchitecture.shishkin.api.repository.IObserver;
 import com.cleanarchitecture.shishkin.api.ui.dialog.MaterialDialogExt;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.OnScrollListener;
 import com.cleanarchitecture.shishkin.api.validate.IValidator;
-import com.cleanarchitecture.shishkin.application.Constant;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.data.livedata.CursorPhoneContactLiveData;
 import com.cleanarchitecture.shishkin.application.data.viewmodel.PhoneContactViewModel;
@@ -189,6 +187,11 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
         } else {
             return module.filter(getModel(), item -> StringUtils.containsIgnoreCase(item.getName(), pattern)).toList();
         }
+    }
+
+    public CursorPhoneContactLiveData getLiveData() {
+        final PhoneContactViewModel model = (PhoneContactViewModel) mDbProvider.getViewModel(PhoneContactViewModel.NAME);
+        return (CursorPhoneContactLiveData) model.getLiveData();
     }
 
     public void refreshData() {

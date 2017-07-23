@@ -16,7 +16,7 @@ public class OnBackPressedPresenter extends AbstractPresenter<Void> {
     private boolean mDoubleBackPressedOnce = false;
     private Timer mTimer;
 
-    public void onClick() {
+    public boolean onClick() {
         if (validate()) {
             if (!mDoubleBackPressedOnce) {
                 final Context context = AdminUtils.getContext();
@@ -27,8 +27,10 @@ public class OnBackPressedPresenter extends AbstractPresenter<Void> {
                 }
             } else {
                 AdminUtils.postEvent(new UseCaseFinishApplicationEvent());
+                return true;
             }
         }
+        return false;
     }
 
     private void startTimer() {
