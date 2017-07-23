@@ -1,7 +1,6 @@
 package com.cleanarchitecture.shishkin.api.model;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.ContentObserver;
@@ -71,6 +70,7 @@ public abstract class AbstractCursorContentProviderLiveData<T> extends LiveData<
     @Override
     protected void onInactive() {
         isChanged = false;
+        removeCursor();
         AdminUtils.unregister(this);
         final Context context = AdminUtils.getContext();
         if (context != null) {
@@ -94,18 +94,14 @@ public abstract class AbstractCursorContentProviderLiveData<T> extends LiveData<
         return super.getValue();
     }
 
-    @Override
-    public void removeObserver(final Observer<T> observer) {
-        super.removeObserver(observer);
-
-        onRemoveObserver(observer);
-    }
-
-    public void onRemoveObserver(final Observer<T> observer) {}
-
     /**
      * Получить данные
      */
     public abstract void getData();
+
+    /**
+     * Удалить курсор используемый для выборки данных
+     */
+    public abstract void removeCursor();
 
 }
