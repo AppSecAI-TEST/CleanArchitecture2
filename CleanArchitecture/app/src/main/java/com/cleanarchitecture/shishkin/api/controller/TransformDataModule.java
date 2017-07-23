@@ -10,6 +10,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Comparator;
 
 public class TransformDataModule extends AbstractModule implements ITransformDataModule {
 
@@ -27,6 +28,11 @@ public class TransformDataModule extends AbstractModule implements ITransformDat
     @Override
     public <T> Stream<T> filter(final Collection<T> list, final Predicate<? super T> predicate) {
         return Stream.of(list).filter(predicate);
+    }
+
+    @Override
+    public <T> Stream<T> sorted(final Collection<T> list, final Comparator<? super T> comparator) {
+        return Stream.of(list).sorted(comparator);
     }
 
     private synchronized String getJsonString(final Object jsonObject, final Gson gson) {

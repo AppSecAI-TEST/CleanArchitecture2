@@ -1,6 +1,5 @@
 package com.cleanarchitecture.shishkin.application.event.repository;
 
-import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.event.AbstractEvent;
 import com.cleanarchitecture.shishkin.application.Constant;
 

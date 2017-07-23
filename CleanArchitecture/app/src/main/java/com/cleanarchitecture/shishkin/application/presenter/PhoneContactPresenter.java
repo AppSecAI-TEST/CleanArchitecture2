@@ -29,24 +29,19 @@ import com.cleanarchitecture.shishkin.api.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.EditTextAfterTextChangedEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.HideKeyboardEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowListDialogEvent;
-import com.cleanarchitecture.shishkin.api.event.ui.ShowToastEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowTooltipEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseRequestPermissionEvent;
 import com.cleanarchitecture.shishkin.api.observer.EditTextDebouncedObserver;
 import com.cleanarchitecture.shishkin.api.presenter.AbstractPresenter;
 import com.cleanarchitecture.shishkin.api.repository.IDbProvider;
 import com.cleanarchitecture.shishkin.api.repository.IObserver;
-import com.cleanarchitecture.shishkin.api.storage.CacheUtils;
 import com.cleanarchitecture.shishkin.api.ui.dialog.MaterialDialogExt;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.OnScrollListener;
-import com.cleanarchitecture.shishkin.api.ui.recyclerview.event.OnRecyclerViewHasDataEvent;
 import com.cleanarchitecture.shishkin.api.validate.IValidator;
-import com.cleanarchitecture.shishkin.application.Constant;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
+import com.cleanarchitecture.shishkin.application.data.livedata.CursorPhoneContactLiveData;
 import com.cleanarchitecture.shishkin.application.data.viewmodel.PhoneContactViewModel;
 import com.cleanarchitecture.shishkin.application.event.phonecontactpresenter.OnPhoneContactPresenterItemClick;
-import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestCursorHasContactsEvent;
-import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.ui.adapter.PhoneContactRecyclerViewAdapter;
 import com.cleanarchitecture.shishkin.application.validate.PhoneContactItemValidator;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
@@ -195,10 +190,8 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
     }
 
     public void refreshData() {
-        AdminUtils.postEvent(new RepositoryRequestGetContactsEvent()
-                .setExpired(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1))
-                .setCacheType(CacheUtils.USE_SAVE_CACHE)
-        );
+        final PhoneContactViewModel model = (PhoneContactViewModel) mDbProvider.getViewModel(PhoneContactViewModel.NAME);
+        ((CursorPhoneContactLiveData) model.getLiveData()).getData();
     }
 
     @Override
@@ -210,10 +203,6 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
                     mContactAdapter.setItems(list);
                 } else {
                     mContactAdapter.setItems(getModel());
-                }
-
-                if (mContactAdapter.isEmpty()) {
-                    AdminUtils.postEvent(new ShowToastEvent(AdminUtils.getContext().getString(R.string.no_data)));
                 }
             }
         });

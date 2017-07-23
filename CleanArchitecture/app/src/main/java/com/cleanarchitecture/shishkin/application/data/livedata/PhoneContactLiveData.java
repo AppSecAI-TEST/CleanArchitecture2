@@ -1,6 +1,5 @@
 package com.cleanarchitecture.shishkin.application.data.livedata;
 
-import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;

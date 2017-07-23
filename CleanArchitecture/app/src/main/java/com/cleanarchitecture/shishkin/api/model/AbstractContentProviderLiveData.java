@@ -18,7 +18,7 @@ import java.util.List;
 public abstract class AbstractContentProviderLiveData<T> extends LiveData<T> implements IModuleSubscriber {
 
     private List<Uri> mUris = new ArrayList<>();
-    private boolean isChanged = true;
+    private boolean isChanged = false;
     private LivingDataDebounce mDebounce = null;
     private ContentObserver mContentObserver = new ContentObserver(new Handler()) {
         @Override
@@ -68,6 +68,7 @@ public abstract class AbstractContentProviderLiveData<T> extends LiveData<T> imp
 
     @Override
     protected void onActive() {
+        isChanged = false;
         AdminUtils.register(this);
         final Context context = AdminUtils.getContext();
         if (context != null) {
@@ -82,6 +83,7 @@ public abstract class AbstractContentProviderLiveData<T> extends LiveData<T> imp
 
     @Override
     protected void onInactive() {
+        isChanged = false;
         AdminUtils.unregister(this);
         final Context context = AdminUtils.getContext();
         if (context != null) {
