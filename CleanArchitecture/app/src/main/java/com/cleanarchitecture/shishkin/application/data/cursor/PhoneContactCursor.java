@@ -20,7 +20,7 @@ public class PhoneContactCursor {
         Cursor cur = null;
         final ContentResolver cr = context.getContentResolver();
         if (cr != null) {
-            cur = cr.query(PhoneContactDAO.CONTENT_URI, PhoneContactDAO.PROJECTION, selection, null, "upper(" + PhoneContactDAO.Columns.DISPLAY_NAME + ") asc");
+            cur = cr.query(PhoneContactDAO.CONTENT_URI, PhoneContactDAO.PROJECTION, selection, null, PhoneContactDAO.Columns.DISPLAY_NAME + " COLLATE NOCASE");
         }
         return cur;
     }
@@ -34,7 +34,7 @@ public class PhoneContactCursor {
             if (!StringUtils.isNullOrEmpty(search)) {
                 selection += " and " + PhoneContactDAO.Columns.DISPLAY_NAME + " like '%" + search + "%'";
             }
-            cur = cr.query(PhoneContactDAO.CONTENT_URI, PhoneContactDAO.PROJECTION, selection, null, "upper(" + PhoneContactDAO.Columns.DISPLAY_NAME + ") asc");
+            cur = cr.query(PhoneContactDAO.CONTENT_URI, PhoneContactDAO.PROJECTION, selection, null, PhoneContactDAO.Columns.DISPLAY_NAME + " COLLATE NOCASE");
         }
         return cur;
     }

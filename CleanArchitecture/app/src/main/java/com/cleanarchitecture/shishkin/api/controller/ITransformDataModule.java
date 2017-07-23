@@ -8,10 +8,13 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Comparator;
 
 public interface ITransformDataModule extends IModule {
 
     <T> Stream<T> filter(final Collection<T> list, final Predicate<? super T> predicate);
+
+    <T> Stream<T> sorted(final Collection<T> list, final Comparator<? super T> comparator);
 
     <T> T fromJson(Object jsonObject, Class<T> clazz);
 

@@ -10,7 +10,6 @@ import android.os.Handler;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
-import com.cleanarchitecture.shishkin.api.debounce.LivingDataDebounce;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,7 @@ import java.util.List;
 public abstract class AbstractCursorContentProviderLiveData<T> extends LiveData<T> implements IModuleSubscriber {
 
     private List<Uri> mUris = new ArrayList<>();
-    private boolean isChanged = true;
+    private boolean isChanged = false;
 
     private ContentObserver mContentObserver = new ContentObserver(new Handler()) {
         @Override
@@ -55,6 +54,7 @@ public abstract class AbstractCursorContentProviderLiveData<T> extends LiveData<
 
     @Override
     protected void onActive() {
+        isChanged = false;
         AdminUtils.register(this);
         final Context context = AdminUtils.getContext();
         if (context != null) {
@@ -69,6 +69,7 @@ public abstract class AbstractCursorContentProviderLiveData<T> extends LiveData<
 
     @Override
     protected void onInactive() {
+        isChanged = false;
         AdminUtils.unregister(this);
         final Context context = AdminUtils.getContext();
         if (context != null) {
