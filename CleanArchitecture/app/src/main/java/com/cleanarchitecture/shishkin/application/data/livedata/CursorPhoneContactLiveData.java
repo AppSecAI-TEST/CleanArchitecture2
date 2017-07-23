@@ -53,7 +53,6 @@ public class CursorPhoneContactLiveData extends AbstractCursorContentProviderLiv
     protected void onInactive() {
         super.onInactive();
 
-        mBOF = false;
         AdminUtils.postEvent(new RemoveCursorEvent().setId(Constant.REPOSITORY_REQUEST_CURSOR_GET_CONTACTS_EVENT));
     }
 
