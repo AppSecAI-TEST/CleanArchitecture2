@@ -1,6 +1,7 @@
 package com.cleanarchitecture.shishkin.api.model;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.ContentObserver;
@@ -110,6 +111,15 @@ public abstract class AbstractContentProviderLiveData<T> extends LiveData<T> imp
         }
         return super.getValue();
     }
+
+    @Override
+    public void removeObserver(final Observer<T> observer) {
+        super.removeObserver(observer);
+
+        onRemoveObserver(observer);
+    }
+
+    public void onRemoveObserver(final Observer<T> observer) {}
 
     /**
      * Получить данные

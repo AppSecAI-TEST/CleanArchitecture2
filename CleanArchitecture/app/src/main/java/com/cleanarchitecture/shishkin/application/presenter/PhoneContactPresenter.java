@@ -134,8 +134,6 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
     public void onDestroyState() {
         super.onDestroyState();
 
-        AdminUtils.postEvent(new RemoveCursorEvent().setId(Constant.REPOSITORY_REQUEST_CURSOR_GET_CONTACTS_EVENT));
-
         if (mDbProvider != null) {
             mDbProvider.removeObserver(PhoneContactViewModel.NAME, this);
         }

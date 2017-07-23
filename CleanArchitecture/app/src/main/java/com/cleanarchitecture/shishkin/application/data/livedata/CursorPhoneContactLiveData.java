@@ -1,5 +1,7 @@
 package com.cleanarchitecture.shishkin.application.data.livedata;
 
+import android.arch.lifecycle.Observer;
+
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
 import com.cleanarchitecture.shishkin.api.event.livedata.LiveDataHasDataEvent;
@@ -50,9 +52,7 @@ public class CursorPhoneContactLiveData extends AbstractCursorContentProviderLiv
     }
 
     @Override
-    protected void onInactive() {
-        super.onInactive();
-
+    public void onRemoveObserver(final Observer<List<PhoneContactItem>> observer) {
         AdminUtils.postEvent(new RemoveCursorEvent().setId(Constant.REPOSITORY_REQUEST_CURSOR_GET_CONTACTS_EVENT));
     }
 
