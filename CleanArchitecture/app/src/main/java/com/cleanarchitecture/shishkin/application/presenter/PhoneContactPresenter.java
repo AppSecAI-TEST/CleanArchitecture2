@@ -25,6 +25,7 @@ import com.cleanarchitecture.shishkin.api.data.ExtError;
 import com.cleanarchitecture.shishkin.api.data.Result;
 import com.cleanarchitecture.shishkin.api.debounce.Debounce;
 import com.cleanarchitecture.shishkin.api.event.OnPermisionGrantedEvent;
+import com.cleanarchitecture.shishkin.api.event.repository.RemoveCursorEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.DialogResultEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.EditTextAfterTextChangedEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.HideKeyboardEvent;
@@ -38,6 +39,7 @@ import com.cleanarchitecture.shishkin.api.repository.IObserver;
 import com.cleanarchitecture.shishkin.api.ui.dialog.MaterialDialogExt;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.OnScrollListener;
 import com.cleanarchitecture.shishkin.api.validate.IValidator;
+import com.cleanarchitecture.shishkin.application.Constant;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.data.livedata.CursorPhoneContactLiveData;
 import com.cleanarchitecture.shishkin.application.data.viewmodel.PhoneContactViewModel;
@@ -131,6 +133,8 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
     @Override
     public void onDestroyState() {
         super.onDestroyState();
+
+        AdminUtils.postEvent(new RemoveCursorEvent().setId(Constant.REPOSITORY_REQUEST_CURSOR_GET_CONTACTS_EVENT));
 
         if (mDbProvider != null) {
             mDbProvider.removeObserver(PhoneContactViewModel.NAME, this);
