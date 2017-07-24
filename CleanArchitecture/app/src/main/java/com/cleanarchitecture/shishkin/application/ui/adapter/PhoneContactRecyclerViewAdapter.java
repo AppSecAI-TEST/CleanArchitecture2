@@ -10,10 +10,8 @@ import android.widget.TextView;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
-import com.cleanarchitecture.shishkin.api.event.livedata.LiveDataHasDataEvent;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.AbstractRecyclerViewAdapter;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.AbstractViewHolder;
-import com.cleanarchitecture.shishkin.application.Constant;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.event.phonecontactpresenter.OnPhoneContactPresenterItemClick;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
@@ -72,11 +70,6 @@ public class PhoneContactRecyclerViewAdapter extends AbstractRecyclerViewAdapter
             }
             final int position = getAdapterPosition();
             mDivider.setVisibility(position == cnt - 1 ? View.VISIBLE : View.GONE);
-
-            if (position == cnt - 40) {
-                AdminUtils.postEvent(new LiveDataHasDataEvent().setId(Constant.REPOSITORY_REQUEST_CURSOR_GET_CONTACTS_EVENT));
-            }
-
         }
 
         private void onClick(View v) {
