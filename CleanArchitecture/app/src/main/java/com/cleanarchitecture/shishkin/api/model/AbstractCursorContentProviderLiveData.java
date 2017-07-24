@@ -98,4 +98,10 @@ public abstract class AbstractCursorContentProviderLiveData<T> extends LiveData<
      */
     public abstract void getData();
 
+    /**
+     * Прервать выборку данных
+     */
+    public void terminate() {
+    }
+
 }

@@ -2,9 +2,11 @@ package com.cleanarchitecture.shishkin.application.data.livedata;
 
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
+import com.cleanarchitecture.shishkin.api.event.repository.RepositoryTerminateRequestEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.HideHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.model.AbstractCursorContentProviderLiveData;
+import com.cleanarchitecture.shishkin.application.Constant;
 import com.cleanarchitecture.shishkin.application.data.dao.PhoneContactDAO;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestCursorGetContactsEvent;
@@ -41,6 +43,12 @@ public class CursorPhoneContactLiveData extends AbstractCursorContentProviderLiv
             setValue(list);
         }
     }
+
+    @Override
+    public void terminate() {
+        AdminUtils.postEvent(new RepositoryTerminateRequestEvent().setId(Constant.REPOSITORY_REQUEST_CURSOR_GET_CONTACTS_EVENT));
+    }
+
 
     @Override
     public String getName() {
