@@ -52,7 +52,7 @@ public class ContentProvider extends AbstractModule implements IModuleSubscriber
                                 if (i == 0) {
                                     rows = event.getRows() / 2;
                                 } else if (i == 1) {
-                                    rows = event.getRows() * 2 / 3;
+                                    rows = Integer.valueOf(event.getRows() * 2/3);
                                 } else {
                                     rows = event.getRows();
                                 }

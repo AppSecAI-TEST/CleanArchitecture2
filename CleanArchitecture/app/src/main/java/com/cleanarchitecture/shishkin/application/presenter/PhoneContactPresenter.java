@@ -114,7 +114,8 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
             AdminUtils.postEvent(new HideKeyboardEvent());
         }
 
-        if (mDbProvider != null) {
+        final PhoneContactViewModel model = (PhoneContactViewModel) mDbProvider.getViewModel(PhoneContactViewModel.NAME);
+        if (model == null) {
             mDbProvider.observe(AdminUtils.getActivity(), PhoneContactViewModel.NAME, PhoneContactViewModel.class, this);
         }
     }
