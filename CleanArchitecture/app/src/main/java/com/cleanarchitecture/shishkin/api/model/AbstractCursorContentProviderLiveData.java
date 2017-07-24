@@ -17,19 +17,18 @@ import java.util.List;
 public abstract class AbstractCursorContentProviderLiveData<T> extends LiveData<T> implements IModuleSubscriber {
 
     private List<Uri> mUris = new ArrayList<>();
-    private boolean isChanged = false;
 
     private ContentObserver mContentObserver = new ContentObserver(new Handler()) {
         @Override
         public void onChange(boolean selfChange) {
             super.onChange(selfChange);
 
-            onChanged();
+            terminate();
+
+            clearValue();
 
             if (AbstractCursorContentProviderLiveData.this.hasObservers()) {
                 getData();
-            } else {
-                isChanged = true;
             }
         }
     };
@@ -47,14 +46,12 @@ public abstract class AbstractCursorContentProviderLiveData<T> extends LiveData<
     }
 
     /**
-     * Событие - данные изменены в Content Provider
+     * Очистить данные
      */
-    public void onChanged() {
-    }
+    public abstract void clearValue();
 
     @Override
     protected void onActive() {
-        isChanged = false;
         AdminUtils.register(this);
         final Context context = AdminUtils.getContext();
         if (context != null) {
@@ -62,14 +59,12 @@ public abstract class AbstractCursorContentProviderLiveData<T> extends LiveData<
             for (final Uri uri : mUris) {
                 contentResolver.registerContentObserver(uri, true, mContentObserver);
             }
-
             getData();
         }
     }
 
     @Override
     protected void onInactive() {
-        isChanged = false;
         AdminUtils.unregister(this);
         final Context context = AdminUtils.getContext();
         if (context != null) {
@@ -84,15 +79,6 @@ public abstract class AbstractCursorContentProviderLiveData<T> extends LiveData<
         return list;
     }
 
-    @Override
-    public T getValue() {
-        if (isChanged) {
-            isChanged = false;
-            getData();
-        }
-        return super.getValue();
-    }
-
     /**
      * Получить данные
      */
@@ -101,7 +87,6 @@ public abstract class AbstractCursorContentProviderLiveData<T> extends LiveData<
     /**
      * Прервать выборку данных
      */
-    public void terminate() {
-    }
+    public abstract void terminate();
 
 }

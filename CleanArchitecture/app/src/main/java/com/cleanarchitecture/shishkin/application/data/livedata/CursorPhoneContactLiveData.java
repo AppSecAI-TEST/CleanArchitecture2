@@ -30,16 +30,15 @@ public class CursorPhoneContactLiveData extends AbstractCursorContentProviderLiv
     @Override
     public void getData() {
         AdminUtils.postEvent(new ShowHorizontalProgressBarEvent());
-        clearValue();
-
         AdminUtils.postEvent(new RepositoryRequestCursorGetContactsEvent(50));
     }
 
-    private void clearValue() {
+    @Override
+    public void clearValue() {
         final List<PhoneContactItem> list = getValue();
         if (list != null) {
             list.clear();
-            setValue(list);
+            postValue(list);
         }
     }
 
@@ -53,7 +52,7 @@ public class CursorPhoneContactLiveData extends AbstractCursorContentProviderLiv
         return NAME;
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.ASYNC)
     public synchronized void onResponseGetContactsEvent(RepositoryResponseGetContactsEvent event) {
         AdminUtils.postEvent(new HideHorizontalProgressBarEvent());
 
@@ -64,7 +63,7 @@ public class CursorPhoneContactLiveData extends AbstractCursorContentProviderLiv
             }
             list.addAll(event.getResponse());
             final Comparator<PhoneContactItem> comparator = (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName());
-            setValue(AdminUtils.getTransformDataModule().sorted(list, comparator).toList());
+            postValue(AdminUtils.getTransformDataModule().sorted(list, comparator).toList());
         } else {
             ErrorController.getInstance().onError(event.getError());
         }
