@@ -9,6 +9,7 @@ import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.api.event.IEvent;
+import com.cleanarchitecture.shishkin.api.event.repository.RepositoryTerminateRequestEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseRequestPermissionEvent;
 import com.cleanarchitecture.shishkin.api.storage.CacheUtils;
 import com.cleanarchitecture.shishkin.application.data.cursor.PhoneContactCursor;
@@ -34,6 +35,7 @@ public class ContentProviderProxy extends AbstractModule implements IModuleSubsc
     public static final String NAME = ContentProviderProxy.class.getName();
 
     private Map<Integer, IEvent> mEvents = Collections.synchronizedMap(new ConcurrentHashMap<Integer, IEvent>());
+    private Map<Integer, Boolean> mTerminated = Collections.synchronizedMap(new ConcurrentHashMap<Integer, Boolean>());
 
     private synchronized void requestContacts(final RepositoryRequestGetContactsEvent event) {
         if (!mEvents.containsKey(event.getId())) {
@@ -77,15 +79,21 @@ public class ContentProviderProxy extends AbstractModule implements IModuleSubsc
                     RepositoryResponseGetContactsEvent responseEvent;
                     while (true) {
                         responseEvent = new RepositoryResponseGetContactsEvent();
-                        responseEvent.setResponse(new PhoneContactDAO(context).getItems(context, cursor, event.getRows()));
-                        AdminUtils.postEvent(responseEvent);
-                        if (cursor.isAfterLast() || responseEvent.hasError()) {
-                            CloseUtils.close(cursor);
+                        if (!mTerminated.containsKey(event.getId())) {
+                            responseEvent.setResponse(new PhoneContactDAO(context).getItems(context, cursor, event.getRows()));
+                            AdminUtils.postEvent(responseEvent);
+                            if (cursor.isAfterLast() || responseEvent.hasError()) {
+                                break;
+                            }
+                        } else {
+                            AdminUtils.postEvent(responseEvent);
                             break;
                         }
                     }
                 }
+                CloseUtils.close(cursor);
             }
+            mTerminated.remove(event.getId());
             mEvents.remove(event.getId());
         }
     }
@@ -117,4 +125,10 @@ public class ContentProviderProxy extends AbstractModule implements IModuleSubsc
         requestCursorContacts(event);
     }
 
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onRepositoryTerminateRequestEvent(final RepositoryTerminateRequestEvent event) {
+        if (mEvents.containsKey(event.getId())) {
+            mTerminated.put(event.getId(), true);
+        }
+    }
 }
