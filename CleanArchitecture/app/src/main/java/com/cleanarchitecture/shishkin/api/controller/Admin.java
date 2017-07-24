@@ -3,7 +3,6 @@ package com.cleanarchitecture.shishkin.api.controller;
 import android.content.Context;
 
 import com.cleanarchitecture.shishkin.api.repository.ContentProvider;
-import com.cleanarchitecture.shishkin.api.repository.ContentProviderProxy;
 import com.cleanarchitecture.shishkin.api.repository.DbProvider;
 import com.cleanarchitecture.shishkin.api.repository.NetProvider;
 import com.cleanarchitecture.shishkin.api.repository.Repository;
@@ -97,9 +96,6 @@ public class Admin extends AbstractAdmin {
 
         // Модуль выбрки данных из ContentProvider
         registerModule(ContentProvider.NAME);
-
-        // Прокси модуль к ContentProvider
-        registerModule(ContentProviderProxy.NAME);
 
         // Модуль выбрки данных из БД
         registerModule(DbProvider.NAME);

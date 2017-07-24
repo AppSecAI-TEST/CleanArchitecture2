@@ -101,38 +101,6 @@ public class PhoneContactDAO extends AbstractReadOnlyDAO<PhoneContactItem> {
         return contactItem;
     }
 
-    @NonNull
-    public Result<List<PhoneContactItem>> getItems(final Context context) {
-        final Result<List<PhoneContactItem>> result = new Result<>();
-        final LinkedList<PhoneContactItem> list = new LinkedList<>();
-        Cursor cursor = null;
-        AdminUtils.postEvent(new ShowCircleProgressBarEvent(0));
-        try {
-            int procent = 0;
-            int i = 0;
-            cursor = PhoneContactCursor.getCursor(context);
-            if (AbstractReadOnlyDAO.isCursorValid(cursor)) {
-                final int range = cursor.getCount() / 10;
-                while (cursor.moveToNext()) {
-                    list.add(getItemFromCursor(cursor));
-                    i++;
-                    if (i > range) {
-                        i = 0;
-                        procent += 10;
-                        AdminUtils.postEvent(new ShowCircleProgressBarEvent(procent));
-                    }
-                }
-            }
-            result.setResult(list);
-        } catch (Exception e) {
-            result.setError(new ExtError().addError(LOG_TAG, context.getString(R.string.error_read_phone_contacts)));
-        } finally {
-            AdminUtils.postEvent(new HideCircleProgressBarEvent());
-            CloseUtils.close(cursor);
-        }
-        return result;
-    }
-
     public Result<List<PhoneContactItem>> getItems(final Context context, final Cursor cursor, final int rows) {
         final Result<List<PhoneContactItem>> result = new Result<>();
         final LinkedList<PhoneContactItem> list = new LinkedList<>();
