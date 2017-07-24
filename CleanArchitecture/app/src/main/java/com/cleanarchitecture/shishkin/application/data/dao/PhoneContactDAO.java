@@ -10,15 +10,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.data.ExtError;
 import com.cleanarchitecture.shishkin.api.data.Result;
-import com.cleanarchitecture.shishkin.api.event.ui.HideCircleProgressBarEvent;
-import com.cleanarchitecture.shishkin.api.event.ui.ShowCircleProgressBarEvent;
-import com.cleanarchitecture.shishkin.application.data.cursor.PhoneContactCursor;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.common.content.dao.AbstractReadOnlyDAO;
-import com.cleanarchitecture.shishkin.common.utils.CloseUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
 import java.util.LinkedList;
