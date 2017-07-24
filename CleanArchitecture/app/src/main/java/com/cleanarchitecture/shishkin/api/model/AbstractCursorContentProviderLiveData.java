@@ -57,7 +57,7 @@ public abstract class AbstractCursorContentProviderLiveData<T> extends LiveData<
         if (context != null) {
             final ContentResolver contentResolver = context.getContentResolver();
             for (final Uri uri : mUris) {
-                contentResolver.registerContentObserver(uri, true, mContentObserver);
+                contentResolver.registerContentObserver(uri, false, mContentObserver);
             }
             getData();
         }

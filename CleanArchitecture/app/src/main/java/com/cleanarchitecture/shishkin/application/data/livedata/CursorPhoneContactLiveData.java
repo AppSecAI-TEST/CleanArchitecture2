@@ -55,7 +55,6 @@ public class CursorPhoneContactLiveData extends AbstractCursorContentProviderLiv
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public synchronized void onResponseGetContactsEvent(RepositoryResponseGetContactsEvent event) {
         AdminUtils.postEvent(new HideHorizontalProgressBarEvent());
-
         if (!event.hasError()) {
             List<PhoneContactItem> list = getValue();
             if (list == null) {
