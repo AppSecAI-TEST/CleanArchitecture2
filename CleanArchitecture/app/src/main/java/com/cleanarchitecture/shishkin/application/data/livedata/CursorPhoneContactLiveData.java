@@ -22,7 +22,6 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class CursorPhoneContactLiveData extends AbstractCursorContentProviderLiveData<List<PhoneContactItem>> {
     public static final String NAME = CursorPhoneContactLiveData.class.getName();
-    private boolean mBOF = false;
 
     public CursorPhoneContactLiveData() {
         super(PhoneContactDAO.CONTENT_URI);
@@ -33,7 +32,7 @@ public class CursorPhoneContactLiveData extends AbstractCursorContentProviderLiv
         AdminUtils.postEvent(new ShowHorizontalProgressBarEvent());
         clearValue();
 
-        AdminUtils.postEvent(new RepositoryRequestCursorGetContactsEvent(30));
+        AdminUtils.postEvent(new RepositoryRequestCursorGetContactsEvent(50));
     }
 
     private void clearValue() {
@@ -48,7 +47,6 @@ public class CursorPhoneContactLiveData extends AbstractCursorContentProviderLiv
     public void terminate() {
         AdminUtils.postEvent(new RepositoryTerminateRequestEvent().setId(Constant.REPOSITORY_REQUEST_CURSOR_GET_CONTACTS_EVENT));
     }
-
 
     @Override
     public String getName() {

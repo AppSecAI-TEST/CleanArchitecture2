@@ -69,32 +69,46 @@ public class ContentProviderProxy extends AbstractModule implements IModuleSubsc
     }
 
     private synchronized void requestCursorContacts(final RepositoryRequestCursorGetContactsEvent event) {
-        if (!mEvents.containsKey(event.getId())) {
-            mEvents.put(event.getId(), event);
+        if (AdminUtils.checkPermission(Manifest.permission.READ_CONTACTS)) {
+            if (!mEvents.containsKey(event.getId())) {
+                mEvents.put(event.getId(), event);
 
-            final Context context = AdminUtils.getContext();
-            if (context != null) {
-                final Cursor cursor = PhoneContactCursor.getCursor(context);
-                if (AbstractReadOnlyDAO.isCursorValid(cursor)) {
-                    RepositoryResponseGetContactsEvent responseEvent;
-                    while (true) {
-                        responseEvent = new RepositoryResponseGetContactsEvent();
-                        if (!mTerminated.containsKey(event.getId())) {
-                            responseEvent.setResponse(new PhoneContactDAO(context).getItems(context, cursor, event.getRows()));
-                            AdminUtils.postEvent(responseEvent);
-                            if (cursor.isAfterLast() || responseEvent.hasError()) {
+                final Context context = AdminUtils.getContext();
+                if (context != null) {
+                    final Cursor cursor = PhoneContactCursor.getCursor(context);
+                    if (AbstractReadOnlyDAO.isCursorValid(cursor)) {
+                        RepositoryResponseGetContactsEvent responseEvent;
+                        int i = 0;
+                        while (true) {
+                            responseEvent = new RepositoryResponseGetContactsEvent();
+                            if (!mTerminated.containsKey(event.getId())) {
+                                int rows;
+                                if (i == 0) {
+                                    rows = event.getRows() / 2;
+                                } else if (i == 1) {
+                                    rows = event.getRows() * 2 / 3;
+                                } else {
+                                    rows = event.getRows();
+                                }
+                                responseEvent.setResponse(new PhoneContactDAO(context).getItems(context, cursor, rows));
+                                AdminUtils.postEvent(responseEvent);
+                                if (cursor.isAfterLast() || responseEvent.hasError()) {
+                                    break;
+                                }
+                                i++;
+                            } else {
+                                AdminUtils.postEvent(responseEvent);
                                 break;
                             }
-                        } else {
-                            AdminUtils.postEvent(responseEvent);
-                            break;
                         }
                     }
+                    CloseUtils.close(cursor);
                 }
-                CloseUtils.close(cursor);
+                mTerminated.remove(event.getId());
+                mEvents.remove(event.getId());
             }
-            mTerminated.remove(event.getId());
-            mEvents.remove(event.getId());
+        } else {
+            AdminUtils.postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.READ_CONTACTS));
         }
     }
 
