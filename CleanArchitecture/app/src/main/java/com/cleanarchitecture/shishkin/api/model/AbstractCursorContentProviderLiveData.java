@@ -70,7 +70,6 @@ public abstract class AbstractCursorContentProviderLiveData<T> extends LiveData<
     @Override
     protected void onInactive() {
         isChanged = false;
-        removeCursor();
         AdminUtils.unregister(this);
         final Context context = AdminUtils.getContext();
         if (context != null) {
@@ -98,10 +97,5 @@ public abstract class AbstractCursorContentProviderLiveData<T> extends LiveData<
      * Получить данные
      */
     public abstract void getData();
-
-    /**
-     * Удалить курсор используемый для выборки данных
-     */
-    public abstract void removeCursor();
 
 }

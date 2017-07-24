@@ -9,16 +9,13 @@ import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.api.event.IEvent;
-import com.cleanarchitecture.shishkin.api.event.repository.RemoveCursorEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseRequestPermissionEvent;
 import com.cleanarchitecture.shishkin.api.storage.CacheUtils;
 import com.cleanarchitecture.shishkin.application.data.cursor.PhoneContactCursor;
 import com.cleanarchitecture.shishkin.application.data.dao.PhoneContactDAO;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestCursorGetContactsEvent;
-import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestCursorHasContactsEvent;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRequestGetContactsEvent;
-import com.cleanarchitecture.shishkin.application.event.repository.RepositoryResponseCursorGetContactsEvent;
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryResponseGetContactsEvent;
 import com.cleanarchitecture.shishkin.common.content.dao.AbstractReadOnlyDAO;
 import com.cleanarchitecture.shishkin.common.utils.CloseUtils;
@@ -37,7 +34,6 @@ public class ContentProviderProxy extends AbstractModule implements IModuleSubsc
     public static final String NAME = ContentProviderProxy.class.getName();
 
     private Map<Integer, IEvent> mEvents = Collections.synchronizedMap(new ConcurrentHashMap<Integer, IEvent>());
-    private Map<Integer, Cursor> mCursors = Collections.synchronizedMap(new ConcurrentHashMap<Integer, Cursor>());
 
     private synchronized void requestContacts(final RepositoryRequestGetContactsEvent event) {
         if (!mEvents.containsKey(event.getId())) {
@@ -76,53 +72,21 @@ public class ContentProviderProxy extends AbstractModule implements IModuleSubsc
 
             final Context context = AdminUtils.getContext();
             if (context != null) {
-                removeCursor(event.getId());
-
                 final Cursor cursor = PhoneContactCursor.getCursor(context);
                 if (AbstractReadOnlyDAO.isCursorValid(cursor)) {
-                    mCursors.put(event.getId(), cursor);
-
-                    final RepositoryResponseCursorGetContactsEvent responseEvent = new RepositoryResponseCursorGetContactsEvent();
-                    responseEvent.setResponse(new PhoneContactDAO(context).getItems(context, cursor, event.getRows()));
-                    if (cursor.isAfterLast()) {
-                        removeCursor(event.getId());
-                        responseEvent.setBOF(true);
+                    RepositoryResponseGetContactsEvent responseEvent;
+                    while (true) {
+                        responseEvent = new RepositoryResponseGetContactsEvent();
+                        responseEvent.setResponse(new PhoneContactDAO(context).getItems(context, cursor, event.getRows()));
+                        AdminUtils.postEvent(responseEvent);
+                        if (cursor.isAfterLast() || responseEvent.hasError()) {
+                            CloseUtils.close(cursor);
+                            break;
+                        }
                     }
-                    AdminUtils.postEvent(responseEvent);
                 }
             }
             mEvents.remove(event.getId());
-        }
-    }
-
-    private synchronized void requestCursorContacts(final RepositoryRequestCursorHasContactsEvent event) {
-        if (!mEvents.containsKey(event.getId())) {
-            mEvents.put(event.getId(), event);
-
-            final Context context = AdminUtils.getContext();
-            if (context != null) {
-                final Cursor cursor = mCursors.get(event.getId());
-                if (AbstractReadOnlyDAO.isCursorValid(cursor)) {
-                    final RepositoryResponseCursorGetContactsEvent responseEvent = new RepositoryResponseCursorGetContactsEvent();
-                    responseEvent.setResponse(new PhoneContactDAO(context).getItems(context, cursor, event.getRows()));
-                    if (cursor.isAfterLast()) {
-                        removeCursor(event.getId());
-                        responseEvent.setBOF(true);
-                    }
-                    AdminUtils.postEvent(responseEvent);
-                }
-            }
-            mEvents.remove(event.getId());
-        }
-    }
-
-    private synchronized void removeCursor(int id) {
-        if (mCursors.containsKey(id)) {
-            final Cursor cursor = mCursors.get(id);
-            if (cursor != null) {
-                CloseUtils.close(cursor);
-            }
-            mCursors.remove(id);
         }
     }
 
@@ -151,16 +115,6 @@ public class ContentProviderProxy extends AbstractModule implements IModuleSubsc
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onRepositoryRequestCursorGetContactsEvent(final RepositoryRequestCursorGetContactsEvent event) {
         requestCursorContacts(event);
-    }
-
-    @Subscribe(threadMode = ThreadMode.ASYNC)
-    public void onRepositoryRequestCursorHasContactsEvent(final RepositoryRequestCursorHasContactsEvent event) {
-        requestCursorContacts(event);
-    }
-
-    @Subscribe(threadMode = ThreadMode.ASYNC)
-    public void onRemoveCursorEvent(final RemoveCursorEvent event) {
-        removeCursor(event.getId());
     }
 
 }

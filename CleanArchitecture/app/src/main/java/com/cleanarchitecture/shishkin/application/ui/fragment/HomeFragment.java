@@ -128,7 +128,6 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
         if (!result) {
             if (mOnBackPressedPresenter.onClick()) {
                 mSearchPresenter.setLostStateData(true);
-                mSearchPresenter.getLiveData().removeCursor();
             }
         }
         return true;

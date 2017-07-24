@@ -50,6 +50,11 @@ public class DbProvider<H extends AbstractViewModel, T extends RoomDatabase> ext
         mLifecycleRegistry.markState(Lifecycle.State.STARTED);
     }
 
+    @Override
+    public void onUnRegister() {
+        mLifecycleRegistry.markState(Lifecycle.State.DESTROYED);
+    }
+
     private synchronized boolean connect(final Class<T> klass, final String databaseName) {
         final Context context = AdminUtils.getContext();
         if (context == null) {
