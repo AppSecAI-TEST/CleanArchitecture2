@@ -10,10 +10,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.api.controller.ErrorController;
 import com.cleanarchitecture.shishkin.api.data.ExtError;
 import com.cleanarchitecture.shishkin.api.data.Result;
+import com.cleanarchitecture.shishkin.application.data.cursor.PhoneContactCursor;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.common.content.dao.AbstractReadOnlyDAO;
+import com.cleanarchitecture.shishkin.common.utils.CloseUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
 import java.util.LinkedList;
@@ -24,7 +27,6 @@ public class PhoneContactDAO extends AbstractReadOnlyDAO<PhoneContactItem> {
     private static final String LOG_TAG = "PhoneContactDAO:";
 
     public static final Uri CONTENT_URI = ContactsContract.Contacts.CONTENT_URI;
-
     private ContentResolver mContentResolver;
 
     public interface Columns {
@@ -107,7 +109,29 @@ public class PhoneContactDAO extends AbstractReadOnlyDAO<PhoneContactItem> {
             }
             result.setResult(list);
         } catch (Exception e) {
+            ErrorController.getInstance().onError(LOG_TAG, e);
             result.setError(new ExtError().addError(LOG_TAG, context.getString(R.string.error_read_phone_contacts)));
+        }
+        return result;
+    }
+
+    public Result<List<PhoneContactItem>> getItems(final Context context) {
+        final Result<List<PhoneContactItem>> result = new Result<>();
+        final LinkedList<PhoneContactItem> list = new LinkedList<>();
+        Cursor cursor = null;
+        try {
+            cursor = PhoneContactCursor.getCursor(context);
+            if (AbstractReadOnlyDAO.isCursorValid(cursor)) {
+                while (cursor.moveToNext()) {
+                    list.add(getItemFromCursor(cursor));
+                }
+            }
+            result.setResult(list);
+        } catch (Exception e) {
+            ErrorController.getInstance().onError(LOG_TAG, e);
+            result.setError(new ExtError().addError(LOG_TAG, context.getString(R.string.error_read_phone_contacts)));
+        } finally {
+            CloseUtils.close(cursor);
         }
         return result;
     }

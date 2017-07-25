@@ -39,7 +39,7 @@ import com.cleanarchitecture.shishkin.api.ui.dialog.MaterialDialogExt;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.OnScrollListener;
 import com.cleanarchitecture.shishkin.api.validate.IValidator;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
-import com.cleanarchitecture.shishkin.application.data.livedata.CursorPhoneContactLiveData;
+import com.cleanarchitecture.shishkin.application.data.livedata.PhoneContactLiveData;
 import com.cleanarchitecture.shishkin.application.data.viewmodel.PhoneContactViewModel;
 import com.cleanarchitecture.shishkin.application.event.phonecontactpresenter.OnPhoneContactPresenterItemClick;
 import com.cleanarchitecture.shishkin.application.ui.adapter.PhoneContactRecyclerViewAdapter;
@@ -114,8 +114,11 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
             AdminUtils.postEvent(new HideKeyboardEvent());
         }
 
-        if (mDbProvider != null) {
+        final PhoneContactViewModel model = (PhoneContactViewModel) mDbProvider.getViewModel(PhoneContactViewModel.NAME);
+        if (model == null) {
             mDbProvider.observe(AdminUtils.getActivity(), PhoneContactViewModel.NAME, PhoneContactViewModel.class, this);
+        } else {
+            setModel(model.getLiveData().getValue());
         }
     }
 
@@ -132,9 +135,7 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
     public void onDestroyState() {
         super.onDestroyState();
 
-        if (mDbProvider != null) {
-            mDbProvider.removeObserver(PhoneContactViewModel.NAME, this);
-        }
+        mDbProvider.removeObserver(PhoneContactViewModel.NAME, this);
 
         mEditTextDebouncedObserver.finish();
         mSearchView = null;
@@ -189,14 +190,14 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
         }
     }
 
-    public CursorPhoneContactLiveData getLiveData() {
+    public PhoneContactLiveData getLiveData() {
         final PhoneContactViewModel model = (PhoneContactViewModel) mDbProvider.getViewModel(PhoneContactViewModel.NAME);
-        return (CursorPhoneContactLiveData) model.getLiveData();
+        return (PhoneContactLiveData) model.getLiveData();
     }
 
     public void refreshData() {
         final PhoneContactViewModel model = (PhoneContactViewModel) mDbProvider.getViewModel(PhoneContactViewModel.NAME);
-        ((CursorPhoneContactLiveData) model.getLiveData()).getData();
+        ((PhoneContactLiveData) model.getLiveData()).getData();
     }
 
     @Override
