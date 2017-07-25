@@ -26,7 +26,7 @@ public class PhoneContactDatastore extends AbstractDatastore<PhoneContactLiveDat
 
     public static final String NAME = PhoneContactDatastore.class.getName();
 
-    public PhoneContactDatastore(PhoneContactLiveData data) {
+    public PhoneContactDatastore(final PhoneContactLiveData data) {
         super(data);
     }
 

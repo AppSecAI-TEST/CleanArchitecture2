@@ -85,15 +85,11 @@ public class ContentProvider extends AbstractModule implements IModuleSubscriber
 
     private synchronized void requestGetChangedContacts(final RepositoryRequestGetChangedContactsEvent event) {
         if (AdminUtils.checkPermission(Manifest.permission.READ_CONTACTS)) {
-            if (!mEvents.containsKey(event.getId())) {
-                mEvents.put(event.getId(), event);
-            }
-
-            final List<PhoneContactItem> changedList = new ArrayList<>();
             final Context context = AdminUtils.getContext();
             if (context != null) {
                 final Result<List<PhoneContactItem>> result = new PhoneContactDAO(context).getItems(context);
                 if (!result.hasError() && result.getResult().size() > 0) {
+                    final List<PhoneContactItem> changedList = new ArrayList<>();
                     final List<PhoneContactItem> contacts = event.getContacts();
                     for (PhoneContactItem item : result.getResult()) {
                         int pos = contacts.indexOf(item);
@@ -111,8 +107,7 @@ public class ContentProvider extends AbstractModule implements IModuleSubscriber
 
                     final List<PhoneContactItem> deletedList = new ArrayList<>();
                     for (PhoneContactItem item : contacts) {
-                        int pos = result.getResult().indexOf(item);
-                        if (pos == -1) {
+                        if (result.getResult().indexOf(item) == -1) {
                             deletedList.add(item);
                         }
                     }
@@ -121,7 +116,6 @@ public class ContentProvider extends AbstractModule implements IModuleSubscriber
                     }
                 }
             }
-            mEvents.remove(event.getId());
         }
     }
 
