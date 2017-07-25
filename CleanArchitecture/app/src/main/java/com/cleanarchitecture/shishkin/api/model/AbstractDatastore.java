@@ -5,7 +5,7 @@ import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractDatastore<T extends ILiveData> implements IDatastore {
+public abstract class AbstractDatastore<T extends ILiveData> implements IDatastore<T> {
 
     private T mData;
 
