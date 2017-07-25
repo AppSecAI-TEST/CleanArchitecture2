@@ -6,9 +6,9 @@ import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 
 import java.util.List;
 
-public class RepositoryResponseGetContactsEvent extends RepositoryResponseEvent<List<PhoneContactItem>> {
+public class RepositoryResponseGetDeletedContactsEvent extends RepositoryResponseEvent<List<PhoneContactItem>> {
 
-    public RepositoryResponseGetContactsEvent() {
-        super(Constant.REPOSITORY_GET_CONTACTS_EVENT);
+    public RepositoryResponseGetDeletedContactsEvent() {
+        super(Constant.REPOSITORY_GET_DELETED_CONTACTS_EVENT);
     }
 }

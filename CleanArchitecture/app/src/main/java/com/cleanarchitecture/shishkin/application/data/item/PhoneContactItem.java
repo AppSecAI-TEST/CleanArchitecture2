@@ -3,6 +3,7 @@ package com.cleanarchitecture.shishkin.application.data.item;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import com.google.gson.annotations.SerializedName;
 
 public class PhoneContactItem implements Parcelable {
@@ -68,7 +69,11 @@ public class PhoneContactItem implements Parcelable {
 
     @Override
     public int hashCode() {
-        return mRowId.hashCode();
+        final StringBuilder sb = new StringBuilder();
+        sb.append(mName);
+        sb.append(mPhones);
+        sb.append(StringUtils.allTrim(mPhoto));
+        return sb.toString().hashCode();
     }
 
     @Override
