@@ -31,7 +31,6 @@ public abstract class AbstractContentProviderLiveData<T> extends LiveData<T> imp
                 mChanged = true;
             }
         }
-
     };
 
     public AbstractContentProviderLiveData(final Uri uri) {
