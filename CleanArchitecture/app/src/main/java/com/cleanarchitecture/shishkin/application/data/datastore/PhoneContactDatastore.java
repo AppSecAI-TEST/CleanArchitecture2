@@ -58,6 +58,11 @@ public class PhoneContactDatastore extends AbstractDatastore<PhoneContactLiveDat
         return NAME;
     }
 
+    private void setSortedValue(final List<PhoneContactItem> list) {
+        final Comparator<PhoneContactItem> comparator = (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName());
+        getLiveData().postValue(AdminUtils.getTransformDataModule().sorted(list, comparator).toList());
+    }
+
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public synchronized void onResponseGetContactsEvent(RepositoryResponseGetContactsEvent event) {
         AdminUtils.postEvent(new HideHorizontalProgressBarEvent());
@@ -67,8 +72,7 @@ public class PhoneContactDatastore extends AbstractDatastore<PhoneContactLiveDat
                 list = new ArrayList<>();
             }
             list.addAll(event.getResponse());
-            final Comparator<PhoneContactItem> comparator = (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName());
-            getLiveData().postValue(AdminUtils.getTransformDataModule().sorted(list, comparator).toList());
+            setSortedValue(list);
         } else {
             ErrorController.getInstance().onError(event.getError());
         }
@@ -88,8 +92,7 @@ public class PhoneContactDatastore extends AbstractDatastore<PhoneContactLiveDat
                 list.add(item);
             }
         }
-        final Comparator<PhoneContactItem> comparator = (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName());
-        getLiveData().postValue(AdminUtils.getTransformDataModule().sorted(list, comparator).toList());
+        setSortedValue(list);
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
