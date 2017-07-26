@@ -103,7 +103,7 @@ public class ActivityController extends AbstractController<IActivity> implements
                 final IActivity subscriber = getSubscriber();
                 if (subscriber != null && subscriber.validate() && (subscriber.getActivity().getState() == ViewStateObserver.STATE_RESUME || subscriber.getActivity().getState() == ViewStateObserver.STATE_PAUSE)) {
                     if (ActivityCompat.shouldShowRequestPermissionRationale(subscriber.getActivity(), permission)) {
-                        AdminUtils.postEvent(new ShowDialogEvent(R.id.dialog_request_permissions, -1, helpMessage, R.string.setting, R.string.cancel, false));
+                        AdminUtils.postEvent(new ShowDialogEvent(R.id.dialog_request_permissions, null, helpMessage, R.string.setting, R.string.cancel, false));
                     } else {
                         ActivityCompat.requestPermissions(subscriber.getActivity(), new String[]{permission}, AdminUtils.REQUEST_PERMISSIONS);
                     }
@@ -154,7 +154,7 @@ public class ActivityController extends AbstractController<IActivity> implements
     public void onShowErrorMessageEvent(ShowErrorMessageEvent event) {
         final IActivity subscriber = getSubscriber();
         if (subscriber != null && subscriber.validate() && (subscriber.getActivity().getState() == ViewStateObserver.STATE_RESUME || subscriber.getActivity().getState() == ViewStateObserver.STATE_PAUSE)) {
-            new MaterialDialogExt(subscriber.getActivity(), event.getId(), R.string.warning, event.getMessage(), R.string.ok_upper, MaterialDialogExt.NO_BUTTON, false).show();
+            new MaterialDialogExt(subscriber.getActivity(), event.getId(), subscriber.getActivity().getResources().getString(R.string.warning), event.getMessage(), R.string.ok_upper, MaterialDialogExt.NO_BUTTON, false).show();
         }
     }
 

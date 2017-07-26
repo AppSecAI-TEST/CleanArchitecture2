@@ -87,39 +87,30 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
         final Bundle bundle = AdminUtils.getStateData(NAME);
 
         final RecyclerView recyclerView = ViewUtils.findView(root, R.id.list);
-        if (recyclerView != null) {
-            final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(AdminUtils.getActivity());
-            recyclerView.setLayoutManager(linearLayoutManager);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            mContactAdapter = new PhoneContactRecyclerViewAdapter(root.getContext());
-            recyclerView.setAdapter(mContactAdapter);
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(AdminUtils.getActivity());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        mContactAdapter = new PhoneContactRecyclerViewAdapter(root.getContext());
+        recyclerView.setAdapter(mContactAdapter);
 
-            final SwipeRefreshLayout swipeRefreshLayout = ViewUtils.findView(root, R.id.swipeRefreshLayout);
-            recyclerView.addOnScrollListener(new OnScrollListener(recyclerView, swipeRefreshLayout));
+        final SwipeRefreshLayout swipeRefreshLayout = ViewUtils.findView(root, R.id.swipeRefreshLayout);
+        recyclerView.addOnScrollListener(new OnScrollListener(recyclerView, swipeRefreshLayout));
 
-            mRecyclerView = new WeakReference<>(recyclerView);
-        }
+        mRecyclerView = new WeakReference<>(recyclerView);
 
         final EditText searchView = ViewUtils.findView(root, R.id.search);
-        if (searchView != null) {
-            if (bundle != null) {
-                mCurrentFilter = bundle.getString(CURRENT_FILTER);
-                mContactAdapter.clear();
-            }
-
-            mEditTextDebouncedObserver = new EditTextDebouncedObserver(searchView, 700, R.id
-                    .edittext_phone_contact_presenter);
-            mSearchView = new WeakReference<>(searchView);
-            searchView.setText(mCurrentFilter);
-            AdminUtils.postEvent(new HideKeyboardEvent());
+        if (bundle != null) {
+            mCurrentFilter = bundle.getString(CURRENT_FILTER);
+            mContactAdapter.clear();
         }
 
-        final PhoneContactViewModel model = (PhoneContactViewModel) mDbProvider.getViewModel(PhoneContactViewModel.NAME);
-        if (model == null) {
-            mDbProvider.observe(AdminUtils.getActivity(), PhoneContactViewModel.NAME, PhoneContactViewModel.class, this);
-        } else {
-            setModel(model.getLiveData().getValue());
-        }
+        mEditTextDebouncedObserver = new EditTextDebouncedObserver(searchView, 700, R.id
+                .edittext_phone_contact_presenter);
+        mSearchView = new WeakReference<>(searchView);
+        searchView.setText(mCurrentFilter);
+        AdminUtils.postEvent(new HideKeyboardEvent());
+
+        mDbProvider.observe(PhoneContactViewModel.NAME, PhoneContactViewModel.class, this);
     }
 
     @Override
@@ -232,7 +223,7 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
-    public synchronized void onSearchPresenterItemClick(OnPhoneContactPresenterItemClick event) {
+    public synchronized void onPhoneContactPresenterItemClick(OnPhoneContactPresenterItemClick event) {
         final PhoneContactItem item = event.getContactItem();
         if (item == null || mValidateController == null) {
             return;
@@ -265,7 +256,7 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
                 }
             }
             if (!list.isEmpty()) {
-                AdminUtils.postEvent(new ShowListDialogEvent(R.id.dialog_call_phone, R.string.phone_call, null, list, -1, R.string.exit, true));
+                AdminUtils.postEvent(new ShowListDialogEvent(R.id.dialog_call_phone, item.getName(), null, list, -1, R.string.exit, true));
             } else {
                 ErrorController.getInstance().onError(err);
             }

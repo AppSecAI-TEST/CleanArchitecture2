@@ -18,7 +18,6 @@ import java.util.List;
 public class MaterialDialogExt {
 
     public static final int NO_BUTTON = -1;
-    public static final int NO_TITLE = -1;
     private static final String ID = "id";
     public static final String BUTTON = "button";
     public static final String POSITIVE = "positive";
@@ -29,25 +28,25 @@ public class MaterialDialogExt {
     private MaterialDialog mMaterialDialog;
 
     public MaterialDialogExt(final Context context, final int id,
-                             final int title, final String message, final int positiveButton,
+                             final String title, final String message, final int positiveButton,
                              boolean setCancelable) {
         this(context, id, title, message, positiveButton, NO_BUTTON, NO_BUTTON, setCancelable);
     }
 
     public MaterialDialogExt(final Context context, final int id,
-                             final int title, final String message, final int positiveButton,
+                             final String title, final String message, final int positiveButton,
                              final int negativeButton, boolean setCancelable) {
         this(context, id, title, message, positiveButton, negativeButton, NO_BUTTON, setCancelable);
     }
 
     public MaterialDialogExt(final Context context, final int id,
-                             final int title, final String message, final int positiveButton,
+                             final String title, final String message, final int positiveButton,
                              final int negativeButton, final int neutralButton, boolean setCancelable) {
 
         mId = id;
 
         final MaterialDialog.Builder builder = new MaterialDialog.Builder(context);
-        if (title != NO_TITLE) {
+        if (!StringUtils.isNullOrEmpty(title)) {
             builder.title(title);
         }
         if (!StringUtils.isNullOrEmpty(message)) {
@@ -93,13 +92,13 @@ public class MaterialDialogExt {
     }
 
     public MaterialDialogExt(final Context context, final int id,
-                             final int title, final String message, final List<String> items, final Integer[] selected, final boolean multiselect, final int positiveButton,
+                             final String title, final String message, final List<String> items, final Integer[] selected, final boolean multiselect, final int positiveButton,
                              final int negativeButton, boolean setCancelable) {
 
         mId = id;
 
         final MaterialDialog.Builder builder = new MaterialDialog.Builder(context);
-        if (title > 0) {
+        if (!StringUtils.isNullOrEmpty(title)) {
             builder.title(title);
         }
         if (!StringUtils.isNullOrEmpty(message)) {
@@ -171,13 +170,13 @@ public class MaterialDialogExt {
 
 
     public MaterialDialogExt(final Context context, final int id,
-                             final int title, final String message, final String edittext, final String hint, final int input_type, final int positiveButton,
+                             final String title, final String message, final String edittext, final String hint, final int input_type, final int positiveButton,
                              final int negativeButton, boolean setCancelable) {
 
         mId = id;
 
         final MaterialDialog.Builder builder = new MaterialDialog.Builder(context);
-        if (title > 0) {
+        if (!StringUtils.isNullOrEmpty(title)) {
             builder.title(title);
         }
         if (!StringUtils.isNullOrEmpty(message)) {
