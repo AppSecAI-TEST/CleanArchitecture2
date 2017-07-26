@@ -39,7 +39,7 @@ public class ParcelableDiskCache<T extends Parcelable> extends AbstractModule im
     private static final String LIST = "LIST";
     private static final String PARCELABLE = "PARCELABLE";
 
-    private static final String DISK_CACHE_DIR = ApplicationController.getInstance().getExternalCachePath() + File.separator + "ParcelableDiskCache";
+    private static final String DISK_CACHE_DIR = ApplicationController.getInstance().getCachePath() + File.separator + "ParcelableDiskCache";
     private static final int DISK_CACHE_SIZE = Constant.MB * 10; // 10MB
     private static final int BUFFER_SIZE = Constant.KB * 16; // 16kb
 

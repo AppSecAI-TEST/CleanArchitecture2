@@ -57,17 +57,17 @@ public class ApplicationController extends MultiDexApplication implements IAppli
     }
 
     @Override
-    public String getExternalCachePath() {
+    public String getCachePath() {
         return getExternalCacheDir().getAbsolutePath();
     }
 
     @Override
-    public String getDataApplicationPath() {
+    public String getDataPath() {
         return getFilesDir().getAbsolutePath() + File.separator;
     }
 
     @Override
-    public String getExternalApplicationPath() {
+    public String getExternalDataPath() {
         return EXTERNAL_STORAGE_APPLICATION_PATH;
     }
 

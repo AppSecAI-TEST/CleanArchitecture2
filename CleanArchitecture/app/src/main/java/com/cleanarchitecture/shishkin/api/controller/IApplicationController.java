@@ -19,21 +19,21 @@ public interface IApplicationController extends IModule {
      *
      * @return путь хранения Cache на SDCard
      */
-    String getExternalCachePath();
+    String getCachePath();
 
     /**
      * Получить путь хранения данных и журналов на SDCard
      *
      * @return путь хранения данных и журналов на SDCard
      */
-    String getExternalApplicationPath();
+    String getExternalDataPath();
 
     /**
      * Получить путь хранения данных и журналов
      *
      * @return путь хранения данных и журналов
      */
-    String getDataApplicationPath();
+    String getDataPath();
 
     /**
      * Получить Permisions приложения

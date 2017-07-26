@@ -614,14 +614,14 @@ public class AdminUtils {
             try {
                 final File log = new File(ErrorController.getInstance().getPath());
                 final String file = log.getName();
-                final String externalPath = ApplicationController.getInstance().getExternalApplicationPath() + File.separator + file;
+                final String externalPath = ApplicationController.getInstance().getExternalDataPath() + file;
                 final File external = new File(externalPath);
-
-                if (external.exists()) {
-                    external.delete();
+                if (!BuildConfig.DEBUG) {
+                    if (external.exists()) {
+                        external.delete();
+                    }
+                    Files.copy(log, external);
                 }
-                Files.copy(log, external);
-
                 final Intent intent = IntentUtils.getViewDocumentIntent(getContext(), external);
                 startChooser(intent, context.getString(R.string.log_view_title));
             } catch (Exception e) {

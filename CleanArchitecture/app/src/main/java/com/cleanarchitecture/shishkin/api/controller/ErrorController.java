@@ -1,5 +1,6 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
+import android.Manifest;
 import android.content.Context;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
@@ -44,7 +45,12 @@ public class ErrorController implements IErrorController {
         try {
             Log.setEnabled(true);
             Log.setLog2FileEnabled(true);
-            final String path = ApplicationController.getInstance().getDataApplicationPath();
+            String path;
+            if (BuildConfig.DEBUG && AdminUtils.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                path = ApplicationController.getInstance().getExternalDataPath();
+            } else {
+                path = ApplicationController.getInstance().getDataPath();
+            }
             final File file = new File(path);
             if (!file.exists()) {
                 file.mkdirs();

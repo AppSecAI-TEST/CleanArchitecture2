@@ -40,7 +40,7 @@ public class ImageDiskCache extends AbstractModule implements IImageDiskCache {
     private static final int COMPRESS_QUALITY = 100;
     private static final int DISK_CACHE_SIZE = Constant.MB * 100; // 100MB
     private static final int BUFFER_SIZE = Constant.KB * 16; // 16kb
-    private static final String DISK_CACHE_DIR = ApplicationController.getInstance().getExternalCachePath() + File.separator + "ImageDiskCache";
+    private static final String DISK_CACHE_DIR = ApplicationController.getInstance().getCachePath() + File.separator + "ImageDiskCache";
 
     private static volatile ImageDiskCache sInstance;
     private DiskLruCache mDiskLruCache;
