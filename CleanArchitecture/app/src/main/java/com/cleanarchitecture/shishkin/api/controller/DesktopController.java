@@ -90,7 +90,7 @@ public class DesktopController implements IDesktopController, IModuleSubscriber 
             list.add(key);
         }
         if (list.size() > 1) {
-            AdminUtils.postEvent(new ShowListDialogEvent(R.id.dialog_select_desktop, R.string.dialog_desktop_title, null, list, MaterialDialogExt.NO_BUTTON, MaterialDialogExt.NO_BUTTON, true));
+            AdminUtils.postEvent(new ShowListDialogEvent(R.id.dialog_select_desktop, AdminUtils.getString(R.string.dialog_desktop_title), null, list, MaterialDialogExt.NO_BUTTON, MaterialDialogExt.NO_BUTTON, true));
         }
     }
 

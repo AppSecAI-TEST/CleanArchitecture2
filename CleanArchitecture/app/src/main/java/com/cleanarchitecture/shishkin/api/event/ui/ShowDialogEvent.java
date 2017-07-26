@@ -10,31 +10,31 @@ import com.cleanarchitecture.shishkin.api.ui.dialog.MaterialDialogExt;
 public class ShowDialogEvent extends AbstractEvent {
 
     private int mId;
-    private int mTitle;
+    private String mTitle;
     private String mMessage;
     private int mButtonPositive = R.string.ok_upper;
     private int mButtonNegative = MaterialDialogExt.NO_BUTTON;
     private boolean mCancelable = false;
 
-    public ShowDialogEvent(final int id, final int title, final String message) {
+    public ShowDialogEvent(final int id, final String title, final String message) {
         mId = id;
         mTitle = title;
         mMessage = message;
     }
 
-    public ShowDialogEvent(final int id, final int title, final String message, final int button_positive) {
+    public ShowDialogEvent(final int id, final String title, final String message, final int button_positive) {
         this(id, title, message);
 
         mButtonPositive = button_positive;
     }
 
-    public ShowDialogEvent(final int id, final int title, final String message, final int button_positive, final int button_negative) {
+    public ShowDialogEvent(final int id, final String title, final String message, final int button_positive, final int button_negative) {
         this(id, title, message, button_positive);
 
         mButtonNegative = button_negative;
     }
 
-    public ShowDialogEvent(final int id, final int title, final String message, final int button_positive, final int button_negative, final boolean cancelable) {
+    public ShowDialogEvent(final int id, final String title, final String message, final int button_positive, final int button_negative, final boolean cancelable) {
         this(id, title, message, button_positive, button_negative);
 
         mCancelable = cancelable;
@@ -48,7 +48,7 @@ public class ShowDialogEvent extends AbstractEvent {
         return mId;
     }
 
-    public int getTitle() {
+    public String getTitle() {
         return mTitle;
     }
 

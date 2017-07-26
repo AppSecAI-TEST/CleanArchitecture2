@@ -40,12 +40,11 @@ public interface IDbProvider<H extends AbstractViewModel, T extends RoomDatabase
      * Зарегестрировать слушателя ViewModel
      *
      * @param <E>           the type parameter
-     * @param activity      the activity
      * @param nameViewModel the name view model
      * @param klass         the klass
      * @param observer      the observer
      */
-    <E> void observe(LifecycleActivity activity, String nameViewModel, Class<H> klass, IObserver<E> observer);
+    <E> void observe(String nameViewModel, Class<H> klass, IObserver<E> observer);
 
     /**
      * Удалить слушателя ViewModel

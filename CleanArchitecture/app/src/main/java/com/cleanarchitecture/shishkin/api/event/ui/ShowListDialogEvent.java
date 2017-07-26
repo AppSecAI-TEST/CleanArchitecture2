@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class ShowListDialogEvent extends AbstractEvent {
 
     private int mId;
-    private int mTitle;
+    private String mTitle;
     private String mMessage;
     private ArrayList<String> mList;
     private Integer[] mSelected;
@@ -21,7 +21,7 @@ public class ShowListDialogEvent extends AbstractEvent {
     private boolean mMultiselect = false;
     private boolean mSetCancelable;
 
-    public ShowListDialogEvent(final int id, final int title, final String message, final ArrayList<String> list, final Integer[] selected, final boolean multiselect, final int button_positive, final int button_negative, final boolean setCancelable) {
+    public ShowListDialogEvent(final int id, final String title, final String message, final ArrayList<String> list, final Integer[] selected, final boolean multiselect, final int button_positive, final int button_negative, final boolean setCancelable) {
         mId = id;
         mTitle = title;
         mMessage = message;
@@ -35,7 +35,7 @@ public class ShowListDialogEvent extends AbstractEvent {
         mSetCancelable = setCancelable;
     }
 
-    public ShowListDialogEvent(final int id, final int title, final String message, final ArrayList<String> list, final int button_positive, final int button_negative, final boolean setCancelable) {
+    public ShowListDialogEvent(final int id, final String title, final String message, final ArrayList<String> list, final int button_positive, final int button_negative, final boolean setCancelable) {
         mId = id;
         mTitle = title;
         mMessage = message;
@@ -54,7 +54,7 @@ public class ShowListDialogEvent extends AbstractEvent {
         return mId;
     }
 
-    public int getTitle() {
+    public String getTitle() {
         return mTitle;
     }
 

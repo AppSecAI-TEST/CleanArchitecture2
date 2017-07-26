@@ -311,7 +311,7 @@ public class AppPreferencesModule implements IAppPreferencesModule, IModuleSubsc
                 setScreenshotEnabled(currentValue);
                 final Context context = AdminUtils.getContext();
                 if (context != null) {
-                    AdminUtils.postEvent(new ShowDialogEvent(-1, MaterialDialogExt.NO_TITLE, context.getString(R.string.screenshot_help)));
+                    AdminUtils.postEvent(new ShowDialogEvent(-1, null, context.getString(R.string.screenshot_help)));
                 }
                 break;
 

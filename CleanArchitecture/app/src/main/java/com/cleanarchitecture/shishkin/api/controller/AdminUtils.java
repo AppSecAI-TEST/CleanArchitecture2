@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.provider.Settings;
+import android.support.annotation.StringRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 
@@ -662,6 +663,22 @@ public class AdminUtils {
         if (context != null) {
             ShortcutBadger.removeCount(context);
         }
+    }
+
+    public static String getString(@StringRes final int resId) {
+        final Context context = getContext();
+        if (context != null) {
+            return context.getString(resId);
+        }
+        return null;
+    }
+
+    public static String getString(@StringRes int resId, Object... formatArgs) {
+        final Context context = getContext();
+        if (context != null) {
+            return context.getString(resId, formatArgs);
+        }
+        return null;
     }
 
     private AdminUtils() {

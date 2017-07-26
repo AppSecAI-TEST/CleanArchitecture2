@@ -10,7 +10,7 @@ import com.cleanarchitecture.shishkin.api.ui.dialog.MaterialDialogExt;
 public class ShowEditDialogEvent extends AbstractEvent {
 
     private int mId;
-    private int mTitle;
+    private String mTitle;
     private String mMessage;
     private String mEditText;
     private String mHint;
@@ -19,7 +19,7 @@ public class ShowEditDialogEvent extends AbstractEvent {
     private int mButtonNegative = MaterialDialogExt.NO_BUTTON;
     private boolean mCancelable = false;
 
-    public ShowEditDialogEvent(final int id, final int title, final String message, final String editText, final String hint, final int input_type, final int button_positive, final int button_negative, final boolean cancelable) {
+    public ShowEditDialogEvent(final int id, final String title, final String message, final String editText, final String hint, final int input_type, final int button_positive, final int button_negative, final boolean cancelable) {
         mId = id;
         mTitle = title;
         mMessage = message;
@@ -40,7 +40,7 @@ public class ShowEditDialogEvent extends AbstractEvent {
         return mId;
     }
 
-    public int getTitle() {
+    public String getTitle() {
         return mTitle;
     }
 
