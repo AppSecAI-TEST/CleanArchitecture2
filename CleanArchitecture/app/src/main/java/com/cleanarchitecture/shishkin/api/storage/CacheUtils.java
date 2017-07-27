@@ -1,12 +1,8 @@
 package com.cleanarchitecture.shishkin.api.storage;
 
-import android.content.Context;
 import android.os.Parcelable;
 
 import com.cleanarchitecture.shishkin.api.controller.Admin;
-import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
-import com.cleanarchitecture.shishkin.api.service.ParcelableDiskCacheService;
-import com.cleanarchitecture.shishkin.api.service.SerializableDiskCacheService;
 
 import java.io.Serializable;
 import java.util.List;
@@ -148,11 +144,8 @@ public class CacheUtils {
     }
 
     public static void put(final String key, final int cacheType, Serializable value, long expired) {
+        final IExpiredSerializableStorage diskCache = Admin.getInstance().get(SerializableDiskCache.NAME);
         final ISerializableStorage memoryCache = Admin.getInstance().get(SerializableMemoryCache.NAME);
-        final Context context = AdminUtils.getContext();
-        if (context == null) {
-            return;
-        }
 
         switch (cacheType) {
             case USE_ONLY_MEMORY_CACHE:
@@ -167,9 +160,9 @@ public class CacheUtils {
             case USE_SAVE_DISK_CACHE:
             case USE_DISK_CACHE:
                 if (expired > 0) {
-                    SerializableDiskCacheService.put(context, key, value, expired);
+                    diskCache.put(key, value, expired);
                 } else {
-                    SerializableDiskCacheService.put(context, key, value);
+                    diskCache.put(key, value);
                 }
                 break;
 
@@ -180,9 +173,9 @@ public class CacheUtils {
                     memoryCache.put(key, value);
                 }
                 if (expired > 0) {
-                    SerializableDiskCacheService.put(context, key, value, expired);
+                    diskCache.put(key, value, expired);
                 } else {
-                    SerializableDiskCacheService.put(context, key, value);
+                    diskCache.put(key, value);
                 }
                 break;
 
@@ -195,10 +188,7 @@ public class CacheUtils {
 
     public static <T extends Parcelable> void put(final String key, final int cacheType, T value, long expired) {
         final IParcelableStorage<T> memoryCache = Admin.getInstance().get(ParcelableMemoryCache.NAME);
-        final Context context = AdminUtils.getContext();
-        if (context == null) {
-            return;
-        }
+        final IExpiredParcelableStorage<T> diskCache = Admin.getInstance().get(ParcelableDiskCache.NAME);
 
         switch (cacheType) {
             case USE_ONLY_MEMORY_CACHE:
@@ -213,9 +203,9 @@ public class CacheUtils {
             case USE_SAVE_DISK_CACHE:
             case USE_DISK_CACHE:
                 if (expired > 0) {
-                    ParcelableDiskCacheService.put(context, key, value, expired);
+                    diskCache.put(key, value, expired);
                 } else {
-                    ParcelableDiskCacheService.put(context, key, value);
+                    diskCache.put(key, value);
                 }
                 break;
 
@@ -226,9 +216,9 @@ public class CacheUtils {
                     memoryCache.put(key, value);
                 }
                 if (expired > 0) {
-                    ParcelableDiskCacheService.put(context, key, value, expired);
+                    diskCache.put(key, value, expired);
                 } else {
-                    ParcelableDiskCacheService.put(context, key, value);
+                    diskCache.put(key, value);
                 }
                 break;
 
@@ -241,10 +231,7 @@ public class CacheUtils {
 
     public static <T extends Parcelable> void put(final String key, final int cacheType, List<T> value, long expired) {
         final IParcelableStorage<T> memoryCache = Admin.getInstance().get(ParcelableMemoryCache.NAME);
-        final Context context = AdminUtils.getContext();
-        if (context == null) {
-            return;
-        }
+        final IExpiredParcelableStorage<T> diskCache = Admin.getInstance().get(ParcelableDiskCache.NAME);
 
         switch (cacheType) {
             case USE_ONLY_MEMORY_CACHE:
@@ -259,9 +246,9 @@ public class CacheUtils {
             case USE_SAVE_DISK_CACHE:
             case USE_DISK_CACHE:
                 if (expired > 0) {
-                    ParcelableDiskCacheService.put(context, key, value, expired);
+                    diskCache.put(key, value, expired);
                 } else {
-                    ParcelableDiskCacheService.put(context, key, value);
+                    diskCache.put(key, value);
                 }
                 break;
 
@@ -272,9 +259,9 @@ public class CacheUtils {
                     memoryCache.put(key, value);
                 }
                 if (expired > 0) {
-                    ParcelableDiskCacheService.put(context, key, value, expired);
+                    diskCache.put(key, value, expired);
                 } else {
-                    ParcelableDiskCacheService.put(context, key, value);
+                    diskCache.put(key, value);
                 }
                 break;
 

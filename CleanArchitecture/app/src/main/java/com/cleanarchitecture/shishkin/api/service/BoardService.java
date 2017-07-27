@@ -80,8 +80,10 @@ public class BoardService extends ShortlyLiveBackgroundIntentService {
         final int count = mMessages.size();
         final StringBuilder sb = new StringBuilder();
         for (int i = 0; i < count; i++) {
+            if (i > 0) {
+                sb.append("\n\n");
+            }
             sb.append(mMessages.get(i));
-            sb.append("\n\n");
         }
 
         final IPresenterController controller = AdminUtils.getPresenterController();
