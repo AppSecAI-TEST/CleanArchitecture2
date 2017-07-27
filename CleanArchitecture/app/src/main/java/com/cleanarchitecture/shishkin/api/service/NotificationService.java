@@ -13,7 +13,6 @@ import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
 import com.cleanarchitecture.shishkin.api.controller.NotificationModule;
-import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBadgeEvent;
 import com.cleanarchitecture.shishkin.api.storage.CacheUtils;
 import com.cleanarchitecture.shishkin.application.ui.activity.MainActivity;
 import com.cleanarchitecture.shishkin.common.utils.IntentUtils;
@@ -45,9 +44,6 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
 
     public NotificationService() {
         super(NAME);
-
-        mMessages = Collections.synchronizedList(new LinkedList<String>());
-        CacheUtils.put(NAME, CacheUtils.USE_ONLY_DISK_CACHE, AdminUtils.getTransformDataModule().toJson(mMessages), 0);
     }
 
     @Override
@@ -56,7 +52,6 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
 
         setShutdownTimeout(TIMEUNIT.toMillis(TIMEUNIT_DURATION));
     }
-
 
     /**
      * Очистить список сообщений в зоне уведомлениц
@@ -109,18 +104,12 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
         try {
 
             final int count = mMessages.size();
-            if (mMessages.size() > 0) {
-                AdminUtils.showShortcutBadger(count);
-                AdminUtils.postEvent(new ToolbarSetBadgeEvent(count, true));
-            } else {
-                AdminUtils.hideShortcutBadger();
-                AdminUtils.postEvent(new ToolbarSetBadgeEvent(count, false));
-            }
-
             final StringBuilder sb = new StringBuilder();
             for (int i = 0; i < count; i++) {
+                if (i > 0) {
+                    sb.append("\n\n");
+                }
                 sb.append(mMessages.get(i));
-                sb.append("\n\n");
             }
 
             /*
@@ -182,13 +171,15 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
         } else {
             mMessages = AdminUtils.getTransformDataModule().fromJson(s, new com.google.gson.reflect.TypeToken<List<String>>() {
             });
+            if (mMessages == null) {
+                mMessages = Collections.synchronizedList(new LinkedList<String>());
+            }
         }
     }
 
     @WorkerThread
     private void onHandleAddMessageAction(final String message) {
         getCache();
-
         mMessages.add(0, message);
         while (mMessages.size() > mMessagesCount) {
             mMessages.remove(mMessages.get(mMessages.size() - 1));
@@ -243,9 +234,6 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
         mMessages.clear();
         CacheUtils.put(NAME, CacheUtils.USE_ONLY_DISK_CACHE, AdminUtils.getTransformDataModule().toJson(mMessages), 0);
 
-        AdminUtils.hideShortcutBadger();
-        AdminUtils.postEvent(new ToolbarSetBadgeEvent(0, false));
-
         final NotificationManager nm = AdminUtils.getSystemService(Context.NOTIFICATION_SERVICE);
         if (nm != null) {
             nm.cancelAll();
@@ -254,9 +242,6 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
 
     @WorkerThread
     private void onHandleDeleteMessagesAction() {
-        AdminUtils.hideShortcutBadger();
-        AdminUtils.postEvent(new ToolbarSetBadgeEvent(0, false));
-
         getCache();
         mMessages.clear();
         CacheUtils.put(NAME, CacheUtils.USE_ONLY_DISK_CACHE, AdminUtils.getTransformDataModule().toJson(mMessages), 0);
