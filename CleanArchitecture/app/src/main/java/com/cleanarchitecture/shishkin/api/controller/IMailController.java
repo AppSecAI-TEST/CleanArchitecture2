@@ -10,7 +10,7 @@ public interface IMailController extends IController<IMailSubscriber> {
     /**
      * Получить почту подписчика
      *
-     * @param subscriber the subscriber
+     * @param subscriber подписчик
      * @return the list
      */
     List<IMail> getMail(IMailSubscriber subscriber);
@@ -33,5 +33,12 @@ public interface IMailController extends IController<IMailSubscriber> {
      * Удалить все сообщения
      */
     void clearMail();
+
+    /**
+     * Удалить сообщения подписчика
+     *
+     * @param subscriber подписчик
+     */
+    void clearMail(final IMailSubscriber subscriber);
 
 }
