@@ -34,9 +34,6 @@ public class BoardService extends ShortlyLiveBackgroundIntentService {
 
     public BoardService() {
         super(NAME);
-
-        mMessages = Collections.synchronizedList(new LinkedList<String>());
-        CacheUtils.put(NAME, CacheUtils.USE_ONLY_DISK_CACHE, AdminUtils.getTransformDataModule().toJson(mMessages), 0);
     }
 
     @Override
@@ -109,6 +106,9 @@ public class BoardService extends ShortlyLiveBackgroundIntentService {
         } else {
             mMessages = AdminUtils.getTransformDataModule().fromJson(s, new com.google.gson.reflect.TypeToken<List<String>>() {
             });
+            if (mMessages == null) {
+                mMessages = Collections.synchronizedList(new LinkedList<String>());
+            }
         }
     }
 

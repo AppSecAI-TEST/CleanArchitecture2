@@ -45,9 +45,6 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
 
     public NotificationService() {
         super(NAME);
-
-        mMessages = Collections.synchronizedList(new LinkedList<String>());
-        CacheUtils.put(NAME, CacheUtils.USE_ONLY_DISK_CACHE, AdminUtils.getTransformDataModule().toJson(mMessages), 0);
     }
 
     @Override
@@ -182,13 +179,15 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
         } else {
             mMessages = AdminUtils.getTransformDataModule().fromJson(s, new com.google.gson.reflect.TypeToken<List<String>>() {
             });
+            if (mMessages == null) {
+                mMessages = Collections.synchronizedList(new LinkedList<String>());
+            }
         }
     }
 
     @WorkerThread
     private void onHandleAddMessageAction(final String message) {
         getCache();
-
         mMessages.add(0, message);
         while (mMessages.size() > mMessagesCount) {
             mMessages.remove(mMessages.get(mMessages.size() - 1));
