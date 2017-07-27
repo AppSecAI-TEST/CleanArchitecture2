@@ -14,6 +14,7 @@ import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
 import com.cleanarchitecture.shishkin.api.controller.NotificationModule;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBadgeEvent;
+import com.cleanarchitecture.shishkin.api.storage.CacheUtils;
 import com.cleanarchitecture.shishkin.application.ui.activity.MainActivity;
 import com.cleanarchitecture.shishkin.common.utils.IntentUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
@@ -46,6 +47,7 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
         super(NAME);
 
         mMessages = Collections.synchronizedList(new LinkedList<String>());
+        CacheUtils.put(NAME, CacheUtils.USE_ONLY_DISK_CACHE, AdminUtils.getTransformDataModule().toJson(mMessages), 0);
     }
 
     @Override
@@ -54,6 +56,7 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
 
         setShutdownTimeout(TIMEUNIT.toMillis(TIMEUNIT_DURATION));
     }
+
 
     /**
      * Очистить список сообщений в зоне уведомлениц
@@ -172,24 +175,39 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
         }
     }
 
+    private void getCache() {
+        final String s = (String) CacheUtils.get(NAME, CacheUtils.USE_ONLY_DISK_CACHE);
+        if (StringUtils.isNullOrEmpty(s)) {
+            mMessages = Collections.synchronizedList(new LinkedList<String>());
+        } else {
+            mMessages = AdminUtils.getTransformDataModule().fromJson(s, new com.google.gson.reflect.TypeToken<List<String>>() {
+            });
+        }
+    }
+
     @WorkerThread
     private void onHandleAddMessageAction(final String message) {
+        getCache();
+
         mMessages.add(0, message);
         while (mMessages.size() > mMessagesCount) {
             mMessages.remove(mMessages.get(mMessages.size() - 1));
         }
 
+        CacheUtils.put(NAME, CacheUtils.USE_ONLY_DISK_CACHE, AdminUtils.getTransformDataModule().toJson(mMessages), 0);
         sendNotification(message);
     }
 
     @WorkerThread
     private void onHandleAddDistinctMessageAction(final String message) {
+        getCache();
         if (!mMessages.contains(message)) {
             mMessages.add(0, message);
             while (mMessages.size() > mMessagesCount) {
                 mMessages.remove(mMessages.get(mMessages.size() - 1));
             }
 
+            CacheUtils.put(NAME, CacheUtils.USE_ONLY_DISK_CACHE, AdminUtils.getTransformDataModule().toJson(mMessages), 0);
             sendNotification(message);
         } else {
             onHandleRefreshAction();
@@ -198,14 +216,17 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
 
     @WorkerThread
     private void onHandleReplaceMessageAction(final String message) {
+        getCache();
         mMessages.clear();
         mMessages.add(0, message);
 
+        CacheUtils.put(NAME, CacheUtils.USE_ONLY_DISK_CACHE, AdminUtils.getTransformDataModule().toJson(mMessages), 0);
         sendNotification(message);
     }
 
     @WorkerThread
     private void onHandleRefreshAction() {
+        getCache();
         if (mMessages.isEmpty()) {
             onHandleClearAction();
             return;
@@ -218,7 +239,9 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
 
     @WorkerThread
     private void onHandleClearAction() {
+        getCache();
         mMessages.clear();
+        CacheUtils.put(NAME, CacheUtils.USE_ONLY_DISK_CACHE, AdminUtils.getTransformDataModule().toJson(mMessages), 0);
 
         AdminUtils.hideShortcutBadger();
         AdminUtils.postEvent(new ToolbarSetBadgeEvent(0, false));
@@ -234,7 +257,9 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
         AdminUtils.hideShortcutBadger();
         AdminUtils.postEvent(new ToolbarSetBadgeEvent(0, false));
 
+        getCache();
         mMessages.clear();
+        CacheUtils.put(NAME, CacheUtils.USE_ONLY_DISK_CACHE, AdminUtils.getTransformDataModule().toJson(mMessages), 0);
     }
 
     @WorkerThread

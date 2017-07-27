@@ -212,18 +212,18 @@ public class DbProvider<H extends AbstractViewModel, T extends RoomDatabase> ext
     @Override
     public synchronized <E> void observe(final String nameViewModel, final Class<H> klass, final IObserver<E> observer) {
         try {
-                H viewModel;
-                if (!mViewModel.containsKey(nameViewModel)) {
-                    final LifecycleActivity activity = AdminUtils.getActivity();
-                    if (activity != null) {
-                        viewModel = ViewModelProviders.of(activity).get(klass);
-                        viewModel.getLiveData().observe(this, observer);
-                        mViewModel.put(viewModel.getName(), (H) viewModel);
-                    }
-                } else {
-                    viewModel = mViewModel.get(nameViewModel);
+            H viewModel;
+            if (!mViewModel.containsKey(nameViewModel)) {
+                final LifecycleActivity activity = AdminUtils.getActivity();
+                if (activity != null) {
+                    viewModel = ViewModelProviders.of(activity).get(klass);
                     viewModel.getLiveData().observe(this, observer);
+                    mViewModel.put(viewModel.getName(), (H) viewModel);
                 }
+            } else {
+                viewModel = mViewModel.get(nameViewModel);
+                viewModel.getLiveData().observe(this, observer);
+            }
         } catch (Exception e) {
             ErrorController.getInstance().onError(LOG_TAG, e, ErrorController.ERROR_GET_DATA);
         }

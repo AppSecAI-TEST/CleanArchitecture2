@@ -11,6 +11,7 @@ import com.cleanarchitecture.shishkin.api.mail.HideBoardMail;
 import com.cleanarchitecture.shishkin.api.mail.SetTextBoardMail;
 import com.cleanarchitecture.shishkin.api.mail.ShowBoardMail;
 import com.cleanarchitecture.shishkin.api.presenter.ExpandableBoardPresenter;
+import com.cleanarchitecture.shishkin.api.storage.CacheUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
 import java.util.Collections;
@@ -27,7 +28,7 @@ public class BoardService extends ShortlyLiveBackgroundIntentService {
     public static final String NAME = BoardService.class.getName();
 
     private List<String> mMessages;
-    private int mMessagesCount = 1;
+    private int mMessagesCount = 100;
     private static final TimeUnit TIMEUNIT = TimeUnit.MINUTES;
     private static final long TIMEUNIT_DURATION = 5L;
 
@@ -35,6 +36,7 @@ public class BoardService extends ShortlyLiveBackgroundIntentService {
         super(NAME);
 
         mMessages = Collections.synchronizedList(new LinkedList<String>());
+        CacheUtils.put(NAME, CacheUtils.USE_ONLY_DISK_CACHE, AdminUtils.getTransformDataModule().toJson(mMessages), 0);
     }
 
     @Override
@@ -100,24 +102,38 @@ public class BoardService extends ShortlyLiveBackgroundIntentService {
         }
     }
 
+    private void getCache() {
+        final String s = (String) CacheUtils.get(NAME, CacheUtils.USE_ONLY_DISK_CACHE);
+        if (StringUtils.isNullOrEmpty(s)) {
+            mMessages = Collections.synchronizedList(new LinkedList<String>());
+        } else {
+            mMessages = AdminUtils.getTransformDataModule().fromJson(s, new com.google.gson.reflect.TypeToken<List<String>>() {
+            });
+        }
+    }
+
     @WorkerThread
     private void onHandleAddMessageAction(final String message) {
+        getCache();
         mMessages.add(0, message);
         while (mMessages.size() > mMessagesCount) {
             mMessages.remove(mMessages.get(mMessages.size() - 1));
         }
 
+        CacheUtils.put(NAME, CacheUtils.USE_ONLY_DISK_CACHE, AdminUtils.getTransformDataModule().toJson(mMessages), 0);
         sendNotification();
     }
 
     @WorkerThread
     private void onHandleAddDistinctMessageAction(final String message) {
+        getCache();
         if (!mMessages.contains(message)) {
             mMessages.add(0, message);
             while (mMessages.size() > mMessagesCount) {
                 mMessages.remove(mMessages.get(mMessages.size() - 1));
             }
 
+            CacheUtils.put(NAME, CacheUtils.USE_ONLY_DISK_CACHE, AdminUtils.getTransformDataModule().toJson(mMessages), 0);
             sendNotification();
         } else {
             onHandleRefreshAction();
@@ -126,21 +142,27 @@ public class BoardService extends ShortlyLiveBackgroundIntentService {
 
     @WorkerThread
     private void onHandleReplaceMessageAction(final String message) {
+        getCache();
         mMessages.clear();
         mMessages.add(0, message);
 
+        CacheUtils.put(NAME, CacheUtils.USE_ONLY_DISK_CACHE, AdminUtils.getTransformDataModule().toJson(mMessages), 0);
         sendNotification();
     }
 
     @WorkerThread
     private void onHandleRefreshAction() {
+        getCache();
+
         sendNotification();
     }
 
     @WorkerThread
     private void onHandleClearAction() {
+        getCache();
         mMessages.clear();
 
+        CacheUtils.put(NAME, CacheUtils.USE_ONLY_DISK_CACHE, AdminUtils.getTransformDataModule().toJson(mMessages), 0);
         sendNotification();
     }
 
