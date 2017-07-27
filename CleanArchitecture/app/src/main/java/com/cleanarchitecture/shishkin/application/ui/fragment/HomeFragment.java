@@ -173,6 +173,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
         final INotificationModule module = AdminUtils.getNotificationModule();
         if (module != null) {
             module.replaceMessageAll(sb.toString());
+            module.addMessageAll("Test");
         }
     }
 
