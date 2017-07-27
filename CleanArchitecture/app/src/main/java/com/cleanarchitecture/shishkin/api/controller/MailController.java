@@ -81,6 +81,24 @@ public class MailController extends AbstractController<IMailSubscriber> implemen
     }
 
     @Override
+    public synchronized void clearMail(final IMailSubscriber subscriber) {
+        if (subscriber != null) {
+            if (mMail.isEmpty()) {
+                return;
+            }
+
+            final String name = subscriber.getName();
+            final ITransformDataModule module = AdminUtils.getTransformDataModule();
+            final List<IMail> list = module.filter(mMail.values(), mail -> mail.contains(name)).toList();
+            if (!list.isEmpty()) {
+                for (IMail mail : list) {
+                    mMail.remove(mail.getId());
+                }
+            }
+        }
+    }
+
+    @Override
     public synchronized void addMail(final IMail mail) {
         if (mail != null) {
             final List<String> list = mail.getCopyTo();

@@ -239,6 +239,35 @@ public class AdminUtils {
     }
 
     /**
+     * Читать почту не удаляя c сервера
+     *
+     * @param subscriber почтовый подписчик
+     */
+    public static void viewMail(final IMailSubscriber subscriber) {
+        final IMailController controller = Admin.getInstance().get(MailController.NAME);
+        if (controller != null) {
+            final List<IMail> list = controller.getMail(subscriber);
+            for (IMail mail : list) {
+                if (subscriber.getState() == ViewStateObserver.STATE_RESUME) {
+                    mail.read(subscriber);
+                }
+            }
+        }
+    }
+
+    /**
+     * Очистить почту подписчика
+     *
+     * @param subscriber почтовый подписчик
+     */
+    public static void clearMail(final IMailSubscriber subscriber) {
+        final IMailController controller = Admin.getInstance().get(MailController.NAME);
+        if (controller != null) {
+            controller.clearMail(subscriber);
+        }
+    }
+
+    /**
      * Добавить почтовое сообщение
      *
      * @param mail почтовое сообщение
