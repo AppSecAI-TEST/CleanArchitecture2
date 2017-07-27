@@ -16,32 +16,22 @@ import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Сервис вывода сообщений в зону Expandable Board
  */
 @SuppressWarnings("unused")
-public class BoardService extends ShortlyLiveBackgroundIntentService {
+public class BoardService extends BackgroundIntentService {
 
     public static final String NAME = BoardService.class.getName();
 
     private List<String> mMessages;
-    private int mMessagesCount = 1;
-    private static final TimeUnit TIMEUNIT = TimeUnit.MINUTES;
-    private static final long TIMEUNIT_DURATION = 5L;
+    private int mMessagesCount = 100;
 
     public BoardService() {
         super(NAME);
 
         mMessages = Collections.synchronizedList(new LinkedList<String>());
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        setShutdownTimeout(TIMEUNIT.toMillis(TIMEUNIT_DURATION));
     }
 
     @Override
@@ -149,8 +139,4 @@ public class BoardService extends ShortlyLiveBackgroundIntentService {
         mMessagesCount = count;
     }
 
-    @Override
-    public String getName() {
-        return NAME;
-    }
 }

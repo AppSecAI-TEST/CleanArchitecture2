@@ -21,13 +21,12 @@ import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Сервис вывода сообщений в зону уведомлений
  */
 @SuppressWarnings("unused")
-public class NotificationService extends ShortlyLiveBackgroundIntentService {
+public class NotificationService extends BackgroundIntentService {
 
     public static final String NAME = NotificationService.class.getName();
 
@@ -39,20 +38,11 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
 
     private List<String> mMessages;
     private int mMessagesCount = 5;
-    private static final TimeUnit TIMEUNIT = TimeUnit.MINUTES;
-    private static final long TIMEUNIT_DURATION = 5L;
 
     public NotificationService() {
         super(NAME);
 
         mMessages = Collections.synchronizedList(new LinkedList<String>());
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        setShutdownTimeout(TIMEUNIT.toMillis(TIMEUNIT_DURATION));
     }
 
     /**
@@ -240,10 +230,5 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
     @WorkerThread
     private void onHandleSetMessagesCount(final int count) {
         mMessagesCount = count;
-    }
-
-    @Override
-    public String getName() {
-        return NAME;
     }
 }
