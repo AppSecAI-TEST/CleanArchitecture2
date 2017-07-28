@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
+import com.cleanarchitecture.shishkin.api.service.BadgeService;
 import com.cleanarchitecture.shishkin.api.service.BoardService;
 import com.cleanarchitecture.shishkin.api.service.NotificationService;
 import com.cleanarchitecture.shishkin.common.utils.IntentUtils;
@@ -29,6 +30,7 @@ public class NotificationModule extends AbstractShortlyLiveModule implements INo
     public NotificationModule() {
         mServices.put(NotificationService.NAME, NotificationService.class);
         mServices.put(BoardService.NAME, BoardService.class);
+        mServices.put(BadgeService.NAME, BadgeService.class);
     }
 
     private synchronized void sendIntent(final String name, final String action, final String message) {

@@ -12,6 +12,7 @@ import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
+import com.cleanarchitecture.shishkin.api.controller.INotificationModule;
 import com.cleanarchitecture.shishkin.api.controller.NotificationModule;
 import com.cleanarchitecture.shishkin.api.storage.CacheUtils;
 import com.cleanarchitecture.shishkin.application.ui.activity.MainActivity;
@@ -103,13 +104,24 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
     private synchronized void sendNotification(final String message) {
         try {
 
-            final int count = mMessages.size();
             final StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < count; i++) {
+            int cnt = mMessagesCount;
+            if (mMessagesCount == 0) {
+                cnt = mMessages.size();
+            }
+            if (cnt > mMessages.size()) {
+                cnt = mMessages.size();
+            }
+            for (int i = 0; i < cnt; i++) {
                 if (i > 0) {
                     sb.append("\n\n");
                 }
                 sb.append(mMessages.get(i));
+            }
+
+            final INotificationModule module = AdminUtils.getNotificationModule();
+            if (module != null) {
+                module.replaceMessage(BadgeService.NAME, String.valueOf(mMessages.size()));
             }
 
             /*
@@ -181,9 +193,6 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
     private void onHandleAddMessageAction(final String message) {
         getCache();
         mMessages.add(0, message);
-        while (mMessages.size() > mMessagesCount) {
-            mMessages.remove(mMessages.get(mMessages.size() - 1));
-        }
 
         CacheUtils.put(NAME, CacheUtils.USE_ONLY_DISK_CACHE, AdminUtils.getTransformDataModule().toJson(mMessages), 0);
         sendNotification(message);
@@ -194,9 +203,6 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
         getCache();
         if (!mMessages.contains(message)) {
             mMessages.add(0, message);
-            while (mMessages.size() > mMessagesCount) {
-                mMessages.remove(mMessages.get(mMessages.size() - 1));
-            }
 
             CacheUtils.put(NAME, CacheUtils.USE_ONLY_DISK_CACHE, AdminUtils.getTransformDataModule().toJson(mMessages), 0);
             sendNotification(message);
@@ -245,11 +251,18 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
         getCache();
         mMessages.clear();
         CacheUtils.put(NAME, CacheUtils.USE_ONLY_DISK_CACHE, AdminUtils.getTransformDataModule().toJson(mMessages), 0);
+
+        final INotificationModule module = AdminUtils.getNotificationModule();
+        if (module != null) {
+            module.clear(BadgeService.NAME);
+        }
     }
 
     @WorkerThread
     private void onHandleSetMessagesCount(final int count) {
-        mMessagesCount = count;
+        if (count >= 0) {
+            mMessagesCount = count;
+        }
     }
 
     @Override

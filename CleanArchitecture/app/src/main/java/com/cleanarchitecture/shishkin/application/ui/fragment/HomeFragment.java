@@ -25,7 +25,6 @@ import com.cleanarchitecture.shishkin.api.event.ShowFragmentEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.OnToolbarClickEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.OnToolbarMenuItemClickEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBackNavigationEvent;
-import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBadgeEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetItemEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetMenuEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetTitleEvent;
@@ -36,6 +35,8 @@ import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseFinishApplication
 import com.cleanarchitecture.shishkin.api.presenter.ExpandableBoardPresenter;
 import com.cleanarchitecture.shishkin.api.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.api.presenter.OnBackPressedPresenter;
+import com.cleanarchitecture.shishkin.api.service.BoardService;
+import com.cleanarchitecture.shishkin.api.service.NotificationService;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.api.ui.fragment.SettingApplicationFragment;
 import com.cleanarchitecture.shishkin.api.ui.item.SettingsDesktopOrderItem;
@@ -171,10 +172,8 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
         }
 
         final INotificationModule module = AdminUtils.getNotificationModule();
-        if (module != null) {
-            module.replaceMessageAll(sb.toString());
-            module.addMessageAll("Test");
-        }
+        module.replaceMessage(NotificationService.NAME, sb.toString());
+        module.addMessage(BoardService.NAME, "Test");
     }
 
     @Override
@@ -241,9 +240,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
                 final ShareUtil.ShareData shareData = new ShareUtil.ShareData(null, getString(R.string.test_mesage));
                 ShareUtil.share(shareData, AdminUtils.getActivity());
             } else if (event.getView().getId() == R.id.title) {
-                AdminUtils.postEvent(new ToolbarSetBadgeEvent(0, false));
                 AdminUtils.postEvent(new ShowToastEvent("Click on Toolbar title"));
-                AdminUtils.hideShortcutBadger();
                 AdminUtils.getNotificationModule().clearAll();
             }
         }

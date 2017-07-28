@@ -7,15 +7,15 @@ import com.cleanarchitecture.shishkin.api.event.AbstractEvent;
  */
 public class ToolbarSetBadgeEvent extends AbstractEvent {
 
-    private int mCount;
+    private String mCount;
     private boolean mVisible;
 
-    public ToolbarSetBadgeEvent(final int count, final boolean isVisible) {
+    public ToolbarSetBadgeEvent(final String count, final boolean isVisible) {
         mCount = count;
         mVisible = isVisible;
     }
 
-    public int getCount() {
+    public String getCount() {
         return mCount;
     }
 
