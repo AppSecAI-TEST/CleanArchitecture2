@@ -15,7 +15,6 @@
         android:name=".api.controller.ApplicationController"
         android:allowBackup="true"
         android:configChanges="keyboardHidden|orientation|screenSize"
-        android:excludeFromRecents="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:launchMode="singleInstance"
