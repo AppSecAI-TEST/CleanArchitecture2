@@ -61,7 +61,7 @@ public interface IToolbarPresenter {
      * @param count     отображаемое количество
      * @param isVisible the is visible
      */
-    void setBadge(final int count, final boolean isVisible);
+    void setBadge(final String count, final boolean isVisible);
 
     /**
      * Флаг - показывать/скрыть Toolbar

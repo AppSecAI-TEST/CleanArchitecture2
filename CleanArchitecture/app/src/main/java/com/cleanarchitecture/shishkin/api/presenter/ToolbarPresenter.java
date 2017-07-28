@@ -312,12 +312,12 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     }
 
     @Override
-    public void setBadge(final int count, final boolean isVisible) {
+    public void setBadge(final String count, final boolean isVisible) {
         ApplicationUtils.runOnUiThread(() -> {
             if (validate()) {
-                if (isVisible && count > 0) {
+                if (isVisible) {
                     mBadgeView.get().showCirclePointBadge();
-                    mBadgeView.get().showTextBadge(String.valueOf(count));
+                    mBadgeView.get().showTextBadge(count);
                 } else {
                     mBadgeView.get().hiddenBadge();
                 }

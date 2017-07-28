@@ -77,9 +77,15 @@ public class BoardService extends ShortlyLiveBackgroundIntentService {
     }
 
     private synchronized void sendNotification() {
-        final int count = mMessages.size();
         final StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < count; i++) {
+        int cnt = mMessagesCount;
+        if (mMessagesCount == 0) {
+            cnt = mMessages.size();
+        }
+        if (cnt > mMessages.size()) {
+            cnt = mMessages.size();
+        }
+        for (int i = 0; i < cnt; i++) {
             if (i > 0) {
                 sb.append("\n\n");
             }
@@ -90,7 +96,7 @@ public class BoardService extends ShortlyLiveBackgroundIntentService {
         if (controller != null) {
             final ExpandableBoardPresenter presenter = (ExpandableBoardPresenter) controller.getPresenter(ExpandableBoardPresenter.NAME);
             if (presenter != null) {
-                if (count > 0) {
+                if (mMessages.size() > 0) {
                     AdminUtils.addMail(new SetTextBoardMail(sb.toString()));
                     AdminUtils.addMail(new ShowBoardMail());
                 } else {
@@ -170,7 +176,9 @@ public class BoardService extends ShortlyLiveBackgroundIntentService {
 
     @WorkerThread
     private void onHandleSetMessagesCount(final int count) {
-        mMessagesCount = count;
+        if (count >= 0) {
+            mMessagesCount = count;
+        }
     }
 
     @Override
