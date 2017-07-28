@@ -629,8 +629,8 @@ public class AdminUtils {
      *
      * @return модуль Application Preferences
      */
-    public static IAppPreferencesModule getPreferences() {
-        return Admin.getInstance().get(AppPreferencesModule.NAME);
+    public static IPreferencesModule getPreferences() {
+        return Admin.getInstance().get(PreferencesModule.NAME);
     }
 
     public static void viewLog() {

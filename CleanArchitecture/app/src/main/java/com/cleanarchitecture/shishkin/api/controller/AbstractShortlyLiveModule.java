@@ -30,6 +30,6 @@ public abstract class AbstractShortlyLiveModule extends AbstractModule implement
 
     @Override
     public void onShutdown(AutoCompleteHandler handler) {
-        Admin.getInstance().unregister(getName());
+        Admin.getInstance().unregisterModule(getName());
     }
 }

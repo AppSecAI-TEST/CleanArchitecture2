@@ -33,7 +33,7 @@ public class DesktopController implements IDesktopController, IModuleSubscriber 
     public DesktopController() {
         final Context context = AdminUtils.getContext();
         if (context != null) {
-            mDesktop = AppPreferencesModule.getInstance().getDesktop();
+            mDesktop = PreferencesModule.getInstance().getDesktop();
 
             String[] keys = context.getResources().getStringArray(R.array.desktop_key);
             String[] values = context.getResources().getStringArray(R.array.desktop_value);

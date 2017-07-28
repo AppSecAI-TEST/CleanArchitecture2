@@ -50,7 +50,7 @@ public class Admin extends AbstractAdmin {
         registerModule(EventBusController.getInstance());
 
         // Application Preferences
-        registerModule(AppPreferencesModule.getInstance());
+        registerModule(PreferencesModule.getInstance());
 
         // Кэш в памяти Serializable
         if (ApplicationUtils.getHeapSize() > MIN_HEAP_SIZE) {

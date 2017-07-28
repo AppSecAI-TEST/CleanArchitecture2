@@ -5,7 +5,8 @@
     android:id="@+id/board_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:visibility="gone">
 
     <net.cachapa.expandablelayout.ExpandableLayout
         android:id="@+id/expandableLayout"
@@ -31,8 +32,8 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
-                android:minHeight="@dimen/board_min_height"
                 android:maxHeight="@dimen/dimen_128dp"
+                android:minHeight="@dimen/board_min_height"
                 android:paddingLeft="@dimen/dimen_8dp"
                 android:paddingRight="@dimen/dimen_8dp"
                 android:textColor="@color/white"

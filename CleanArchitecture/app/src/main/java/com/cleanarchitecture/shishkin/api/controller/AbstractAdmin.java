@@ -104,7 +104,7 @@ public abstract class AbstractAdmin implements IAdmin {
     }
 
     @Override
-    public synchronized void unregister(final String nameController) {
+    public synchronized void unregisterModule(final String nameController) {
         if (!StringUtils.isNullOrEmpty(nameController)) {
             try {
                 if (mModules.containsKey(nameController)) {
