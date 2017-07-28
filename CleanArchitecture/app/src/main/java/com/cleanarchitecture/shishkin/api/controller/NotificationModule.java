@@ -28,9 +28,17 @@ public class NotificationModule extends AbstractShortlyLiveModule implements INo
     private Map<String, Class> mServices = Collections.synchronizedMap(new ConcurrentHashMap<String, Class>());
 
     public NotificationModule() {
-        mServices.put(NotificationService.NAME, NotificationService.class);
-        mServices.put(BoardService.NAME, BoardService.class);
-        mServices.put(BadgeService.NAME, BadgeService.class);
+        final IPreferencesModule module = AdminUtils.getPreferences();
+
+        if (module.getModule(NotificationService.NAME)) {
+            mServices.put(NotificationService.NAME, NotificationService.class);
+        }
+        if (module.getModule(BoardService.NAME)) {
+            mServices.put(BoardService.NAME, BoardService.class);
+        }
+        if (module.getModule(BadgeService.NAME)) {
+            mServices.put(BadgeService.NAME, BadgeService.class);
+        }
     }
 
     private synchronized void sendIntent(final String name, final String action, final String message) {

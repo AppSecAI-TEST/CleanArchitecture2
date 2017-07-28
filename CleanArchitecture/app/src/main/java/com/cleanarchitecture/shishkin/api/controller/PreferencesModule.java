@@ -8,6 +8,9 @@ import com.cleanarchitecture.shishkin.api.event.repository.RepositoryRequestGetA
 import com.cleanarchitecture.shishkin.api.event.repository.RepositoryRequestSetApplicationSettingEvent;
 import com.cleanarchitecture.shishkin.api.event.repository.RepositoryResponseGetApplicationSettingsEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowDialogEvent;
+import com.cleanarchitecture.shishkin.api.service.BadgeService;
+import com.cleanarchitecture.shishkin.api.service.BoardService;
+import com.cleanarchitecture.shishkin.api.service.NotificationService;
 import com.cleanarchitecture.shishkin.common.utils.AppPreferencesUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 
@@ -19,10 +22,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 @SuppressWarnings("unused")
-public class AppPreferencesModule implements IAppPreferencesModule, IModuleSubscriber {
+public class PreferencesModule implements IPreferencesModule, IModuleSubscriber {
 
-    public static final String NAME = AppPreferencesModule.class.getName();
-    private static final String LOG_TAG = "AppPreferencesModule:";
+    public static final String NAME = PreferencesModule.class.getName();
+    private static final String LOG_TAG = "PreferencesModule:";
     private static final String SETTING_SHOW_TOOLTIP = "setting_show_tooltip";
     private static final String DESKTOP = "desktop";
     private static final String IMAGE_CACHE_VERSION = "image_cache_version";
@@ -33,20 +36,20 @@ public class AppPreferencesModule implements IAppPreferencesModule, IModuleSubsc
     public static final String COLOR_ON_NETWORK_DISCONNECTED = "color_on_network_disconnected";
     public static final String SCREENSHOT = "screenshot";
 
-    private static volatile AppPreferencesModule sInstance;
+    private static volatile PreferencesModule sInstance;
 
-    public static AppPreferencesModule getInstance() {
+    public static PreferencesModule getInstance() {
         if (sInstance == null) {
-            synchronized (AppPreferencesModule.class) {
+            synchronized (PreferencesModule.class) {
                 if (sInstance == null) {
-                    sInstance = new AppPreferencesModule();
+                    sInstance = new PreferencesModule();
                 }
             }
         }
         return sInstance;
     }
 
-    private AppPreferencesModule() {
+    private PreferencesModule() {
         final int currentVersion = ApplicationController.getInstance().getVersion();
         final int version = getApplicationVersion();
         if (version == 0) {
@@ -169,6 +172,23 @@ public class AppPreferencesModule implements IAppPreferencesModule, IModuleSubsc
     }
 
     @Override
+    public synchronized boolean getModule(final String name) {
+        final Context context = ApplicationController.getInstance().getApplicationContext();
+        if (context != null) {
+            return AppPreferencesUtils.getBoolean(context, name, true);
+        }
+        return true;
+    }
+
+    @Override
+    public synchronized void seModule(final String name, final boolean isEnabled) {
+        final Context context = ApplicationController.getInstance().getApplicationContext();
+        if (context != null) {
+            AppPreferencesUtils.putBoolean(context, name, isEnabled);
+        }
+    }
+
+    @Override
     public synchronized String getDesktopOrder(final String name, final String desktopOrder) {
         final Context context = ApplicationController.getInstance().getApplicationContext();
         if (context != null) {
@@ -235,6 +255,15 @@ public class AppPreferencesModule implements IAppPreferencesModule, IModuleSubsc
         }
     }
 
+    public synchronized void setSettingModule(final ApplicationSetting setting) {
+        Admin.getInstance().unregisterModule(NotificationModule.NAME);
+        final Context context = ApplicationController.getInstance().getApplicationContext();
+        if (context != null) {
+            AppPreferencesUtils.putBoolean(context, setting.getPreferenceName(), Boolean.valueOf(setting.getCurrentValue()));
+        }
+        Admin.getInstance().registerModule(NotificationModule.NAME);
+    }
+    
     private synchronized void getApplicationSettings() {
         final Context context = AdminUtils.getContext();
         if (context == null) {
@@ -286,6 +315,34 @@ public class AppPreferencesModule implements IAppPreferencesModule, IModuleSubsc
                 .setId(R.id.application_setting_color);
         list.add(setting);
 
+        setting = new ApplicationSetting(ApplicationSetting.TYPE_TEXT)
+                .setTitleId(R.string.modules);
+        list.add(setting);
+
+        currentValueBoolean = getModule(NotificationService.NAME);
+        setting = new ApplicationSetting(ApplicationSetting.TYPE_SWITCH)
+                .setPreferenceName(NotificationService.NAME)
+                .setTitleId(R.string.module_notification)
+                .setCurrentValue(String.valueOf(currentValueBoolean))
+                .setId(R.id.application_setting_modules);
+        list.add(setting);
+
+        currentValueBoolean = getModule(BoardService.NAME);
+        setting = new ApplicationSetting(ApplicationSetting.TYPE_SWITCH)
+                .setTitleId(R.string.module_board)
+                .setPreferenceName(BoardService.NAME)
+                .setCurrentValue(String.valueOf(currentValueBoolean))
+                .setId(R.id.application_setting_modules);
+        list.add(setting);
+
+        currentValueBoolean = getModule(BadgeService.NAME);
+        setting = new ApplicationSetting(ApplicationSetting.TYPE_SWITCH)
+                .setTitleId(R.string.module_badger)
+                .setPreferenceName(BadgeService.NAME)
+                .setCurrentValue(String.valueOf(currentValueBoolean))
+                .setId(R.id.application_setting_modules);
+        list.add(setting);
+
         EventBusController.getInstance().post(new RepositoryResponseGetApplicationSettingsEvent().setResponse(list));
     }
 
@@ -293,6 +350,8 @@ public class AppPreferencesModule implements IAppPreferencesModule, IModuleSubsc
         if (event == null) {
             return;
         }
+
+        final Context context = AdminUtils.getContext();
 
         if (event.getApplicationSetting() == null) {
             return;
@@ -308,7 +367,6 @@ public class AppPreferencesModule implements IAppPreferencesModule, IModuleSubsc
             case R.id.application_setting_screenshot_enabled:
                 currentValue = Boolean.valueOf(event.getApplicationSetting().getCurrentValue());
                 setScreenshotEnabled(currentValue);
-                final Context context = AdminUtils.getContext();
                 if (context != null) {
                     AdminUtils.postEvent(new ShowDialogEvent(-1, null, context.getString(R.string.screenshot_help)));
                 }
@@ -316,6 +374,14 @@ public class AppPreferencesModule implements IAppPreferencesModule, IModuleSubsc
 
             case R.id.application_setting_color:
                 setSettingColor(event.getApplicationSetting());
+                break;
+
+            case R.id.application_setting_modules:
+                if (context != null) {
+                    AdminUtils.postEvent(new ShowDialogEvent(-1, null, context.getString(R.string.screenshot_help)));
+                }
+                setSettingModule(event.getApplicationSetting());
+                break;
         }
 
         getApplicationSettings();

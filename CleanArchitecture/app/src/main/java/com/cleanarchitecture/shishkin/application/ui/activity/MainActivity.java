@@ -7,12 +7,18 @@ import android.os.Bundle;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.event.CheckDiskCacheEvent;
+import com.cleanarchitecture.shishkin.api.event.toolbar.OnToolbarClickEvent;
+import com.cleanarchitecture.shishkin.api.event.ui.ShowToastEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseStartApplicationEvent;
 import com.cleanarchitecture.shishkin.api.service.NotificationService;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractContentActivity;
 import com.cleanarchitecture.shishkin.application.presenter.FloatingActionMenuPresenter;
 import com.cleanarchitecture.shishkin.application.ui.fragment.HomeFragment;
+import com.cleanarchitecture.shishkin.common.utils.ShareUtil;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class MainActivity extends AbstractContentActivity {
 
@@ -77,4 +83,18 @@ public class MainActivity extends AbstractContentActivity {
     public String getName() {
         return NAME;
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public synchronized void onToolbarClickEvent(OnToolbarClickEvent event) {
+        if (event.getView() != null) {
+            if (event.getView().getId() == R.id.item) {
+                final ShareUtil.ShareData shareData = new ShareUtil.ShareData(null, getString(R.string.test_mesage));
+                ShareUtil.share(shareData, AdminUtils.getActivity());
+            } else if (event.getView().getId() == R.id.title) {
+                AdminUtils.postEvent(new ShowToastEvent("Click on Toolbar title"));
+                AdminUtils.getNotificationModule().clearAll();
+            }
+        }
+    }
+
 }

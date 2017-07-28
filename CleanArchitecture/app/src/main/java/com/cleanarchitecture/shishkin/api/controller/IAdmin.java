@@ -34,7 +34,7 @@ public interface IAdmin extends ISubscriber {
      *
      * @param name имя модуля/объекта
      */
-    void unregister(String name);
+    void unregisterModule(String name);
 
     /**
      * Зарегистрировать подписчика модуля

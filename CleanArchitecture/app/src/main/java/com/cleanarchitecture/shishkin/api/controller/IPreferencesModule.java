@@ -1,6 +1,6 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
-public interface IAppPreferencesModule extends IModule {
+public interface IPreferencesModule extends IModule {
 
     /**
      * Получить версию кэша картинок
@@ -105,4 +105,8 @@ public interface IAppPreferencesModule extends IModule {
     boolean getScreenshotEnabled();
 
     void setScreenshotEnabled(final boolean enabled);
+
+    boolean getModule(final String name);
+
+    void seModule(final String name, final boolean isEnabled);
 }

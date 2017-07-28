@@ -15,10 +15,10 @@ import android.widget.RelativeLayout;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
-import com.cleanarchitecture.shishkin.api.controller.AppPreferencesModule;
+import com.cleanarchitecture.shishkin.api.controller.PreferencesModule;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
-import com.cleanarchitecture.shishkin.api.controller.IAppPreferencesModule;
+import com.cleanarchitecture.shishkin.api.controller.IPreferencesModule;
 import com.cleanarchitecture.shishkin.api.controller.INavigationController;
 import com.cleanarchitecture.shishkin.api.controller.NavigationController;
 import com.cleanarchitecture.shishkin.api.event.OnNetworkConnectedEvent;
@@ -477,10 +477,10 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         if (validate()) {
             final Context context = AdminUtils.getContext();
             if (context != null) {
-                final IAppPreferencesModule module = AdminUtils.getPreferences();
+                final IPreferencesModule module = AdminUtils.getPreferences();
                 if (module != null) {
                     final String color = String.valueOf(ViewUtils.getColor(context, R.color.blue));
-                    final int bg = Integer.valueOf(module.getSettingColor(AppPreferencesModule.COLOR_ON_NETWORK_CONNECTED, color));
+                    final int bg = Integer.valueOf(module.getSettingColor(PreferencesModule.COLOR_ON_NETWORK_CONNECTED, color));
                     mToolbar.get().setBackgroundColor(bg);
 
                     final AbstractActivity activity = AdminUtils.getActivity();
@@ -496,10 +496,10 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
         if (validate()) {
             final Context context = AdminUtils.getContext();
             if (context != null) {
-                final IAppPreferencesModule module = AdminUtils.getPreferences();
+                final IPreferencesModule module = AdminUtils.getPreferences();
                 if (module != null) {
                     final String color = String.valueOf(ViewUtils.getColor(context, R.color.orange));
-                    final int bg = Integer.valueOf(module.getSettingColor(AppPreferencesModule.COLOR_ON_NETWORK_DISCONNECTED, color));
+                    final int bg = Integer.valueOf(module.getSettingColor(PreferencesModule.COLOR_ON_NETWORK_DISCONNECTED, color));
                     mToolbar.get().setBackgroundColor(bg);
 
                     final AbstractActivity activity = AdminUtils.getActivity();

@@ -75,4 +75,10 @@
 
     <string name="log_view">Просмотр лога приложения</string>
     <string name="log_view_title">Выберите программу для просмотра файла</string>
+
+    <string name="modules">Модули</string>
+
+    <string name="module_notification">Отображение уведомлений</string>
+    <string name="module_board">Отображение доски объявлений</string>
+    <string name="module_badger">Отображение бейджиков</string>
 </resources>

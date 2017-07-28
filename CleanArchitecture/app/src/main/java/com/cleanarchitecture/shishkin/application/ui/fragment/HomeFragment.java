@@ -233,17 +233,5 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public synchronized void onToolbarClickEvent(OnToolbarClickEvent event) {
-        if (event.getView() != null) {
-            if (event.getView().getId() == R.id.item) {
-                final ShareUtil.ShareData shareData = new ShareUtil.ShareData(null, getString(R.string.test_mesage));
-                ShareUtil.share(shareData, AdminUtils.getActivity());
-            } else if (event.getView().getId() == R.id.title) {
-                AdminUtils.postEvent(new ShowToastEvent("Click on Toolbar title"));
-                AdminUtils.getNotificationModule().clearAll();
-            }
-        }
-    }
 }
 

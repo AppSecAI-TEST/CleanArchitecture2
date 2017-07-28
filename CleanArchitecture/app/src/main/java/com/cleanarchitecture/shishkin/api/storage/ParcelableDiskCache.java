@@ -5,7 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.cleanarchitecture.shishkin.api.controller.AbstractModule;
-import com.cleanarchitecture.shishkin.api.controller.AppPreferencesModule;
+import com.cleanarchitecture.shishkin.api.controller.PreferencesModule;
 import com.cleanarchitecture.shishkin.api.controller.ApplicationController;
 import com.cleanarchitecture.shishkin.api.controller.Constant;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
@@ -69,10 +69,10 @@ public class ParcelableDiskCache<T extends Parcelable> extends AbstractModule im
             return;
         }
 
-        int version = AppPreferencesModule.getInstance().getParcelableDiskCacheVersion();
+        int version = PreferencesModule.getInstance().getParcelableDiskCacheVersion();
         if (version == 0) {
             version = ApplicationController.getInstance().getVersion();
-            AppPreferencesModule.getInstance().setParcelableDiskCacheVersion(version);
+            PreferencesModule.getInstance().setParcelableDiskCacheVersion(version);
         }
 
         mLock.lock();
@@ -388,7 +388,7 @@ public class ParcelableDiskCache<T extends Parcelable> extends AbstractModule im
                 mLock.unlock();
             }
             mDiskLruCache = null;
-            AppPreferencesModule.getInstance().setParcelableDiskCacheVersion(0);
+            PreferencesModule.getInstance().setParcelableDiskCacheVersion(0);
 
             init();
         }
