@@ -259,7 +259,7 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
     }
 
     @WorkerThread
-    private void onHandleSetMessagesCount(final int count) {
+    private synchronized void onHandleSetMessagesCount(final int count) {
         if (count >= 0) {
             mMessagesCount = count;
         }

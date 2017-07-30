@@ -114,7 +114,7 @@ public class ApplicationSettingsPresenter extends AbstractPresenter<Void> implem
                 if (currentValue.contains("#")) {
                     color = Color.parseColor(currentValue);
                 } else {
-                    color = Integer.valueOf(currentValue);
+                    color = Integer.parseInt(currentValue);
                 }
                 colorView.getDelegate().setBackgroundColor(color);
                 colorView.setTag(setting);

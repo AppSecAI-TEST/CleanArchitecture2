@@ -70,18 +70,22 @@ public class ParcelableMemoryCache<T extends Parcelable> extends AbstractModule 
             return;
         }
 
+        Parcel parcel = null;
+
         mLock.lock();
 
-        final Parcel parcel = Parcel.obtain();
-        parcel.writeString(PARCELABLE);
         try {
+            parcel = Parcel.obtain();
+            parcel.writeString(PARCELABLE);
             parcel.writeParcelable(value, 0);
             mValue = parcel.marshall();
             mCache.put(key, mValue);
         } catch (Exception e) {
             ErrorController.getInstance().onError(LOG_TAG, e);
         } finally {
-            parcel.recycle();
+            if (parcel != null) {
+                parcel.recycle();
+            }
             mLock.unlock();
         }
     }
@@ -96,18 +100,22 @@ public class ParcelableMemoryCache<T extends Parcelable> extends AbstractModule 
             return;
         }
 
+        Parcel parcel = null;
+
         mLock.lock();
 
-        final Parcel parcel = Parcel.obtain();
-        parcel.writeString(LIST);
         try {
+            parcel = Parcel.obtain();
+            parcel.writeString(LIST);
             parcel.writeList(values);
             mValue = parcel.marshall();
             mCache.put(key, mValue);
         } catch (Exception e) {
             ErrorController.getInstance().onError(LOG_TAG, e);
         } finally {
-            parcel.recycle();
+            if (parcel != null) {
+                parcel.recycle();
+            }
             mLock.unlock();
         }
     }
@@ -118,10 +126,12 @@ public class ParcelableMemoryCache<T extends Parcelable> extends AbstractModule 
             return null;
         }
 
+        Parcel parcel = null;
+
         mLock.lock();
 
-        final Parcel parcel = Parcel.obtain();
         try {
+            parcel = Parcel.obtain();
             final byte[] value = mCache.getIfPresent(key);
             if (value != null) {
                 parcel.unmarshall(value, 0, value.length);
@@ -134,7 +144,9 @@ public class ParcelableMemoryCache<T extends Parcelable> extends AbstractModule 
         } catch (Exception e) {
             ErrorController.getInstance().onError(LOG_TAG, e);
         } finally {
-            parcel.recycle();
+            if (parcel != null) {
+                parcel.recycle();
+            }
             mLock.unlock();
         }
         return null;
@@ -146,10 +158,12 @@ public class ParcelableMemoryCache<T extends Parcelable> extends AbstractModule 
             return null;
         }
 
+        Parcel parcel = null;
+
         mLock.lock();
 
-        final Parcel parcel = Parcel.obtain();
         try {
+            parcel = Parcel.obtain();
             final byte[] value = mCache.getIfPresent(key);
             if (value != null) {
                 parcel.unmarshall(value, 0, value.length);
@@ -164,7 +178,9 @@ public class ParcelableMemoryCache<T extends Parcelable> extends AbstractModule 
         } catch (Exception e) {
             ErrorController.getInstance().onError(LOG_TAG, e);
         } finally {
-            parcel.recycle();
+            if (parcel != null) {
+                parcel.recycle();
+            }
             mLock.unlock();
         }
         return null;

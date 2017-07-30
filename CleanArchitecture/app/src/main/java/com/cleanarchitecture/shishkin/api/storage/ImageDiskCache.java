@@ -104,12 +104,12 @@ public class ImageDiskCache extends AbstractModule implements IImageDiskCache {
             return;
         }
 
-        mLock.lock();
-
         final String hash = hashKeyForDisk(key);
         OutputStream out = null;
         DiskLruCache.Editor editor = null;
         DiskLruCache.Snapshot snapshot = null;
+
+        mLock.lock();
 
         try {
             snapshot = mDiskLruCache.get(hash);
@@ -152,14 +152,14 @@ public class ImageDiskCache extends AbstractModule implements IImageDiskCache {
             return null;
         }
 
-        mLock.lock();
-
         final String hash = hashKeyForDisk(key);
         Bitmap bitmap = null;
         InputStream inputStream = null;
         BufferedInputStream buffInputStream = null;
         long expired = -1;
         DiskLruCache.Snapshot snapshot = null;
+
+        mLock.lock();
 
         try {
             snapshot = mDiskLruCache.get(hash);
@@ -205,9 +205,10 @@ public class ImageDiskCache extends AbstractModule implements IImageDiskCache {
             return;
         }
 
+        final String hash = hashKeyForDisk(key);
+
         mLock.lock();
 
-        final String hash = hashKeyForDisk(key);
         try {
             final DiskLruCache.Snapshot snapshot = mDiskLruCache.get(hash);
             if (snapshot != null) {
