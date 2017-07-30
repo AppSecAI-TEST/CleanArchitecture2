@@ -216,4 +216,8 @@ public class ParcelableMemoryCache<T extends Parcelable> extends AbstractModule 
         return true;
     }
 
+    @Override
+    public String getDescription() {
+        return "Parcelable memory cache";
+    }
 }

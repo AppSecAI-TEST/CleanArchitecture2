@@ -1,5 +1,8 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
+import android.content.Context;
+
+import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.event.OnUserIteractionEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseFinishApplicationEvent;
@@ -13,14 +16,14 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-public class UserIteractionController extends AbstractModule implements IModuleSubscriber {
-    public static final String NAME = UserIteractionController.class.getName();
+public class UserInteractionController extends AbstractModule implements IModuleSubscriber {
+    public static final String NAME = UserInteractionController.class.getName();
     private static final long TIMEOUT = TimeUnit.MINUTES.toMillis(10);
 
     private Timer mTimer = null;
     private boolean isStoped = false;
 
-    public UserIteractionController() {
+    public UserInteractionController() {
         startTimer();
     }
 
@@ -80,4 +83,12 @@ public class UserIteractionController extends AbstractModule implements IModuleS
         isStoped = true;
     }
 
+    @Override
+    public String getDescription() {
+        final Context context = ApplicationController.getInstance();
+        if (context != null) {
+            return context.getString(R.string.module_user_interaction);
+        }
+        return "User interaction Controller";
+    }
 }

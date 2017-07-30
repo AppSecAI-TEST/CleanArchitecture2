@@ -130,6 +130,15 @@ public class ActivityController extends AbstractController<IActivity> implements
     }
 
     @Override
+    public String getDescription() {
+        final Context context = ApplicationController.getInstance();
+        if (context != null) {
+            return context.getString(R.string.module_activities);
+        }
+        return "Activity Controller";
+    }
+
+    @Override
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onShowMessageEvent(ShowMessageEvent event) {
         final IActivity subscriber = getSubscriber();

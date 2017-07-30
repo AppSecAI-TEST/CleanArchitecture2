@@ -1,5 +1,9 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
+import android.content.Context;
+
+import com.cleanarchitecture.shishkin.R;
+
 /**
  * Контроллер, протоколирующий Uncaught Exception
  */
@@ -40,5 +44,15 @@ public class CrashController implements Thread.UncaughtExceptionHandler, IModule
     @Override
     public void onUnRegister() {
     }
+
+    @Override
+    public String getDescription() {
+        final Context context = ApplicationController.getInstance();
+        if (context != null) {
+            return context.getString(R.string.module_crash);
+        }
+        return "Crash Controller";
+    }
+
 }
 

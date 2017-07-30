@@ -1,5 +1,8 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
+import android.content.Context;
+
+import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.event.IEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -117,4 +120,14 @@ public class EventBusController implements IEventBusController {
     @Override
     public void onUnRegister() {
     }
+
+    @Override
+    public String getDescription() {
+        final Context context = ApplicationController.getInstance();
+        if (context != null) {
+            return context.getString(R.string.module_event);
+        }
+        return "Event bus Controller";
+    }
+
 }

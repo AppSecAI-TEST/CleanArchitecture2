@@ -68,7 +68,7 @@
     <string name="settings_color_on_connect_network">Цвет заголовка приложения при наличии сети</string>
     <string name="settings_color_on_disconnect_network">Цвет заголовка приложения при отсутствии сети</string>
     <string name="display">Дисплей</string>
-    <string name="screenshot_help">Перезапустите приложение для применения настройки</string>
+    <string name="screenshot_help">Перезапустите приложение для применения настройки, предварительно выгрузив его из памяти. Или перегрузите смартфон</string>
 
     <string name="settings_color_title">Выберите цвет</string>
     <string name="settings_color_button">Цвет по умолчанию</string>
@@ -78,7 +78,24 @@
 
     <string name="modules">Модули</string>
 
-    <string name="module_notification">Отображение уведомлений</string>
-    <string name="module_board">Отображение доски объявлений</string>
-    <string name="module_badger">Отображение бейджиков</string>
+    <string name="module_notification">Модуль отображения уведомлений</string>
+    <string name="service_notification">Сервис отображения уведомлений</string>
+    <string name="service_board">Сервис отображения доски объявлений</string>
+    <string name="service_badger">Сервис отображения бейджиков</string>
+    <string name="module_location">Модуль определения местоположения</string>
+    <string name="module_validation">Контроллер проверки данных</string>
+    <string name="module_transformation">Модуль преобразования данных</string>
+    <string name="module_application">Контроллер приложения</string>
+    <string name="module_presenter">Контроллер презенторов</string>
+    <string name="module_user_interaction">Контроллер действий пользователя</string>
+    <string name="module_navigation">Контроллер навигации в приложении</string>
+    <string name="module_preferences">Контроллер преференций</string>
+    <string name="module_mail">Контроллер почтовых сообщений</string>
+    <string name="module_crash">Контроллер критических ошибок</string>
+    <string name="module_desktop">Контроллер оформления</string>
+    <string name="module_error">Контроллер ошибок</string>
+    <string name="module_event">Контроллер сообщений</string>
+    <string name="module_activities">Контроллер активностей</string>
+    <string name="module_repository">Репозиторий</string>
+    <string name="module_use_cases">Контроллер бизнес логики</string>
 </resources>

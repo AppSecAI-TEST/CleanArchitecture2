@@ -86,13 +86,13 @@ public class ApplicationSettingsPresenter extends AbstractPresenter<Void> implem
             case ApplicationSetting.TYPE_TEXT:
                 v = mInflater.inflate(AdminUtils.getLayoutId("setting_item_text", R.layout.setting_item_text), parent, false);
                 titleView = ViewUtils.findView(v, R.id.item_title);
-                titleView.setText(setting.getTitleId());
+                titleView.setText(setting.getTitle());
                 break;
 
             case ApplicationSetting.TYPE_SWITCH:
                 v = mInflater.inflate(AdminUtils.getLayoutId("setting_item_switch", R.layout.setting_item_switch), parent, false);
                 titleView = ViewUtils.findView(v, R.id.item_title);
-                titleView.setText(setting.getTitleId());
+                titleView.setText(setting.getTitle());
 
                 final SwitchCompat valueView = ViewUtils.findView(v, R.id.item_switch);
                 currentValue = setting.getCurrentValue();
@@ -104,7 +104,7 @@ public class ApplicationSettingsPresenter extends AbstractPresenter<Void> implem
             case ApplicationSetting.TYPE_COLOR:
                 v = mInflater.inflate(AdminUtils.getLayoutId("setting_item_color", R.layout.setting_item_color), parent, false);
                 titleView = ViewUtils.findView(v, R.id.item_title);
-                titleView.setText(setting.getTitleId());
+                titleView.setText(setting.getTitle());
                 titleView.setTag(setting);
                 titleView.setOnClickListener(this::onClickChangeColor);
 

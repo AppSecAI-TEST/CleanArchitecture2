@@ -77,6 +77,11 @@ public class NetProvider extends AbstractModule implements INetProvider, IModule
         return list;
     }
 
+    @Override
+    public String getDescription() {
+        return "Net Provider Module";
+    }
+
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onNetworkConnectedEvent(OnNetworkConnectedEvent event) {
         setPaused(false);

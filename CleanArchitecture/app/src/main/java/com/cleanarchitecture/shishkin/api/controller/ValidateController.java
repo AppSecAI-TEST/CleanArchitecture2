@@ -80,4 +80,13 @@ public class ValidateController extends AbstractController<IValidateSubscriber> 
     public String getSubscriberType() {
         return SUBSCRIBER_TYPE;
     }
+
+    @Override
+    public String getDescription() {
+        final Context context = ApplicationController.getInstance();
+        if (context != null) {
+            return context.getString(R.string.module_validation);
+        }
+        return "Validate Controller";
+    }
 }

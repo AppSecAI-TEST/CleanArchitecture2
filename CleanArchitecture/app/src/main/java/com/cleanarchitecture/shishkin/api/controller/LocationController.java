@@ -6,6 +6,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 
+import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.event.OnNetworkConnectedEvent;
 import com.cleanarchitecture.shishkin.api.event.OnNetworkDisconnectedEvent;
@@ -46,22 +47,24 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
     private Geocoder mGeocoder;
 
     public LocationController() {
-        mLocationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                setLocation(locationResult.getLastLocation());
+        if (PreferencesModule.getInstance().getModule(LocationController.NAME)) {
+            mLocationCallback = new LocationCallback() {
+                @Override
+                public void onLocationResult(LocationResult locationResult) {
+                    setLocation(locationResult.getLastLocation());
+                }
+            };
+
+            mLocationRequest = LocationRequest.create();
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+            mLocationRequest.setInterval(POLLING_FREQ);
+            mLocationRequest.setFastestInterval(FASTEST_UPDATE_FREQ);
+            mLocationRequest.setSmallestDisplacement(SMALLEST_DISPLACEMENT);
+
+            final Context context = AdminUtils.getContext();
+            if (context != null) {
+                mGeocoder = new Geocoder(context, Locale.getDefault());
             }
-        };
-
-        mLocationRequest = LocationRequest.create();
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-        mLocationRequest.setInterval(POLLING_FREQ);
-        mLocationRequest.setFastestInterval(FASTEST_UPDATE_FREQ);
-        mLocationRequest.setSmallestDisplacement(SMALLEST_DISPLACEMENT);
-
-        final Context context = AdminUtils.getContext();
-        if (context != null) {
-            mGeocoder = new Geocoder(context, Locale.getDefault());
         }
     }
 
@@ -198,6 +201,15 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
             }
         }
         return list;
+    }
+
+    @Override
+    public String getDescription() {
+        final Context context = ApplicationController.getInstance();
+        if (context != null) {
+            return context.getString(R.string.module_location);
+        }
+        return "Location Controller";
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

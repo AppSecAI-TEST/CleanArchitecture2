@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
+import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AbstractController;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.api.controller.ApplicationController;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.api.event.OnPermisionDeniedEvent;
@@ -94,6 +96,15 @@ public class UseCasesController extends AbstractController implements IUseCasesC
     @Override
     public boolean isApplicationFinished() {
         return mIsFinished;
+    }
+
+    @Override
+    public String getDescription() {
+        final Context context = ApplicationController.getInstance();
+        if (context != null) {
+            return context.getString(R.string.module_use_cases);
+        }
+        return "Use cases controller";
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)

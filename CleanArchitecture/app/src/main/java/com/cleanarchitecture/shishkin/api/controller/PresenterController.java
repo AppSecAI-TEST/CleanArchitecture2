@@ -1,7 +1,9 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.api.usecases.IUseCasesController;
 import com.cleanarchitecture.shishkin.api.usecases.UseCasesController;
@@ -85,4 +87,14 @@ public class PresenterController extends AbstractController<IPresenter>
     public synchronized void clearStateData() {
         mStates.clear();
     }
+
+    @Override
+    public String getDescription() {
+        final Context context = ApplicationController.getInstance();
+        if (context != null) {
+            return context.getString(R.string.module_presenter);
+        }
+        return "Presenter Controller";
+    }
+
 }
