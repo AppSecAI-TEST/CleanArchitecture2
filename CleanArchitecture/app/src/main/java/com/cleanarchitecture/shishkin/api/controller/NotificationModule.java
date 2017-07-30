@@ -29,16 +29,17 @@ public class NotificationModule extends AbstractShortlyLiveModule implements INo
     private Map<String, Class> mServices = Collections.synchronizedMap(new ConcurrentHashMap<String, Class>());
 
     public NotificationModule() {
-        final IPreferencesModule module = AdminUtils.getPreferences();
-
-        if (module.getModule(NotificationService.NAME)) {
-            mServices.put(NotificationService.NAME, NotificationService.class);
-        }
-        if (module.getModule(BoardService.NAME)) {
-            mServices.put(BoardService.NAME, BoardService.class);
-        }
-        if (module.getModule(BadgeService.NAME)) {
-            mServices.put(BadgeService.NAME, BadgeService.class);
+        final IPreferencesModule module = PreferencesModule.getInstance();
+        if (module != null) {
+            if (module.getModule(NotificationService.NAME)) {
+                mServices.put(NotificationService.NAME, NotificationService.class);
+            }
+            if (module.getModule(BoardService.NAME)) {
+                mServices.put(BoardService.NAME, BoardService.class);
+            }
+            if (module.getModule(BadgeService.NAME)) {
+                mServices.put(BadgeService.NAME, BadgeService.class);
+            }
         }
     }
 
@@ -50,13 +51,15 @@ public class NotificationModule extends AbstractShortlyLiveModule implements INo
     private synchronized void sendIntent(final String name, final String action, final String message) {
         post();
 
-        final Context context = AdminUtils.getContext();
-        if (context != null) {
-            final Class clss = mServices.get(name);
-            if (clss != null) {
-                final Intent intent = IntentUtils.createActionIntent(context, clss, action);
-                intent.putExtra(Intent.EXTRA_TEXT, message);
-                context.startService(intent);
+        if (mServices.containsKey(name)) {
+            final Context context = AdminUtils.getContext();
+            if (context != null) {
+                final Class clss = mServices.get(name);
+                if (clss != null) {
+                    final Intent intent = IntentUtils.createActionIntent(context, clss, action);
+                    intent.putExtra(Intent.EXTRA_TEXT, message);
+                    context.startService(intent);
+                }
             }
         }
     }
@@ -89,12 +92,14 @@ public class NotificationModule extends AbstractShortlyLiveModule implements INo
     private synchronized void sendIntent(final String name, final String action) {
         post();
 
-        final Context context = AdminUtils.getContext();
-        if (context != null) {
-            final Class clss = mServices.get(name);
-            if (clss != null) {
-                final Intent intent = IntentUtils.createActionIntent(context, clss, action);
-                context.startService(intent);
+        if (mServices.containsKey(name)) {
+            final Context context = AdminUtils.getContext();
+            if (context != null) {
+                final Class clss = mServices.get(name);
+                if (clss != null) {
+                    final Intent intent = IntentUtils.createActionIntent(context, clss, action);
+                    context.startService(intent);
+                }
             }
         }
     }

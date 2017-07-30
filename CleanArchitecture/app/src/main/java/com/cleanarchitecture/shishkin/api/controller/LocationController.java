@@ -61,7 +61,7 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
             mLocationRequest.setFastestInterval(FASTEST_UPDATE_FREQ);
             mLocationRequest.setSmallestDisplacement(SMALLEST_DISPLACEMENT);
 
-            final Context context = AdminUtils.getContext();
+            final Context context = ApplicationController.getInstance();
             if (context != null) {
                 mGeocoder = new Geocoder(context, Locale.getDefault());
             }
@@ -85,7 +85,7 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
             return;
         }
 
-        final Context context = AdminUtils.getContext();
+        final Context context = ApplicationController.getInstance();
         if (context == null) {
             return;
         }
@@ -94,12 +94,14 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
             return;
         }
 
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
-        mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null)
-                .addOnFailureListener(e -> ErrorController.getInstance().onError(LOG_TAG, e.getMessage(), false));
+        if (mLocationRequest != null && mLocationCallback != null) {
+            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
+            mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null)
+                    .addOnFailureListener(e -> ErrorController.getInstance().onError(LOG_TAG, e.getMessage(), false));
+        }
     }
 
-    private void stopLocation(boolean isforce) {
+    private void stopLocation(final boolean isforce) {
         if (isforce || (!isforce && !hasSubscribers())) {
             if (mFusedLocationClient != null) {
                 mFusedLocationClient.removeLocationUpdates(mLocationCallback);
@@ -171,9 +173,10 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
     }
 
     @Override
-    public List<Address> getAddress(final Location location, int countAddress) {
-        if (countAddress < 1) {
-            countAddress = 1;
+    public List<Address> getAddress(final Location location, final int countAddress) {
+        int cnt = countAddress;
+        if (cnt < 1) {
+            cnt = 1;
         }
 
         final List<Address> list = new ArrayList<>();
@@ -191,10 +194,9 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
                             list.addAll(mGeocoder.getFromLocation(
                                     location.getLatitude(),
                                     location.getLongitude(),
-                                    countAddress));
+                                    cnt));
                         } catch (Exception e) {
                             ErrorController.getInstance().onError(LOG_TAG, e.getMessage(), false);
-                            //ErrorController.getInstance().onError(LOG_TAG, ErrorController.ERROR_GEOCODER_NOT_FOUND, true);
                         }
                     }
                 }

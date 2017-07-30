@@ -1,10 +1,12 @@
 package com.cleanarchitecture.shishkin.api.service;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.WorkerThread;
 import android.support.v4.app.NotificationCompat;
 
@@ -16,6 +18,7 @@ import com.cleanarchitecture.shishkin.api.controller.INotificationModule;
 import com.cleanarchitecture.shishkin.api.controller.NotificationModule;
 import com.cleanarchitecture.shishkin.api.storage.CacheUtils;
 import com.cleanarchitecture.shishkin.application.ui.activity.MainActivity;
+import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.IntentUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
@@ -103,7 +106,6 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
 
     private synchronized void sendNotification(final String message) {
         try {
-
             final StringBuilder sb = new StringBuilder();
             int cnt = mMessagesCount;
             if (mMessagesCount == 0) {
@@ -124,36 +126,34 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
                 module.replaceMessage(BadgeService.NAME, String.valueOf(mMessages.size()));
             }
 
-            /*
-            if (ApplicationUtils.hasO()) {
-                final NotificationManager nm = AdminUtils.getSystemService(Context.NOTIFICATION_SERVICE);
-                if (nm != null) {
-                    int importance = NotificationManager.IMPORTANCE_LOW;
-                    NotificationChannel mChannel = new NotificationChannel(CANAL_ID, CANAL_NAME, importance);
-                    // Configure the notification channel.
-                    //mChannel.setDescription(description);
-                    mChannel.enableLights(true);
-                    // Sets the notification light color for notifications posted to this
-                    // channel, if the device supports this feature.
-                    mChannel.setLightColor(Color.RED);
-                    mChannel.enableVibration(true);
-                    mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
-                    nm.createNotificationChannel(mChannel);
-                }
-            }
-            */
-
-            final Intent intent = new Intent(this, MainActivity.class);
-            intent.setAction(ACTION_CLICK);
-            final PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-
-            final Intent intentDelete = new Intent(this, NotificationBroadcastReceiver.class);
-            intent.setAction(ACTION_DELETE_MESSAGES);
-            final PendingIntent pendingDeleteIntent = PendingIntent.getBroadcast(this, 0, intentDelete, PendingIntent.FLAG_CANCEL_CURRENT);
-
             final NotificationManager nm = AdminUtils.getSystemService(Context.NOTIFICATION_SERVICE);
             if (nm != null) {
-                final NotificationCompat.Builder builderCompat = new NotificationCompat.Builder(getApplicationContext());
+                if (ApplicationUtils.hasO()) {
+                    NotificationChannel mChannel = nm.getNotificationChannel(CANAL_ID);
+                    if (mChannel == null) {
+                        final int importance = NotificationManager.IMPORTANCE_LOW;
+                        mChannel = new NotificationChannel(CANAL_ID, CANAL_NAME, importance);
+                        // Configure the notification channel.
+                        //mChannel.setDescription(description);
+                        mChannel.enableLights(true);
+                        // Sets the notification light color for notifications posted to this
+                        // channel, if the device supports this feature.
+                        mChannel.setLightColor(R.color.red);
+                        mChannel.enableVibration(true);
+                        mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+                        nm.createNotificationChannel(mChannel);
+                    }
+                }
+
+                final Intent intent = new Intent(this, MainActivity.class);
+                intent.setAction(ACTION_CLICK);
+                final PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+                final Intent intentDelete = new Intent(this, NotificationBroadcastReceiver.class);
+                intent.setAction(ACTION_DELETE_MESSAGES);
+                final PendingIntent pendingDeleteIntent = PendingIntent.getBroadcast(this, 0, intentDelete, PendingIntent.FLAG_CANCEL_CURRENT);
+
+                final NotificationCompat.Builder builderCompat = new NotificationCompat.Builder(getApplicationContext(), CANAL_ID);
                 final Notification notification = builderCompat
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentIntent(pendingIntent)
@@ -166,7 +166,7 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
                         .setDefaults(Notification.DEFAULT_SOUND)
                         .setContentText(message)
                         .setDeleteIntent(pendingDeleteIntent)
-                        //.setChannelId(CANAL_ID)
+                        .setChannelId(CANAL_ID)
                         .build();
 
                 nm.notify(R.id.notification_service, notification);
