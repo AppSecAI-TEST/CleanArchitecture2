@@ -263,7 +263,7 @@ public class PreferencesModule implements IPreferencesModule, IModuleSubscriber 
         }
         Admin.getInstance().registerModule(NotificationModule.NAME);
     }
-    
+
     private synchronized void getApplicationSettings() {
         final Context context = AdminUtils.getContext();
         if (context == null) {

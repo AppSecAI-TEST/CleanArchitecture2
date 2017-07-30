@@ -5,10 +5,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.cleanarchitecture.shishkin.api.controller.AbstractModule;
-import com.cleanarchitecture.shishkin.api.controller.PreferencesModule;
 import com.cleanarchitecture.shishkin.api.controller.ApplicationController;
 import com.cleanarchitecture.shishkin.api.controller.Constant;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
+import com.cleanarchitecture.shishkin.api.controller.PreferencesModule;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.CloseUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
@@ -199,7 +199,7 @@ public class ParcelableDiskCache<T extends Parcelable> extends AbstractModule im
         } finally {
             CloseUtils.close(out);
             CloseUtils.close(snapshot);
-            if (parcel != null){
+            if (parcel != null) {
                 parcel.recycle();
             }
             mLock.unlock();
