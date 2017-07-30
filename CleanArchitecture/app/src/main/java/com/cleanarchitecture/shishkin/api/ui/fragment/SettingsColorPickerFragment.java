@@ -51,14 +51,14 @@ public class SettingsColorPickerFragment extends AbstractContentFragment impleme
         if (mSetting.getDefaultValue().contains("#")) {
             mDefaultColor = Color.parseColor(mSetting.getDefaultValue());
         } else {
-            mDefaultColor = Integer.valueOf(mSetting.getDefaultValue());
+            mDefaultColor = Integer.parseInt(mSetting.getDefaultValue());
         }
         int color;
         final String currentValue = mSetting.getCurrentValue();
         if (currentValue.contains("#")) {
             color = Color.parseColor(currentValue);
         } else {
-            color = Integer.valueOf(currentValue);
+            color = Integer.parseInt(currentValue);
         }
         final View button = ViewUtils.findView(view, R.id.button);
         button.setBackgroundColor(mDefaultColor);

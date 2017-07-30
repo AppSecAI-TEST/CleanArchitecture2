@@ -1,16 +1,14 @@
 package com.cleanarchitecture.shishkin.api.storage;
 
 import android.Manifest;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AbstractModule;
-import com.cleanarchitecture.shishkin.api.controller.PreferencesModule;
 import com.cleanarchitecture.shishkin.api.controller.ApplicationController;
 import com.cleanarchitecture.shishkin.api.controller.Constant;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
+import com.cleanarchitecture.shishkin.api.controller.PreferencesModule;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.CloseUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
@@ -104,12 +102,12 @@ public class ImageDiskCache extends AbstractModule implements IImageDiskCache {
             return;
         }
 
-        mLock.lock();
-
         final String hash = hashKeyForDisk(key);
         OutputStream out = null;
         DiskLruCache.Editor editor = null;
         DiskLruCache.Snapshot snapshot = null;
+
+        mLock.lock();
 
         try {
             snapshot = mDiskLruCache.get(hash);
@@ -152,14 +150,14 @@ public class ImageDiskCache extends AbstractModule implements IImageDiskCache {
             return null;
         }
 
-        mLock.lock();
-
         final String hash = hashKeyForDisk(key);
         Bitmap bitmap = null;
         InputStream inputStream = null;
         BufferedInputStream buffInputStream = null;
         long expired = -1;
         DiskLruCache.Snapshot snapshot = null;
+
+        mLock.lock();
 
         try {
             snapshot = mDiskLruCache.get(hash);
@@ -205,9 +203,10 @@ public class ImageDiskCache extends AbstractModule implements IImageDiskCache {
             return;
         }
 
+        final String hash = hashKeyForDisk(key);
+
         mLock.lock();
 
-        final String hash = hashKeyForDisk(key);
         try {
             final DiskLruCache.Snapshot snapshot = mDiskLruCache.get(hash);
             if (snapshot != null) {

@@ -4,10 +4,8 @@ import android.Manifest;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AbstractModule;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
-import com.cleanarchitecture.shishkin.api.controller.ApplicationController;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.api.data.Result;

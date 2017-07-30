@@ -68,7 +68,7 @@ public class UserInteractionController extends AbstractModule implements IModule
         return list;
     }
 
-    public void setStoped(boolean stoped) {
+    public synchronized void setStoped(boolean stoped) {
         isStoped = stoped;
     }
 

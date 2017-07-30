@@ -5,10 +5,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.cleanarchitecture.shishkin.api.controller.AbstractModule;
-import com.cleanarchitecture.shishkin.api.controller.PreferencesModule;
 import com.cleanarchitecture.shishkin.api.controller.ApplicationController;
 import com.cleanarchitecture.shishkin.api.controller.Constant;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
+import com.cleanarchitecture.shishkin.api.controller.PreferencesModule;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.CloseUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
@@ -105,16 +105,17 @@ public class ParcelableDiskCache<T extends Parcelable> extends AbstractModule im
 
         mLock.lock();
 
-        final Parcel parcel = Parcel.obtain();
-        parcel.writeString(PARCELABLE);
-        parcel.writeParcelable(value, 0);
-
+        Parcel parcel = null;
         final String hash = hashKeyForDisk(key);
         OutputStream out = null;
         DiskLruCache.Editor editor = null;
         DiskLruCache.Snapshot snapshot = null;
 
         try {
+            parcel = Parcel.obtain();
+            parcel.writeString(PARCELABLE);
+            parcel.writeParcelable(value, 0);
+
             snapshot = mDiskLruCache.get(hash);
             if (snapshot == null) {
                 editor = mDiskLruCache.edit(hash);
@@ -141,7 +142,9 @@ public class ParcelableDiskCache<T extends Parcelable> extends AbstractModule im
         } finally {
             CloseUtils.close(out);
             CloseUtils.close(snapshot);
-            parcel.recycle();
+            if (parcel != null) {
+                parcel.recycle();
+            }
             mLock.unlock();
         }
     }
@@ -157,18 +160,19 @@ public class ParcelableDiskCache<T extends Parcelable> extends AbstractModule im
             return;
         }
 
-        mLock.lock();
-
-        final Parcel parcel = Parcel.obtain();
-        parcel.writeString(LIST);
-        parcel.writeList(values);
-
         final String hash = hashKeyForDisk(key);
         OutputStream out = null;
         DiskLruCache.Editor editor = null;
         DiskLruCache.Snapshot snapshot = null;
+        Parcel parcel = null;
+
+        mLock.lock();
 
         try {
+            parcel = Parcel.obtain();
+            parcel.writeString(LIST);
+            parcel.writeList(values);
+
             snapshot = mDiskLruCache.get(hash);
             if (snapshot == null) {
                 editor = mDiskLruCache.edit(hash);
@@ -195,7 +199,9 @@ public class ParcelableDiskCache<T extends Parcelable> extends AbstractModule im
         } finally {
             CloseUtils.close(out);
             CloseUtils.close(snapshot);
-            parcel.recycle();
+            if (parcel != null) {
+                parcel.recycle();
+            }
             mLock.unlock();
         }
     }
@@ -206,15 +212,16 @@ public class ParcelableDiskCache<T extends Parcelable> extends AbstractModule im
             return null;
         }
 
-        mLock.lock();
-
         final String hash = hashKeyForDisk(key);
         InputStream inputStream = null;
         long expired = -1;
         DiskLruCache.Snapshot snapshot = null;
-        final Parcel parcel = Parcel.obtain();
+        Parcel parcel = null;
+
+        mLock.lock();
 
         try {
+            parcel = Parcel.obtain();
             snapshot = mDiskLruCache.get(hash);
             if (snapshot != null) {
                 inputStream = snapshot.getInputStream(INDEX_EXPIRED);
@@ -252,7 +259,9 @@ public class ParcelableDiskCache<T extends Parcelable> extends AbstractModule im
         } finally {
             CloseUtils.close(inputStream);
             CloseUtils.close(snapshot);
-            parcel.recycle();
+            if (parcel != null) {
+                parcel.recycle();
+            }
             mLock.unlock();
         }
         return null;
@@ -264,15 +273,16 @@ public class ParcelableDiskCache<T extends Parcelable> extends AbstractModule im
             return null;
         }
 
-        mLock.lock();
-
         final String hash = hashKeyForDisk(key);
         InputStream inputStream = null;
         long expired = -1;
         DiskLruCache.Snapshot snapshot = null;
-        final Parcel parcel = Parcel.obtain();
+        Parcel parcel = null;
+
+        mLock.lock();
 
         try {
+            parcel = Parcel.obtain();
             snapshot = mDiskLruCache.get(hash);
             if (snapshot != null) {
                 inputStream = snapshot.getInputStream(INDEX_EXPIRED);
@@ -312,7 +322,9 @@ public class ParcelableDiskCache<T extends Parcelable> extends AbstractModule im
         } finally {
             CloseUtils.close(inputStream);
             CloseUtils.close(snapshot);
-            parcel.recycle();
+            if (parcel != null) {
+                parcel.recycle();
+            }
             mLock.unlock();
         }
         return null;
@@ -358,9 +370,10 @@ public class ParcelableDiskCache<T extends Parcelable> extends AbstractModule im
             return;
         }
 
+        final String hash = hashKeyForDisk(key);
+
         mLock.lock();
 
-        final String hash = hashKeyForDisk(key);
         try {
             final DiskLruCache.Snapshot snapshot = mDiskLruCache.get(hash);
             if (snapshot != null) {

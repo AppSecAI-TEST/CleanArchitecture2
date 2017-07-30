@@ -31,8 +31,8 @@ import java.net.URL;
 
 public class ImageUtils {
 
-    public static int IMAGE_MAX_WIDTH = 1080;
-    public static int IMAGE_MAX_HEIGHT = 720;
+    public static final int IMAGE_MAX_WIDTH = 1080;
+    public static final int IMAGE_MAX_HEIGHT = 720;
 
     private ImageUtils() {
     }
