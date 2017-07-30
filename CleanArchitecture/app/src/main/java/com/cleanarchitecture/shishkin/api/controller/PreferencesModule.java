@@ -276,30 +276,30 @@ public class PreferencesModule implements IPreferencesModule, IModuleSubscriber 
         String currentValueString;
 
         setting = new ApplicationSetting(ApplicationSetting.TYPE_TEXT)
-                .setTitleId(R.string.display);
+                .setTitle(AdminUtils.getString(R.string.display));
         list.add(setting);
 
         currentValueBoolean = getSettingShowTooltip();
         setting = new ApplicationSetting(ApplicationSetting.TYPE_SWITCH)
-                .setTitleId(R.string.settings_show_tooltip)
+                .setTitle(AdminUtils.getString(R.string.settings_show_tooltip))
                 .setCurrentValue(String.valueOf(currentValueBoolean))
                 .setId(R.id.application_setting_show_tooltip);
         list.add(setting);
 
         currentValueBoolean = getScreenshotEnabled();
         setting = new ApplicationSetting(ApplicationSetting.TYPE_SWITCH)
-                .setTitleId(R.string.settings_show_screenshot)
+                .setTitle(AdminUtils.getString(R.string.settings_show_screenshot))
                 .setCurrentValue(String.valueOf(currentValueBoolean))
                 .setId(R.id.application_setting_screenshot_enabled);
         list.add(setting);
 
         setting = new ApplicationSetting(ApplicationSetting.TYPE_TEXT)
-                .setTitleId(R.string.settings_color);
+                .setTitle(AdminUtils.getString(R.string.settings_color));
         list.add(setting);
 
         currentValueString = getSettingColor(COLOR_ON_NETWORK_CONNECTED, String.valueOf(ViewUtils.getColor(context, R.color.blue)));
         setting = new ApplicationSetting(ApplicationSetting.TYPE_COLOR)
-                .setTitleId(R.string.settings_color_on_connect_network)
+                .setTitle(AdminUtils.getString(R.string.settings_color_on_connect_network))
                 .setPreferenceName(COLOR_ON_NETWORK_CONNECTED)
                 .setCurrentValue(currentValueString)
                 .setDefaultValue(String.valueOf(ViewUtils.getColor(context, R.color.blue)))
@@ -308,7 +308,7 @@ public class PreferencesModule implements IPreferencesModule, IModuleSubscriber 
 
         currentValueString = getSettingColor(COLOR_ON_NETWORK_DISCONNECTED, String.valueOf(ViewUtils.getColor(context, R.color.orange)));
         setting = new ApplicationSetting(ApplicationSetting.TYPE_COLOR)
-                .setTitleId(R.string.settings_color_on_disconnect_network)
+                .setTitle(AdminUtils.getString(R.string.settings_color_on_disconnect_network))
                 .setPreferenceName(COLOR_ON_NETWORK_DISCONNECTED)
                 .setCurrentValue(currentValueString)
                 .setDefaultValue(String.valueOf(ViewUtils.getColor(context, R.color.orange)))
@@ -316,20 +316,20 @@ public class PreferencesModule implements IPreferencesModule, IModuleSubscriber 
         list.add(setting);
 
         setting = new ApplicationSetting(ApplicationSetting.TYPE_TEXT)
-                .setTitleId(R.string.modules);
+                .setTitle(AdminUtils.getString(R.string.modules));
         list.add(setting);
 
         currentValueBoolean = getModule(NotificationService.NAME);
         setting = new ApplicationSetting(ApplicationSetting.TYPE_SWITCH)
                 .setPreferenceName(NotificationService.NAME)
-                .setTitleId(R.string.module_notification)
+                .setTitle(AdminUtils.getString(R.string.service_notification))
                 .setCurrentValue(String.valueOf(currentValueBoolean))
                 .setId(R.id.application_setting_modules);
         list.add(setting);
 
         currentValueBoolean = getModule(BoardService.NAME);
         setting = new ApplicationSetting(ApplicationSetting.TYPE_SWITCH)
-                .setTitleId(R.string.module_board)
+                .setTitle(AdminUtils.getString(R.string.service_board))
                 .setPreferenceName(BoardService.NAME)
                 .setCurrentValue(String.valueOf(currentValueBoolean))
                 .setId(R.id.application_setting_modules);
@@ -337,8 +337,16 @@ public class PreferencesModule implements IPreferencesModule, IModuleSubscriber 
 
         currentValueBoolean = getModule(BadgeService.NAME);
         setting = new ApplicationSetting(ApplicationSetting.TYPE_SWITCH)
-                .setTitleId(R.string.module_badger)
+                .setTitle(AdminUtils.getString(R.string.service_badger))
                 .setPreferenceName(BadgeService.NAME)
+                .setCurrentValue(String.valueOf(currentValueBoolean))
+                .setId(R.id.application_setting_modules);
+        list.add(setting);
+
+        currentValueBoolean = getModule(LocationController.NAME);
+        setting = new ApplicationSetting(ApplicationSetting.TYPE_SWITCH)
+                .setTitle(AdminUtils.getModuleDescription(LocationController.NAME))
+                .setPreferenceName(LocationController.NAME)
                 .setCurrentValue(String.valueOf(currentValueBoolean))
                 .setId(R.id.application_setting_modules);
         list.add(setting);
@@ -385,6 +393,15 @@ public class PreferencesModule implements IPreferencesModule, IModuleSubscriber 
         }
 
         getApplicationSettings();
+    }
+
+    @Override
+    public String getDescription() {
+        final Context context = ApplicationController.getInstance();
+        if (context != null) {
+            return context.getString(R.string.module_preferences);
+        }
+        return "Preferences Module";
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)

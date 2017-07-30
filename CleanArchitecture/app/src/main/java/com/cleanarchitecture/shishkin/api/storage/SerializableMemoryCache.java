@@ -205,4 +205,8 @@ public class SerializableMemoryCache extends AbstractModule implements ISerializ
         return true;
     }
 
+    @Override
+    public String getDescription() {
+        return "Serializable memory cache";
+    }
 }

@@ -92,7 +92,7 @@ public class Admin extends AbstractAdmin {
         registerModule(MailController.NAME);
 
         // Контроллер пользовательских действий
-        registerModule(UserIteractionController.NAME);
+        registerModule(UserInteractionController.NAME);
 
         // Модуль выбрки данных из ContentProvider
         registerModule(ContentProvider.NAME);

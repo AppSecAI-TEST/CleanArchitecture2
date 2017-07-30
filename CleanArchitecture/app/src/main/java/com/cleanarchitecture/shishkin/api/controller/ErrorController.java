@@ -194,4 +194,13 @@ public class ErrorController implements IErrorController {
         return "";
     }
 
+    @Override
+    public String getDescription() {
+        final Context context = ApplicationController.getInstance();
+        if (context != null) {
+            return context.getString(R.string.module_error);
+        }
+        return "Error Controller";
+    }
+
 }

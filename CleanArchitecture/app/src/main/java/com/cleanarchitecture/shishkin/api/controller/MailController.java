@@ -1,5 +1,8 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
+import android.content.Context;
+
+import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.mail.IMail;
 import com.cleanarchitecture.shishkin.common.state.ViewStateObserver;
 import com.cleanarchitecture.shishkin.common.task.BaseAsyncTask;
@@ -166,6 +169,15 @@ public class MailController extends AbstractController<IMailSubscriber> implemen
     @Override
     public synchronized void clearMail() {
         mMail.clear();
+    }
+
+    @Override
+    public String getDescription() {
+        final Context context = ApplicationController.getInstance();
+        if (context != null) {
+            return context.getString(R.string.module_mail);
+        }
+        return "Mail Controller";
     }
 
 }

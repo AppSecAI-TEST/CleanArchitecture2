@@ -21,4 +21,11 @@ public interface IModule extends ISubscriber {
      */
     void onUnRegister();
 
+    /**
+     * Получить описание модуля
+     *
+     * @return описание
+     */
+    String getDescription();
+
 }

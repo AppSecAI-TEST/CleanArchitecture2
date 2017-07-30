@@ -6,6 +6,7 @@ import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AbstractModule;
 import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.api.controller.ApplicationController;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
 import com.cleanarchitecture.shishkin.api.event.CheckDiskCacheEvent;
@@ -52,6 +53,15 @@ public class Repository extends AbstractModule implements IRepository, IModuleSu
         final ArrayList<String> list = new ArrayList<>();
         list.add(EventBusController.SUBSCRIBER_TYPE);
         return list;
+    }
+
+    @Override
+    public String getDescription() {
+        final Context context = ApplicationController.getInstance();
+        if (context != null) {
+            return context.getString(R.string.module_repository);
+        }
+        return "Repository";
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)

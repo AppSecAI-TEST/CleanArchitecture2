@@ -1,9 +1,11 @@
 package com.cleanarchitecture.shishkin.api.storage;
 
 import android.Manifest;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AbstractModule;
 import com.cleanarchitecture.shishkin.api.controller.PreferencesModule;
 import com.cleanarchitecture.shishkin.api.controller.ApplicationController;
@@ -296,5 +298,10 @@ public class ImageDiskCache extends AbstractModule implements IImageDiskCache {
     @Override
     public String getSubscriberType() {
         return null;
+    }
+
+    @Override
+    public String getDescription() {
+        return "Image disk cache";
     }
 }

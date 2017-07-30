@@ -710,6 +710,14 @@ public class AdminUtils {
         return null;
     }
 
+    public static String getModuleDescription(final String name) {
+        final IModule module = Admin.getInstance().get(name);
+        if (module != null) {
+            return module.getDescription();
+        }
+        return null;
+    }
+
     private AdminUtils() {
     }
 

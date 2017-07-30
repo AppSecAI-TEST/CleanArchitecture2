@@ -136,6 +136,15 @@ public class DesktopController implements IDesktopController, IModuleSubscriber 
         return list;
     }
 
+    @Override
+    public String getDescription() {
+        final Context context = ApplicationController.getInstance();
+        if (context != null) {
+            return context.getString(R.string.module_desktop);
+        }
+        return "Desktop Controller";
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDialogResultEvent(DialogResultEvent event) {
         final Context context = AdminUtils.getContext();

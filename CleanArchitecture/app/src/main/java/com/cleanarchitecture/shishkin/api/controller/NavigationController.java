@@ -2,6 +2,7 @@ package com.cleanarchitecture.shishkin.api.controller;
 
 import android.content.Context;
 
+import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.event.OnBackPressedEvent;
 import com.cleanarchitecture.shishkin.api.event.ShowFragmentEvent;
 import com.cleanarchitecture.shishkin.api.event.StartActivityEvent;
@@ -118,6 +119,15 @@ public class NavigationController extends AbstractController<INavigationSubscrib
                 context.startActivity(event.getIntent());
             }
         }
+    }
+
+    @Override
+    public String getDescription() {
+        final Context context = ApplicationController.getInstance();
+        if (context != null) {
+            return context.getString(R.string.module_navigation);
+        }
+        return "Navigation Controller";
     }
 
     @Override

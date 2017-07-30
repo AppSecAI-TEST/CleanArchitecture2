@@ -1,7 +1,10 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
+import android.content.Context;
+
 import com.annimon.stream.Stream;
 import com.annimon.stream.function.Predicate;
+import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.common.collection.GenericCollection;
 import com.cleanarchitecture.shishkin.common.collection.GenericMap;
 import com.google.gson.Gson;
@@ -139,4 +142,12 @@ public class TransformDataModule extends AbstractModule implements ITransformDat
         return null;
     }
 
+    @Override
+    public String getDescription() {
+        final Context context = ApplicationController.getInstance();
+        if (context != null) {
+            return context.getString(R.string.module_transformation);
+        }
+        return "Transform Data Module";
+    }
 }

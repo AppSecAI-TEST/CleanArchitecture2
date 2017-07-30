@@ -254,4 +254,9 @@ public class SerializableDiskCache extends AbstractModule implements IExpiredSer
     public boolean isPersistent() {
         return true;
     }
+
+    @Override
+    public String getDescription() {
+        return "Serializable disk cache";
+    }
 }

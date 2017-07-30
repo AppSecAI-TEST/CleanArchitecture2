@@ -15,7 +15,7 @@ public class ApplicationSetting implements Parcelable {
     private String mCurrentValue;
     private String mDefaultValue;
     private String mPreferenceName;
-    private int mTitleId;
+    private String mTitle;
     private int mId;
     private int mType = 0;
 
@@ -33,12 +33,12 @@ public class ApplicationSetting implements Parcelable {
         return this;
     }
 
-    public int getTitleId() {
-        return mTitleId;
+    public String getTitle() {
+        return mTitle;
     }
 
-    public ApplicationSetting setTitleId(int id) {
-        this.mTitleId = id;
+    public ApplicationSetting setTitle(String title) {
+        this.mTitle = title;
         return this;
     }
 
@@ -93,7 +93,7 @@ public class ApplicationSetting implements Parcelable {
         dest.writeString(this.mCurrentValue);
         dest.writeString(this.mDefaultValue);
         dest.writeString(this.mPreferenceName);
-        dest.writeInt(this.mTitleId);
+        dest.writeString(this.mTitle);
         dest.writeInt(this.mId);
         dest.writeInt(this.mType);
     }
@@ -103,7 +103,7 @@ public class ApplicationSetting implements Parcelable {
         this.mCurrentValue = in.readString();
         this.mDefaultValue = in.readString();
         this.mPreferenceName = in.readString();
-        this.mTitleId = in.readInt();
+        this.mTitle = in.readString();
         this.mId = in.readInt();
         this.mType = in.readInt();
     }

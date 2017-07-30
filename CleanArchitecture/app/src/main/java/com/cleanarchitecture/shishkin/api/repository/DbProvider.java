@@ -290,6 +290,11 @@ public class DbProvider<H extends AbstractViewModel, T extends RoomDatabase> ext
         return mLifecycleRegistry;
     }
 
+    @Override
+    public String getDescription() {
+        return "Db provider";
+    }
+
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onFinishApplicationEvent(final FinishApplicationEvent event) {
         ApplicationUtils.runOnUiThread(() -> {
