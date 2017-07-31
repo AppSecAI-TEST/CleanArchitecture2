@@ -29,6 +29,7 @@ import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetMenuEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetTitleEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.HideHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.HideKeyboardEvent;
+import com.cleanarchitecture.shishkin.api.event.ui.ShowToastEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseFinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.presenter.ExpandableBoardPresenter;
 import com.cleanarchitecture.shishkin.api.presenter.IPresenter;
@@ -110,6 +111,10 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
             AdminUtils.postEvent(new UseCaseRequestPermissionEvent(Manifest.permission.WRITE_EXTERNAL_STORAGE));
         }
         */
+
+        final INotificationModule module = AdminUtils.getNotificationModule();
+        module.replaceMessage(BoardService.NAME, "Test Board service");
+        module.replaceMessage(NotificationService.NAME, "Test Notification service");
     }
 
     @Override
@@ -152,7 +157,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
     public void setLocation(Location location) {
         final StringBuilder sb = new StringBuilder();
         sb.append("Долгота: " + String.valueOf(location.getLongitude()) + " \n");
-        sb.append("Широта: " + String.valueOf(location.getLatitude() + " \n\n"));
+        sb.append("Широта: " + String.valueOf(location.getLatitude() + " \n"));
 
         final ILocationController controller = Admin.getInstance().get(LocationController.NAME);
         if (controller != null) {
@@ -168,9 +173,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
             }
         }
 
-        final INotificationModule module = AdminUtils.getNotificationModule();
-        module.replaceMessage(NotificationService.NAME, sb.toString());
-        module.addMessage(BoardService.NAME, "Test");
+        AdminUtils.postEvent(new ShowToastEvent(sb.toString()));
     }
 
     @Override
