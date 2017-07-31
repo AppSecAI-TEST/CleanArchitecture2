@@ -51,7 +51,7 @@ public class CrashController implements Thread.UncaughtExceptionHandler, IModule
         if (context != null) {
             return context.getString(R.string.module_crash);
         }
-        return "Crash Controller";
+        return "Crash controller";
     }
 
 }

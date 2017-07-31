@@ -401,7 +401,7 @@ public class PreferencesModule implements IPreferencesModule, IModuleSubscriber 
         if (context != null) {
             return context.getString(R.string.module_preferences);
         }
-        return "Preferences Module";
+        return "Preferences module";
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)

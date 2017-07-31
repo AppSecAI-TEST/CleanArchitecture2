@@ -142,7 +142,7 @@ public class DesktopController implements IDesktopController, IModuleSubscriber 
         if (context != null) {
             return context.getString(R.string.module_desktop);
         }
-        return "Desktop Controller";
+        return "Desktop controller";
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -211,7 +211,7 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
         if (context != null) {
             return context.getString(R.string.module_location);
         }
-        return "Location Controller";
+        return "Location controller";
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -87,6 +87,6 @@ public class ValidateController extends AbstractController<IValidateSubscriber> 
         if (context != null) {
             return context.getString(R.string.module_validation);
         }
-        return "Validate Controller";
+        return "Validate controller";
     }
 }
