@@ -200,7 +200,7 @@ public class ErrorController implements IErrorController {
         if (context != null) {
             return context.getString(R.string.module_error);
         }
-        return "Error Controller";
+        return "Error controller";
     }
 
 }

@@ -94,7 +94,7 @@ public class PresenterController extends AbstractController<IPresenter>
         if (context != null) {
             return context.getString(R.string.module_presenter);
         }
-        return "Presenter Controller";
+        return "Presenter controller";
     }
 
 }

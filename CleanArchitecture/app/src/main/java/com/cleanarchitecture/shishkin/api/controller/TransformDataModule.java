@@ -148,6 +148,6 @@ public class TransformDataModule extends AbstractModule implements ITransformDat
         if (context != null) {
             return context.getString(R.string.module_transformation);
         }
-        return "Transform Data Module";
+        return "Data transform module";
     }
 }

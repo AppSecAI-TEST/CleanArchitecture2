@@ -177,7 +177,7 @@ public class MailController extends AbstractController<IMailSubscriber> implemen
         if (context != null) {
             return context.getString(R.string.module_mail);
         }
-        return "Mail Controller";
+        return "Mail controller";
     }
 
 }

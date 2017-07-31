@@ -127,7 +127,7 @@ public class EventBusController implements IEventBusController {
         if (context != null) {
             return context.getString(R.string.module_event);
         }
-        return "Event bus Controller";
+        return "Event bus controller";
     }
 
 }

@@ -218,7 +218,7 @@ public class NotificationModule extends AbstractShortlyLiveModule implements INo
         if (context != null) {
             return context.getString(R.string.module_notification);
         }
-        return "Notification Module";
+        return "Notification module";
     }
 
 

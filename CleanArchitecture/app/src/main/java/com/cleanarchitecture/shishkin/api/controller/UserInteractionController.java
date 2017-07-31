@@ -89,6 +89,6 @@ public class UserInteractionController extends AbstractModule implements IModule
         if (context != null) {
             return context.getString(R.string.module_user_interaction);
         }
-        return "User interaction Controller";
+        return "User interaction controller";
     }
 }

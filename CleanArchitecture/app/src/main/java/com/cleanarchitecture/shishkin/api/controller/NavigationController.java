@@ -127,7 +127,7 @@ public class NavigationController extends AbstractController<INavigationSubscrib
         if (context != null) {
             return context.getString(R.string.module_navigation);
         }
-        return "Navigation Controller";
+        return "Navigation controller";
     }
 
     @Override
