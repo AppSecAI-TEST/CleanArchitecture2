@@ -23,6 +23,10 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"/>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
+
             <View style="@style/HorizontalDividerBlue2dp"/>
         </LinearLayout>
     </ScrollView>
