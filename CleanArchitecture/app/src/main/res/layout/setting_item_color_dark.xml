@@ -5,7 +5,19 @@
               android:layout_height="wrap_content"
               android:orientation="vertical">
 
+    <com.balysv.materialripple.MaterialRippleLayout
+        android:id="@+id/ripple"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:mrl_rippleAlpha="0.2"
+        app:mrl_rippleColor="#C8C8C8"
+        app:mrl_rippleDelayClick="false"
+        app:mrl_rippleHover="true"
+        app:mrl_rippleOverlay="true">
+
         <LinearLayout
+            android:id="@+id/ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -16,18 +28,16 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:minHeight="@dimen/setting_min_high"
-                android:layout_weight="1"
                 android:paddingLeft="@dimen/padding_12dp"
                 android:paddingRight="@dimen/padding_8dp"
                 android:textColor="@color/white"
-                android:clickable="true"
                 android:textSize="@dimen/text_size_large"/>
 
             <com.flyco.roundview.RoundRelativeLayout
                 android:id="@+id/item_color"
-                android:clickable="true"
                 android:layout_width="@dimen/dimen_32dp"
                 android:layout_height="@dimen/dimen_32dp"
                 android:layout_gravity="center_vertical"
@@ -35,6 +45,8 @@
                 app:rv_cornerRadius="@dimen/dimen_8dp"/>
 
         </LinearLayout>
+
+    </com.balysv.materialripple.MaterialRippleLayout>
 
     <View style="@style/HorizontalDivider"/>
 </LinearLayout>

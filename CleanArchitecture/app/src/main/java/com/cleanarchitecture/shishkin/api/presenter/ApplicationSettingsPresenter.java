@@ -103,10 +103,13 @@ public class ApplicationSettingsPresenter extends AbstractPresenter<Void> implem
 
             case ApplicationSetting.TYPE_COLOR:
                 v = mInflater.inflate(AdminUtils.getLayoutId("setting_item_color", R.layout.setting_item_color), parent, false);
+                ViewUtils.findView(v, R.id.ll).setTag(setting);
+                ViewUtils.findView(v, R.id.ll).setOnClickListener(this::onClickChangeColor);
+
                 titleView = ViewUtils.findView(v, R.id.item_title);
                 titleView.setText(setting.getTitle());
-                titleView.setTag(setting);
-                titleView.setOnClickListener(this::onClickChangeColor);
+//                titleView.setTag(setting);
+//                titleView.setOnClickListener(this::onClickChangeColor);
 
                 colorView = ViewUtils.findView(v, R.id.item_color);
                 currentValue = setting.getCurrentValue();
@@ -117,8 +120,8 @@ public class ApplicationSettingsPresenter extends AbstractPresenter<Void> implem
                     color = Integer.parseInt(currentValue);
                 }
                 colorView.getDelegate().setBackgroundColor(color);
-                colorView.setTag(setting);
-                colorView.setOnClickListener(this::onClickChangeColor);
+//                colorView.setTag(setting);
+//                colorView.setOnClickListener(this::onClickChangeColor);
                 break;
         }
 
