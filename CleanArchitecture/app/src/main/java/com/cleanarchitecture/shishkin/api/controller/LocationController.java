@@ -15,6 +15,7 @@ import com.cleanarchitecture.shishkin.api.event.OnScreenOffEvent;
 import com.cleanarchitecture.shishkin.api.event.OnScreenOnEvent;
 import com.cleanarchitecture.shishkin.api.mail.LocationMail;
 import com.cleanarchitecture.shishkin.common.net.Connectivity;
+import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -68,7 +69,8 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
         }
     }
 
-    private void startLocation() {
+    @Override
+    public void startLocation() {
         if (mFusedLocationClient != null) {
             return;
         }
@@ -90,7 +92,7 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
             return;
         }
 
-        if (!Connectivity.isNetworkConnected(context)) {
+        if (!ApplicationUtils.isLocationEnabled(context)) {
             return;
         }
 
