@@ -33,7 +33,7 @@ public class BaseSnackbar {
         if (ApplicationUtils.hasJellyBeanMR1()) {
             textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         }
-        int backgroundColor = R.color.blue;
+        int backgroundColor;
         switch (type) {
             case ActivityController.TOAST_TYPE_ERROR:
                 snackbar.setActionTextColor(ViewUtils.getColor(view.getContext(), R.color.gray));
