@@ -10,7 +10,6 @@ public interface ILocationController extends IController<ILocationSubscriber> {
 
     /**
      * запустить службу геолокации
-     *
      */
     void startLocation();
 

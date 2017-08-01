@@ -15,7 +15,6 @@ import com.cleanarchitecture.shishkin.api.event.OnScreenOffEvent;
 import com.cleanarchitecture.shishkin.api.event.OnScreenOnEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowDialogEvent;
 import com.cleanarchitecture.shishkin.api.mail.LocationMail;
-import com.cleanarchitecture.shishkin.api.ui.activity.AbstractActivity;
 import com.cleanarchitecture.shishkin.common.net.Connectivity;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;

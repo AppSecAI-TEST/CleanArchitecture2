@@ -17,7 +17,6 @@ import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
-import com.cleanarchitecture.shishkin.api.controller.INavigationController;
 import com.cleanarchitecture.shishkin.api.controller.IPreferencesModule;
 import com.cleanarchitecture.shishkin.api.controller.NavigationController;
 import com.cleanarchitecture.shishkin.api.controller.PreferencesModule;
@@ -41,7 +40,6 @@ import com.cleanarchitecture.shishkin.api.event.ui.HideHorizontalProgressBarEven
 import com.cleanarchitecture.shishkin.api.event.ui.ShowHorizontalProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractActivity;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentDrawerFragment;
-import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.common.net.Connectivity;
 import com.cleanarchitecture.shishkin.common.ui.widget.AutoResizeTextView;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
@@ -568,18 +566,6 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onToolbarHideProgressBarEvent(ToolbarHideProgressBarEvent event) {
         hideProgressBar();
-    }
-
-    @Override
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onToolbarOnClickEvent(OnToolbarClickEvent event) {
-        final INavigationController controller = Admin.getInstance().get(NavigationController.NAME);
-        if (controller != null) {
-            final AbstractContentFragment fragment = controller.getContentFragment(AbstractContentFragment.class);
-            if (fragment != null) {
-                fragment.onClick(event.getView());
-            }
-        }
     }
 
     @Override
