@@ -13,7 +13,9 @@ import com.cleanarchitecture.shishkin.api.event.OnNetworkDisconnectedEvent;
 import com.cleanarchitecture.shishkin.api.event.OnPermisionGrantedEvent;
 import com.cleanarchitecture.shishkin.api.event.OnScreenOffEvent;
 import com.cleanarchitecture.shishkin.api.event.OnScreenOnEvent;
+import com.cleanarchitecture.shishkin.api.event.ui.ShowDialogEvent;
 import com.cleanarchitecture.shishkin.api.mail.LocationMail;
+import com.cleanarchitecture.shishkin.api.ui.activity.AbstractActivity;
 import com.cleanarchitecture.shishkin.common.net.Connectivity;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -75,6 +77,10 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
             return;
         }
 
+        if (!PreferencesModule.getInstance().getModule(LocationController.NAME)) {
+            return;
+        }
+
         if (!hasSubscribers()) {
             return;
         }
@@ -93,6 +99,7 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
         }
 
         if (!ApplicationUtils.isLocationEnabled(context)) {
+            AdminUtils.postEvent(new ShowDialogEvent(R.id.dialog_enable_location, context.getString(R.string.warning), context.getString(R.string.enable_location)));
             return;
         }
 
