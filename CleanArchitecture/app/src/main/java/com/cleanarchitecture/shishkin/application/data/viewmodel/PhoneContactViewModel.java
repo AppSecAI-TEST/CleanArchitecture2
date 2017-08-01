@@ -19,7 +19,7 @@ public class PhoneContactViewModel extends AbstractViewModel<List<PhoneContactIt
     }
 
     @Override
-    public void subscribe() {
+    public void setLiveData() {
         mData = new PhoneContactLiveData();
     }
 

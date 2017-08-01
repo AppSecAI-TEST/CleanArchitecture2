@@ -7,6 +7,13 @@ import java.util.List;
 
 public interface ILocationController extends IController<ILocationSubscriber> {
 
+
+    /**
+     * запустить службу геолокации
+     *
+     */
+    void startLocation();
+
     /**
      * Получить текущее положение
      *

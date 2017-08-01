@@ -2,7 +2,7 @@ package com.cleanarchitecture.shishkin.api.model;
 
 import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
 
-public interface IDatastore<T> extends IModuleSubscriber {
+public interface IDatastore<T extends ILiveData> extends IModuleSubscriber {
 
     /**
      * Получить ILiveData

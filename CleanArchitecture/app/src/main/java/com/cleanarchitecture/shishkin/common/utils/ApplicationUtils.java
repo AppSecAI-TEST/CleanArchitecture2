@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 
 import com.cleanarchitecture.shishkin.api.controller.Constant;
@@ -167,6 +168,24 @@ public class ApplicationUtils {
     public static int getHeapSize() {
         final Runtime runtime = Runtime.getRuntime();
         return Long.valueOf(runtime.maxMemory() / Constant.MB).intValue();
+    }
+
+    /**
+     * Получить возможность службы геолокации
+     */
+    public static boolean isLocationEnabled(Context context) {
+        if (hasKitKat()) {
+            int locationMode = 0;
+            try {
+                locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
+            } catch (Settings.SettingNotFoundException e) {
+                return false;
+            }
+            return locationMode != Settings.Secure.LOCATION_MODE_OFF;
+        } else {
+            final String locationProviders = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+            return !StringUtils.isNullOrEmpty(locationProviders);
+        }
     }
 
     private ApplicationUtils() {
