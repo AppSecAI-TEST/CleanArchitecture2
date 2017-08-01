@@ -4,7 +4,6 @@ import android.graphics.drawable.Drawable;
 
 import com.cleanarchitecture.shishkin.api.event.OnNetworkConnectedEvent;
 import com.cleanarchitecture.shishkin.api.event.OnNetworkDisconnectedEvent;
-import com.cleanarchitecture.shishkin.api.event.toolbar.OnToolbarClickEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarHideProgressBarEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBackNavigationEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBackgroundEvent;
@@ -149,13 +148,6 @@ public interface IToolbarPresenter {
      * @param event событие
      */
     void onHideHorizontalProgressBarEvent(HideHorizontalProgressBarEvent event);
-
-    /**
-     * Обрабатывает событие - клик на Toolbar
-     *
-     * @param event событие
-     */
-    void onToolbarOnClickEvent(OnToolbarClickEvent event);
 
     /**
      * Обрабатывает событие - установить фон Toolbar
