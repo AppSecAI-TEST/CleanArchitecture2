@@ -100,5 +100,6 @@
     <string name="module_use_cases">Контроллер бизнес логики</string>
 
     <string name="enable_location">Включите определение местоположения в настройках телефона</string>
+    <string name="orientation">Ориентация программы</string>
 
 </resources>

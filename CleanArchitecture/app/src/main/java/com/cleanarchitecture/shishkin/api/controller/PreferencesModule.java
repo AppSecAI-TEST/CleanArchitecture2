@@ -18,6 +18,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class PreferencesModule implements IPreferencesModule, IModuleSubscriber 
     public static final String COLOR_ON_NETWORK_CONNECTED = "color_on_network_connected";
     public static final String COLOR_ON_NETWORK_DISCONNECTED = "color_on_network_disconnected";
     public static final String SCREENSHOT = "screenshot";
+    public static final String ORIENTATION = "orientation";
 
     private static volatile PreferencesModule sInstance;
 
@@ -100,6 +102,23 @@ public class PreferencesModule implements IPreferencesModule, IModuleSubscriber 
         final Context context = ApplicationController.getInstance().getApplicationContext();
         if (context != null) {
             AppPreferencesUtils.putInt(context, IMAGE_CACHE_VERSION, version);
+        }
+    }
+
+    @Override
+    public synchronized String getOrientation() {
+        final Context context = ApplicationController.getInstance().getApplicationContext();
+        if (context != null) {
+            return AppPreferencesUtils.getString(context, ORIENTATION, "2");
+        }
+        return "2";
+    }
+
+    @Override
+    public synchronized void setOrientation(final String orientation) {
+        final Context context = ApplicationController.getInstance().getApplicationContext();
+        if (context != null) {
+            AppPreferencesUtils.putString(context, ORIENTATION, orientation);
         }
     }
 
@@ -291,6 +310,25 @@ public class PreferencesModule implements IPreferencesModule, IModuleSubscriber 
                 .setTitle(AdminUtils.getString(R.string.settings_show_screenshot))
                 .setCurrentValue(String.valueOf(currentValueBoolean))
                 .setId(R.id.application_setting_screenshot_enabled);
+        list.add(setting);
+
+        currentValueString = getOrientation();
+        final String[] keys = context.getResources().getStringArray(R.array.orientation_key);
+        final String[] values = context.getResources().getStringArray(R.array.orientation_value);
+        String value = values[0];
+        for (int i = 0; i < values.length; i++) {
+            if (values[i].equals(currentValueString)) {
+                value = keys[i];
+                break;
+            }
+        }
+        final ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.addAll(Arrays.asList(keys));
+        setting = new ApplicationSetting(ApplicationSetting.TYPE_LIST)
+                .setTitle(AdminUtils.getString(R.string.orientation))
+                .setValues(arrayList)
+                .setCurrentValue(value)
+                .setId(R.id.application_setting_orientation);
         list.add(setting);
 
         setting = new ApplicationSetting(ApplicationSetting.TYPE_TEXT)

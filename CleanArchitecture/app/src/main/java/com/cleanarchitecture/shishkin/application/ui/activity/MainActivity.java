@@ -39,16 +39,34 @@ public class MainActivity extends AbstractContentActivity {
         mFloatingActionMenuPresenter.bindView(findViewById(R.id.root));
         registerPresenter(mFloatingActionMenuPresenter);
 
-        if (ViewUtils.isPhone(this)) {
-            if (!ViewUtils.is6inchPhone(this)) {
+        final int orientation = Integer.parseInt(AdminUtils.getPreferences().getOrientation());
+        switch (orientation) {
+            case ActivityInfo.SCREEN_ORIENTATION_PORTRAIT:
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 lockOrientation();
-            }
-        } else {
-            if (ViewUtils.is10inchTablet(this)) {
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                break;
+
+            case ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE:
+                if (!ViewUtils.isPhone(this)) {
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                } else {
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                }
                 lockOrientation();
-            }
+                break;
+
+            default:
+                if (ViewUtils.isPhone(this)) {
+                    if (!ViewUtils.is6inchPhone(this)) {
+                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                        lockOrientation();
+                    }
+                } else {
+                    if (ViewUtils.is10inchTablet(this)) {
+                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                        lockOrientation();
+                    }
+                }
         }
 
         if (savedInstanceState == null) {
