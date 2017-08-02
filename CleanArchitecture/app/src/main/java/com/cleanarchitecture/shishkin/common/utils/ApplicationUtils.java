@@ -63,7 +63,7 @@ public class ApplicationUtils {
     }
 
     public static boolean hasO() {
-        return Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1;
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
     }
 
     public static boolean hasNougat() {

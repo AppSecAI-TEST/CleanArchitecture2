@@ -19,7 +19,6 @@ import com.cleanarchitecture.shishkin.api.controller.IDesktopController;
 import com.cleanarchitecture.shishkin.api.controller.IDesktopSubscriber;
 import com.cleanarchitecture.shishkin.api.controller.ILocationController;
 import com.cleanarchitecture.shishkin.api.controller.ILocationSubscriber;
-import com.cleanarchitecture.shishkin.api.controller.INotificationModule;
 import com.cleanarchitecture.shishkin.api.controller.LocationController;
 import com.cleanarchitecture.shishkin.api.event.ShowFragmentEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.OnToolbarMenuItemClickEvent;
@@ -52,6 +51,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("unused")
 public class HomeFragment extends AbstractContentFragment implements ILocationSubscriber, IDesktopSubscriber {
@@ -112,9 +112,15 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
         }
         */
 
-        final INotificationModule module = AdminUtils.getNotificationModule();
-        module.replaceMessage(BoardService.NAME, "Test Board service");
-        module.replaceMessage(NotificationService.NAME, "Test Notification service");
+        BoardService.replaceMessage(getContext(), "Test Board service");
+        NotificationService.replaceMessage(getContext(), "Test Notification service");
+        view.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                NotificationService.replaceMessage(getContext(), "Test Notification service 2");
+                AdminUtils.postEvent(new ShowToastEvent("Test Notification service 2"));
+            }
+        }, TimeUnit.SECONDS.toMillis(20));
     }
 
     @Override

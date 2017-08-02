@@ -16,7 +16,7 @@ public interface INotificationModule {
      * @param name    имя сервиса
      * @param message текст сообщения
      */
-    void addMessage(String name, String message);
+    void addMessage(String name, String message, boolean isNotification);
 
     /**
      * Добавить сообщение, если его нет в списке сообщений
@@ -24,7 +24,7 @@ public interface INotificationModule {
      * @param name    имя сервиса
      * @param message текст сообщения
      */
-    void addDistinctMessage(String name, String message);
+    void addDistinctMessage(String name, String message, boolean isNotification);
 
     /**
      * Заменить сообщение
@@ -32,14 +32,14 @@ public interface INotificationModule {
      * @param name    имя сервиса
      * @param message текст сообщения
      */
-    void replaceMessage(String name, String message);
+    void replaceMessage(String name, String message, boolean isNotification);
 
     /**
      * Обновить
      *
      * @param name имя сервиса
      */
-    void refresh(String name);
+    void refresh(String name, boolean isNotification);
 
     /**
      * Очистить все
@@ -51,7 +51,7 @@ public interface INotificationModule {
      *
      * @param name имя сервиса
      */
-    void clear(String name);
+    void clear(String name, boolean isNotification);
 
     /**
      * установить максимальное кол-во выводимых сообщений
@@ -59,5 +59,5 @@ public interface INotificationModule {
      * @param name  имя сервиса
      * @param count максимальное количество сообщений
      */
-    void setMessagesCount(String name, int count);
+    void setMessagesCount(String name, int count, boolean isNotification);
 }

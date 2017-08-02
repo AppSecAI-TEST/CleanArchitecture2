@@ -23,6 +23,7 @@ public class ApplicationController extends MultiDexApplication implements IAppli
             File.separator + BuildConfig.APPLICATION_ID + File.separator;
     private static String[] PERMISIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CONTACTS, Manifest.permission.CALL_PHONE, Manifest.permission.ACCESS_FINE_LOCATION};
     private static volatile ApplicationController sInstance;
+    private static volatile ApplicationLifecycleHandler mHandler;
 
     @Override
     public void onCreate() {
@@ -31,6 +32,10 @@ public class ApplicationController extends MultiDexApplication implements IAppli
         super.onCreate();
 
         Admin.instantiate();
+
+        mHandler = new ApplicationLifecycleHandler();
+        registerActivityLifecycleCallbacks(mHandler);
+        registerComponentCallbacks(mHandler);
     }
 
     @Override
@@ -94,6 +99,10 @@ public class ApplicationController extends MultiDexApplication implements IAppli
 
     @Override
     public void onUnRegister() {
+    }
+
+    public boolean isInBackground() {
+        return mHandler.isInBackground();
     }
 
     @Override
