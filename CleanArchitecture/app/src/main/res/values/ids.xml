@@ -22,4 +22,7 @@
     <item name="application_setting_color" type="id" />
 
     <item name="application_setting_modules" type="id" />
+
+    <item name="application_setting_orientation" type="id" />
+
 </resources>

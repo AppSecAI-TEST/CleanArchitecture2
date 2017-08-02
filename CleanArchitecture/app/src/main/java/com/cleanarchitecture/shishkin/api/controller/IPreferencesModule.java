@@ -109,4 +109,8 @@ public interface IPreferencesModule extends IModule {
     boolean getModule(final String name);
 
     void seModule(final String name, final boolean isEnabled);
+
+    String getOrientation();
+
+    void setOrientation(final String orientation);
 }

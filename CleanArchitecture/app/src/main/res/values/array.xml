@@ -8,4 +8,14 @@
         <item></item>
         <item>dark</item>
     </string-array>
+    <string-array name="orientation_key">
+        <item>Авто</item>
+        <item>Вертикальная</item>
+        <item>Горизонтальная</item>
+    </string-array>
+    <string-array name="orientation_value">
+        <item>2</item>
+        <item>1</item>
+        <item>0</item>
+    </string-array>
 </resources>
