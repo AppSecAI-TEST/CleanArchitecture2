@@ -8,8 +8,6 @@ import com.cleanarchitecture.shishkin.api.event.repository.RepositoryRequestGetA
 import com.cleanarchitecture.shishkin.api.event.repository.RepositoryRequestSetApplicationSettingEvent;
 import com.cleanarchitecture.shishkin.api.event.repository.RepositoryResponseGetApplicationSettingsEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowDialogEvent;
-import com.cleanarchitecture.shishkin.api.service.BoardService;
-import com.cleanarchitecture.shishkin.api.service.NotificationService;
 import com.cleanarchitecture.shishkin.common.utils.AppPreferencesUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 
@@ -354,18 +352,10 @@ public class PreferencesModule implements IPreferencesModule, IModuleSubscriber 
                 .setTitle(AdminUtils.getString(R.string.modules));
         list.add(setting);
 
-        currentValueBoolean = getModule(NotificationService.NAME);
+        currentValueBoolean = getModule(NotificationModule.NAME);
         setting = new ApplicationSetting(ApplicationSetting.TYPE_SWITCH)
-                .setPreferenceName(NotificationService.NAME)
-                .setTitle(AdminUtils.getString(R.string.service_notification))
-                .setCurrentValue(String.valueOf(currentValueBoolean))
-                .setId(R.id.application_setting_modules);
-        list.add(setting);
-
-        currentValueBoolean = getModule(BoardService.NAME);
-        setting = new ApplicationSetting(ApplicationSetting.TYPE_SWITCH)
-                .setTitle(AdminUtils.getString(R.string.service_board))
-                .setPreferenceName(BoardService.NAME)
+                .setPreferenceName(NotificationModule.NAME)
+                .setTitle(AdminUtils.getString(R.string.module_notification))
                 .setCurrentValue(String.valueOf(currentValueBoolean))
                 .setId(R.id.application_setting_modules);
         list.add(setting);
