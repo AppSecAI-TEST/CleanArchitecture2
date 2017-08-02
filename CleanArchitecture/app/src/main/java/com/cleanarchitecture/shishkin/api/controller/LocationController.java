@@ -8,6 +8,8 @@ import android.location.Location;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.event.FinishApplicationEvent;
+import com.cleanarchitecture.shishkin.api.event.OnBackgroundOffEvent;
+import com.cleanarchitecture.shishkin.api.event.OnBackgroundOnEvent;
 import com.cleanarchitecture.shishkin.api.event.OnNetworkConnectedEvent;
 import com.cleanarchitecture.shishkin.api.event.OnNetworkDisconnectedEvent;
 import com.cleanarchitecture.shishkin.api.event.OnPermisionGrantedEvent;
@@ -71,7 +73,7 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
     }
 
     @Override
-    public void startLocation() {
+    public synchronized void startLocation() {
         if (mFusedLocationClient != null) {
             return;
         }
@@ -107,9 +109,13 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
             mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null)
                     .addOnFailureListener(e -> ErrorController.getInstance().onError(LOG_TAG, e.getMessage(), false));
         }
+
+        if (mLocation != null) {
+            setLocation(mLocation);
+        }
     }
 
-    private void stopLocation(final boolean isforce) {
+    private synchronized void stopLocation(final boolean isforce) {
         if (isforce || (!isforce && !hasSubscribers())) {
             if (mFusedLocationClient != null) {
                 mFusedLocationClient.removeLocationUpdates(mLocationCallback);
@@ -118,7 +124,7 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
         }
     }
 
-    private void setLocation(final Location location) {
+    private synchronized void setLocation(final Location location) {
         this.mLocation = location;
 
         if (hasSubscribers()) {
@@ -181,7 +187,7 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
     }
 
     @Override
-    public List<Address> getAddress(final Location location, final int countAddress) {
+    public synchronized List<Address> getAddress(final Location location, final int countAddress) {
         int cnt = countAddress;
         if (cnt < 1) {
             cnt = 1;
@@ -230,7 +236,7 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public synchronized void onFinishApplicationEvent(FinishApplicationEvent event) {
+    public void onFinishApplicationEvent(FinishApplicationEvent event) {
         stopLocation(true);
     }
 
@@ -252,5 +258,19 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onNetworkDisconnectedEvent(final OnNetworkDisconnectedEvent event) {
         stopLocation(true);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onBackgroundOnEvent(final OnBackgroundOnEvent event) {
+        if (ApplicationUtils.hasO()) {
+            stopLocation(true);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onBackgroundOffEvent(final OnBackgroundOffEvent event) {
+        if (ApplicationUtils.hasO()) {
+            startLocation();
+        }
     }
 }
