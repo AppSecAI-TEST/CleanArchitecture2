@@ -79,9 +79,6 @@
     <string name="modules">Модули</string>
 
     <string name="module_notification">Модуль отображения уведомлений</string>
-    <string name="service_notification">Сервис отображения уведомлений</string>
-    <string name="service_board">Сервис отображения доски объявлений</string>
-    <string name="service_badger">Сервис отображения бейджиков</string>
     <string name="module_location">Модуль определения местоположения</string>
     <string name="module_validation">Контроллер проверки данных</string>
     <string name="module_transformation">Модуль преобразования данных</string>

@@ -6,11 +6,11 @@ import android.os.Bundle;
 
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.api.controller.NotificationModule;
 import com.cleanarchitecture.shishkin.api.event.CheckDiskCacheEvent;
+import com.cleanarchitecture.shishkin.api.event.notification.NotificationClearEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.OnToolbarClickEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseStartApplicationEvent;
-import com.cleanarchitecture.shishkin.api.service.BoardService;
-import com.cleanarchitecture.shishkin.api.service.NotificationService;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractContentActivity;
 import com.cleanarchitecture.shishkin.application.presenter.FloatingActionMenuPresenter;
 import com.cleanarchitecture.shishkin.application.ui.fragment.HomeFragment;
@@ -82,7 +82,7 @@ public class MainActivity extends AbstractContentActivity {
                 // вызов из Launcher
                 AdminUtils.postEvent(new CheckDiskCacheEvent());
                 showHomeFragment();
-            } else if (NotificationService.ACTION_CLICK.equalsIgnoreCase(action)) {
+            } else if (NotificationModule.ACTION_CLICK.equalsIgnoreCase(action)) {
                 // клик на сообщении в зоне уведомлений
                 showHomeFragment();
             } else {
@@ -109,8 +109,7 @@ public class MainActivity extends AbstractContentActivity {
                 final ShareUtil.ShareData shareData = new ShareUtil.ShareData(null, getString(R.string.test_mesage));
                 ShareUtil.share(shareData, AdminUtils.getActivity());
             } else if (event.getView().getId() == R.id.title) {
-                NotificationService.clear(this);
-                BoardService.clear(this);
+                AdminUtils.postEvent(new NotificationClearEvent());
             }
         }
     }

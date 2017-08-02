@@ -21,6 +21,7 @@ import com.cleanarchitecture.shishkin.api.controller.ILocationController;
 import com.cleanarchitecture.shishkin.api.controller.ILocationSubscriber;
 import com.cleanarchitecture.shishkin.api.controller.LocationController;
 import com.cleanarchitecture.shishkin.api.event.ShowFragmentEvent;
+import com.cleanarchitecture.shishkin.api.event.notification.NotificationReplaceMessageEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.OnToolbarMenuItemClickEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBackNavigationEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetItemEvent;
@@ -33,8 +34,6 @@ import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseFinishApplication
 import com.cleanarchitecture.shishkin.api.presenter.ExpandableBoardPresenter;
 import com.cleanarchitecture.shishkin.api.presenter.IPresenter;
 import com.cleanarchitecture.shishkin.api.presenter.OnBackPressedPresenter;
-import com.cleanarchitecture.shishkin.api.service.BoardService;
-import com.cleanarchitecture.shishkin.api.service.NotificationService;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
 import com.cleanarchitecture.shishkin.api.ui.fragment.SettingApplicationFragment;
 import com.cleanarchitecture.shishkin.api.ui.item.SettingsDesktopOrderItem;
@@ -112,13 +111,12 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
         }
         */
 
-        BoardService.replaceMessage(getContext(), "Test Board service");
-        NotificationService.replaceMessage(getContext(), "Test Notification service");
+        AdminUtils.postEvent(new NotificationReplaceMessageEvent("Test Notification module"));
         view.postDelayed(new Runnable() {
             @Override
             public void run() {
-                NotificationService.replaceMessage(getContext(), "Test Notification service 2");
-                AdminUtils.postEvent(new ShowToastEvent("Test Notification service 2"));
+                AdminUtils.postEvent(new NotificationReplaceMessageEvent("Test Notification module 2"));
+                AdminUtils.postEvent(new ShowToastEvent("Test Notification module 2"));
             }
         }, TimeUnit.SECONDS.toMillis(20));
     }
