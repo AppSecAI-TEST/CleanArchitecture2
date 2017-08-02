@@ -8,7 +8,6 @@ import com.cleanarchitecture.shishkin.api.event.repository.RepositoryRequestGetA
 import com.cleanarchitecture.shishkin.api.event.repository.RepositoryRequestSetApplicationSettingEvent;
 import com.cleanarchitecture.shishkin.api.event.repository.RepositoryResponseGetApplicationSettingsEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowDialogEvent;
-import com.cleanarchitecture.shishkin.api.service.BadgeService;
 import com.cleanarchitecture.shishkin.api.service.BoardService;
 import com.cleanarchitecture.shishkin.api.service.NotificationService;
 import com.cleanarchitecture.shishkin.common.utils.AppPreferencesUtils;
@@ -275,12 +274,10 @@ public class PreferencesModule implements IPreferencesModule, IModuleSubscriber 
     }
 
     public synchronized void setSettingModule(final ApplicationSetting setting) {
-        Admin.getInstance().unregisterModule(NotificationModule.NAME);
         final Context context = ApplicationController.getInstance().getApplicationContext();
         if (context != null) {
             AppPreferencesUtils.putBoolean(context, setting.getPreferenceName(), Boolean.valueOf(setting.getCurrentValue()));
         }
-        Admin.getInstance().registerModule(NotificationModule.NAME);
     }
 
     private synchronized void getApplicationSettings() {
@@ -369,14 +366,6 @@ public class PreferencesModule implements IPreferencesModule, IModuleSubscriber 
         setting = new ApplicationSetting(ApplicationSetting.TYPE_SWITCH)
                 .setTitle(AdminUtils.getString(R.string.service_board))
                 .setPreferenceName(BoardService.NAME)
-                .setCurrentValue(String.valueOf(currentValueBoolean))
-                .setId(R.id.application_setting_modules);
-        list.add(setting);
-
-        currentValueBoolean = getModule(BadgeService.NAME);
-        setting = new ApplicationSetting(ApplicationSetting.TYPE_SWITCH)
-                .setTitle(AdminUtils.getString(R.string.service_badger))
-                .setPreferenceName(BadgeService.NAME)
                 .setCurrentValue(String.valueOf(currentValueBoolean))
                 .setId(R.id.application_setting_modules);
         list.add(setting);

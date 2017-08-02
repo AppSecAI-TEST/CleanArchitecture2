@@ -12,14 +12,19 @@ import android.support.v4.app.NotificationCompat;
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.api.controller.ApplicationController;
+import com.cleanarchitecture.shishkin.api.controller.Constant;
 import com.cleanarchitecture.shishkin.api.controller.ErrorController;
-import com.cleanarchitecture.shishkin.api.controller.INotificationModule;
-import com.cleanarchitecture.shishkin.api.controller.NotificationModule;
+import com.cleanarchitecture.shishkin.api.event.OnBackgroundOnEvent;
+import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBadgeEvent;
 import com.cleanarchitecture.shishkin.api.storage.CacheUtils;
 import com.cleanarchitecture.shishkin.application.ui.activity.MainActivity;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.IntentUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -42,8 +47,9 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
 
     private List<String> mMessages;
     private int mMessagesCount = 5;
-    private static final TimeUnit TIMEUNIT = TimeUnit.MINUTES;
-    private static final long TIMEUNIT_DURATION = 5L;
+    private static final TimeUnit TIMEUNIT = TimeUnit.SECONDS;
+    private static final long TIMEUNIT_DURATION = 30L;
+    private boolean isStarted = false;
 
     public NotificationService() {
         super(NAME);
@@ -56,14 +62,55 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
         setShutdownTimeout(TIMEUNIT.toMillis(TIMEUNIT_DURATION));
     }
 
+    private static void sendIntent(final Context context, final String action, final String message) {
+        if (context != null && !StringUtils.isNullOrEmpty(message)) {
+            final Intent intent = IntentUtils.createActionIntent(context, NotificationService.class, action);
+            intent.putExtra(Intent.EXTRA_TEXT, message);
+            if (ApplicationUtils.hasO() && ApplicationController.getInstance().isInBackground()) {
+                context.startForegroundService(intent);
+            } else {
+                context.startService(intent);
+            }
+        }
+    }
+
+    private static void sendIntent(final Context context, final String action) {
+        if (context != null) {
+            final Intent intent = IntentUtils.createActionIntent(context, NotificationService.class, action);
+            if (ApplicationUtils.hasO() && ApplicationController.getInstance().isInBackground()) {
+                context.startForegroundService(intent);
+            } else {
+                context.startService(intent);
+            }
+        }
+    }
+
     /**
      * Очистить список сообщений в зоне уведомлениц
      */
-    public static synchronized void clearMessages(final Context context) {
-        if (context != null) {
-            final Intent intent = IntentUtils.createActionIntent(context, NotificationService.class,
-                    ACTION_DELETE_MESSAGES);
-            context.startService(intent);
+    public static void clearMessages(final Context context) {
+        sendIntent(context, ACTION_DELETE_MESSAGES);
+    }
+
+    public static void addMessage(final Context context, final String message) {
+        sendIntent(context, Constant.ACTION_ADD_MESSAGE, message);
+    }
+
+    public static void addDistinctMessage(final Context context, final String message) {
+        sendIntent(context, Constant.ACTION_ADD_DISTINCT_MESSAGE, message);
+    }
+
+    public static void replaceMessage(final Context context, final String message) {
+        sendIntent(context, Constant.ACTION_REPLACE_MESSAGE, message);
+    }
+
+    public static void clear(final Context context) {
+        sendIntent(context, Constant.ACTION_CLEAR_MESSAGES);
+    }
+
+    public static void setMessagesCount(final Context context, final int count) {
+        if (count > 0) {
+            sendIntent(context, Constant.ACTION_SET_MESSAGES_COUNT, String.valueOf(count));
         }
     }
 
@@ -76,30 +123,30 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
 
         final String action = intent.getAction();
 
-        if (NotificationModule.ACTION_ADD_MESSAGE.equals(action)) {
+        if (Constant.ACTION_ADD_MESSAGE.equals(action)) {
             final String text = intent.getStringExtra(Intent.EXTRA_TEXT);
             onHandleAddMessageAction(text);
 
-        } else if (NotificationModule.ACTION_ADD_DISTINCT_MESSAGE.equals(action)) {
+        } else if (Constant.ACTION_ADD_DISTINCT_MESSAGE.equals(action)) {
             final String text = intent.getStringExtra(Intent.EXTRA_TEXT);
             onHandleAddDistinctMessageAction(text);
 
-        } else if (NotificationModule.ACTION_REPLACE_MESSAGE.equals(action)) {
+        } else if (Constant.ACTION_REPLACE_MESSAGE.equals(action)) {
             final String text = intent.getStringExtra(Intent.EXTRA_TEXT);
             onHandleReplaceMessageAction(text);
 
-        } else if (NotificationModule.ACTION_REFRESH_MESSAGES.equals(action)) {
+        } else if (Constant.ACTION_REFRESH_MESSAGES.equals(action)) {
             onHandleRefreshAction();
 
-        } else if (NotificationModule.ACTION_CLEAR_MESSAGES.equals(action)) {
+        } else if (Constant.ACTION_CLEAR_MESSAGES.equals(action)) {
             onHandleClearAction();
 
         } else if (ACTION_DELETE_MESSAGES.equals(action)) {
             onHandleDeleteMessagesAction();
 
-        } else if (NotificationModule.ACTION_SET_MESSAGES_COUNT.equals(action)) {
-            final int count = StringUtils.toInt(intent.getStringExtra(Intent.EXTRA_TEXT));
-            onHandleSetMessagesCount(count);
+        } else if (Constant.ACTION_SET_MESSAGES_COUNT.equals(action)) {
+            final String text = intent.getStringExtra(Intent.EXTRA_TEXT);
+            onHandleSetMessagesCount(text);
         }
     }
 
@@ -120,10 +167,8 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
                 sb.append(mMessages.get(i));
             }
 
-            final INotificationModule module = AdminUtils.getNotificationModule();
-            if (module != null) {
-                module.replaceMessage(BadgeService.NAME, String.valueOf(mMessages.size()));
-            }
+            AdminUtils.showShortcutBadger(mMessages.size());
+            AdminUtils.postEvent(new ToolbarSetBadgeEvent(String.valueOf(mMessages.size()), true));
 
             final NotificationManager nm = AdminUtils.getSystemService(Context.NOTIFICATION_SERVICE);
             if (nm != null) {
@@ -168,7 +213,16 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
                         .setChannelId(CANAL_ID)
                         .build();
 
-                nm.notify(R.id.notification_service, notification);
+                if (ApplicationUtils.hasO() && ApplicationController.getInstance().isInBackground()) {
+                    if (!isStarted) {
+                        isStarted = true;
+                        startForeground(R.id.notification_service, notification);
+                    } else {
+                        nm.notify(R.id.notification_service, notification);
+                    }
+                } else {
+                    nm.notify(R.id.notification_service, notification);
+                }
             }
         } catch (Exception e) {
             ErrorController.getInstance().onError(LOG_TAG, e);
@@ -243,6 +297,12 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
         if (nm != null) {
             nm.cancelAll();
         }
+        if (ApplicationUtils.hasO() && isStarted) {
+            stopForeground(true);
+        }
+
+        AdminUtils.hideShortcutBadger();
+        AdminUtils.postEvent(new ToolbarSetBadgeEvent(null, false));
     }
 
     @WorkerThread
@@ -251,21 +311,29 @@ public class NotificationService extends ShortlyLiveBackgroundIntentService {
         mMessages.clear();
         CacheUtils.put(NAME, CacheUtils.USE_ONLY_DISK_CACHE, AdminUtils.getTransformDataModule().toJson(mMessages), 0);
 
-        final INotificationModule module = AdminUtils.getNotificationModule();
-        if (module != null) {
-            module.clear(BadgeService.NAME);
-        }
+        AdminUtils.hideShortcutBadger();
+        AdminUtils.postEvent(new ToolbarSetBadgeEvent(null, false));
     }
 
     @WorkerThread
-    private synchronized void onHandleSetMessagesCount(final int count) {
-        if (count >= 0) {
-            mMessagesCount = count;
-        }
+    private synchronized void onHandleSetMessagesCount(final String count) {
+        mMessagesCount = Integer.parseInt(count);
     }
 
     @Override
     public String getName() {
         return NAME;
     }
+
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onBackgroundOnEvent(final OnBackgroundOnEvent event) {
+        if (ApplicationUtils.hasO()) {
+            if (isStarted) {
+                stopForeground(false);
+            }
+            stopSelf();
+        }
+    }
+
+
 }
