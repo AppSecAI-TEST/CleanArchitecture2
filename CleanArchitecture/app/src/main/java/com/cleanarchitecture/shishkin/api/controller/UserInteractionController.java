@@ -72,6 +72,16 @@ public class UserInteractionController extends AbstractModule implements IModule
         isStoped = stoped;
     }
 
+
+    @Override
+    public String getDescription() {
+        final Context context = ApplicationController.getInstance();
+        if (context != null) {
+            return context.getString(R.string.module_user_interaction);
+        }
+        return "User interaction controller";
+    }
+
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onUserIteractionEvent(final OnUserIteractionEvent event) {
         startTimer();
@@ -81,14 +91,5 @@ public class UserInteractionController extends AbstractModule implements IModule
     public synchronized void onFinishApplicationEvent(FinishApplicationEvent event) {
         stopTimer();
         isStoped = true;
-    }
-
-    @Override
-    public String getDescription() {
-        final Context context = ApplicationController.getInstance();
-        if (context != null) {
-            return context.getString(R.string.module_user_interaction);
-        }
-        return "User interaction controller";
     }
 }

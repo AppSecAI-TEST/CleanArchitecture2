@@ -37,7 +37,6 @@ import com.cleanarchitecture.shishkin.api.repository.IDbProvider;
 import com.cleanarchitecture.shishkin.api.repository.IObserver;
 import com.cleanarchitecture.shishkin.api.ui.dialog.MaterialDialogExt;
 import com.cleanarchitecture.shishkin.api.ui.recyclerview.OnScrollListener;
-import com.cleanarchitecture.shishkin.api.validate.IValidator;
 import com.cleanarchitecture.shishkin.application.data.item.PhoneContactItem;
 import com.cleanarchitecture.shishkin.application.data.livedata.PhoneContactLiveData;
 import com.cleanarchitecture.shishkin.application.data.viewmodel.PhoneContactViewModel;
@@ -218,8 +217,8 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
     }
 
     @Override
-    public IValidator getValidator() {
-        return new PhoneContactItemValidator();
+    public List<String> hasValidatorType() {
+        return StringUtils.toList(PhoneContactItemValidator.NAME);
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
@@ -230,7 +229,7 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
         }
 
         if (AdminUtils.checkPermission(Manifest.permission.CALL_PHONE)) {
-            Result<Boolean> result = mValidateController.validate(this, item);
+            Result<Boolean> result = mValidateController.validate(PhoneContactItemValidator.NAME, item);
             if (!result.getResult()) {
                 ErrorController.getInstance().onError(result.getError());
                 return;
@@ -240,7 +239,7 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
             final ArrayList<String> list = new ArrayList<>();
             for (int i = 1; i <= StringUtils.numToken(item.getPhones(), ";"); i++) {
                 String phone = StringUtils.token(item.getPhones(), ";", i);
-                result = mValidateController.validate(this, phone);
+                result = mValidateController.validate(PhoneContactItemValidator.NAME, phone);
                 if (result.getResult()) {
                     String phone1 = null;
                     if (ApplicationUtils.hasLollipop()) {

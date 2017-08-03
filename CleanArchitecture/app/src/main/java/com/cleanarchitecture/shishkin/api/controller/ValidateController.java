@@ -8,6 +8,7 @@ import com.cleanarchitecture.shishkin.api.validate.IValidator;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,6 +18,7 @@ public class ValidateController extends AbstractController<IValidateSubscriber> 
     public static final String SUBSCRIBER_TYPE = IValidateSubscriber.class.getName();
 
     private Map<String, IValidator> mValidators = Collections.synchronizedMap(new ConcurrentHashMap<String, IValidator>());
+    private static final String LOG_TAG = "ValidateController:";
 
     @Override
     public synchronized void register(final IValidateSubscriber subscriber) {
@@ -26,9 +28,11 @@ public class ValidateController extends AbstractController<IValidateSubscriber> 
             return;
         }
 
-        final IValidator validator = subscriber.getValidator();
-        if (validator != null) {
-            mValidators.put(subscriber.getName(), validator);
+        final List<String> validators = subscriber.hasValidatorType();
+        if (validators != null) {
+            for (String name : validators) {
+                checkValidator(name);
+            }
         }
     }
 
@@ -40,34 +44,47 @@ public class ValidateController extends AbstractController<IValidateSubscriber> 
             return;
         }
 
-        if (!StringUtils.isNullOrEmpty(subscriber.getName())) {
-            mValidators.remove(subscriber.getName());
+        final List<String> validators = subscriber.hasValidatorType();
+        if (validators != null) {
+            for (String name : validators) {
+                if (mValidators.containsKey(name)) {
+                    mValidators.remove(name);
+                }
+            }
+        }
+    }
+
+    private synchronized void checkValidator(final String name) {
+        if (!mValidators.containsKey(name)) {
+            try {
+                final IValidator validator = (IValidator) Class.forName(name).newInstance();
+                mValidators.put(name, validator);
+            } catch (Exception e) {
+                ErrorController.getInstance().onError(LOG_TAG, e);
+            }
         }
     }
 
     @Override
-    public Result<Boolean> validate(final IValidateSubscriber subscriber, final Object object) {
+    public Result<Boolean> validate(final String name, final Object object) {
         final Result<Boolean> result = new Result<>();
 
-        if (subscriber == null) {
+        if (StringUtils.isNullOrEmpty(name)) {
             return result.setResult(false);
         }
 
-        if (mValidators.containsKey(subscriber.getName())) {
-            return mValidators.get(subscriber.getName()).validate(object);
+        checkValidator(name);
+
+        final IValidator validator = mValidators.get(name);
+        if (validator != null) {
+            return validator.validate(object);
         } else {
-            final IValidator validator = subscriber.getValidator();
-            if (validator != null) {
-                mValidators.put(subscriber.getName(), validator);
-                return validator.validate(object);
-            } else {
-                result.setResult(false);
-                final Context context = AdminUtils.getContext();
-                if (context != null) {
-                    result.setError(NAME, context.getString(R.string.error_validator_not_found));
-                }
-                return result;
+            result.setResult(false);
+            final Context context = AdminUtils.getContext();
+            if (context != null) {
+                result.setError(NAME, context.getString(R.string.error_validator_not_found) + ": " + name);
             }
+            return result;
         }
     }
 
