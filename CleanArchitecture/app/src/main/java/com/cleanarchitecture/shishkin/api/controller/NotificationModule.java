@@ -10,27 +10,17 @@ import android.support.v4.app.NotificationCompat;
 
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.R;
-import com.cleanarchitecture.shishkin.api.event.notification.NotificationAddDistinctMessageEvent;
-import com.cleanarchitecture.shishkin.api.event.notification.NotificationAddMessageEvent;
-import com.cleanarchitecture.shishkin.api.event.notification.NotificationClearEvent;
-import com.cleanarchitecture.shishkin.api.event.notification.NotificationDeleteMessagesEvent;
-import com.cleanarchitecture.shishkin.api.event.notification.NotificationReplaceMessageEvent;
-import com.cleanarchitecture.shishkin.api.event.notification.NotificationSetMessagesCountEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBadgeEvent;
 import com.cleanarchitecture.shishkin.api.storage.CacheUtils;
 import com.cleanarchitecture.shishkin.application.ui.activity.MainActivity;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class NotificationModule extends AbstractModule implements IModuleSubscriber {
+public class NotificationModule extends AbstractShortlyLiveModule implements INotificationModule {
 
     public static final String NAME = NotificationModule.class.getName();
     private static final String LOG_TAG = "NotificationModule:";
@@ -56,6 +46,10 @@ public class NotificationModule extends AbstractModule implements IModuleSubscri
     }
 
     private synchronized void sendNotification(final String message) {
+        if (!PreferencesModule.getInstance().getModule(NotificationModule.NAME)) {
+            return;
+        }
+
         final Context context = AdminUtils.getContext();
         if (context == null) {
             return;
@@ -130,7 +124,10 @@ public class NotificationModule extends AbstractModule implements IModuleSubscri
         }
     }
 
-    private synchronized void addMessage(final String message) {
+    @Override
+    public synchronized void addMessage(final String message) {
+        post();
+
         getCache();
         mMessages.add(0, message);
 
@@ -138,7 +135,10 @@ public class NotificationModule extends AbstractModule implements IModuleSubscri
         sendNotification(message);
     }
 
-    private synchronized void addDistinctMessage(final String message) {
+    @Override
+    public synchronized void addDistinctMessage(final String message) {
+        post();
+
         getCache();
         if (!mMessages.contains(message)) {
             mMessages.add(0, message);
@@ -148,7 +148,10 @@ public class NotificationModule extends AbstractModule implements IModuleSubscri
         }
     }
 
-    private synchronized void replaceMessage(final String message) {
+    @Override
+    public synchronized void replaceMessage(final String message) {
+        post();
+
         getCache();
         mMessages.clear();
         mMessages.add(0, message);
@@ -157,10 +160,17 @@ public class NotificationModule extends AbstractModule implements IModuleSubscri
         sendNotification(message);
     }
 
-    private synchronized void clear() {
+    @Override
+    public synchronized void clear() {
+        post();
+
         getCache();
         mMessages.clear();
         CacheUtils.put(NAME, CacheUtils.USE_ONLY_DISK_CACHE, AdminUtils.getTransformDataModule().toJson(mMessages), 0);
+
+        if (!PreferencesModule.getInstance().getModule(NotificationModule.NAME)) {
+            return;
+        }
 
         final NotificationManager nm = AdminUtils.getSystemService(Context.NOTIFICATION_SERVICE);
         if (nm != null) {
@@ -171,16 +181,26 @@ public class NotificationModule extends AbstractModule implements IModuleSubscri
         AdminUtils.postEvent(new ToolbarSetBadgeEvent(null, false));
     }
 
-    private synchronized void deleteMessages() {
+    @Override
+    public synchronized void deleteMessages() {
+        post();
+
         getCache();
         mMessages.clear();
         CacheUtils.put(NAME, CacheUtils.USE_ONLY_DISK_CACHE, AdminUtils.getTransformDataModule().toJson(mMessages), 0);
+
+        if (!PreferencesModule.getInstance().getModule(NotificationModule.NAME)) {
+            return;
+        }
 
         AdminUtils.hideShortcutBadger();
         AdminUtils.postEvent(new ToolbarSetBadgeEvent(null, false));
     }
 
-    private synchronized void setMessagesCount(int count) {
+    @Override
+    public synchronized void setMessagesCount(int count) {
+        post();
+
         mMessagesCount = count;
     }
 
@@ -203,40 +223,4 @@ public class NotificationModule extends AbstractModule implements IModuleSubscri
         return "Notification module";
     }
 
-    @Override
-    public List<String> hasSubscriberType() {
-        final List<String> list = new ArrayList<>();
-        list.add(EventBusController.SUBSCRIBER_TYPE);
-        return list;
-    }
-
-    @Subscribe(threadMode = ThreadMode.ASYNC)
-    public void onNotificationAddMessageEvent(final NotificationAddMessageEvent event) {
-        addMessage(event.getMessage());
-    }
-
-    @Subscribe(threadMode = ThreadMode.ASYNC)
-    public void onNotificationAddDistinctMessageEvent(final NotificationAddDistinctMessageEvent event) {
-        addDistinctMessage(event.getMessage());
-    }
-
-    @Subscribe(threadMode = ThreadMode.ASYNC)
-    public void onNotificationReplaceMessageEvent(final NotificationReplaceMessageEvent event) {
-        replaceMessage(event.getMessage());
-    }
-
-    @Subscribe(threadMode = ThreadMode.ASYNC)
-    public void onNotificationClearEvent(final NotificationClearEvent event) {
-        clear();
-    }
-
-    @Subscribe(threadMode = ThreadMode.ASYNC)
-    public void onNotificationSetMessagesCountEvent(final NotificationSetMessagesCountEvent event) {
-        setMessagesCount(event.getCount());
-    }
-
-    @Subscribe(threadMode = ThreadMode.ASYNC)
-    public void onNotificationDeleteMessagesEvent(final NotificationDeleteMessagesEvent event) {
-        deleteMessages();
-    }
 }

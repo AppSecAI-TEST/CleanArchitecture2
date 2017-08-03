@@ -19,9 +19,10 @@ import com.cleanarchitecture.shishkin.api.controller.IDesktopController;
 import com.cleanarchitecture.shishkin.api.controller.IDesktopSubscriber;
 import com.cleanarchitecture.shishkin.api.controller.ILocationController;
 import com.cleanarchitecture.shishkin.api.controller.ILocationSubscriber;
+import com.cleanarchitecture.shishkin.api.controller.INotificationModule;
 import com.cleanarchitecture.shishkin.api.controller.LocationController;
+import com.cleanarchitecture.shishkin.api.controller.NotificationModule;
 import com.cleanarchitecture.shishkin.api.event.ShowFragmentEvent;
-import com.cleanarchitecture.shishkin.api.event.notification.NotificationReplaceMessageEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.OnToolbarMenuItemClickEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetBackNavigationEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarSetItemEvent;
@@ -111,11 +112,11 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
         }
         */
 
-        AdminUtils.postEvent(new NotificationReplaceMessageEvent("Test Notification module"));
+        ((INotificationModule) Admin.getInstance().get(NotificationModule.NAME)).replaceMessage("Test Notification module");
         view.postDelayed(new Runnable() {
             @Override
             public void run() {
-                AdminUtils.postEvent(new NotificationReplaceMessageEvent("Test Notification module 2"));
+                ((INotificationModule) Admin.getInstance().get(NotificationModule.NAME)).replaceMessage("Test Notification module 2");
                 AdminUtils.postEvent(new ShowToastEvent("Test Notification module 2"));
             }
         }, TimeUnit.SECONDS.toMillis(20));

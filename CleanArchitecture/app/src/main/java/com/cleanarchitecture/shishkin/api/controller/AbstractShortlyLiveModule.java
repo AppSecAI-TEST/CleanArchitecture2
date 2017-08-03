@@ -1,6 +1,6 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
-import com.cleanarchitecture.shishkin.api.service.AutoCompleteHandler;
+import com.cleanarchitecture.shishkin.api.handler.AutoCompleteHandler;
 
 import java.util.concurrent.TimeUnit;
 
@@ -8,7 +8,7 @@ public abstract class AbstractShortlyLiveModule extends AbstractModule implement
 
     private AutoCompleteHandler<Boolean> mServiceHandler;
     private static final TimeUnit TIMEUNIT = TimeUnit.SECONDS;
-    private static final long TIMEUNIT_DURATION = 30L;
+    private static final long TIMEUNIT_DURATION = 10L;
 
     public AbstractShortlyLiveModule() {
         mServiceHandler = new AutoCompleteHandler<>("AbstractShortlyLiveModule [" + getName() + "]");

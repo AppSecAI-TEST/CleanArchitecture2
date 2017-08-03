@@ -5,10 +5,11 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import com.cleanarchitecture.shishkin.R;
+import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.api.controller.INotificationModule;
 import com.cleanarchitecture.shishkin.api.controller.NotificationModule;
 import com.cleanarchitecture.shishkin.api.event.CheckDiskCacheEvent;
-import com.cleanarchitecture.shishkin.api.event.notification.NotificationClearEvent;
 import com.cleanarchitecture.shishkin.api.event.toolbar.OnToolbarClickEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseStartApplicationEvent;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractContentActivity;
@@ -109,7 +110,7 @@ public class MainActivity extends AbstractContentActivity {
                 final ShareUtil.ShareData shareData = new ShareUtil.ShareData(null, getString(R.string.test_mesage));
                 ShareUtil.share(shareData, AdminUtils.getActivity());
             } else if (event.getView().getId() == R.id.title) {
-                AdminUtils.postEvent(new NotificationClearEvent());
+                ((INotificationModule) Admin.getInstance().get(NotificationModule.NAME)).clear();
             }
         }
     }

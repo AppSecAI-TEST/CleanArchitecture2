@@ -10,6 +10,7 @@ import android.support.multidex.MultiDexApplication;
 import com.cleanarchitecture.shishkin.BuildConfig;
 import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseOnLowMemoryEvent;
+import com.cleanarchitecture.shishkin.api.handler.ApplicationLifecycleHandler;
 import com.cleanarchitecture.shishkin.api.storage.ImageDiskCache;
 import com.cleanarchitecture.shishkin.api.storage.ParcelableDiskCache;
 import com.cleanarchitecture.shishkin.api.storage.SerializableDiskCache;

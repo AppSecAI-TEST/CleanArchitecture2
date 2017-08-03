@@ -119,11 +119,6 @@ public class Admin extends AbstractAdmin {
 
         // Модуль валидации данных
         registerModule(ValidateController.NAME);
-
-        // Модуль вывода сообщений в зону уведомлений
-        if (PreferencesModule.getInstance().getModule(NotificationModule.NAME)) {
-            registerModule(NotificationModule.NAME);
-        }
     }
 
     @Override

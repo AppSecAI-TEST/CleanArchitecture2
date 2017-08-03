@@ -1,4 +1,4 @@
-package com.cleanarchitecture.shishkin.api.controller;
+package com.cleanarchitecture.shishkin.api.handler;
 
 import android.app.Activity;
 import android.app.Application;
@@ -6,6 +6,7 @@ import android.content.ComponentCallbacks2;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
+import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
 import com.cleanarchitecture.shishkin.api.event.OnBackgroundOffEvent;
 import com.cleanarchitecture.shishkin.api.event.OnBackgroundOnEvent;
 
