@@ -1,9 +1,14 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
-import com.cleanarchitecture.shishkin.api.validate.IValidator;
+import java.util.List;
 
 public interface IValidateSubscriber extends ISubscriber {
 
-    IValidator getValidator();
+    /**
+     * Список имен валидаторов, которые хочет использовать объект
+     *
+     * @return список имен валидаторов
+     */
+    List<String> hasValidatorType();
 
 }
