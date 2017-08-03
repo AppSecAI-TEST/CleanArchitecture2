@@ -102,15 +102,47 @@ public interface IPreferencesModule extends IModule {
 
     String getSettingColor(String key, String defaultColor);
 
+    /**
+     * Получить флаг - скриншоты разрешены
+     *
+     * @return true - скриншоты разрешены
+     */
     boolean getScreenshotEnabled();
 
+    /**
+     * Установить флаг - скриншоты разрешены
+     *
+     * @param enabled - true - скриншоты разрешены
+     */
     void setScreenshotEnabled(final boolean enabled);
 
+    /**
+     * Получить флаг - загрузка модуля разрешена/запрещена
+     *
+     * @param name имя модуля
+     * @return true - загрузка модуля разрешена
+     */
     boolean getModule(final String name);
 
+    /**
+     * Установить флаг - загрузка модуля разрешена/запрещена
+     *
+     * @param name имя модуля
+     * @param isEnabled true - загрузка модуля разрешена
+     */
     void seModule(final String name, final boolean isEnabled);
 
+    /**
+     * Получить ориентацию приложения
+     *
+     * @return ориентация приложения
+     */
     String getOrientation();
 
+    /**
+     * Установить ориентацию приложения
+     *
+     * @param orientation ориентация приложения
+     */
     void setOrientation(final String orientation);
 }
