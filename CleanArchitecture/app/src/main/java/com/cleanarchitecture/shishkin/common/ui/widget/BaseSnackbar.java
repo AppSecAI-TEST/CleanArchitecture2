@@ -28,7 +28,7 @@ public class BaseSnackbar {
                                 final int type) {
         final Snackbar snackbar = Snackbar.make(view, title, duration);
         final View snackbarView = snackbar.getView();
-        final TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+        final TextView textView = snackbarView.findViewById(android.support.design.R.id.snackbar_text);
         textView.setTextColor(ViewUtils.getColor(view.getContext(), R.color.white));
         if (ApplicationUtils.hasJellyBeanMR1()) {
             textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
