@@ -1,6 +1,6 @@
 package com.cleanarchitecture.shishkin.api.controller;
 
-import com.cleanarchitecture.shishkin.api.service.AutoCompleteHandler;
+import com.cleanarchitecture.shishkin.api.handler.AutoCompleteHandler;
 
 import java.util.concurrent.TimeUnit;
 

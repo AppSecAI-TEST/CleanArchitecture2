@@ -35,8 +35,8 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".api.service.NotificationService" />
-        <service android:name=".api.service.BoardService" />
+        <service android:name=".api.handler.NotificationService" />
+        <service android:name=".api.handler.BoardService" />
 
     </application>
 
