@@ -2,9 +2,7 @@ package com.cleanarchitecture.shishkin.api.presenter;
 
 import android.os.Bundle;
 
-import com.cleanarchitecture.shishkin.api.controller.ActivityController;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
-import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.IMailSubscriber;
 import com.cleanarchitecture.shishkin.api.controller.IPresenterController;
 import com.cleanarchitecture.shishkin.api.controller.MailController;
@@ -13,7 +11,6 @@ import com.cleanarchitecture.shishkin.api.mail.UpdateViewPresenterMail;
 import com.cleanarchitecture.shishkin.common.state.ViewStateObserver;
 import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractPresenter<M> implements IPresenter<M>, IMailSubscriber {

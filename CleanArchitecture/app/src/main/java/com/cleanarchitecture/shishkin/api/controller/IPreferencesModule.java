@@ -127,7 +127,7 @@ public interface IPreferencesModule extends IModule {
     /**
      * Установить флаг - загрузка модуля разрешена/запрещена
      *
-     * @param name имя модуля
+     * @param name      имя модуля
      * @param isEnabled true - загрузка модуля разрешена
      */
     void seModule(final String name, final boolean isEnabled);

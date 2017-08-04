@@ -31,7 +31,6 @@ import com.cleanarchitecture.shishkin.api.ui.activity.AbstractContentActivity;
 import com.cleanarchitecture.shishkin.api.ui.activity.IActivity;
 import com.cleanarchitecture.shishkin.api.ui.dialog.MaterialDialogExt;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
-import com.cleanarchitecture.shishkin.application.validate.PhoneContactItemValidator;
 import com.cleanarchitecture.shishkin.common.state.ViewStateObserver;
 import com.cleanarchitecture.shishkin.common.ui.widget.BaseSnackbar;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
@@ -42,7 +41,6 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import es.dmoral.toasty.Toasty;

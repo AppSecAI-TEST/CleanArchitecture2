@@ -9,7 +9,7 @@ public interface IValidateController extends IController<IValidateSubscriber> {
      * проверить объект
      *
      * @param validatorName имя валидатора
-     * @param object объект валидации
+     * @param object        объект валидации
      * @return результат проверки
      */
     Result<Boolean> validate(String validatorName, Object object);
