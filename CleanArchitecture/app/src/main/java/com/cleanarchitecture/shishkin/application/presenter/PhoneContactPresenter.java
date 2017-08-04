@@ -218,7 +218,7 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
 
     @Override
     public List<String> hasValidatorType() {
-        return StringUtils.toList(PhoneContactItemValidator.NAME);
+        return StringUtils.arrayToList(PhoneContactItemValidator.NAME);
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)

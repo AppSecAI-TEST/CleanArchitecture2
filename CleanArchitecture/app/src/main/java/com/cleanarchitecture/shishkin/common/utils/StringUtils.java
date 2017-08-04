@@ -945,7 +945,7 @@ public class StringUtils {
         return textCapitalize.toString();
     }
 
-    public static List<String> toList(String... strings) {
+    public static List<String> arrayToList(String... strings) {
         return Arrays.asList(strings);
     }
 
