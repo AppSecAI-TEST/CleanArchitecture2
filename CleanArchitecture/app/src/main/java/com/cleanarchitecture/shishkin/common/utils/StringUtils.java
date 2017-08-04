@@ -9,7 +9,6 @@ import com.google.common.base.Charsets;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -945,8 +944,12 @@ public class StringUtils {
         return textCapitalize.toString();
     }
 
-    public static List<String> toList(String... strings) {
-        return Arrays.asList(strings);
+    public static List<String> arrayToList(String... strings) {
+        final List<String> list = new ArrayList<>();
+        for (String s : strings) {
+            list.add(s);
+        }
+        return list;
     }
 
 }

@@ -16,11 +16,11 @@ import com.cleanarchitecture.shishkin.api.repository.requests.IRequest;
 import com.cleanarchitecture.shishkin.api.task.IPhonePausableThreadPoolExecutor;
 import com.cleanarchitecture.shishkin.api.task.PhonePausableThreadPoolExecutor;
 import com.cleanarchitecture.shishkin.common.net.Connectivity;
+import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -72,9 +72,7 @@ public class NetProvider extends AbstractModule implements INetProvider, IModule
 
     @Override
     public List<String> hasSubscriberType() {
-        final ArrayList<String> list = new ArrayList<>();
-        list.add(EventBusController.SUBSCRIBER_TYPE);
-        return list;
+        return StringUtils.arrayToList(EventBusController.SUBSCRIBER_TYPE);
     }
 
     @Override

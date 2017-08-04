@@ -41,7 +41,6 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import es.dmoral.toasty.Toasty;
@@ -124,9 +123,7 @@ public class ActivityController extends AbstractController<IActivity> implements
 
     @Override
     public List<String> hasSubscriberType() {
-        ArrayList<String> list = new ArrayList<>();
-        list.add(EventBusController.SUBSCRIBER_TYPE);
-        return list;
+        return StringUtils.arrayToList(EventBusController.SUBSCRIBER_TYPE);
     }
 
     @Override
