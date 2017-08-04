@@ -2,13 +2,16 @@ package com.cleanarchitecture.shishkin.api.presenter;
 
 import android.os.Bundle;
 
+import com.cleanarchitecture.shishkin.api.controller.ActivityController;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.IMailSubscriber;
 import com.cleanarchitecture.shishkin.api.controller.IPresenterController;
 import com.cleanarchitecture.shishkin.api.controller.MailController;
 import com.cleanarchitecture.shishkin.api.controller.PresenterController;
 import com.cleanarchitecture.shishkin.api.mail.UpdateViewPresenterMail;
 import com.cleanarchitecture.shishkin.common.state.ViewStateObserver;
+import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +38,6 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IMailSubscr
 
     @Override
     public void onReadyState() {
-        AdminUtils.register(this);
         updateView();
     }
 
@@ -89,10 +91,10 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IMailSubscr
 
     @Override
     public List<String> hasSubscriberType() {
-        final ArrayList<String> list = new ArrayList<>();
-        list.add(PresenterController.SUBSCRIBER_TYPE);
-        list.add(MailController.SUBSCRIBER_TYPE);
-        return list;
+        return StringUtils.arrayToList(
+                PresenterController.SUBSCRIBER_TYPE,
+                MailController.SUBSCRIBER_TYPE
+        );
     }
 
     @Override

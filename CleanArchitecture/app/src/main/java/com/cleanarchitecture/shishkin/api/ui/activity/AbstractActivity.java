@@ -40,6 +40,7 @@ import com.cleanarchitecture.shishkin.common.state.StateObservable;
 import com.cleanarchitecture.shishkin.common.state.ViewStateObserver;
 import com.cleanarchitecture.shishkin.common.utils.AppPreferencesUtils;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
+import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -151,11 +152,11 @@ public abstract class AbstractActivity extends LifecycleActivity
 
     @Override
     public List<String> hasSubscriberType() {
-        ArrayList<String> list = new ArrayList<>();
-        list.add(EventBusController.SUBSCRIBER_TYPE);
-        list.add(ActivityController.SUBSCRIBER_TYPE);
-        list.add(MailController.SUBSCRIBER_TYPE);
-        return list;
+        return StringUtils.arrayToList(
+                EventBusController.SUBSCRIBER_TYPE,
+                ActivityController.SUBSCRIBER_TYPE,
+                MailController.SUBSCRIBER_TYPE
+        );
     }
 
     @Override

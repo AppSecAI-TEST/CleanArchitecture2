@@ -131,9 +131,7 @@ public class DesktopController implements IDesktopController, IModuleSubscriber 
 
     @Override
     public List<String> hasSubscriberType() {
-        final ArrayList<String> list = new ArrayList<>();
-        list.add(EventBusController.SUBSCRIBER_TYPE);
-        return list;
+        return StringUtils.arrayToList(EventBusController.SUBSCRIBER_TYPE);
     }
 
     @Override

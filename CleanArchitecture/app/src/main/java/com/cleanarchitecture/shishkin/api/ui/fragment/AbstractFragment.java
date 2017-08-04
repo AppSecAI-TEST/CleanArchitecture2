@@ -13,6 +13,7 @@ import com.cleanarchitecture.shishkin.R;
 import com.cleanarchitecture.shishkin.api.controller.ActivityController;
 import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
+import com.cleanarchitecture.shishkin.api.controller.EventBusController;
 import com.cleanarchitecture.shishkin.api.controller.IActivityController;
 import com.cleanarchitecture.shishkin.api.controller.IMailSubscriber;
 import com.cleanarchitecture.shishkin.api.controller.IModuleSubscriber;
@@ -22,6 +23,7 @@ import com.cleanarchitecture.shishkin.api.ui.activity.IActivity;
 import com.cleanarchitecture.shishkin.common.state.StateObservable;
 import com.cleanarchitecture.shishkin.common.state.ViewStateObserver;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
+import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.tooltip.Tooltip;
@@ -87,9 +89,7 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
 
     @Override
     public List<String> hasSubscriberType() {
-        final ArrayList<String> list = new ArrayList<>();
-        list.add(MailController.SUBSCRIBER_TYPE);
-        return list;
+        return StringUtils.arrayToList(MailController.SUBSCRIBER_TYPE);
     }
 
     @Override

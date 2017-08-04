@@ -31,6 +31,7 @@ import com.cleanarchitecture.shishkin.api.ui.activity.AbstractContentActivity;
 import com.cleanarchitecture.shishkin.api.ui.activity.IActivity;
 import com.cleanarchitecture.shishkin.api.ui.dialog.MaterialDialogExt;
 import com.cleanarchitecture.shishkin.api.ui.fragment.AbstractContentFragment;
+import com.cleanarchitecture.shishkin.application.validate.PhoneContactItemValidator;
 import com.cleanarchitecture.shishkin.common.state.ViewStateObserver;
 import com.cleanarchitecture.shishkin.common.ui.widget.BaseSnackbar;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
@@ -124,9 +125,7 @@ public class ActivityController extends AbstractController<IActivity> implements
 
     @Override
     public List<String> hasSubscriberType() {
-        ArrayList<String> list = new ArrayList<>();
-        list.add(EventBusController.SUBSCRIBER_TYPE);
-        return list;
+        return StringUtils.arrayToList(EventBusController.SUBSCRIBER_TYPE);
     }
 
     @Override

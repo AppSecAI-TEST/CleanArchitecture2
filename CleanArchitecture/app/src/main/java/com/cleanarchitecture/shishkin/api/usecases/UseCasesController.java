@@ -20,6 +20,7 @@ import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseOnScreenOffEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseOnScreenOnEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseRequestPermissionEvent;
 import com.cleanarchitecture.shishkin.api.event.usecase.UseCaseStartApplicationEvent;
+import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -88,9 +89,7 @@ public class UseCasesController extends AbstractController implements IUseCasesC
 
     @Override
     public List<String> hasSubscriberType() {
-        final ArrayList<String> list = new ArrayList<>();
-        list.add(EventBusController.SUBSCRIBER_TYPE);
-        return list;
+        return StringUtils.arrayToList(EventBusController.SUBSCRIBER_TYPE);
     }
 
     @Override

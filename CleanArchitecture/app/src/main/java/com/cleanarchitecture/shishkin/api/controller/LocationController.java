@@ -19,6 +19,7 @@ import com.cleanarchitecture.shishkin.api.event.ui.ShowDialogEvent;
 import com.cleanarchitecture.shishkin.api.mail.LocationMail;
 import com.cleanarchitecture.shishkin.common.net.Connectivity;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
+import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -171,9 +172,7 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
 
     @Override
     public List<String> hasSubscriberType() {
-        final ArrayList<String> list = new ArrayList<>();
-        list.add(EventBusController.SUBSCRIBER_TYPE);
-        return list;
+        return StringUtils.arrayToList(EventBusController.SUBSCRIBER_TYPE);
     }
 
     @Override

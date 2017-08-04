@@ -9,6 +9,7 @@ import com.cleanarchitecture.shishkin.api.event.repository.RepositoryRequestSetA
 import com.cleanarchitecture.shishkin.api.event.repository.RepositoryResponseGetApplicationSettingsEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.ShowDialogEvent;
 import com.cleanarchitecture.shishkin.common.utils.AppPreferencesUtils;
+import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -80,9 +81,7 @@ public class PreferencesModule implements IPreferencesModule, IModuleSubscriber 
 
     @Override
     public List<String> hasSubscriberType() {
-        final ArrayList<String> list = new ArrayList<>();
-        list.add(EventBusController.SUBSCRIBER_TYPE);
-        return list;
+        return StringUtils.arrayToList(EventBusController.SUBSCRIBER_TYPE);
     }
 
     @Override

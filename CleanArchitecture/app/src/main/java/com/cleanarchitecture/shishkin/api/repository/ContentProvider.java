@@ -22,6 +22,7 @@ import com.cleanarchitecture.shishkin.application.event.repository.RepositoryRes
 import com.cleanarchitecture.shishkin.application.event.repository.RepositoryResponseGetDeletedContactsEvent;
 import com.cleanarchitecture.shishkin.common.content.dao.AbstractReadOnlyDAO;
 import com.cleanarchitecture.shishkin.common.utils.CloseUtils;
+import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -131,9 +132,7 @@ public class ContentProvider extends AbstractModule implements IModuleSubscriber
 
     @Override
     public List<String> hasSubscriberType() {
-        final ArrayList<String> list = new ArrayList<>();
-        list.add(EventBusController.SUBSCRIBER_TYPE);
-        return list;
+        return StringUtils.arrayToList(EventBusController.SUBSCRIBER_TYPE);
     }
 
     @Override
