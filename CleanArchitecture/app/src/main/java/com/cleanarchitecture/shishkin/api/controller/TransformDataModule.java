@@ -138,11 +138,6 @@ public class TransformDataModule extends AbstractModule implements ITransformDat
     }
 
     @Override
-    public String getSubscriberType() {
-        return null;
-    }
-
-    @Override
     public String getDescription() {
         final Context context = ApplicationController.getInstance();
         if (context != null) {

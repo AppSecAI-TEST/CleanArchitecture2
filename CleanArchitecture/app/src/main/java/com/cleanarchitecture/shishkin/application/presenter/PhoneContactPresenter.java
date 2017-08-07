@@ -143,8 +143,8 @@ public class PhoneContactPresenter extends AbstractPresenter<List<PhoneContactIt
     @Override
     public List<String> hasSubscriberType() {
         final List<String> list = super.hasSubscriberType();
-        list.add(EventBusController.SUBSCRIBER_TYPE);
-        list.add(ValidateController.SUBSCRIBER_TYPE);
+        list.add(EventBusController.NAME);
+        list.add(ValidateController.NAME);
         return list;
     }
 

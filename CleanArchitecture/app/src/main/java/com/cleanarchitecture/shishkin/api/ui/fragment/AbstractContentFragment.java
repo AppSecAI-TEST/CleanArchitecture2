@@ -37,7 +37,7 @@ public abstract class AbstractContentFragment extends AbstractFragment implement
     @Override
     public List<String> hasSubscriberType() {
         final List<String> list = super.hasSubscriberType();
-        list.add(EventBusController.SUBSCRIBER_TYPE);
+        list.add(EventBusController.NAME);
         return list;
     }
 

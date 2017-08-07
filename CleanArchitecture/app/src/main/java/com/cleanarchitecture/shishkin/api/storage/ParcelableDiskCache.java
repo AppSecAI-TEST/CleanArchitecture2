@@ -449,11 +449,6 @@ public class ParcelableDiskCache<T extends Parcelable> extends AbstractModule im
     }
 
     @Override
-    public String getSubscriberType() {
-        return null;
-    }
-
-    @Override
     public String getDescription() {
         return "Parcelable disk cache";
     }

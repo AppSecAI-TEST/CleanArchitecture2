@@ -66,13 +66,8 @@ public class NetProvider extends AbstractModule implements INetProvider, IModule
     }
 
     @Override
-    public String getSubscriberType() {
-        return null;
-    }
-
-    @Override
     public List<String> hasSubscriberType() {
-        return StringUtils.arrayToList(EventBusController.SUBSCRIBER_TYPE);
+        return StringUtils.arrayToList(EventBusController.NAME);
     }
 
     @Override

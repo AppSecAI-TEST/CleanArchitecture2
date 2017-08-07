@@ -21,7 +21,6 @@ public class PresenterController extends AbstractController<IPresenter>
         implements IPresenterController {
 
     public static final String NAME = PresenterController.class.getName();
-    public static final String SUBSCRIBER_TYPE = IPresenter.class.getName();
 
     private Map<String, Bundle> mStates = Collections.synchronizedMap(new ConcurrentHashMap<String, Bundle>());
 
@@ -51,11 +50,6 @@ public class PresenterController extends AbstractController<IPresenter>
     @Override
     public String getName() {
         return NAME;
-    }
-
-    @Override
-    public String getSubscriberType() {
-        return SUBSCRIBER_TYPE;
     }
 
     @Override

@@ -20,7 +20,6 @@ import java.util.concurrent.atomic.AtomicLong;
 public class MailController extends AbstractController<IMailSubscriber> implements IMailController {
 
     public static final String NAME = MailController.class.getName();
-    public static final String SUBSCRIBER_TYPE = IMailSubscriber.class.getName();
     private Map<Long, IMail> mMail = Collections.synchronizedMap(new ConcurrentHashMap<Long, IMail>());
     private AtomicLong mId = new AtomicLong(0L);
 
@@ -31,11 +30,6 @@ public class MailController extends AbstractController<IMailSubscriber> implemen
     @Override
     public String getName() {
         return NAME;
-    }
-
-    @Override
-    public String getSubscriberType() {
-        return SUBSCRIBER_TYPE;
     }
 
     @Override

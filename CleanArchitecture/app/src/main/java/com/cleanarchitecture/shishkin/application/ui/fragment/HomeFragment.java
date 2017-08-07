@@ -70,7 +70,7 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
     @Override
     public List<String> hasSubscriberType() {
         final List<String> list = super.hasSubscriberType();
-        list.add(LocationController.SUBSCRIBER_TYPE);
+        list.add(LocationController.NAME);
         return list;
     }
 

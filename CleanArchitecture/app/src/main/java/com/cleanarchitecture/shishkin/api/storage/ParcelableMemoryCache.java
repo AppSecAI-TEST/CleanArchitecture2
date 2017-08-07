@@ -223,11 +223,6 @@ public class ParcelableMemoryCache<T extends Parcelable> extends AbstractModule 
     }
 
     @Override
-    public String getSubscriberType() {
-        return null;
-    }
-
-    @Override
     public boolean isPersistent() {
         return true;
     }

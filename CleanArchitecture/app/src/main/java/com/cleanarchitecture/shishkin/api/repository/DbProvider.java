@@ -273,13 +273,8 @@ public class DbProvider<H extends AbstractViewModel, T extends RoomDatabase> ext
     }
 
     @Override
-    public String getSubscriberType() {
-        return null;
-    }
-
-    @Override
     public List<String> hasSubscriberType() {
-        return StringUtils.arrayToList(EventBusController.SUBSCRIBER_TYPE);
+        return StringUtils.arrayToList(EventBusController.NAME);
     }
 
     @Override

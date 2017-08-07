@@ -173,11 +173,6 @@ public class ErrorController implements IErrorController {
     }
 
     @Override
-    public String getSubscriberType() {
-        return null;
-    }
-
-    @Override
     public boolean isPersistent() {
         return true;
     }

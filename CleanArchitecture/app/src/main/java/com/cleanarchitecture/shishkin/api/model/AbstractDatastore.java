@@ -20,7 +20,7 @@ public abstract class AbstractDatastore<T extends ILiveData> implements IDatasto
     @Override
     public List<String> hasSubscriberType() {
         final ArrayList<String> list = new ArrayList<>();
-        list.add(EventBusController.SUBSCRIBER_TYPE);
+        list.add(EventBusController.NAME);
         return list;
     }
 

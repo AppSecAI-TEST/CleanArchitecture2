@@ -196,11 +196,6 @@ public class SerializableMemoryCache extends AbstractModule implements ISerializ
     }
 
     @Override
-    public String getSubscriberType() {
-        return null;
-    }
-
-    @Override
     public boolean isPersistent() {
         return true;
     }

@@ -52,7 +52,7 @@ public abstract class AbstractContentActivity extends AbstractActivity
     @Override
     public List<String> hasSubscriberType() {
         final List<String> list = super.hasSubscriberType();
-        list.add(NavigationController.SUBSCRIBER_TYPE);
+        list.add(NavigationController.NAME);
         return list;
     }
 
