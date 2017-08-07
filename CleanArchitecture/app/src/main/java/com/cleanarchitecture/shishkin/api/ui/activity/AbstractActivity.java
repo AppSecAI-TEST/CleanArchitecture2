@@ -150,7 +150,7 @@ public abstract class AbstractActivity extends LifecycleActivity
     }
 
     @Override
-    public List<String> hasSubscriberType() {
+    public List<String> getSubscription() {
         return StringUtils.arrayToList(
                 EventBusController.NAME,
                 ActivityController.NAME,

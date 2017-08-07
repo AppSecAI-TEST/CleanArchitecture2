@@ -165,7 +165,7 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
     }
 
     @Override
-    public List<String> hasSubscriberType() {
+    public List<String> getSubscription() {
         return StringUtils.arrayToList(EventBusController.NAME);
     }
 

@@ -68,8 +68,8 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
     private ExpandableBoardPresenter mBoardPresenter = new ExpandableBoardPresenter();
 
     @Override
-    public List<String> hasSubscriberType() {
-        final List<String> list = super.hasSubscriberType();
+    public List<String> getSubscription() {
+        final List<String> list = super.getSubscription();
         list.add(LocationController.NAME);
         return list;
     }

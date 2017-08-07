@@ -56,7 +56,7 @@ public abstract class AbstractAdmin implements IAdmin {
             try {
                 // регистрируем модуль в других модулях
                 if (controller instanceof IModuleSubscriber) {
-                    final List<String> types = ((IModuleSubscriber) controller).hasSubscriberType();
+                    final List<String> types = ((IModuleSubscriber) controller).getSubscription();
                     for (int i = 0; i < types.size(); i++) {
                         types.set(i, getShortName(types.get(i)));
                     }
@@ -77,7 +77,7 @@ public abstract class AbstractAdmin implements IAdmin {
                     final String type = getShortName(controller.getName());
                     for (IModule module : mModules.values()) {
                         if (module instanceof IModuleSubscriber) {
-                            final List<String> types = ((IModuleSubscriber) module).hasSubscriberType();
+                            final List<String> types = ((IModuleSubscriber) module).getSubscription();
                             for (int i = 0; i < types.size(); i++) {
                                 types.set(i, getShortName(types.get(i)));
                             }
@@ -136,7 +136,7 @@ public abstract class AbstractAdmin implements IAdmin {
 
                             // отменяем регистрацию в других модулях
                             if (module instanceof IModuleSubscriber) {
-                                final List<String> subscribers = ((IModuleSubscriber) module).hasSubscriberType();
+                                final List<String> subscribers = ((IModuleSubscriber) module).getSubscription();
                                 for (String subscriber : subscribers) {
                                     final IModule moduleSubscriber = mModules.get(getShortName(subscriber));
                                     if (moduleSubscriber != null && moduleSubscriber instanceof ISmallController) {
@@ -160,7 +160,7 @@ public abstract class AbstractAdmin implements IAdmin {
     public synchronized void register(final IModuleSubscriber subscriber) {
         if (subscriber != null && !StringUtils.isNullOrEmpty(subscriber.getName())) {
             try {
-                final List<String> types = subscriber.hasSubscriberType();
+                final List<String> types = subscriber.getSubscription();
 
                 // регистрируемся subscriber в модулях
                 for (String subscriberType : types) {
@@ -185,7 +185,7 @@ public abstract class AbstractAdmin implements IAdmin {
     public synchronized void unregister(final IModuleSubscriber subscriber) {
         if (subscriber != null) {
             try {
-                final List<String> types = subscriber.hasSubscriberType();
+                final List<String> types = subscriber.getSubscription();
                 for (int i = 0; i < types.size(); i++) {
                     types.set(i, getShortName(types.get(i)));
                 }
@@ -208,7 +208,7 @@ public abstract class AbstractAdmin implements IAdmin {
     public synchronized void setCurrentSubscriber(final IModuleSubscriber subscriber) {
         try {
             if (subscriber != null) {
-                final List<String> types = subscriber.hasSubscriberType();
+                final List<String> types = subscriber.getSubscription();
                 for (int i = 0; i < types.size(); i++) {
                     types.set(i, getShortName(types.get(i)));
                 }

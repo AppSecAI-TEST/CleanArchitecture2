@@ -43,7 +43,7 @@ public class Repository extends AbstractModule implements IRepository, IModuleSu
     }
 
     @Override
-    public List<String> hasSubscriberType() {
+    public List<String> getSubscription() {
         return StringUtils.arrayToList(EventBusController.NAME);
     }
 

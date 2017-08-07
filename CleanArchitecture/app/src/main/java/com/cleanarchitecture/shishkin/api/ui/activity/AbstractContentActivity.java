@@ -50,8 +50,8 @@ public abstract class AbstractContentActivity extends AbstractActivity
     }
 
     @Override
-    public List<String> hasSubscriberType() {
-        final List<String> list = super.hasSubscriberType();
+    public List<String> getSubscription() {
+        final List<String> list = super.getSubscription();
         list.add(NavigationController.NAME);
         return list;
     }

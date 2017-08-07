@@ -116,7 +116,7 @@ public class ActivityController extends AbstractController<IActivity> implements
     }
 
     @Override
-    public List<String> hasSubscriberType() {
+    public List<String> getSubscription() {
         return StringUtils.arrayToList(EventBusController.NAME);
     }
 
