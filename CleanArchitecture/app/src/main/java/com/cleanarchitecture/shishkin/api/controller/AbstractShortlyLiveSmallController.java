@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-public abstract class AbstractShortlyLiveSmallController<T extends ISubscriber> implements ISmallController<T>,AutoCompleteHandler.OnShutdownListener {
+public abstract class AbstractShortlyLiveSmallController<T extends ISubscriber> implements ISmallController<T>, AutoCompleteHandler.OnShutdownListener {
 
     protected Map<String, WeakReference<T>> mSubscribers = Collections.synchronizedMap(new ConcurrentHashMap<String, WeakReference<T>>());
     private AutoCompleteHandler<Boolean> mServiceHandler;
@@ -17,7 +17,8 @@ public abstract class AbstractShortlyLiveSmallController<T extends ISubscriber> 
     private static final long TIMEUNIT_DURATION = 30L;
 
     public AbstractShortlyLiveSmallController() {
-        mServiceHandler = new AutoCompleteHandler<>("AbstractShortlyLiveSmallController [" + getName() + "]");;
+        mServiceHandler = new AutoCompleteHandler<>("AbstractShortlyLiveSmallController [" + getName() + "]");
+        ;
         mServiceHandler.setOnShutdownListener(this);
         setShutdownTimeout(TIMEUNIT.toMillis(TIMEUNIT_DURATION));
     }
