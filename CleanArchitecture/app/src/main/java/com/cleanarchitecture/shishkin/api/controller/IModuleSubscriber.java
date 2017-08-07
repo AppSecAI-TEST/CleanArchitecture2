@@ -12,6 +12,6 @@ public interface IModuleSubscriber extends ISubscriber {
      *
      * @return список имен модулей
      */
-    List<String> hasSubscriberType();
+    List<String> getSubscription();
 
 }

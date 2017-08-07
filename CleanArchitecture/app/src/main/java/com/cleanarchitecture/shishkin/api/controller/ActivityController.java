@@ -52,7 +52,6 @@ import es.dmoral.toasty.Toasty;
 public class ActivityController extends AbstractController<IActivity> implements IActivityController, IModuleSubscriber {
 
     public static final String NAME = ActivityController.class.getName();
-    public static final String SUBSCRIBER_TYPE = IActivity.class.getName();
     private static final String LOG_TAG = "ActivityController:";
 
     public static final int TOAST_TYPE_INFO = 0;
@@ -117,13 +116,8 @@ public class ActivityController extends AbstractController<IActivity> implements
     }
 
     @Override
-    public String getSubscriberType() {
-        return SUBSCRIBER_TYPE;
-    }
-
-    @Override
-    public List<String> hasSubscriberType() {
-        return StringUtils.arrayToList(EventBusController.SUBSCRIBER_TYPE);
+    public List<String> getSubscription() {
+        return StringUtils.arrayToList(EventBusController.NAME);
     }
 
     @Override

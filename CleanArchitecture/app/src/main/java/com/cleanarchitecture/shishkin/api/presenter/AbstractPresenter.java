@@ -87,10 +87,10 @@ public abstract class AbstractPresenter<M> implements IPresenter<M>, IMailSubscr
     }
 
     @Override
-    public List<String> hasSubscriberType() {
+    public List<String> getSubscription() {
         return StringUtils.arrayToList(
-                PresenterController.SUBSCRIBER_TYPE,
-                MailController.SUBSCRIBER_TYPE
+                PresenterController.NAME,
+                MailController.NAME
         );
     }
 

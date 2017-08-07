@@ -19,7 +19,6 @@ public class EventBusController implements IEventBusController {
     public static final int MIN_RANK = 0;
 
     public static final String NAME = EventBusController.class.getName();
-    public static final String SUBSCRIBER_TYPE = "IEventbusSubscriber";
     private static volatile EventBusController sInstance;
 
     public static EventBusController getInstance() {
@@ -104,11 +103,6 @@ public class EventBusController implements IEventBusController {
     @Override
     public String getName() {
         return NAME;
-    }
-
-    @Override
-    public String getSubscriberType() {
-        return SUBSCRIBER_TYPE;
     }
 
     @Override

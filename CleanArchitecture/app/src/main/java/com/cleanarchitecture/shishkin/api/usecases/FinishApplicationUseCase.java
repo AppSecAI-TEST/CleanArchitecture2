@@ -35,6 +35,12 @@ public class FinishApplicationUseCase extends AbstractUseCase {
         if (parcelableStorage != null) {
             parcelableStorage.clear();
         }
+
+        // очистить кэш состояний презенторов
+        final IPresenterController presenterController = AdminUtils.getPresenterController();
+        if (presenterController != null) {
+            presenterController.clearStateData();
+        }
     }
 
     @Override

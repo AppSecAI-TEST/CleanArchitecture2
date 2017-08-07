@@ -89,11 +89,6 @@ public class ApplicationController extends MultiDexApplication implements IAppli
     }
 
     @Override
-    public String getSubscriberType() {
-        return null;
-    }
-
-    @Override
     public boolean isPersistent() {
         return false;
     }

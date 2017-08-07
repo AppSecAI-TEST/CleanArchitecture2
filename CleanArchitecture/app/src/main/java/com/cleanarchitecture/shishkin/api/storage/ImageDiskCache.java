@@ -295,11 +295,6 @@ public class ImageDiskCache extends AbstractModule implements IImageDiskCache {
     }
 
     @Override
-    public String getSubscriberType() {
-        return null;
-    }
-
-    @Override
     public String getDescription() {
         return "Image disk cache";
     }

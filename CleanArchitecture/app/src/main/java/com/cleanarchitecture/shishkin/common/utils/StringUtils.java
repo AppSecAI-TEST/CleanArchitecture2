@@ -952,4 +952,9 @@ public class StringUtils {
         return list;
     }
 
+    public static String last(final String s, final String delimiter) {
+        final String[] array = s.split(delimiter);
+        return array[array.length - 1];
+    }
+
 }

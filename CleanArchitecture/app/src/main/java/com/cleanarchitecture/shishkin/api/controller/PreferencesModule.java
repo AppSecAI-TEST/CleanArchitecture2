@@ -66,11 +66,6 @@ public class PreferencesModule implements IPreferencesModule, IModuleSubscriber 
     }
 
     @Override
-    public String getSubscriberType() {
-        return null;
-    }
-
-    @Override
     public boolean isPersistent() {
         return true;
     }
@@ -80,8 +75,8 @@ public class PreferencesModule implements IPreferencesModule, IModuleSubscriber 
     }
 
     @Override
-    public List<String> hasSubscriberType() {
-        return StringUtils.arrayToList(EventBusController.SUBSCRIBER_TYPE);
+    public List<String> getSubscription() {
+        return StringUtils.arrayToList(EventBusController.NAME);
     }
 
     @Override

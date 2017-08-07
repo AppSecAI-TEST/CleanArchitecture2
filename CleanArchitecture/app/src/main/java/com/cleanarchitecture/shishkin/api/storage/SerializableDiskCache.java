@@ -246,11 +246,6 @@ public class SerializableDiskCache extends AbstractModule implements IExpiredSer
     }
 
     @Override
-    public String getSubscriberType() {
-        return null;
-    }
-
-    @Override
     public boolean isPersistent() {
         return true;
     }

@@ -32,11 +32,6 @@ public class CrashController implements Thread.UncaughtExceptionHandler, IModule
     }
 
     @Override
-    public String getSubscriberType() {
-        return null;
-    }
-
-    @Override
     public boolean isPersistent() {
         return false;
     }

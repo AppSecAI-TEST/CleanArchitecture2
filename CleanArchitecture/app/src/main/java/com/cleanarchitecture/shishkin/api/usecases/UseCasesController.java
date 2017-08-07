@@ -82,13 +82,8 @@ public class UseCasesController extends AbstractController implements IUseCasesC
     }
 
     @Override
-    public String getSubscriberType() {
-        return null;
-    }
-
-    @Override
-    public List<String> hasSubscriberType() {
-        return StringUtils.arrayToList(EventBusController.SUBSCRIBER_TYPE);
+    public List<String> getSubscription() {
+        return StringUtils.arrayToList(EventBusController.NAME);
     }
 
     @Override

@@ -210,11 +210,6 @@ public class NotificationModule extends AbstractShortlyLiveModule implements INo
     }
 
     @Override
-    public String getSubscriberType() {
-        return null;
-    }
-
-    @Override
     public String getDescription() {
         final Context context = ApplicationController.getInstance();
         if (context != null) {

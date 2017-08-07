@@ -25,7 +25,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class DesktopController implements IDesktopController, IModuleSubscriber {
     public static final String NAME = DesktopController.class.getName();
-    public static final String SUBSCRIBER_TYPE = IDesktopSubscriber.class.getName();
 
     private String mDesktop = ""; // default desktop
     private Map<String, String> mDesktops = Collections.synchronizedMap(new ConcurrentHashMap<String, String>());
@@ -116,11 +115,6 @@ public class DesktopController implements IDesktopController, IModuleSubscriber 
     }
 
     @Override
-    public String getSubscriberType() {
-        return SUBSCRIBER_TYPE;
-    }
-
-    @Override
     public boolean isPersistent() {
         return false;
     }
@@ -130,8 +124,8 @@ public class DesktopController implements IDesktopController, IModuleSubscriber 
     }
 
     @Override
-    public List<String> hasSubscriberType() {
-        return StringUtils.arrayToList(EventBusController.SUBSCRIBER_TYPE);
+    public List<String> getSubscription() {
+        return StringUtils.arrayToList(EventBusController.NAME);
     }
 
     @Override

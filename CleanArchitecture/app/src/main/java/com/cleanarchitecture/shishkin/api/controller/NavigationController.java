@@ -24,7 +24,6 @@ public class NavigationController extends AbstractController<INavigationSubscrib
         implements INavigationController, IModuleSubscriber {
 
     public static final String NAME = NavigationController.class.getName();
-    public static final String SUBSCRIBER_TYPE = INavigationSubscriber.class.getName();
 
     public NavigationController() {
         super();
@@ -54,13 +53,8 @@ public class NavigationController extends AbstractController<INavigationSubscrib
     }
 
     @Override
-    public String getSubscriberType() {
-        return SUBSCRIBER_TYPE;
-    }
-
-    @Override
-    public List<String> hasSubscriberType() {
-        return StringUtils.arrayToList(EventBusController.SUBSCRIBER_TYPE);
+    public List<String> getSubscription() {
+        return StringUtils.arrayToList(EventBusController.NAME);
     }
 
     @Override

@@ -21,7 +21,6 @@ public class PresenterController extends AbstractController<IPresenter>
         implements IPresenterController {
 
     public static final String NAME = PresenterController.class.getName();
-    public static final String SUBSCRIBER_TYPE = IPresenter.class.getName();
 
     private Map<String, Bundle> mStates = Collections.synchronizedMap(new ConcurrentHashMap<String, Bundle>());
 
@@ -54,11 +53,6 @@ public class PresenterController extends AbstractController<IPresenter>
     }
 
     @Override
-    public String getSubscriberType() {
-        return SUBSCRIBER_TYPE;
-    }
-
-    @Override
     public synchronized void saveStateData(final String name, final Bundle state) {
         if (!StringUtils.isNullOrEmpty(name) && state != null) {
             final IUseCasesController controller = Admin.getInstance().get(UseCasesController.NAME);
@@ -81,6 +75,11 @@ public class PresenterController extends AbstractController<IPresenter>
         if (!StringUtils.isNullOrEmpty(name)) {
             mStates.remove(name);
         }
+    }
+
+    @Override
+    public synchronized void clearStateData() {
+            mStates.clear();
     }
 
     @Override

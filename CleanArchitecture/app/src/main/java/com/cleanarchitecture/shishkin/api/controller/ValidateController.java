@@ -15,7 +15,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ValidateController extends AbstractShortlyLiveController<IValidateSubscriber> implements IValidateController {
 
     public static final String NAME = ValidateController.class.getName();
-    public static final String SUBSCRIBER_TYPE = IValidateSubscriber.class.getName();
 
     private Map<String, IValidator> mValidators = Collections.synchronizedMap(new ConcurrentHashMap<String, IValidator>());
     private static final String LOG_TAG = "ValidateController:";
@@ -91,11 +90,6 @@ public class ValidateController extends AbstractShortlyLiveController<IValidateS
     @Override
     public String getName() {
         return NAME;
-    }
-
-    @Override
-    public String getSubscriberType() {
-        return SUBSCRIBER_TYPE;
     }
 
     @Override

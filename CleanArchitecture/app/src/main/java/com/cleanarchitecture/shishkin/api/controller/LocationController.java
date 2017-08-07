@@ -38,7 +38,6 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings("unused")
 public class LocationController extends AbstractController<ILocationSubscriber> implements ILocationController, IModuleSubscriber {
     public static final String NAME = LocationController.class.getName();
-    public static final String SUBSCRIBER_TYPE = ILocationSubscriber.class.getName();
     private static final String LOG_TAG = "LocationController:";
 
     private static final long POLLING_FREQ = TimeUnit.MINUTES.toMillis(1);
@@ -166,13 +165,8 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
     }
 
     @Override
-    public String getSubscriberType() {
-        return SUBSCRIBER_TYPE;
-    }
-
-    @Override
-    public List<String> hasSubscriberType() {
-        return StringUtils.arrayToList(EventBusController.SUBSCRIBER_TYPE);
+    public List<String> getSubscription() {
+        return StringUtils.arrayToList(EventBusController.NAME);
     }
 
     @Override

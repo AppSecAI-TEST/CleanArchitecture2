@@ -86,8 +86,8 @@ public abstract class AbstractFragment extends LifecycleFragment implements IFra
     }
 
     @Override
-    public List<String> hasSubscriberType() {
-        return StringUtils.arrayToList(MailController.SUBSCRIBER_TYPE);
+    public List<String> getSubscription() {
+        return StringUtils.arrayToList(MailController.NAME);
     }
 
     @Override

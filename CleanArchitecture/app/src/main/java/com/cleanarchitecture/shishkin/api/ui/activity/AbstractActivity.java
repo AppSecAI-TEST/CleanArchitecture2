@@ -150,11 +150,11 @@ public abstract class AbstractActivity extends LifecycleActivity
     }
 
     @Override
-    public List<String> hasSubscriberType() {
+    public List<String> getSubscription() {
         return StringUtils.arrayToList(
-                EventBusController.SUBSCRIBER_TYPE,
-                ActivityController.SUBSCRIBER_TYPE,
-                MailController.SUBSCRIBER_TYPE
+                EventBusController.NAME,
+                ActivityController.NAME,
+                MailController.NAME
         );
     }
 
