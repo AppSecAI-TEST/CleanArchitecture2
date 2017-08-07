@@ -38,8 +38,4 @@ public interface IPresenterController extends IController<IPresenter> {
      */
     void clearStateData(String name);
 
-    /**
-     * Очистить состояние всех presenters
-     */
-    void clearStateData();
 }
