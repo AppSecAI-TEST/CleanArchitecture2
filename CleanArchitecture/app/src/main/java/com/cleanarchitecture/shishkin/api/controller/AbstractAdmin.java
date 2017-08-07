@@ -27,10 +27,11 @@ public abstract class AbstractAdmin implements IAdmin {
         }
 
         try {
-            if (mModules.get(getShortName(name)) != null) {
-                return (C) mModules.get(getShortName(name));
+            final String moduleName = getShortName(name);
+            if (mModules.get(moduleName) != null) {
+                return (C) mModules.get(moduleName);
             } else {
-                mModules.remove(getShortName(name));
+                mModules.remove(moduleName);
             }
         } catch (Exception e) {
             ErrorController.getInstance().onError(LOG_TAG, e);
@@ -61,13 +62,9 @@ public abstract class AbstractAdmin implements IAdmin {
                         types.set(i, getShortName(types.get(i)));
                     }
 
-                    for (IModule module : mModules.values()) {
-                        if (module instanceof ISmallController) {
-                            if (types.contains(getShortName(module.getName()))) {
-                                if (!getShortName(module.getName()).equalsIgnoreCase(getShortName(controller.getName()))) {
-                                    ((ISmallController) module).register(controller);
-                                }
-                            }
+                    for (String type : types) {
+                        if (mModules.containsKey(type)) {
+                            ((ISmallController) mModules.get(type)).register(controller);
                         }
                     }
                 }
@@ -100,9 +97,10 @@ public abstract class AbstractAdmin implements IAdmin {
     @Override
     public boolean registerModule(String name) {
         if (!StringUtils.isNullOrEmpty(name)) {
-            if (mModules.containsKey(getShortName(name))) {
+            final String moduleName = getShortName(name);
+            if (mModules.containsKey(moduleName)) {
                 unregisterModule(name);
-                if (mModules.containsKey(getShortName(name))) {
+                if (mModules.containsKey(moduleName)) {
                     return true;
                 }
             }
@@ -122,8 +120,9 @@ public abstract class AbstractAdmin implements IAdmin {
     public synchronized void unregisterModule(final String name) {
         if (!StringUtils.isNullOrEmpty(name)) {
             try {
-                if (mModules.containsKey(getShortName(name))) {
-                    final IModule module = mModules.get(getShortName(name));
+                final String moduleName = getShortName(name);
+                if (mModules.containsKey(moduleName)) {
+                    final IModule module = mModules.get(moduleName);
                     if (module != null) {
                         if (!module.isPersistent()) {
                             if (module instanceof IController) {
@@ -144,10 +143,10 @@ public abstract class AbstractAdmin implements IAdmin {
                                     }
                                 }
                             }
-                            mModules.remove(getShortName(name));
+                            mModules.remove(moduleName);
                         }
                     } else {
-                        mModules.remove(getShortName(name));
+                        mModules.remove(moduleName);
                     }
                 }
             } catch (Exception e) {
