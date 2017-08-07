@@ -7,7 +7,9 @@ import com.cleanarchitecture.shishkin.api.controller.IPresenterController;
 import com.cleanarchitecture.shishkin.api.controller.MailController;
 import com.cleanarchitecture.shishkin.api.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.HideKeyboardEvent;
+import com.cleanarchitecture.shishkin.api.storage.IParcelableStorage;
 import com.cleanarchitecture.shishkin.api.storage.ISerializableStorage;
+import com.cleanarchitecture.shishkin.api.storage.ParcelableMemoryCache;
 import com.cleanarchitecture.shishkin.api.storage.SerializableMemoryCache;
 
 /**
@@ -20,25 +22,18 @@ public class FinishApplicationUseCase extends AbstractUseCase {
 
         AdminUtils.postEvent(new HideKeyboardEvent());
 
-        // finish all activities и LiveLongBackgroundIntentService
+        // finish all activities
         AdminUtils.postEvent(new FinishApplicationEvent());
 
-        // очистить кэш в памяти
-        final ISerializableStorage memoryCache = Admin.getInstance().get(SerializableMemoryCache.NAME);
-        if (memoryCache != null) {
-            memoryCache.clear();
+        // очистить кэши в памяти
+        final ISerializableStorage serializableStorage = Admin.getInstance().get(SerializableMemoryCache.NAME);
+        if (serializableStorage != null) {
+            serializableStorage.clear();
         }
 
-        // очистить все состояния в PresenterController
-        final IPresenterController presenterController = AdminUtils.getPresenterController();
-        if (presenterController != null) {
-            presenterController.clearStateData();
-        }
-
-        // очистить всю почту
-        final IMailController mailController = Admin.getInstance().get(MailController.NAME);
-        if (mailController != null) {
-            mailController.clearMail();
+        final IParcelableStorage parcelableStorage = Admin.getInstance().get(ParcelableMemoryCache.NAME);
+        if (parcelableStorage != null) {
+            parcelableStorage.clear();
         }
     }
 

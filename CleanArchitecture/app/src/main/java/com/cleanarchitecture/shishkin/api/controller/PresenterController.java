@@ -84,11 +84,6 @@ public class PresenterController extends AbstractController<IPresenter>
     }
 
     @Override
-    public synchronized void clearStateData() {
-        mStates.clear();
-    }
-
-    @Override
     public String getDescription() {
         final Context context = ApplicationController.getInstance();
         if (context != null) {
@@ -96,5 +91,11 @@ public class PresenterController extends AbstractController<IPresenter>
         }
         return "Presenter controller";
     }
+
+    @Override
+    public boolean isPersistent() {
+        return true;
+    }
+
 
 }

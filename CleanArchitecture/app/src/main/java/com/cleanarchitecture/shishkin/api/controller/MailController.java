@@ -39,23 +39,6 @@ public class MailController extends AbstractController<IMailSubscriber> implemen
     }
 
     @Override
-    public synchronized void unregister(final IMailSubscriber subscriber) {
-        if (subscriber != null) {
-            if (getSubscribers().containsKey(subscriber.getName())) {
-                for (IMail mail : mMail.values()) {
-                    if (mail.contains(subscriber.getName())) {
-                        if (!mail.isSticky()) {
-                            mMail.remove(mail.getId());
-                        }
-                    }
-                }
-            }
-
-            super.unregister(subscriber);
-        }
-    }
-
-    @Override
     public synchronized List<IMail> getMail(final IMailSubscriber subscriber) {
         if (subscriber != null) {
             if (mMail.isEmpty()) {
@@ -179,5 +162,11 @@ public class MailController extends AbstractController<IMailSubscriber> implemen
         }
         return "Mail controller";
     }
+
+    @Override
+    public boolean isPersistent() {
+        return true;
+    }
+
 
 }
