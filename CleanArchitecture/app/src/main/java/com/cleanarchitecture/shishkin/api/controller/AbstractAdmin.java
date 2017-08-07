@@ -171,6 +171,8 @@ public abstract class AbstractAdmin implements IAdmin {
                             registerModule(module);
                             if (mModules.containsKey(module)) {
                                 ((ISmallController) mModules.get(module)).register(subscriber);
+                            } else {
+                                ErrorController.getInstance().onError(LOG_TAG, "Not found subscriber type: " + subscriberType, false);
                             }
                         }
                     } else {

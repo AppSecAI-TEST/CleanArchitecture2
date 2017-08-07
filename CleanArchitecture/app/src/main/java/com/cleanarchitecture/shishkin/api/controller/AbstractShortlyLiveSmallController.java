@@ -14,7 +14,7 @@ public abstract class AbstractShortlyLiveSmallController<T extends ISubscriber> 
     protected Map<String, WeakReference<T>> mSubscribers = Collections.synchronizedMap(new ConcurrentHashMap<String, WeakReference<T>>());
     private AutoCompleteHandler<Boolean> mServiceHandler;
     private static final TimeUnit TIMEUNIT = TimeUnit.SECONDS;
-    private static final long TIMEUNIT_DURATION = 30L;
+    private static final long TIMEUNIT_DURATION = 10L;
 
     public AbstractShortlyLiveSmallController() {
         mServiceHandler = new AutoCompleteHandler<>("AbstractShortlyLiveSmallController [" + getName() + "]");
