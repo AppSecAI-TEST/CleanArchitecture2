@@ -8,7 +8,7 @@ public abstract class AbstractShortlyLiveModule extends AbstractModule implement
 
     private AutoCompleteHandler<Boolean> mServiceHandler;
     private static final TimeUnit TIMEUNIT = TimeUnit.SECONDS;
-    private static final long TIMEUNIT_DURATION = 10L;
+    private static final long TIMEUNIT_DURATION = 30L;
 
     public AbstractShortlyLiveModule() {
         mServiceHandler = new AutoCompleteHandler<>("AbstractShortlyLiveModule [" + getName() + "]");

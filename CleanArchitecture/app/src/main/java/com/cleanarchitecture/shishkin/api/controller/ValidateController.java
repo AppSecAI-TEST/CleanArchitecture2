@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ValidateController extends AbstractController<IValidateSubscriber> implements IValidateController {
+public class ValidateController extends AbstractShortlyLiveController<IValidateSubscriber> implements IValidateController {
 
     public static final String NAME = ValidateController.class.getName();
     public static final String SUBSCRIBER_TYPE = IValidateSubscriber.class.getName();
