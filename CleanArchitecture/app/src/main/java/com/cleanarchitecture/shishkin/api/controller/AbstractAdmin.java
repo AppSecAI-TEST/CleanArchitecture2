@@ -95,7 +95,10 @@ public abstract class AbstractAdmin implements IAdmin {
     public boolean registerModule(String name) {
         if (!StringUtils.isNullOrEmpty(name)) {
             if (mModules.containsKey(name)) {
-                return true;
+                unregisterModule(name);
+                if (mModules.containsKey(name)) {
+                    return true;
+                }
             }
 
             try {
