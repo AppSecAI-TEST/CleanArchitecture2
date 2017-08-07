@@ -13,6 +13,7 @@ public abstract class AbstractAdmin implements IAdmin {
     private static final String LOG_TAG = "AbstractAdmin:";
 
     private Map<String, IModule> mModules = Collections.synchronizedMap(new ConcurrentHashMap<String, IModule>());
+    private Map<String, String> mSubscribers = Collections.synchronizedMap(new ConcurrentHashMap<String, String>());
 
     @Override
     public synchronized <C> C get(final String name) {
@@ -45,6 +46,11 @@ public abstract class AbstractAdmin implements IAdmin {
     @Override
     public synchronized void registerModule(final IModule controller) {
         if (controller != null && !StringUtils.isNullOrEmpty(controller.getName())) {
+            final String subsciber = controller.getSubscriberType();
+            if (!StringUtils.isNullOrEmpty(subsciber)) {
+                mSubscribers.put(subsciber, controller.getName());
+            }
+
             if (mModules.containsKey(controller.getName())) {
                 return;
             }
@@ -93,8 +99,13 @@ public abstract class AbstractAdmin implements IAdmin {
             }
 
             try {
-                final IModule object = (IModule) Class.forName(name).newInstance();
-                registerModule(object);
+                final IModule module = (IModule) Class.forName(name).newInstance();
+                registerModule(module);
+
+                final String subsciber = module.getSubscriberType();
+                if (!StringUtils.isNullOrEmpty(subsciber)) {
+                    mSubscribers.put(subsciber, name);
+                }
                 return true;
             } catch (Exception e) {
                 ErrorController.getInstance().onError(LOG_TAG, e);
@@ -148,14 +159,19 @@ public abstract class AbstractAdmin implements IAdmin {
                 final List<String> types = subscriber.hasSubscriberType();
 
                 // регистрируемся subscriber в модулях
-                for (IModule module : mModules.values()) {
-                    if (module instanceof ISmallController) {
-                        final String subscriberType = module.getSubscriberType();
-                        if (!StringUtils.isNullOrEmpty(subscriberType) && types.contains(subscriberType)) {
-                            if (!module.getName().equalsIgnoreCase(subscriber.getName())) {
-                                ((ISmallController) module).register(subscriber);
+                for (String subscriberType : types) {
+                    if (mSubscribers.containsKey(subscriberType)) {
+                        final String module = mSubscribers.get(subscriberType);
+                        if (mModules.containsKey(module)) {
+                            ((ISmallController) mModules.get(module)).register(subscriber);
+                        } else {
+                            registerModule(module);
+                            if (mModules.containsKey(module)) {
+                                ((ISmallController) mModules.get(module)).register(subscriber);
                             }
                         }
+                    } else {
+                        ErrorController.getInstance().onError(LOG_TAG, "Not found subscriber type: " + subscriberType, false);
                     }
                 }
             } catch (Exception e) {
