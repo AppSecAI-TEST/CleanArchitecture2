@@ -51,7 +51,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("unused")
 public class HomeFragment extends AbstractContentFragment implements ILocationSubscriber, IDesktopSubscriber {
@@ -113,13 +112,6 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
         */
 
         ((INotificationModule) Admin.getInstance().get(NotificationModule.NAME)).replaceMessage("Test Notification module");
-        view.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ((INotificationModule) Admin.getInstance().get(NotificationModule.NAME)).replaceMessage("Test Notification module 2");
-                AdminUtils.postEvent(new ShowToastEvent("Test Notification module 2"));
-            }
-        }, TimeUnit.SECONDS.toMillis(20));
     }
 
     @Override
