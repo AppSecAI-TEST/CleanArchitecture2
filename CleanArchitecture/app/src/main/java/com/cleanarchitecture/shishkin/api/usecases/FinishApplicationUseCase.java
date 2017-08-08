@@ -2,9 +2,7 @@ package com.cleanarchitecture.shishkin.api.usecases;
 
 import com.cleanarchitecture.shishkin.api.controller.Admin;
 import com.cleanarchitecture.shishkin.api.controller.AdminUtils;
-import com.cleanarchitecture.shishkin.api.controller.IMailController;
 import com.cleanarchitecture.shishkin.api.controller.IPresenterController;
-import com.cleanarchitecture.shishkin.api.controller.MailController;
 import com.cleanarchitecture.shishkin.api.event.FinishApplicationEvent;
 import com.cleanarchitecture.shishkin.api.event.ui.HideKeyboardEvent;
 import com.cleanarchitecture.shishkin.api.storage.IParcelableStorage;

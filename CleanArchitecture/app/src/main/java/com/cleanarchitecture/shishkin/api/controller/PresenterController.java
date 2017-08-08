@@ -79,7 +79,7 @@ public class PresenterController extends AbstractController<IPresenter>
 
     @Override
     public synchronized void clearStateData() {
-            mStates.clear();
+        mStates.clear();
     }
 
     @Override

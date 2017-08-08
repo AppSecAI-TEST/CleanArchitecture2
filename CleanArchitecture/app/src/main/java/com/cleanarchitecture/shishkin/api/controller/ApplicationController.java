@@ -90,7 +90,7 @@ public class ApplicationController extends MultiDexApplication implements IAppli
 
     @Override
     public boolean isPersistent() {
-        return false;
+        return true;
     }
 
     @Override

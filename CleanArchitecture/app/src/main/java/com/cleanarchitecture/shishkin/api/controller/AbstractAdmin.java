@@ -51,7 +51,10 @@ public abstract class AbstractAdmin implements IAdmin {
     public synchronized void registerModule(final IModule controller) {
         if (controller != null && !StringUtils.isNullOrEmpty(controller.getName())) {
             if (mModules.containsKey(getShortName(controller.getName()))) {
-                return;
+                unregisterModule(controller.getName());
+                if (mModules.containsKey(getShortName(controller.getName()))) {
+                    return;
+                }
             }
 
             try {
