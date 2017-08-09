@@ -11,6 +11,11 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-feature android:name="android.hardware.wifi.aware" />
+
+
     <application
         android:name=".api.controller.ApplicationController"
         android:allowBackup="true"
@@ -34,9 +39,6 @@
                 <action android:name="${applicationId}.action.NotificationBroadcastReceiver.ACTION_DELETE_MESSAGES" />
             </intent-filter>
         </receiver>
-
-        <service android:name=".api.handler.NotificationService" />
-        <service android:name=".api.handler.BoardService" />
 
     </application>
 

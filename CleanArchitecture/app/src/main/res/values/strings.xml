@@ -95,6 +95,7 @@
     <string name="module_activities">Контроллер активностей</string>
     <string name="module_repository">Репозиторий</string>
     <string name="module_use_cases">Контроллер бизнес логики</string>
+    <string name="module_wifi_aware">Модуль поддержки Wi-Fi aware</string>
 
     <string name="enable_location">Включите определение местоположения в настройках телефона</string>
     <string name="orientation">Ориентация программы</string>
