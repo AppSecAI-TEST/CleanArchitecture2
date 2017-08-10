@@ -71,7 +71,7 @@ public class PreferencesModule implements IPreferencesModule, IModuleSubscriber 
     }
 
     @Override
-    public void onUnRegister() {
+    public void onUnRegisterModule() {
     }
 
     @Override

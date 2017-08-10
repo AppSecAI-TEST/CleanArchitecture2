@@ -111,7 +111,7 @@ public class EventBusController implements IEventBusController {
     }
 
     @Override
-    public void onUnRegister() {
+    public void onUnRegisterModule() {
     }
 
     @Override

@@ -3,7 +3,7 @@ package com.cleanarchitecture.shishkin.api.controller;
 public abstract class AbstractModule implements IModule {
 
     @Override
-    public void onUnRegister() {
+    public void onUnRegisterModule() {
     }
 
     @Override

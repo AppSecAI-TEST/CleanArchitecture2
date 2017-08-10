@@ -120,7 +120,7 @@ public class DesktopController implements IDesktopController, IModuleSubscriber 
     }
 
     @Override
-    public void onUnRegister() {
+    public void onUnRegisterModule() {
     }
 
     @Override

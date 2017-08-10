@@ -115,7 +115,7 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
         }
     }
 
-    private synchronized void stopLocation(final boolean isforce) {
+    public synchronized void stopLocation(final boolean isforce) {
         if (isforce || (!isforce && !hasSubscribers())) {
             if (mFusedLocationClient != null) {
                 mFusedLocationClient.removeLocationUpdates(mLocationCallback);
@@ -146,16 +146,12 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
     }
 
     @Override
-    public synchronized void register(final ILocationSubscriber subscriber) {
-        super.register(subscriber);
-
+    public synchronized void onRegisterFirstSubscriber() {
         startLocation();
     }
 
     @Override
-    public synchronized void unregister(final ILocationSubscriber subscriber) {
-        super.unregister(subscriber);
-
+    public synchronized void onUnRegisterLastSubscriber() {
         stopLocation(false);
     }
 
@@ -175,7 +171,7 @@ public class LocationController extends AbstractController<ILocationSubscriber> 
     }
 
     @Override
-    public void onUnRegister() {
+    public void onUnRegisterModule() {
         stopLocation(true);
     }
 

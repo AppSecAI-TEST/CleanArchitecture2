@@ -20,5 +20,4 @@ public interface ISmallController<T> extends IModule {
      * @param subscriber подписчик
      */
     void unregister(T subscriber);
-
 }
