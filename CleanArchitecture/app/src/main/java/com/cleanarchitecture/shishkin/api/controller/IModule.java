@@ -12,7 +12,7 @@ public interface IModule extends ISubscriber {
     /**
      * Событие - отключить регистрацию
      */
-    void onUnRegister();
+    void onUnRegisterModule();
 
     /**
      * Получить описание модуля

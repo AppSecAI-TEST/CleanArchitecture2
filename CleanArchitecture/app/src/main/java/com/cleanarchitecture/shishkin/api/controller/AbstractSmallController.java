@@ -27,7 +27,11 @@ public abstract class AbstractSmallController<T extends ISubscriber> implements 
             return;
         }
 
+        final int cnt = mSubscribers.size();
         mSubscribers.put(subscriber.getName(), new WeakReference<>(subscriber));
+        if (cnt == 0 && mSubscribers.size() == 1) {
+            onRegisterFirstSubscriber();
+        }
     }
 
     @Override
@@ -43,6 +47,22 @@ public abstract class AbstractSmallController<T extends ISubscriber> implements 
                 mSubscribers.remove(subscriber.getName());
             }
         }
+
+        if (mSubscribers.isEmpty()) {
+            onUnRegisterLastSubscriber();
+        }
+    }
+
+    /**
+     * Событие - появился первый подписчик
+     */
+    public synchronized void onRegisterFirstSubscriber() {
+    }
+
+    /**
+     * Событие - отписан последний подписчик
+     */
+    public synchronized void onUnRegisterLastSubscriber() {
     }
 
     @Override
@@ -51,7 +71,7 @@ public abstract class AbstractSmallController<T extends ISubscriber> implements 
     }
 
     @Override
-    public void onUnRegister() {
+    public void onUnRegisterModule() {
     }
 
 }

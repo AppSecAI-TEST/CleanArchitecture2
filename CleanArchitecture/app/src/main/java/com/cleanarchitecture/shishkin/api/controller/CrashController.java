@@ -37,7 +37,7 @@ public class CrashController implements Thread.UncaughtExceptionHandler, IModule
     }
 
     @Override
-    public void onUnRegister() {
+    public void onUnRegisterModule() {
     }
 
     @Override

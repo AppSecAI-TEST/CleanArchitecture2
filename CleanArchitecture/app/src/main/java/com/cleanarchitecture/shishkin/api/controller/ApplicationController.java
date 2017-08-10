@@ -94,7 +94,7 @@ public class ApplicationController extends MultiDexApplication implements IAppli
     }
 
     @Override
-    public void onUnRegister() {
+    public void onUnRegisterModule() {
     }
 
     public boolean isInBackground() {

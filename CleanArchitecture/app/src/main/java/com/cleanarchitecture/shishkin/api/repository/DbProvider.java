@@ -50,7 +50,7 @@ public class DbProvider<H extends AbstractViewModel, T extends RoomDatabase> ext
     }
 
     @Override
-    public void onUnRegister() {
+    public void onUnRegisterModule() {
         mLifecycleRegistry.markState(Lifecycle.State.DESTROYED);
     }
 

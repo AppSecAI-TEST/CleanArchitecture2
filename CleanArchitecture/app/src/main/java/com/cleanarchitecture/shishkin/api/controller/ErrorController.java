@@ -178,7 +178,7 @@ public class ErrorController implements IErrorController {
     }
 
     @Override
-    public void onUnRegister() {
+    public void onUnRegisterModule() {
     }
 
     private String getSufix() {

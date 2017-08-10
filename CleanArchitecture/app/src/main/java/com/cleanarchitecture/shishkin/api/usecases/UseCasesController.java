@@ -67,7 +67,7 @@ public class UseCasesController extends AbstractController implements IUseCasesC
     }
 
     @Override
-    public void onUnRegister() {
+    public void onUnRegisterModule() {
         if (mScreenOnOffReceiver != null) {
             final Context context = AdminUtils.getContext();
             if (context != null) {

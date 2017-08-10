@@ -134,7 +134,7 @@ public abstract class AbstractAdmin implements IAdmin {
                                 }
                             }
 
-                            module.onUnRegister();
+                            module.onUnRegisterModule();
 
                             // отменяем регистрацию в других модулях
                             if (module instanceof IModuleSubscriber) {
