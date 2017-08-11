@@ -44,6 +44,7 @@ import com.cleanarchitecture.shishkin.application.presenter.FloatingActionMenuPr
 import com.cleanarchitecture.shishkin.application.presenter.PhoneContactPresenter;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
 import com.cleanarchitecture.shishkin.common.utils.SerializableUtil;
+import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -68,9 +69,10 @@ public class HomeFragment extends AbstractContentFragment implements ILocationSu
 
     @Override
     public List<String> getSubscription() {
-        final List<String> list = super.getSubscription();
-        list.add(LocationController.NAME);
-        return list;
+        return StringUtils.arrayToList(
+                super.getSubscription(),
+                LocationController.NAME
+        );
     }
 
     @Override

@@ -20,6 +20,7 @@ import com.cleanarchitecture.shishkin.api.event.toolbar.ToolbarResetEvent;
 import com.cleanarchitecture.shishkin.api.presenter.SwipeRefreshPresenter;
 import com.cleanarchitecture.shishkin.api.ui.activity.IOnBackPressListener;
 import com.cleanarchitecture.shishkin.common.utils.ApplicationUtils;
+import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -36,9 +37,10 @@ public abstract class AbstractContentFragment extends AbstractFragment implement
 
     @Override
     public List<String> getSubscription() {
-        final List<String> list = super.getSubscription();
-        list.add(EventBusController.NAME);
-        return list;
+        return StringUtils.arrayToList(
+                super.getSubscription(),
+                EventBusController.NAME
+        );
     }
 
     @Override

@@ -947,12 +947,31 @@ public class StringUtils {
     public static List<String> arrayToList(String... strings) {
         final List<String> list = new ArrayList<>();
         for (String s : strings) {
-            list.add(s);
+            if (!isNullOrEmpty(s)) {
+                list.add(s);
+            }
+        }
+        return list;
+    }
+
+    public static List<String> arrayToList(final List<String> list, String... strings) {
+        if (list == null) {
+            return new ArrayList<>();
+        }
+
+        for (String s : strings) {
+            if (!isNullOrEmpty(s)) {
+                list.add(s);
+            }
         }
         return list;
     }
 
     public static String last(final String s, final String delimiter) {
+        if (isNullOrEmpty(s) || isNullOrEmpty(delimiter)) {
+            return null;
+        }
+
         final String[] array = s.split(delimiter);
         return array[array.length - 1];
     }
