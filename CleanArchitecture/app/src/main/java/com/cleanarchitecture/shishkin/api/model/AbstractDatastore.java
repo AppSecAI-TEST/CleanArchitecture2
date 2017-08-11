@@ -1,8 +1,8 @@
 package com.cleanarchitecture.shishkin.api.model;
 
 import com.cleanarchitecture.shishkin.api.controller.EventBusController;
+import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractDatastore<T extends ILiveData> implements IDatastore<T> {
@@ -19,9 +19,7 @@ public abstract class AbstractDatastore<T extends ILiveData> implements IDatasto
 
     @Override
     public List<String> getSubscription() {
-        final ArrayList<String> list = new ArrayList<>();
-        list.add(EventBusController.NAME);
-        return list;
+        return StringUtils.arrayToList(EventBusController.NAME);
     }
 
 }

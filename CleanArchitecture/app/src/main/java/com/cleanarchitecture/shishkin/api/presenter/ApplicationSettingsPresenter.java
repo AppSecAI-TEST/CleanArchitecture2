@@ -25,6 +25,7 @@ import com.cleanarchitecture.shishkin.api.event.ui.ShowListDialogEvent;
 import com.cleanarchitecture.shishkin.api.ui.activity.AbstractActivity;
 import com.cleanarchitecture.shishkin.api.ui.dialog.MaterialDialogExt;
 import com.cleanarchitecture.shishkin.api.ui.fragment.SettingsColorPickerFragment;
+import com.cleanarchitecture.shishkin.common.utils.StringUtils;
 import com.cleanarchitecture.shishkin.common.utils.ViewUtils;
 import com.flyco.roundview.RoundRelativeLayout;
 
@@ -60,9 +61,9 @@ public class ApplicationSettingsPresenter extends AbstractPresenter<Void> implem
 
     @Override
     public List<String> getSubscription() {
-        final List<String> list = super.getSubscription();
-        list.add(EventBusController.NAME);
-        return list;
+        return StringUtils.arrayToList(
+                super.getSubscription(),
+                EventBusController.NAME);
     }
 
     @Override

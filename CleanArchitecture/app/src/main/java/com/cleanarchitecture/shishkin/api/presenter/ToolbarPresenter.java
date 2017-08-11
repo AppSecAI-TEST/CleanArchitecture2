@@ -174,9 +174,9 @@ public class ToolbarPresenter extends AbstractPresenter<Void> implements IToolba
 
     @Override
     public List<String> getSubscription() {
-        final List<String> list = super.getSubscription();
-        list.add(EventBusController.NAME);
-        return list;
+        return StringUtils.arrayToList(
+                super.getSubscription(),
+                EventBusController.NAME);
     }
 
     @Override
